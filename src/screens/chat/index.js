@@ -315,7 +315,7 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
         {/*  <Image source={require('../../assets/ic_emoj.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>*/}
         {/*</TouchableOpacity>*/}
         {
-          input!=='' ?
+          input.trim()!=='' ?
           <TouchableOpacity
             onPress={sendMessage}
             style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>
