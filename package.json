@@ -1,6 +1,6 @@
 {
   "name": "react-native-chatvt",
-  "version": "0.1.14",
+  "version": "0.1.13",
   "description": "test",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -108,13 +108,14 @@
     "react-native-document-picker": "*",
     "react-native-fast-image": "*",
     "react-native-parsed-text": "*",
-    "react-native-reanimated": "*",
+    "react-native-reanimated": "2.17.0",
     "react-native-screens": "*",
     "react-native-svg": "*",
     "react-native-vector-icons": "*",
     "react-native-video": "*",
     "socket.io-client": "*",
     "@react-navigation/stack": "*",
+    "react-native-gesture-handler": "*",
     "react-native-safe-area-context": "*"
   },
   "engines": {

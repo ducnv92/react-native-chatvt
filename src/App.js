@@ -1,13 +1,14 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ListChatScreen } from './screens/listchat';
 import { ChatScreen } from './screens/chat';
+import {NavigationContainer} from "@react-navigation/native";
 
 const Stack = createStackNavigator();
 
-export default function App() {
+export default function ChatStack() {
   return (
+    <NavigationContainer>
       <Stack.Navigator>
         {/*<Stack.Screen*/}
         {/*  name="Home"*/}
@@ -15,7 +16,7 @@ export default function App() {
         {/*  options={{ headerShown: false }}*/}
         {/*/>*/}
         <Stack.Screen
-          name="ListChat"
+          name="ListChatScreen"
           component={ListChatScreen}
           options={{ headerShown: false }}
         />
@@ -25,5 +26,6 @@ export default function App() {
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
+    </NavigationContainer>
   );
 }
