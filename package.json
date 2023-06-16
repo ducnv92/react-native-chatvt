@@ -114,7 +114,8 @@
     "react-native-svg": "*",
     "react-native-vector-icons": "*",
     "react-native-video": "*",
-    "socket.io-client": "*"
+    "socket.io-client": "*",
+    "@react-navigation/stack": "*"
   },
   "engines": {
     "node": ">= 16.0.0"
