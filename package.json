@@ -78,7 +78,29 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "@bam.tech/react-native-image-resizer": "*",
+    "@gorhom/bottom-sheet": "4",
+    "@react-native-camera-roll/camera-roll": "*",
+    "@react-native-community/async-storage": "*",
+    "@react-native-community/viewpager": "*",
+    "@react-navigation/native": "*",
+    "apisauce": "*",
+    "mobx": "*",
+    "mobx-react-lite": "*",
+    "moment": "*",
+    "prop-types": "*",
+    "react-native-audio-recorder-player": "*",
+    "react-native-document-picker": "*",
+    "react-native-fast-image": "*",
+    "react-native-gesture-handler": "*",
+    "react-native-parsed-text": "*",
+    "react-native-reanimated": "*",
+    "react-native-screens": "*",
+    "react-native-svg": "*",
+    "react-native-vector-icons": "*",
+    "react-native-video": "*",
+    "socket.io-client": "*"
   },
   "engines": {
     "node": ">= 16.0.0"

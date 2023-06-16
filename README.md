@@ -13,9 +13,10 @@ npm install react-native-chatvt
 ```js
 import { ChatVT } from 'react-native-chatvt';
 
-// ...
 
-const result = await multiply(3, 7);
+
+
+
 ```
 
 
