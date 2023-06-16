@@ -131,7 +131,7 @@ export const ListChatScreen =  observer(function ListChatScreen ({ navigation })
                 <Text style={{textAlign: 'right', color: colors.neutralText}}>{moment(item.message.created_at).format('DD/MM')}</Text>
               </View>
               <View style={{flexDirection: 'row',  paddingTop: 6, alignItems: 'center'}}>
-                <Text  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_message_count>0?colors.primaryText:colors.neutralText,}}>{isMe && "Bạn:"} {item.message.text}</Text>
+                <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_message_count>0?colors.primaryText:colors.neutralText,}}>{isMe && "Bạn:"} {item.message.text}</Text>
                 <View style={{flexDirection: 'row',}}>
                   {
                     setting?.is_pin &&
