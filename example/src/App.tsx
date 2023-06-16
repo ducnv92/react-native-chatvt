@@ -16,16 +16,6 @@ export default function App() {
           component={HomeScreen}
           options={{ headerShown: false }}
         />
-        {/*<Stack.Screen*/}
-        {/*  name="ListChatScreen"*/}
-        {/*  component={ListChatScreen}*/}
-        {/*  options={{ headerShown: false }}*/}
-        {/*/>*/}
-        {/*<Stack.Screen*/}
-        {/*  name="ChatScreen"*/}
-        {/*  component={ChatScreen}*/}
-        {/*  options={{ headerShown: false }}*/}
-        {/*/>*/}
       </Stack.Navigator>
     </NavigationContainer>
   );
