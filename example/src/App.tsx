@@ -1,31 +1,33 @@
 import * as React from 'react';
-
-import { StyleSheet, View, Text } from 'react-native';
-// import { multiply } from 'react-native-chatvt';
+import {ListChatScreen}  from 'react-native-chatvt/src/screens/listchat';
+import {ChatScreen}  from 'react-native-chatvt/src/screens/chat';
+import {NavigationContainer} from "@react-navigation/native";
+import {createStackNavigator} from "@react-navigation/stack";
+const Stack = createStackNavigator();
+import HomeScreen from '../src/Home'
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    // multiply(3, 7).then(setResult);
-  }, []);
 
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ListChatScreen"
+          component={ListChatScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ChatScreen"
+          component={ChatScreen}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
-});
