@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { TouchableOpacity, View, Text } from 'react-native';
-import ChatVT  from 'react-native-chatvt';
-import {App}  from 'react-native-chatvt';
+import {ChatVT}  from 'react-native-chatvt';
 
 function HomeScreen({ navigation }) {
   useEffect(()=>{

@@ -1,10 +1,10 @@
 import * as React from 'react';
-// import {ListChatScreen}  from 'react-native-chatvt/src/screens/listchat';
-// import {ChatScreen}  from 'react-native-chatvt/src/screens/chat';
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from "@react-navigation/stack";
 const Stack = createStackNavigator();
+// @ts-ignore
 import HomeScreen from '../src/Home'
+import ChatScreen from "./ChatScreen";
 
 export default function App() {
 
@@ -14,6 +14,11 @@ export default function App() {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ChatScreen"
+          component={ChatScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

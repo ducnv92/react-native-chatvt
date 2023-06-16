@@ -23,7 +23,7 @@
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-native": "0.71.8",
-    "react-native-chatvt": "^0.1.8",
+    "react-native-chatvt": "^0.1.9",
     "react-native-compressor": "^1.6.1",
     "react-native-document-picker": "^9.0.1",
     "react-native-emoji-board": "^1.2.1",
