@@ -1,13 +1,13 @@
 // @ts-ignore
 import appStore from "./screens/AppStore";
 
-import App from './App'
+import App from './App.js'
 export const ChatApp = App
 
 class ChatVT {
-  private navigation: any
+  navigation
   /** */
-  init(navigation: any, token: string, tokenSSO: string, onSuccess?: Function, onError?: Function){
+  init(navigation, token, tokenSSO, onSuccess, onError){
     this.navigation = navigation
     appStore.Auth({
       token: token,
@@ -15,11 +15,11 @@ class ChatVT {
     }, onSuccess, onError)
   }
 
-  createChat(vtm_user_ids: Array<number>, order_number: string ){
+  createChat(vtm_user_ids, order_number ){
     appStore.createConversation({
       vtm_user_ids: vtm_user_ids,
       order_number: order_number
-    }, (conversation: any)=>{
+    }, (conversation)=>{
       this.navigation.push('ChatScreen',conversation)
     })
   }

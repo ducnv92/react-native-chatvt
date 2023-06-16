@@ -9,10 +9,10 @@ import {
   TextInput,
   Platform,
   KeyboardAvoidingView,
-  StyleSheet, ScrollView, Dimensions, Linking
+  StyleSheet, Linking
 } from 'react-native';
 import colors from '../../Styles';
-import EmojiPicker from 'rn-emoji-keyboard'
+// import EmojiPicker from 'rn-emoji-keyboard'
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
@@ -21,7 +21,6 @@ import CameraRollPicker from '../../components/cameraRollPicker';
 import chatStore from "./ChatStore";
 import {orderStatus} from "../../utils";
 import appStore from "../AppStore";
-import {uuidv4} from "react-native-compressor";
 import {observer} from "mobx-react-lite";
 import ParsedText from 'react-native-parsed-text';
 
@@ -310,11 +309,11 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
             value={input}
             style={{fontSize: 15, color: colors.primaryText, flex: 1}}
           />
-        <TouchableOpacity
-          onPress={()=>setShowEmoji(true)}
-          style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>
-          <Image source={require('../../assets/ic_emoj.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
-        </TouchableOpacity>
+        {/*<TouchableOpacity*/}
+        {/*  onPress={()=>setShowEmoji(true)}*/}
+        {/*  style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>*/}
+        {/*  <Image source={require('../../assets/ic_emoj.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>*/}
+        {/*</TouchableOpacity>*/}
         {
           input!=='' ?
           <TouchableOpacity
@@ -330,7 +329,7 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
 
       </View>
     </KeyboardAvoidingView>
-    <EmojiPicker onEmojiSelected={onClickEmoji} open={showEmoji} onClose={() => setShowEmoji(false)} />
+    {/*<EmojiPicker onEmojiSelected={onClickEmoji} open={showEmoji} onClose={() => setShowEmoji(false)} />*/}
     <BottomSheetModal
       ref={bottomSheetRef}
       // index={0}
