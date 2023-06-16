@@ -14,46 +14,23 @@ export function HomeScreen({ navigation }) {
   });
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <TouchableOpacity
-        style={{
-          borderRadius: 5,
-          borderWidth: 1,
-          borderColor: 'orange',
-          padding: 10,
-          marginTop: 40,
-        }}
-        onPress={() => {
-
-          navigation.navigate('ListChat', {
-            itemId: 86,
-            otherParam: 'anything you want here',
-          });
-        }}
-      >
-        <Text>Danh sách chat</Text>
-      </TouchableOpacity><TouchableOpacity
-        style={{
-          borderRadius: 5,
-          borderWidth: 1,
-          borderColor: 'orange',
-          padding: 10,
-          marginTop: 40,
-        }}
-        onPress={() => {
-
-          appStore.createConversation({
-            "vtm_user_ids": [
-              985979
-            ],
-            "order_number": "1715479616606"
-          }, conversation=>{
-            navigation.push('ChatScreen',conversation)
-          })
-        }}
-      >
-        <Text>Tạo chat từ đơn</Text>
-      </TouchableOpacity>
-    </View>
-  );
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ListChatScreen"
+          component={ListChatScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ChatScreen"
+          component={ChatScreen}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>  );
 }
