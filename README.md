@@ -18,7 +18,7 @@ import VTChat  from 'react-native-chatvt';
 ## Init SDK
 
 ```js
-import {chatvt}  from 'react-native-chatvt';
+import {chatVT}  from 'react-native-chatvt';
 
 chatVT.init(token, token_sso)
   ```
