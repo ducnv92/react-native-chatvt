@@ -1,4 +1,4 @@
-import {observable, action, makeObservable} from 'mobx';
+import {makeObservable} from 'mobx';
 import services from "../services";
 import * as MyAsyncStorage from "../utils/MyAsyncStorage";
 import {USER} from "../utils/MyAsyncStorage";
