@@ -3,7 +3,7 @@ import {App} from 'react-native-chatvt'
 export default function ChatScreen() {
 
   return (
-    <ChatScreen style={{flex: 1}}/>
+    <App style={{flex: 1}}/>
   );
 }
 

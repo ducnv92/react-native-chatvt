@@ -1,7 +1,8 @@
 // @ts-ignore
 import appStore from "./screens/AppStore";
 
-
+import App from './App'
+export const ChatApp = App
 
 class ChatVT {
   private navigation: any
@@ -28,6 +29,5 @@ class ChatVT {
   }
 }
 
-const chatVT = new ChatVT()
+export const chatVT = new ChatVT()
 
-export default chatVT
