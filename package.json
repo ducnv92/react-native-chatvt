@@ -115,7 +115,8 @@
     "react-native-vector-icons": "*",
     "react-native-video": "*",
     "socket.io-client": "*",
-    "@react-navigation/stack": "*"
+    "@react-navigation/stack": "*",
+    "react-native-safe-area-context": "*"
   },
   "engines": {
     "node": ">= 16.0.0"
