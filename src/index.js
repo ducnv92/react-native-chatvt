@@ -18,7 +18,7 @@ class ChatVT {
       vtm_user_ids: vtm_user_ids,
       order_number: order_number
     }, (conversation)=>{
-      this.navigation.push('ChatScreen',conversation)
+      this.navigation.navigate('ChatScreen',conversation)
     })
   }
 
