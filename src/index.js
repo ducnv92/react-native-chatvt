@@ -2,7 +2,6 @@
 import appStore from "./screens/AppStore";
 
 import App from './App.js'
-export const ChatApp = App
 
 class ChatVT {
   navigation
@@ -28,6 +27,10 @@ class ChatVT {
     this.navigation.navigate('ListChatScreen');
   }
 }
+ const chatVT = new ChatVT()
 
-export const chatVT = new ChatVT()
 
+export default {
+  chatVT,
+  ChatApp
+}
