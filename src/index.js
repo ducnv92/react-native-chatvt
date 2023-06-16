@@ -27,10 +27,10 @@ class ChatVT {
     this.navigation.navigate('ListChatScreen');
   }
 }
- const chatVT = new ChatVT()
+const chatVT = new ChatVT()
 
 
 export default {
   chatVT,
-  ChatApp
+  App
 }
