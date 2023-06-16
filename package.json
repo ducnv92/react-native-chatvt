@@ -78,7 +78,9 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*",
+    "react-native": "*"
+  },
+  "dependencies":{
     "@bam.tech/react-native-image-resizer": "*",
     "@gorhom/bottom-sheet": "4",
     "@react-native-camera-roll/camera-roll": "*",
