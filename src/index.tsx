@@ -3,11 +3,10 @@ import appStore from "./screens/AppStore";
 
 
 
-
 class ChatVT {
   private navigation: any
   /** */
-  init(navigation: any, token: string, tokenSSO: string, onSuccess: Function, onError: Function){
+  init(navigation: any, token: string, tokenSSO: string, onSuccess?: Function, onError?: Function){
     this.navigation = navigation
     appStore.Auth({
       token: token,

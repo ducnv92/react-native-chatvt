@@ -11,6 +11,7 @@ class AppStore {
    error = 0;
    data = {};
 
+
   constructor() {
     makeObservable(this);
   }
