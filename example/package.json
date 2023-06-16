@@ -23,7 +23,7 @@
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-native": "0.71.8",
-    "react-native-chatvt": "^0.1.4",
+    "react-native-chatvt": "^0.1.5",
     "react-native-compressor": "^1.6.1",
     "react-native-document-picker": "^9.0.1",
     "react-native-emoji-board": "^1.2.1",
@@ -45,6 +45,7 @@
     "@babel/preset-env": "^7.20.0",
     "@babel/runtime": "^7.20.0",
     "babel-plugin-module-resolver": "^4.1.0",
+    "@babel/plugin-proposal-decorators": "^7.22.5",
     "metro-react-native-babel-preset": "0.73.10"
   }
 }

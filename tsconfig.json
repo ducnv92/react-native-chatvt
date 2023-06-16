@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
+    "useDefineForClassFields": true,
     "baseUrl": "./",
     "paths": {
       "react-native-chatvt": ["./src/index"]

@@ -1,4 +1,4 @@
-import {observable, action, makeObservable} from 'mobx';
+import {observable, action, makeAutoObservable} from 'mobx';
 import services from "../../services";
 
 class ChatStore {
@@ -13,8 +13,9 @@ class ChatStore {
    images = [];
 
   constructor() {
-    makeObservable(this);
+    makeAutoObservable(this);
   }
+
 
   async getData(params, onSuccess, onError) {
 

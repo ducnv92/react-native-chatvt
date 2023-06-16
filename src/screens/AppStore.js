@@ -1,4 +1,4 @@
-import {makeObservable} from 'mobx';
+import {observable, action} from 'mobx';
 import services from "../services";
 import * as MyAsyncStorage from "../utils/MyAsyncStorage";
 import {USER} from "../utils/MyAsyncStorage";
@@ -10,11 +10,6 @@ class AppStore {
    isError = false;
    error = 0;
    data = {};
-
-
-  constructor() {
-    makeObservable(this);
-  }
 
 
   async Auth(params, onSuccess, onError) {

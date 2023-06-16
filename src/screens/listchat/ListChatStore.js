@@ -1,4 +1,4 @@
-import {observable, action, makeObservable} from 'mobx';
+import {observable, action, makeAutoObservable} from 'mobx';
 import services from "../../services";
 
 class ListChatStore {
@@ -11,7 +11,7 @@ class ListChatStore {
    data = [];
 
   constructor() {
-    makeObservable(this);
+    makeAutoObservable(this);
   }
 
 
