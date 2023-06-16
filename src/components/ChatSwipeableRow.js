@@ -5,10 +5,10 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 
-export default class ChatSwipeableRow extends Component<PropsWithChildren> {
-  private renderLeftActions = (
-    _progress: Animated.AnimatedInterpolation<number>,
-    dragX: Animated.AnimatedInterpolation<number>
+export default class ChatSwipeableRow extends Component {
+   renderLeftActions = (
+    _progress,
+    dragX
   ) => {
     const trans = dragX.interpolate({
       inputRange: [0, 50, 100, 101],
@@ -30,13 +30,13 @@ export default class ChatSwipeableRow extends Component<PropsWithChildren> {
     );
   };
 
-  private renderRightAction = (
-    text: string,
-    icon: any,
-    color: string,
-    x: number,
-    progress: Animated.AnimatedInterpolation<number>,
-    onPress: any,
+   renderRightAction = (
+    text,
+    icon,
+    color,
+    x,
+    progress,
+    onPress,
   ) => {
     const trans = progress.interpolate({
       inputRange: [0, 1],
@@ -59,10 +59,9 @@ export default class ChatSwipeableRow extends Component<PropsWithChildren> {
       </Animated.View>
     );
   };
-
-  private renderRightActions = (
-    progress: Animated.AnimatedInterpolation<number>,
-    _dragAnimatedValue: Animated.AnimatedInterpolation<number>
+   renderRightActions = (
+    progress,
+    _dragAnimatedValue
   ) => (
     <View
       style={{
@@ -76,12 +75,12 @@ export default class ChatSwipeableRow extends Component<PropsWithChildren> {
     </View>
   );
 
-  private swipeableRow?: Swipeable;
+   swipeableRow
 
-  private updateRef = (ref: Swipeable) => {
+   updateRef = (ref) => {
     this.swipeableRow = ref;
   };
-  private close = () => {
+   close = () => {
     this.swipeableRow?.close();
   };
   render() {

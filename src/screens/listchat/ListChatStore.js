@@ -2,19 +2,19 @@ import {observable, action, makeObservable} from 'mobx';
 import services from "../../services";
 
 class ListChatStore {
-  @observable isLoading = false;
-  @observable isLoadingMore = false;
-  @observable canLoadMore = true;
-  @observable isError = false;
-  @observable error = 0;
-  @observable page = 0;
-  @observable data = [];
+   isLoading = false;
+   isLoadingMore = false;
+   canLoadMore = true;
+   isError = false;
+   error = 0;
+   page = 0;
+   data = [];
 
   constructor() {
     makeObservable(this);
   }
 
-  @action
+
   async getData(params, onSuccess, onError) {
 
     try {
@@ -67,7 +67,7 @@ class ListChatStore {
     }
   }
 
-  @action
+
   async pin(params, onSuccess, onError) {
 
       const response = await services.create().conversationPin(params);
@@ -82,7 +82,7 @@ class ListChatStore {
 
     }
 
-    @action
+
   async unPin(params, onSuccess, onError) {
 
       const response = await services.create().conversationUnPin(params);
@@ -96,7 +96,7 @@ class ListChatStore {
         }
 
     }
-  @action
+
   async hide(params, onSuccess, onError) {
 
       const response = await services.create().conversationHide(params);

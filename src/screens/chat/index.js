@@ -79,7 +79,7 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
     alert(`send email to ${email}`);
   }
 
-  renderText(matchingString, matches) {
+  const renderText = (matchingString, matches) => {
     // matches => ["[@michel:5455345]", "@michel", "5455345"]
     let pattern = /\[(@[^:]+):([^\]]+)\]/i;
     let match = matchingString.match(pattern);

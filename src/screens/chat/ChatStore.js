@@ -2,21 +2,20 @@ import {observable, action, makeObservable} from 'mobx';
 import services from "../../services";
 
 class ChatStore {
-  @observable isLoading = false;
-  @observable isLoadingMore = false;
-  @observable canLoadMore = true;
-  @observable isError = false;
-  @observable error = 0;
-  @observable page = 0;
-  @observable conversation_id = '';
-  @observable data = [];
-  @observable images = [];
+   isLoading = false;
+   isLoadingMore = false;
+   canLoadMore = true;
+   isError = false;
+   error = 0;
+   page = 0;
+   conversation_id = '';
+   data = [];
+   images = [];
 
   constructor() {
     makeObservable(this);
   }
 
-  @action
   async getData(params, onSuccess, onError) {
 
     try {
@@ -77,7 +76,7 @@ class ChatStore {
   }
 
 
-  @action
+
   async sendMessage(params) {
 
     let attachment_ids = []

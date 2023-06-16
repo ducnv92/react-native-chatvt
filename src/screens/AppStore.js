@@ -1,17 +1,21 @@
-import {observable, action} from 'mobx';
+import {observable, action, makeObservable} from 'mobx';
 import services from "../services";
 import * as MyAsyncStorage from "../utils/MyAsyncStorage";
 import {USER} from "../utils/MyAsyncStorage";
 import socket from "../socket";
 
 class AppStore {
-  @observable user = {};
-  @observable isLoading = false;
-  @observable isError = false;
-  @observable error = 0;
-  @observable data = {};
+   user = {};
+   isLoading = false;
+   isError = false;
+   error = 0;
+   data = {};
 
-  @action
+  constructor() {
+    makeObservable(this);
+  }
+
+
   async Auth(params, onSuccess, onError) {
     try {
       this.isLoading = true;
@@ -49,10 +53,10 @@ class AppStore {
     }
   }
 
-  @observable createConversationLoading = false;
-  @observable createConversationError = false;
+   createConversationLoading = false;
+   createConversationError = false;
 
-  @action
+
   async createConversation(params, onSuccess, onError) {
     try {
       const response = await services.create().createConversation(params);
