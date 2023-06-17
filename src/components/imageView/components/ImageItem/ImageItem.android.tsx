@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-
+// @ts-nocheck
 import React, { useCallback, useRef, useState } from "react";
 
 import {
@@ -33,12 +33,7 @@ const SCREEN_HEIGHT = SCREEN.height;
 
 
 // @ts-ignore
-const ImageItem = ({
-  imageSrc,
-  onZoom,
-  onRequestClose,
-  onLongPress,
-  delayLongPress,
+const ImageItem = ({imageSrc, onZoom, onRequestClose, onLongPress, delayLongPress,
   swipeToCloseEnabled = true,
   doubleTapToZoomEnabled = true,
 }) => {

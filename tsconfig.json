@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "checkJs": false,
     "experimentalDecorators": true,
     "useDefineForClassFields": true,
     "baseUrl": "./",

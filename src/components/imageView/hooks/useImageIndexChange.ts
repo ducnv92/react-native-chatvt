@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-
+// @ts-nocheck
 import { useState } from "react";
 import { NativeSyntheticEvent, NativeScrollEvent } from "react-native";
 

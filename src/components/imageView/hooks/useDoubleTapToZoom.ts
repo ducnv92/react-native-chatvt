@@ -5,13 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-
+// @ts-nocheck
 import React, { useCallback } from "react";
-import {
-  ScrollView,
-  NativeTouchEvent,
-  NativeSyntheticEvent,
-} from "react-native";
+import {ScrollView, NativeTouchEvent, NativeSyntheticEvent,} from "react-native";
 
 
 

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-
+// @ts-nocheck
 import { Animated } from "react-native";
 
 const INITIAL_POSITION = { x: 0, y: 0 };

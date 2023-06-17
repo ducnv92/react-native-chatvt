@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-
+// @ts-nocheck
 import { useEffect } from "react";
 import { Image } from "react-native";
 

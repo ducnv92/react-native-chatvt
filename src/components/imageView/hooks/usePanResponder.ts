@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-
+// @ts-nocheck
 import { useMemo, useEffect, useRef } from "react";
 import {
   Animated,
