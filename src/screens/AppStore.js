@@ -3,6 +3,8 @@ import services from "../services";
 import * as MyAsyncStorage from "../utils/MyAsyncStorage";
 import {USER} from "../utils/MyAsyncStorage";
 import socket from "../socket";
+import vi from "../locales/vi.json";
+import en from "../locales/en.json";
 
 class AppStore {
    user = {};
@@ -10,9 +12,15 @@ class AppStore {
    isError = false;
    error = 0;
    data = {};
+   lang = vi;
+   navigation;
+
+  changeLanguage(lang) {
+    this.lang = lang==='EN'? en:vi
+  }
 
 
-  async Auth(params, onSuccess, onError) {
+    async Auth(params, onSuccess, onError) {
     try {
       this.isLoading = true;
       const response = await services.create().auth(params);
@@ -23,7 +31,7 @@ class AppStore {
         if (response.data.status === 200) {
           if (response.data.data) {
             this.user = response.data.data;
-            MyAsyncStorage.save(USER, response.data.data)
+            MyAsyncStorage.save(USER, {...response.data.data, ...{vtp_token: params.token}})
             socket.init()
             this.isError = false;
             if (onSuccess) {
@@ -66,6 +74,10 @@ class AppStore {
               onSuccess(response.data.data);
             }
           }
+        }else{
+          if (onError) {
+            onError(response.data?.message);
+          }
         }
       } else {
         this.createConversationLoading = false;
@@ -79,7 +91,7 @@ class AppStore {
       this.createConversationLoading = false;
       this.createConversationError = true;
       if (onError) {
-        onError(JSON.stringify(error));
+        onError(error);
       }
       console.log(error);
     }

@@ -4,20 +4,13 @@ import { USER } from '../utils/MyAsyncStorage';
 import * as MyAsyncStorage from '../utils/MyAsyncStorage';
 
 
-export const Method = {
-  GET: 'get',
-  POST: 'post',
-  PUT: 'put',
-  UPDATE: 'update',
-  DELETE: 'delete',
-};
-
 async function getHeader() {
   const user = await MyAsyncStorage.load(USER)
   if (user) {
     return {
       headers: {
         Authorization: `Bearer ${user.token}`,
+        vtp_token: user.vtp_token,
       },
     };
   }

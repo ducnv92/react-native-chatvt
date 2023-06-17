@@ -23,6 +23,7 @@ export const ListChatScreen =  observer(function ListChatScreen ({ navigation })
   const [search, setSearch] = useState('');
 
   useEffect(()=>{
+    appStore.navigation = navigation
     listChatStore.page = 0
     listChatStore.getData({
       search: search
@@ -127,11 +128,11 @@ export const ListChatScreen =  observer(function ListChatScreen ({ navigation })
             <View style={{flex: 1,}}>
 
               <View style={{flexDirection: 'row'}}>
-                <Text  style={{ flex: 1,  fontSize: 17, fontWeight: '600', color: colors.primaryText}}>{receiver?.first_name+ ' '+receiver?.last_name} {receiver?.type==='VTMAN' && <Text style={{fontSize: 13, fontWeight: '400',  color: colors.neutralText}}>- Bưu tá </Text>} </Text>
+                <Text  style={{ flex: 1,  fontSize: 17, fontWeight: '600', color: colors.primaryText}}>{receiver?.first_name+ ' '+receiver?.last_name} {receiver?.type==='VTMAN' && <Text style={{fontSize: 13, fontWeight: '400',  color: colors.neutralText}}>- {appStore.lang.common.postman} </Text>} </Text>
                 <Text style={{textAlign: 'right', color: colors.neutralText}}>{moment(item.message.created_at).format('DD/MM')}</Text>
               </View>
               <View style={{flexDirection: 'row',  paddingTop: 6, alignItems: 'center'}}>
-                <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_message_count>0?colors.primaryText:colors.neutralText,}}>{isMe && "Bạn:"} {item.message.text}</Text>
+                <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_message_count>0?colors.primaryText:colors.neutralText,}}>{item.message.has_attachment ?(<><Image source={require('../../assets/ic_attach_message.png')} style={{width: 16, height: 16,  resizeMode: 'contain'}}/>{`Bạn đã gửi ${item.message.attachment_ids.length} ảnh`} </>):(item.message.type==='CREATED_QUOTE_ORDER'? <Text>{appStore.lang.list_chat.message_system}</Text>:<Text>{isMe && appStore.lang.list_chat.you}: {item.message.text}</Text>)}</Text>
                 <View style={{flexDirection: 'row',}}>
                   {
                     setting?.is_pin &&
@@ -165,7 +166,7 @@ export const ListChatScreen =  observer(function ListChatScreen ({ navigation })
   return <SafeAreaView style={{  flex: 1 }} >
     <KeyboardAvoidingView
       style={{flex: 1,}}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      behavior={Platform.OS === 'ios' ? 'padding' : ''}>
     <View style={{ height: 50,  backgroundColor: colors.primary,}}>
       {
         showSearch===true ?
@@ -176,7 +177,7 @@ export const ListChatScreen =  observer(function ListChatScreen ({ navigation })
             </View>
 
             <TextInput
-              placeholder={'Nhập tên bưu tá, nhóm'}
+              placeholder={appStore.lang.list_chat.placeholder_search}
               placeholderTextColor={'white'}
               value={search}
               autoFocus={true}
@@ -194,7 +195,7 @@ export const ListChatScreen =  observer(function ListChatScreen ({ navigation })
               onPress={()=>setShowSearch(false)}
               style={{width: 50, height: 50, justifyContent: 'center', alignItems: 'flex-end'}}>
               <Text style={{fontWeight: '400', fontSize: 15, color: 'white', marginRight: 16}}>{
-                'Huỷ'
+                appStore.lang.common.cancel
               }
               </Text>
             </TouchableOpacity>
@@ -207,7 +208,7 @@ export const ListChatScreen =  observer(function ListChatScreen ({ navigation })
               <Image style={{height: 36, width: 36, resizeMode: 'contain',  }} source={require('../../assets/ic_back.png')} />
             </TouchableOpacity>
             <Text style={{fontWeight: '600', fontSize: 17, color: 'white', flex: 1, textAlign: 'center' }}>{
-              'Tin Nhắn'
+              appStore.lang.list_chat.message
             }
             </Text>
             <TouchableOpacity

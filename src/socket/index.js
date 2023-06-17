@@ -19,8 +19,6 @@ class Socket{
   onUserMessage = (event)=>{
     try{
 
-      console.log('socket onUserMessage', event)
-
       //Handler conversation
       listChatStore.data  = listChatStore.data.map(c=>{
         if(c._id===event?.message?.conversation_id){
@@ -34,7 +32,8 @@ class Socket{
       //Handler message
       if(chatStore.conversation_id === event.message?.conversation_id){
         const message = chatStore.data.find(m=>m._id===event?.message?._id)
-        if(!message){
+        if(!message && message!==undefined){
+          console.log('add socket', message)
           chatStore.data.unshift(event.message)
         }
       }
@@ -51,7 +50,7 @@ class Socket{
 
     const user  = await load(USER)
     console.log('socket', user)
-     if(user){
+     if(user && !this.socket){
        this.socket = io.connect(this.URL, {
          reconnection: true,
          reconnectionDelay: 1000,

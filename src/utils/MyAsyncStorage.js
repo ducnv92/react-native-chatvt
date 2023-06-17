@@ -1,7 +1,8 @@
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const TOKEN = 'TOKEN';
 export const USER = 'USER';
+export const LANG = 'LANG';
 
 export async function load(key) {
   let user = await AsyncStorage.getItem(key);

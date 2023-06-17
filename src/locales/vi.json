@@ -1,0 +1,21 @@
+{
+  "common": {
+    "cancel": "Hủy",
+    "postman": "Bưu tá",
+    "today": "Hôm nay",
+    "yesterday": "Hôm qua"
+  },
+  "list_chat": {
+    "message": "Tin nhắn",
+    "message_system": "Tin nhắn hệ thống",
+    "placeholder_search": "Nhập tên bưu tá, nhóm",
+    "you": "Bạn"
+  },
+  "chat": {
+    "input_message": "Nhập tin nhắn",
+    "send": "Gửi",
+    "sending": "Đang gửi",
+    "send_error": "Không thể gửi được"
+  }
+
+}

@@ -1,0 +1,21 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "postman": "Postman",
+    "today": "Today",
+    "yesterday": "Yesterday"
+  },
+  "list_chat": {
+    "message": "Message",
+    "message_system": "Message system",
+    "placeholder_search": "Input postman name, group",
+    "you": "You"
+  },
+  "chat": {
+    "input_message": "Input message",
+    "send": "Send",
+    "sending": "Sending",
+    "send_error": "Unable to send"
+  }
+
+}

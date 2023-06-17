@@ -1,20 +1,25 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ListChatScreen } from './screens/listchat';
 import { ChatScreen } from './screens/chat';
 import {NavigationContainer} from "@react-navigation/native";
+import appStore from "./screens/AppStore";
 
 const Stack = createStackNavigator();
 
-export default function ChatStack() {
+export const ChatStack = (props) =>{
+  useEffect(()=>{
+    if(props.orderChat){
+      appStore.createConversation(props.orderChat, (conversation)=>{
+        appStore.navigation.push('ChatScreen', conversation)
+      }, error=>alert(error) )
+    }
+  }, [])
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      independent={true}
+    >
       <Stack.Navigator>
-        {/*<Stack.Screen*/}
-        {/*  name="Home"*/}
-        {/*  component={HomeScreen}*/}
-        {/*  options={{ headerShown: false }}*/}
-        {/*/>*/}
         <Stack.Screen
           name="ListChatScreen"
           component={ListChatScreen}

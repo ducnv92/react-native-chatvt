@@ -18,14 +18,14 @@ class ChatStore {
 
 
   async getData(params, onSuccess, onError) {
-
+    this.conversation_id = params.conversation_id
     try {
       if(this.page!==0 &&(this.isLoading || this.isLoadingMore || !this.canLoadMore)){
         return
       }
       this.page+=1;
       if(this.page === 1){
-        this.conversation_id = params.conversation_id
+        this.data = []
         this.isLoading = true;
         this.canLoadMore = false;
       }else{
@@ -79,6 +79,7 @@ class ChatStore {
 
 
   async sendMessage(params) {
+    console.log('add send', params)
 
     let attachment_ids = []
     if(params.attachmentLocal){
@@ -105,9 +106,8 @@ class ChatStore {
       this.data = this.data.map(item=>{
         if(item.id===params.id){
           item.status = 'sent'
-          item._id = response.data.data._id
+          item._id = response.data.data.message._id
         }
-        if(item.sender!==undefined)
         return item
       })
     }else{

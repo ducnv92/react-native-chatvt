@@ -9,7 +9,7 @@ import {
   TextInput,
   Platform,
   KeyboardAvoidingView,
-  StyleSheet, Linking
+  StyleSheet, Linking, PermissionsAndroid, Alert
 } from 'react-native';
 import colors from '../../Styles';
 // import EmojiPicker from 'rn-emoji-keyboard'
@@ -23,6 +23,8 @@ import {orderStatus} from "../../utils";
 import appStore from "../AppStore";
 import {observer} from "mobx-react-lite";
 import ParsedText from 'react-native-parsed-text';
+import ImageViewing from "../../components/imageView";
+import {Image as ImageC, uuidv4} from 'react-native-compressor';
 
 export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
   const conversation = route.params;
@@ -30,6 +32,7 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
   const [receiver, setReceiver] = useState({})
   const [images, setImages] = useState([])
   const [showEmoji, setShowEmoji] = useState(false);
+  const [imageVisible, setImageVisible] = useState(false);
 
   const bottomSheetRef = useRef(null);
 
@@ -67,15 +70,15 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
   }
 
   const handlePhonePress = (phone, matchIndex /*: number*/) =>{
-    alert(`${phone} has been pressed!`);
+    // alert(`${phone} has been pressed!`);
   }
 
   const handleNamePress = (name, matchIndex /*: number*/) =>{
-    alert(`Hello ${name}`);
+    // alert(`Hello ${name}`);
   }
 
   const handleEmailPress = (email, matchIndex /*: number*/)=> {
-    alert(`send email to ${email}`);
+    // alert(`send email to ${email}`);
   }
 
   const renderText = (matchingString, matches) => {
@@ -102,7 +105,7 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
                   <View style={{flexDirection: 'row'}}>
                     {
                       item.attachmentLocal.map(image=>(
-                        <Image source={{uri: image}} style={{marginLeft: 4, width:item.attachmentLocal.length===1? 200: 120, height: item.attachmentLocal.length===1? 200: 120 }}/>
+                        <Image source={{uri: image}} style={{marginLeft: 4, width:item.attachmentLocal.length===1? 250: 120, height: item.attachmentLocal.length===1? 250: 120 }}/>
                       ))
                     }
                   </View>
@@ -113,7 +116,18 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
                   <View style={{flexDirection: 'row'}}>
                     {
                       item.attachments.map(image=>(
-                        <Image source={{uri: image.url}} style={{ marginLeft: 4, width:item.attachments.length===1? 200: 120, height: item.attachments.length===1? 200: 120 }}/>
+                        <TouchableOpacity onPress={()=>{
+                          setImages([
+                            {
+                              uri: image.url
+                            }
+                          ])
+                          setImageVisible(
+                            true
+                          )
+                        }}>
+                          <Image source={{uri: image.url}} style={{ marginLeft: 4, width:item.attachments.length===1? 250: 120, height: item.attachments.length===1? 250: 120 }}/>
+                        </TouchableOpacity>
                       ))
                     }
                   </View>
@@ -127,7 +141,7 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
           {/*}*/}
           {
             item.status ==='error' &&
-            <Text style={{fontWeight: '500', fontSize: 15, color: colors.primary,  marginTop: 8, textAlign: right?'right': 'left'}}>{'Không gửi được tin nhắn.'}</Text>
+            <Text style={{fontWeight: '500', fontSize: 15, color: colors.primary,  marginTop: 8, textAlign: right?'right': 'left'}}>{appStore.lang.chat.send_error}</Text>
           }
         </View>
 
@@ -140,15 +154,35 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
             item.status ==='error' && right &&
               <Image source={require('../../assets/ic_send_error.png')} style={{width: 16, height: 16, resizeMode: 'contain', marginRight: 14}}/>
           }
-          <View style={{backgroundColor: right?colors.primary:"#F2F2F2" , padding: 12,  borderRadius: 10}}>
-            <ParsedText style={{fontWeight: '400', fontSize: 15, whiteSpace: "pre-line", color: right? 'white':colors.primaryText }}
+          <View style={{backgroundColor: right?colors.primary:"#F2F2F2" , padding: 12,  borderRadius: 10, maxWidth: '75%'}}>
+            <ParsedText
+              accessible={true}
+              // accessibilityActions={[
+              //   {name: 'cut', label: 'cut'},
+              //   {name: 'copy', label: 'copy'},
+              //   {name: 'paste', label: 'paste'},
+              // ]}
+              // onAccessibilityAction={event => {
+              //   switch (event.nativeEvent.actionName) {
+              //     case 'cut':
+              //       Alert.alert('Alert', 'cut action success');
+              //       break;
+              //     case 'copy':
+              //       Alert.alert('Alert', 'copy action success');
+              //       break;
+              //     case 'paste':
+              //       Alert.alert('Alert', 'paste action success');
+              //       break;
+              //   }
+              // }}
+                  style={{fontWeight: '400', fontSize: 15, whiteSpace: "pre-line", color: right? 'white':colors.primaryText }}
                         parse={
                           [
                             {type: 'url',                       style: styles.url, onPress: handleUrlPress},
                             {type: 'phone',                     style: styles.phone, onPress: handlePhonePress},
                             {type: 'email',                     style: styles.email, onPress: handleEmailPress},
                             {pattern: /Bob|David/,              style: styles.name, onPress: handleNamePress},
-                            {pattern: /\[(@[^:]+):([^\]]+)\]/i, style: styles.username, onPress: handleNamePress, renderText: this.renderText},
+                            {pattern: /\[(@[^:]+):([^\]]+)\]/i, style: styles.username, onPress: handleNamePress, renderText: renderText},
                             {pattern: /42/,                     style: styles.magicNumber},
                             {pattern: /#(\w+)/,                 style: styles.hashTag},
                           ]
@@ -159,11 +193,11 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
         </View>
           {
             item.status ==='sending' &&
-            <Text style={{fontWeight: '500', fontSize: 15, color: colors.neutralText,  marginTop: 8, textAlign: right?'right': 'left'}}>{'Đang gửi...'}</Text>
+            <Text style={{fontWeight: '500', fontSize: 15, color: colors.neutralText,  marginTop: 8, textAlign: right?'right': 'left'}}>{appStore.lang.chat.sending+'...'}</Text>
           }
           {
             item.status ==='error' &&
-            <Text style={{fontWeight: '500', fontSize: 15, color: colors.primary,  marginTop: 8, textAlign: right?'right': 'left'}}>{'Không gửi được tin nhắn.'}</Text>
+            <Text style={{fontWeight: '500', fontSize: 15, color: colors.primary,  marginTop: 8, textAlign: right?'right': 'left'}}>{appStore.lang.chat.send_error}</Text>
           }
         </View>
       )
@@ -187,7 +221,7 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
         </View>
           {
             item.status ==='sending' &&
-            <Text style={{fontWeight: '500', fontSize: 15, color: colors.neutralText, marginTop: 8}}>{'Đang gửi...'}</Text>
+            <Text style={{fontWeight: '500', fontSize: 15, color: colors.neutralText, marginTop: 8}}>{appStore.lang.chat.sending+'...'}</Text>
           }
         </View>
     )
@@ -197,6 +231,7 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
 
   const sendMessage = ()=>{
     const message = {
+      id: uuidv4(),
       "type": "MESSAGE",
       "text": input,
       "status": "sending",
@@ -218,15 +253,47 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
     setInput(input+emoji.emoji)
   };
 
+  const requestCameraPermission = async () => {
+    try {
+      const permission = Platform.Version >= 33 ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
+
+      const granted = await PermissionsAndroid.request(permission);
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('You can use the camera');
+        bottomSheetRef.current?.present();
+
+      } else {
+        console.log('Camera permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
   const handlePresentModalPress = useCallback(() => {
-    bottomSheetRef.current?.present();
+    requestCameraPermission()
   }, []);
 
-  const sendImages = ()=>{
+  const sendImages = async ()=>{
     bottomSheetRef.current?.dismiss();
+
+    const images = []
+
+    for (let i = 0; i < chatStore.images.length; i++) {
+      const imageCom = await ImageC.compress(chatStore.images[i].uri, {
+        maxWidth: 1000,
+        quality: 0.8,
+      });
+      console.log(imageCom)
+      images.push(imageCom)
+    }
+
+
     const message = {
+      id: uuidv4(),
       "type": "MESSAGE",
-      attachmentLocal: chatStore.images.map(i=>i.uri),
+      attachmentLocal: images,
+      has_attachment: true,
       "attachment_ids": [
       ],
       "text": '',
@@ -266,7 +333,7 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
             <View style={{height: 8, width: 8, borderRadius: 4, backgroundColor: '#30F03B'  }} />
 
             <Text style={{fontWeight: 'bold', fontSize: 13, color: 'white', textAlign: 'center' }}>{
-              receiver.type==='VTMAN'&&'Bưu tá'
+              receiver.type==='VTMAN'&& appStore.lang.common.postman
             }
             </Text>
           </View>
@@ -302,7 +369,7 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
         </TouchableOpacity>
         <View style={{width: 1, backgroundColor: 'red', marginVertical: 14}}/>
         <TextInput
-            placeholder={'Nhập tin nhắn'}
+            placeholder={appStore.lang.chat.input_message}
             placeholderTextColor={'#B5B4B8'}
             multiline={true}
             onChangeText={text => setInput(text)}
@@ -315,16 +382,16 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
         {/*  <Image source={require('../../assets/ic_emoj.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>*/}
         {/*</TouchableOpacity>*/}
         {
-          input.trim()!=='' ?
+          input.trim()!=='' &&
           <TouchableOpacity
             onPress={sendMessage}
             style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>
             <Image source={require('../../assets/ic_send.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
-          </TouchableOpacity>:
-            <TouchableOpacity
-              style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>
-              <Image source={require('../../assets/ic_microphone.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
-            </TouchableOpacity>
+          </TouchableOpacity>
+            // <TouchableOpacity
+            //   style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>
+            //   <Image source={require('../../assets/ic_microphone.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
+            // </TouchableOpacity>
         }
 
       </View>
@@ -342,7 +409,7 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
     >
           <CameraRollPicker
             style={{}}
-            selected={images}
+            selected={chatStore.images}
             callback={(images)=>{
               console.log('image picked', images)
               chatStore.images = images
@@ -355,9 +422,17 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
       <TouchableOpacity
         onPress={sendImages}
         style={{position: 'absolute', bottom: 56, left: 16, right: 16, alignItems: 'center', justifyContent: 'center', padding: 16, margin: 16, backgroundColor: colors.primary, borderRadius: 10}}>
-        <Text style={{color: 'white', fontWeight: '600', fontSize: 15}}>Gửi</Text>
+        <Text style={{color: 'white', fontWeight: '600', fontSize: 15}}>{appStore.lang.chat.send}</Text>
       </TouchableOpacity>
     }
+    <ImageViewing
+      images={images}
+      swipeToCloseEnabled={true}
+      doubleTapToZoomEnabled={true}
+      imageIndex={0}
+      visible={imageVisible}
+      onRequestClose={() => setImageVisible(false)}
+    />
 </SafeAreaView>
 
 })
@@ -369,7 +444,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey',
   },
   url: {
-    color: 'blue',
+    textDecorationLine: 'underline',
   },
 
   email: {
@@ -377,22 +452,18 @@ const styles = StyleSheet.create({
   },
 
   phone: {
-    color: 'blue',
     textDecorationLine: 'underline',
   },
 
   name: {
-    color: 'red',
   },
 
   username: {
-    color: 'green',
     fontWeight: 'bold'
   },
 
   magicNumber: {
     fontSize: 42,
-    color: 'pink',
   },
 
   hashTag: {
