@@ -92,16 +92,7 @@
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
-    "@react-native-async-storage/async-storage": "*"
-  },
-  "dependencies": {
-    "@bam.tech/react-native-image-resizer": "*",
-    "@gorhom/bottom-sheet": "4",
-    "socket.io-client": "*",
-    "apisauce": "*",
-    "mobx": "^6.9.0",
-    "mobx-react-lite": "^3.4.3",
-    "moment": "*",
+    "@react-native-async-storage/async-storage": "*",
     "@react-native-community/viewpager": "*",
     "@react-navigation/native": "*",
     "@react-navigation/native-stack": "*",
@@ -110,15 +101,24 @@
     "react-native-gesture-handler": "*",
     "prop-types": "*",
     "react-native-audio-recorder-player": "*",
-    "react-native-compressor": "*",
     "react-native-document-picker": "*",
     "react-native-fast-image": "*",
-    "react-native-parsed-text": "*",
     "react-native-reanimated": "2.17.0",
     "react-native-safe-area-context": "*",
     "react-native-svg": "*",
     "react-native-vector-icons": "*",
     "react-native-video": "*"
+  },
+  "dependencies": {
+    "@bam.tech/react-native-image-resizer": "*",
+    "@gorhom/bottom-sheet": "4",
+    "socket.io-client": "*",
+    "apisauce": "*",
+    "mobx": "^6.9.0",
+    "mobx-react-lite": "^3.4.3",
+    "react-native-parsed-text": "*",
+    "react-native-compressor": "^1.6.1",
+    "moment": "*"
   },
   "engines": {
     "node": ">= 16.0.0"

@@ -26,7 +26,7 @@ chatVT.init(lang, token, token_sso)
 ## Thư viện phụ thuộc
 
 ```js
-yarn add @react-native-async-storage/async-storage react-native-screens react-native-safe-area-context react-native-gesture-handler
+yarn add @react-native-async-storage/async-storage @react-navigation/native react-native-screens react-native-safe-area-context react-native-gesture-handler react-native-reanimated@2.17.0 react-native-safe-area-context @react-navigation/stack
   ```
 ### Example
 ```js
