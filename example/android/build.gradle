@@ -26,3 +26,8 @@ buildscript {
         classpath("com.facebook.react:react-native-gradle-plugin")
     }
 }
+subprojects { subproject ->
+  if(project['name'] == 'react-native-reanimated'){
+    project.configurations { compile { } }
+  }
+}
