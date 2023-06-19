@@ -20,7 +20,7 @@ import VTChat  from 'react-native-chatvt';
 ```js
 import {chatVT}  from 'react-native-chatvt';
 
-chatVT.init(lang, token, token_sso)
+chatVT.init(lang, token, token_sso, onSuccess?, onError?)
   ```
 ### Example
 ## Thư viện phụ thuộc

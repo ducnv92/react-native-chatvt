@@ -16,14 +16,14 @@ import ChatSwipeableRow from "../../components/ChatSwipeableRow";
 import listChatStore from "./ListChatStore";
 import appStore from "../AppStore";
 import moment from "moment";
+import { Navigation } from 'react-native-navigation';
 
 
-export const ListChatScreen =  observer(function ListChatScreen ({ navigation }){
+export const ListChatScreen =  observer(function ListChatScreen ( props){
   const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState('');
 
   useEffect(()=>{
-    appStore.navigation = navigation
     listChatStore.page = 0
     listChatStore.getData({
       search: search
@@ -31,7 +31,19 @@ export const ListChatScreen =  observer(function ListChatScreen ({ navigation })
   }, [])
 
   const navigationChat = (data) =>{
-    navigation.push('ChatScreen',data)
+    Navigation.push(props.componentId, {
+      component: {
+        name: "ChatScreen",
+        passProps: {
+          data: data
+        },
+        options: {
+          topBar: {
+            visible: false
+          }
+        }
+      }
+    })
   }
 
   const renderItem = ({item, index})=>{
@@ -120,7 +132,7 @@ export const ListChatScreen =  observer(function ListChatScreen ({ navigation })
             onPress={()=>{
               navigationChat( {...item, ...{receiver: receiver}})
             }}
-            style={{flexDirection: 'row', backgroundColor: index===0?'#F8F8FA':'white', paddingVertical: 12, paddingHorizontal: 16}}>
+            style={{flexDirection: 'row', backgroundColor: setting?.is_pin?'#F8F8FA':'white', paddingVertical: 12, paddingHorizontal: 16}}>
             <View style={{height: 48, width: 48, resizeMode: 'center',marginRight: 12  }}>
               <Image style={{height: 48, width: 48, resizeMode: 'center' }} source={require('../../assets/avatar_default.png')} />
               <Image style={{height: 12, width: 12, resizeMode: 'center', position: 'absolute', top: 36, left: 36 }} source={require('../../assets/ic_online.png')} />
@@ -203,7 +215,7 @@ export const ListChatScreen =  observer(function ListChatScreen ({ navigation })
 
           <View style={{flexDirection: 'row', alignItems: 'center',}}>
             <TouchableOpacity
-              onPress={()=>navigation.pop()}
+              onPress={()=>Navigation.pop(props.componentId)}
               style={{width: 50, height: 50, justifyContent: 'center', alignItems: 'center'}}>
               <Image style={{height: 36, width: 36, resizeMode: 'contain',  }} source={require('../../assets/ic_back.png')} />
             </TouchableOpacity>
