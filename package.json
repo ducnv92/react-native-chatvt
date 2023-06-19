@@ -106,7 +106,7 @@
     "react-native-video": "*"
   },
   "dependencies": {
-    "@gorhom/bottom-sheet": "4",
+    "@gorhom/bottom-sheet": "2.4.1",
     "apisauce": "*",
     "mobx": "^6.9.0",
     "mobx-react-lite": "^3.4.3",
