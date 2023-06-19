@@ -23,6 +23,12 @@ import {chatVT}  from 'react-native-chatvt';
 chatVT.init(lang, token, token_sso)
   ```
 ### Example
+## Thư viện phụ thuộc
+
+```js
+yarn add @react-native-async-storage/async-storage react-native-screens react-native-safe-area-context react-native-gesture-handler
+  ```
+### Example
 ```js
 // lang là ngôn ngữ enum('VN', 'EN')
 // token và token_sso  do bên Viettel Posst cung cấp

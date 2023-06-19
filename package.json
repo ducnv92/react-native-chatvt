@@ -83,7 +83,6 @@
     "react-native": "0.71.11",
     "react-native-builder-bob": "^0.20.4",
     "release-it": "^15.0.0",
-    "@react-native-async-storage/async-storage": "*",
     "@react-native-camera-roll/camera-roll": "*",
     "typescript": "^4.5.2"
   },
@@ -93,16 +92,22 @@
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
+    "@react-native-async-storage/async-storage": "*"
+  },
+  "dependencies": {
+    "@bam.tech/react-native-image-resizer": "*",
+    "@gorhom/bottom-sheet": "4",
+    "socket.io-client": "*",
+    "apisauce": "*",
+    "mobx": "^6.9.0",
+    "mobx-react-lite": "^3.4.3",
+    "moment": "*",
     "@react-native-community/viewpager": "*",
     "@react-navigation/native": "*",
     "@react-navigation/native-stack": "*",
     "@react-navigation/stack": "*",
     "react-native-screens": "*",
     "react-native-gesture-handler": "*",
-    "apisauce": "*",
-    "mobx": "^6.9.0",
-    "mobx-react-lite": "^3.4.3",
-    "moment": "*",
     "prop-types": "*",
     "react-native-audio-recorder-player": "*",
     "react-native-compressor": "*",
@@ -114,11 +119,6 @@
     "react-native-svg": "*",
     "react-native-vector-icons": "*",
     "react-native-video": "*"
-  },
-  "dependencies": {
-    "@bam.tech/react-native-image-resizer": "*",
-    "@gorhom/bottom-sheet": "4",
-    "socket.io-client": "*"
   },
   "engines": {
     "node": ">= 16.0.0"
