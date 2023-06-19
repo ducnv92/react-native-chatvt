@@ -83,42 +83,39 @@
     "react-native": "0.71.11",
     "react-native-builder-bob": "^0.20.4",
     "release-it": "^15.0.0",
-    "@react-native-camera-roll/camera-roll": "*",
     "typescript": "^4.5.2"
   },
   "resolutions": {
     "@types/react": "17.0.21"
   },
   "peerDependencies": {
+    "@bam.tech/react-native-image-resizer": "*",
+    "@react-native-async-storage/async-storage": "*",
+    "prop-types": "*",
     "react": "*",
     "react-native": "*",
-    "@react-native-async-storage/async-storage": "*",
-    "@react-native-community/viewpager": "*",
-    "@react-navigation/native": "*",
-    "@react-navigation/native-stack": "*",
-    "@react-navigation/stack": "*",
-    "react-native-screens": "*",
-    "react-native-gesture-handler": "*",
-    "prop-types": "*",
     "react-native-audio-recorder-player": "*",
     "react-native-document-picker": "*",
     "react-native-fast-image": "*",
-    "react-native-reanimated": "2.17.0",
+    "react-native-gesture-handler": "*",
+    "react-native-navigation": "*",
+    "react-native-reanimated": "*",
     "react-native-safe-area-context": "*",
     "react-native-svg": "*",
     "react-native-vector-icons": "*",
     "react-native-video": "*"
   },
   "dependencies": {
-    "@bam.tech/react-native-image-resizer": "*",
     "@gorhom/bottom-sheet": "4",
-    "socket.io-client": "*",
     "apisauce": "*",
     "mobx": "^6.9.0",
     "mobx-react-lite": "^3.4.3",
-    "react-native-parsed-text": "*",
+    "moment": "*",
     "react-native-compressor": "^1.6.1",
-    "moment": "*"
+    "react-native-navigation": "^7.33.3-hotfix.2",
+    "react-native-parsed-text": "*",
+    "socket.io-client": "*",
+    "@react-native-camera-roll/camera-roll": "*"
   },
   "engines": {
     "node": ">= 16.0.0"

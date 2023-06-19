@@ -25,9 +25,10 @@ import {observer} from "mobx-react-lite";
 import ParsedText from 'react-native-parsed-text';
 import ImageViewing from "../../components/imageView";
 import {Image as ImageC, uuidv4} from 'react-native-compressor';
+import {Navigation} from "react-native-navigation";
 
-export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
-  const conversation = route.params;
+export const ChatScreen =  observer(function ChatScreen(props) {
+  const conversation = props.data;
   const [input, setInput] = useState('')
   const [receiver, setReceiver] = useState({})
   const [images, setImages] = useState([])
@@ -314,7 +315,7 @@ export const ChatScreen =  observer(function ChatScreen({ route, navigation }) {
       behavior={Platform.OS === 'ios' ? 'padding' : ''}>
       <View style={{flexDirection: 'row', alignItems: 'center', height: 50,  backgroundColor: colors.primary,}}>
         <TouchableOpacity
-          onPress={()=>navigation.pop()}
+          onPress={()=>Navigation.pop(props.componentId)}
           style={{width: 50, height: 50, justifyContent: 'center', alignItems: 'center'}}>
           <Image style={{height: 36, width: 36, resizeMode: 'contain',  }} source={require('../../assets/ic_back.png')} />
         </TouchableOpacity>

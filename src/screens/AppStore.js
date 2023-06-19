@@ -13,7 +13,6 @@ class AppStore {
    error = 0;
    data = {};
    lang = vi;
-   navigation;
 
   changeLanguage(lang) {
     this.lang = lang==='EN'? en:vi
