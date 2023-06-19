@@ -94,9 +94,20 @@ class ChatStore {
       }
       const response = await services.create().uploadFile(formData);
       console.log(response)
-      if(response.data.data){
-        attachment_ids = response.data.data.map(a=>a._id)
+      try{
+        if(response.data.data){
+          attachment_ids = response.data.data.map(a=>a._id)
+        }
+      }catch (e) {
+        this.data = this.data.map(item=>{
+          if(item.id===params.id){
+            item.status = 'error'
+          }
+          return item
+        })
+        return
       }
+
     }
 
     const response = await services.create().sendMessage({...params, ...{attachment_ids: attachment_ids}});

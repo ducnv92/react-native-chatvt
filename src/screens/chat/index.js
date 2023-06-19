@@ -278,22 +278,10 @@ export const ChatScreen =  observer(function ChatScreen(props) {
   const sendImages = async ()=>{
     bottomSheetRef.current?.dismiss();
 
-    const images = []
-
-    for (let i = 0; i < chatStore.images.length; i++) {
-      const imageCom = await ImageC.compress(chatStore.images[i].uri, {
-        maxWidth: 1000,
-        quality: 0.8,
-      });
-      console.log(imageCom)
-      images.push(imageCom)
-    }
-
-
     const message = {
       id: uuidv4(),
       "type": "MESSAGE",
-      attachmentLocal: images,
+      attachmentLocal: chatStore.images.map(i=>i.uri),
       has_attachment: true,
       "attachment_ids": [
       ],

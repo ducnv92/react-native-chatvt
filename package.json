@@ -103,19 +103,19 @@
     "react-native-safe-area-context": "*",
     "react-native-svg": "*",
     "react-native-vector-icons": "*",
+    "@react-native-community/cameraroll": "*",
     "react-native-video": "*"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "2.4.1",
-    "apisauce": "*",
+    "apisauce": "^3.0.1",
     "mobx": "^6.9.0",
     "mobx-react-lite": "^3.4.3",
-    "moment": "*",
+    "moment": "^2.29.4",
     "react-native-compressor": "^1.6.1",
     "react-native-navigation": "^7.33.3-hotfix.2",
-    "react-native-parsed-text": "*",
-    "socket.io-client": "*",
-    "@react-native-camera-roll/camera-roll": "*"
+    "react-native-parsed-text": "^0.0.22",
+    "socket.io-client": "^4.6.2"
   },
   "engines": {
     "node": ">= 16.0.0"
