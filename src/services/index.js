@@ -33,7 +33,8 @@ const create = (baseURL = Endpoint.API_BASE) => {
     timeout: 300000,
   });
 
-  const auth = (data) => api.post(Endpoint.AUTH_VTP, data );
+  const authVTP = (data) => api.post(Endpoint.AUTH_VTP, data );
+  const authVTM = (data) => api.post(Endpoint.AUTH_VTM, data );
   const getConversations = async (data) => api.get(Endpoint.CONVERSATION_ME, data, await getHeader() );
   const conversationPin = async (data) => api.post(Endpoint.CONVERSATION_PIN(data.conversation_id), data, await getHeader() );
   const conversationUnPin = async (data) => api.delete(Endpoint.CONVERSATION_PIN(data.conversation_id), data, await getHeader() );
@@ -49,7 +50,8 @@ const create = (baseURL = Endpoint.API_BASE) => {
     createConversation,
     uploadFile,
     downloadFile,
-    auth,
+    authVTP,
+    authVTM,
     getConversations,
     conversationPin,
     conversationUnPin,

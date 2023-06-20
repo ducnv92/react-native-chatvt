@@ -2,6 +2,7 @@ export const API_BASE = 'http://139.59.195.132';
 
 //Auth
 exports.AUTH_VTP = `${API_BASE}/auth/vtp`;
+exports.AUTH_VTM = `${API_BASE}/auth/vtman`;
 
 //Conversation
 exports.SEND_MESSAGE = (conversation_id) => `${API_BASE}/conversation/${conversation_id}/message`;

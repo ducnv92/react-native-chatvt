@@ -80,7 +80,7 @@ class ChatStore {
 
 
   async sendMessage(params) {
-    Log('add send', params)
+    console.log('add send', params)
 
     let attachment_ids = []
     if(params.attachmentLocal){
@@ -113,14 +113,12 @@ class ChatStore {
 
     const response = await services.create().sendMessage({...params, ...{attachment_ids: attachment_ids}});
 
-    Log(response)
     if(response.status===201 && response.data.status === 200){
-      this.data = this.data.map(item=>{
-        if(item.id===params.id){
-          item.status = 'sent'
-          item._id = response.data.data.message._id
-        }
-        return item
+      Log(response)
+
+      this.data = this.data.filter(item=>{
+        return item.id !== params.id;
+
       })
     }else{
       this.data = this.data.map(item=>{

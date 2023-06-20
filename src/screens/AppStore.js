@@ -1,4 +1,4 @@
-import {observable, action} from 'mobx';
+import {observable, action, runInAction} from 'mobx';
 import services from "../services";
 import * as MyAsyncStorage from "../utils/MyAsyncStorage";
 import {USER} from "../utils/MyAsyncStorage";
@@ -8,24 +8,26 @@ import en from "../locales/en.json";
 import {Log} from "../utils";
 
 class AppStore {
-   user = {};
-   isLoading = false;
-   isError = false;
-   error = 0;
-   data = {};
-   lang = vi;
-   env = "DEV";
-   appId = "VTPost"; //VTMan || VTPost
+  user = {};
+  isLoading = false;
+  isError = false;
+  error = 0;
+  data = {};
+  lang = vi;
+  env = "DEV";
+  appId = "VTPost"; //VTMan || VTPost
 
   changeLanguage(lang) {
-    this.lang = lang==='EN'? en:vi
+    this.lang = lang === 'EN' ? en : vi
   }
 
 
-    async Auth(params, onSuccess, onError) {
+  async Auth(params, onSuccess, onError) {
     try {
+
       this.isLoading = true;
-      const response = await services.create().auth(params);
+      console.log('this.appId', this.appId)
+      const response = this.appId === 'VTMan' ? await services.create().authVTM(params) : await services.create().authVTP(params);
 
       Log(response);
       this.isLoading = false;
@@ -59,11 +61,12 @@ class AppStore {
     }
   }
 
-   createConversationLoading = false;
-   createConversationError = false;
+  createConversationLoading = false;
+  createConversationError = false;
 
 
   async createConversation(params, onSuccess, onError) {
+
     try {
       const response = await services.create().createConversation(params);
 
@@ -76,7 +79,7 @@ class AppStore {
               onSuccess(response.data.data);
             }
           }
-        }else{
+        } else {
           if (onError) {
             onError(response.data?.message);
           }

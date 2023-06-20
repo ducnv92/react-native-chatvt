@@ -83,7 +83,8 @@
     "react-native": "0.71.11",
     "react-native-builder-bob": "^0.20.4",
     "release-it": "^15.0.0",
-    "typescript": "^4.5.2"
+    "typescript": "^4.5.2",
+    "@react-native-community/cameraroll": "*"
   },
   "resolutions": {
     "@types/react": "17.0.21"
@@ -100,15 +101,14 @@
     "react-native-gesture-handler": "*",
     "react-native-navigation": "*",
     "react-native-reanimated": "*",
-    "react-native-safe-area-context": "*",
     "react-native-svg": "*",
     "react-native-vector-icons": "*",
-    "@react-native-community/cameraroll": "*",
     "react-native-video": "*"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "2.4.1",
     "apisauce": "^3.0.1",
+    "fbjs": "^3.0.5",
     "mobx": "^6.9.0",
     "mobx-react-lite": "^3.4.3",
     "moment": "^2.29.4",

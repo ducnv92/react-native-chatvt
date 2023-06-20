@@ -41,7 +41,7 @@ export const orderStatus = (status) => {
 }
 
 
-export const Log = (...data) => {
+export const Log = (data) => {
   if (appStore.env === "DEV") {
       console.log(data)
   }

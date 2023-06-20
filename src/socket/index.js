@@ -3,6 +3,7 @@ import {load, USER} from "../utils/MyAsyncStorage";
 import listChatStore from "../screens/listchat/ListChatStore";
 import chatStore from "../screens/chat/ChatStore";
 import {Log} from "../utils";
+import {runInAction} from "mobx";
 
 
 class Socket{
@@ -19,25 +20,35 @@ class Socket{
   }
   onUserMessage = (event)=>{
     try{
-
+      Log(event)
       //Handler conversation
-      listChatStore.data  = listChatStore.data.map(c=>{
-        if(c._id===event?.message?.conversation_id){
-          c.message = event.message
-        }
-        return c
+      runInAction(()=>{
+        listChatStore.data  = listChatStore.data.map(c=>{
+          if(c._id===event?.message?.conversation_id){
+            console.log('conversation', event?.message?.conversation_id)
+            c.message = event.message
+          }
+          return c
+        })
       })
 
 
 
+
       //Handler message
-      if(chatStore.conversation_id === event.message?.conversation_id){
-        const message = chatStore.data.find(m=>m._id===event?.message?._id)
-        if(!message && message!==undefined){
-          Log('add socket', message)
-          chatStore.data.unshift(event.message)
+
+          if(chatStore.conversation_id === event.message?.conversation_id){
+          const message = chatStore.data.find(m=>m._id===event?.message?._id)
+            Log(message)
+          if(!message){
+            runInAction(()=>{
+              console.log('evnet', event.message)
+              chatStore.data.unshift(event.message)
+              chatStore.data = [...chatStore.data]
+            })
+
+          }
         }
-      }
 
 
     }catch (e) {

@@ -244,9 +244,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
     chatStore.sendMessage(message)
     // messages.unshift()
     // setMessages(messages)
-    setTimeout(()=>{
       setInput('')
-    }, 100)
   }
 
   const onClickEmoji = emoji => {
@@ -315,7 +313,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
           }
 
           </Text>
-            <Image style={{height: 10, width: 10, resizeMode: 'center',  }} source={require('../../assets/ic_arrow_down.png')} />
+            {/*<Image style={{height: 10, width: 10, resizeMode: 'center',  }} source={require('../../assets/ic_arrow_down.png')} />*/}
 
           </View>
           <View style={{flexDirection: 'row', gap: 8, alignItems: 'center', marginTop: 2}}>
@@ -331,7 +329,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
 
         <TouchableOpacity
           style={{width: 50, height: 50, justifyContent: 'center', alignItems: 'flex-end'}}>
-          <Image style={{height: 18, width: 18, resizeMode: 'contain', marginRight: 16 }} source={require('../../assets/ic_call_out_white.png')} />
+          {/*<Image style={{height: 18, width: 18, resizeMode: 'contain', marginRight: 16 }} source={require('../../assets/ic_call_out_white.png')} />*/}
         </TouchableOpacity>
       </View>
     <FlatList
@@ -342,6 +340,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
       onEndReached={() => handleLoadMore()}
       onEndReachedThreshold={1}
       removeClippedSubviews={true}
+      keyExtractor={(item)=>item._id}
       refreshing={chatStore.isLoading}
       onRefresh={() => {
         chatStore.page = 0;
@@ -389,7 +388,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
     <BottomSheetModal
       ref={bottomSheetRef}
       // index={0}
-      bottomInset={56}
+      bottomInset={0}
       snapPoints={snapPoints}
       onChange={handleSheetChanges}
       onDismiss={()=>{
@@ -410,7 +409,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
       chatStore.images.length> 0 &&
       <TouchableOpacity
         onPress={sendImages}
-        style={{position: 'absolute', bottom: 56, left: 16, right: 16, alignItems: 'center', justifyContent: 'center', padding: 16, margin: 16, backgroundColor: colors.primary, borderRadius: 10}}>
+        style={{position: 'absolute', bottom: 16, left: 16, right: 16, alignItems: 'center', justifyContent: 'center', padding: 16, margin: 16, backgroundColor: colors.primary, borderRadius: 10}}>
         <Text style={{color: 'white', fontWeight: '600', fontSize: 15}}>{appStore.lang.chat.send}</Text>
       </TouchableOpacity>
     }
