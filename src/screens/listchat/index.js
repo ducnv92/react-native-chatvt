@@ -38,10 +38,15 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
           data: data
         },
         options: {
+          popGesture: false,
+          bottomTabs: {
+            visible: false,
+          },
           topBar: {
-            visible: false
-          }
-        }
+            visible: false,
+            height: 0,
+          },
+        },
       }
     })
   }

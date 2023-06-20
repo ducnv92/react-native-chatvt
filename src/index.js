@@ -38,9 +38,14 @@ class ChatVT {
           component: {
             name: 'ChatScreen',
             options: {
+              popGesture: false,
+              bottomTabs: {
+                visible: false,
+              },
               topBar: {
-                visible: false
-              }
+                visible: false,
+                height: 0,
+              },
             },
             passProps: {
               data: conversation
