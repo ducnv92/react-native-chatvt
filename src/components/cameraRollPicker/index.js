@@ -13,6 +13,7 @@ import Row from './Row';
 
 import ImageItem from './ImageItem';
 import {BottomSheetFlatList} from "@gorhom/bottom-sheet";
+import {Log} from "../../utils";
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -132,7 +133,7 @@ class CameraRollPicker extends Component {
     }
 
     CameraRoll.getPhotos(fetchParams)
-      .then(data => this.appendImages(data), e => console.log(e));
+      .then(data => this.appendImages(data), e => Log(e));
   }
 
   selectImage(image) {
@@ -296,8 +297,8 @@ CameraRollPicker.defaultProps = {
   backgroundColor: 'white',
   selected: [],
   callback(selectedImages, currentImage) {
-    console.log(currentImage);
-    console.log(selectedImages);
+    Log(currentImage);
+    Log(selectedImages);
   },
   emptyText: 'No photos.',
 };

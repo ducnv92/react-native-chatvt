@@ -4,6 +4,7 @@ import {Animated, StyleSheet, Text, View, I18nManager, Image} from 'react-native
 import { RectButton } from 'react-native-gesture-handler';
 
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+import {Log} from "../utils";
 
 export default class ChatSwipeableRow extends Component {
    renderLeftActions = (
@@ -95,10 +96,10 @@ export default class ChatSwipeableRow extends Component {
         // renderLeftActions={this.renderLeftActions}
         renderRightActions={this.renderRightActions}
         onSwipeableOpen={(direction) => {
-          console.log(`Opening swipeable from the ${direction}`);
+          Log(`Opening swipeable from the ${direction}`);
         }}
         onSwipeableClose={(direction) => {
-          console.log(`Closing swipeable to the ${direction}`);
+          Log(`Closing swipeable to the ${direction}`);
         }}>
         {children}
       </Swipeable>

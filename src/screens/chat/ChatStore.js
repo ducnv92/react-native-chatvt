@@ -1,5 +1,6 @@
 import {observable, action, makeAutoObservable} from 'mobx';
 import services from "../../services";
+import {Log} from "../../utils";
 
 class ChatStore {
    isLoading = false;
@@ -38,7 +39,7 @@ class ChatStore {
         }
       });
 
-      console.log(response)
+      Log(response)
 
       if (response.status === 200) {
         if (response.data.status === 200) {
@@ -72,14 +73,14 @@ class ChatStore {
       if (onError) {
         onError(JSON.stringify(error));
       }
-      console.log(error);
+      Log(error);
     }
   }
 
 
 
   async sendMessage(params) {
-    console.log('add send', params)
+    Log('add send', params)
 
     let attachment_ids = []
     if(params.attachmentLocal){
@@ -93,7 +94,7 @@ class ChatStore {
 
       }
       const response = await services.create().uploadFile(formData);
-      console.log(response)
+      Log(response)
       try{
         if(response.data.data){
           attachment_ids = response.data.data.map(a=>a._id)
@@ -112,7 +113,7 @@ class ChatStore {
 
     const response = await services.create().sendMessage({...params, ...{attachment_ids: attachment_ids}});
 
-    console.log(response)
+    Log(response)
     if(response.status===201 && response.data.status === 200){
       this.data = this.data.map(item=>{
         if(item.id===params.id){

@@ -5,6 +5,7 @@ import {USER} from "../utils/MyAsyncStorage";
 import socket from "../socket";
 import vi from "../locales/vi.json";
 import en from "../locales/en.json";
+import {Log} from "../utils";
 
 class AppStore {
    user = {};
@@ -13,6 +14,8 @@ class AppStore {
    error = 0;
    data = {};
    lang = vi;
+   env = "DEV";
+   appId = "VTPost"; //VTMan || VTPost
 
   changeLanguage(lang) {
     this.lang = lang==='EN'? en:vi
@@ -24,7 +27,7 @@ class AppStore {
       this.isLoading = true;
       const response = await services.create().auth(params);
 
-      console.log(response);
+      Log(response);
       this.isLoading = false;
       if (response.status === 201) {
         if (response.data.status === 200) {
@@ -52,7 +55,7 @@ class AppStore {
       if (onError) {
         onError(JSON.stringify(error));
       }
-      console.log(error);
+      Log(error);
     }
   }
 
@@ -64,7 +67,7 @@ class AppStore {
     try {
       const response = await services.create().createConversation(params);
 
-      console.log(response);
+      Log(response);
       this.createConversationLoading = false;
       if (response.status === 201) {
         if (response.data.status === 200) {
@@ -92,7 +95,7 @@ class AppStore {
       if (onError) {
         onError(error);
       }
-      console.log(error);
+      Log(error);
     }
   }
 }

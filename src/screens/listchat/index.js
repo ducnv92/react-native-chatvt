@@ -122,7 +122,8 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
 
       return(
         <ChatSwipeableRow
-          onPress1={()=>{
+          isPin={setting?.is_pin}
+          onPress1={(isPin)=>{
             listChatStore.pin({
               conversation_id: item._id
             })

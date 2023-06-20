@@ -1,5 +1,6 @@
 import {observable, action, makeAutoObservable} from 'mobx';
 import services from "../../services";
+import {Log} from "../../utils";
 
 class ListChatStore {
    isLoading = false;
@@ -30,7 +31,7 @@ class ListChatStore {
       }
       const response = await services.create().getConversations(params);
 
-      console.log(response);
+      Log(response);
 
       if (response.status === 200) {
         if (response.data.status === 200) {
@@ -63,7 +64,7 @@ class ListChatStore {
       if (onError) {
         onError(JSON.stringify(error));
       }
-      console.log(error);
+      Log(error);
     }
   }
 
@@ -71,7 +72,7 @@ class ListChatStore {
   async pin(params, onSuccess, onError) {
 
       const response = await services.create().conversationPin(params);
-      console.log(response);
+    Log(response);
         if (response.status === 200) {
           if (response.data.status === 200) {
             if(onSuccess)
@@ -86,7 +87,7 @@ class ListChatStore {
   async unPin(params, onSuccess, onError) {
 
       const response = await services.create().conversationUnPin(params);
-      console.log(response);
+    Log(response);
         if (response.status === 200) {
           if (response.data.status === 200) {
             if(onSuccess)
@@ -100,7 +101,7 @@ class ListChatStore {
   async hide(params, onSuccess, onError) {
 
       const response = await services.create().conversationHide(params);
-      console.log(response);
+    Log(response);
         if (response.status === 200) {
           if (response.data.status === 200) {
             if(onSuccess)

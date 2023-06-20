@@ -19,7 +19,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import CameraRollPicker from '../../components/cameraRollPicker';
 import chatStore from "./ChatStore";
-import {orderStatus} from "../../utils";
+import {Log, orderStatus} from "../../utils";
 import appStore from "../AppStore";
 import {observer} from "mobx-react-lite";
 import ParsedText from 'react-native-parsed-text';
@@ -42,7 +42,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
 
   // callbacks
   const handleSheetChanges = useCallback((index) => {
-    console.log('handleSheetChanges', index);
+    Log('handleSheetChanges', index);
   }, []);
 
   useEffect(()=>{
@@ -57,7 +57,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
     chatStore.getData({
       conversation_id: conversation?._id
     })
-    console.log('_id', conversation)
+    Log('_id', conversation)
   }, [])
 
   const  handleLoadMore = ()=>{
@@ -250,7 +250,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
   }
 
   const onClickEmoji = emoji => {
-    console.log(emoji);
+    Log(emoji);
     setInput(input+emoji.emoji)
   };
 
@@ -260,14 +260,14 @@ export const ChatScreen =  observer(function ChatScreen(props) {
 
       const granted = await PermissionsAndroid.request(permission);
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the camera');
+        Log('You can use the camera');
         bottomSheetRef.current?.present();
 
       } else {
-        console.log('Camera permission denied');
+        Log('Camera permission denied');
       }
     } catch (err) {
-      console.warn(err);
+      Log(err);
     }
   };
 
@@ -400,7 +400,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
             style={{}}
             selected={chatStore.images}
             callback={(images)=>{
-              console.log('image picked', images)
+              Log('image picked', images)
               chatStore.images = images
             }} />
 

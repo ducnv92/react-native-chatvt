@@ -7,15 +7,18 @@ import {ChatScreen} from "./screens/chat";
 
 class ChatVT {
   /** */
-  init(lang, token, tokenSSO, onSuccess, onError){
+  init(env, lang, appId,  token, tokenSSO, onSuccess, onError){
     Navigation.registerComponent('ListChatScreen', () => ListChatScreen);
     Navigation.registerComponent('ChatScreen', () => ChatScreen);
+
+    appStore.appId = appId
+    appStore.env = env
+    appStore.changeLanguage(lang)
 
     appStore.Auth({
       token: token,
       token_sso: tokenSSO
     }, onSuccess, onError)
-    appStore.changeLanguage(lang)
   }
 
   toListChat(componentId){

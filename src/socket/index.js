@@ -2,6 +2,7 @@ import io from 'socket.io-client';
 import {load, USER} from "../utils/MyAsyncStorage";
 import listChatStore from "../screens/listchat/ListChatStore";
 import chatStore from "../screens/chat/ChatStore";
+import {Log} from "../utils";
 
 
 class Socket{
@@ -11,10 +12,10 @@ class Socket{
    }
 
   onConnect = (event)=>{
-    console.log('socket onConnect', event)
+    Log('socket onConnect', event)
   }
   onDisconnect = (event)=>{
-    console.log('socket onDisconnect', event)
+    Log('socket onDisconnect', event)
   }
   onUserMessage = (event)=>{
     try{
@@ -33,14 +34,14 @@ class Socket{
       if(chatStore.conversation_id === event.message?.conversation_id){
         const message = chatStore.data.find(m=>m._id===event?.message?._id)
         if(!message && message!==undefined){
-          console.log('add socket', message)
+          Log('add socket', message)
           chatStore.data.unshift(event.message)
         }
       }
 
 
     }catch (e) {
-      console.log(e)
+      Log(e)
     }
 
 
@@ -49,7 +50,7 @@ class Socket{
    async init(){
 
     const user  = await load(USER)
-    console.log('socket', user)
+     Log('socket', user)
      if(user && !this.socket){
        this.socket = io.connect(this.URL, {
          reconnection: true,

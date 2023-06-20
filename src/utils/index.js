@@ -1,3 +1,4 @@
+import appStore from "../screens/AppStore";
 
 export const orderStatus = (status) => {
   switch (status) {
@@ -36,5 +37,12 @@ export const orderStatus = (status) => {
     case   515: return 'Bưu cục phát duyệt hoàn'
     case   550: return 'Đơn Vị Yêu Cầu Phát Tiếp'
     default:  return ''
+  }
+}
+
+
+export const Log = (...data) => {
+  if (appStore.env === "DEV") {
+      console.log(data)
   }
 }
