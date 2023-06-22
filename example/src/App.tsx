@@ -4,7 +4,9 @@ import {useEffect, useState} from "react";
 import {Button, SafeAreaView, View} from "react-native";
 import { Text } from 'react-native';
 import AsyncStorage from "@react-native-community/async-storage";
-import AsyncStorage2 from "@react-native-async-storage/async-storage";
+// import AsyncStorage2 from "@react-native-async-storage/async-storage";
+
+//App VTPost thay thư viện "@react-native-community/async-storage" bằng "@react-native-async-storage/async-storage"
 
 export default function App(props: any) {
   const AppId = "VTMan"
