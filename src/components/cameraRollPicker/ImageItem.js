@@ -3,7 +3,7 @@ import {
   Image,
   StyleSheet,
   Dimensions,
-  TouchableOpacity, View,
+  TouchableOpacity, View, Text,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import colors from "../../Styles";
@@ -36,6 +36,26 @@ class ImageItem extends Component {
     this.props.onClick(item);
   }
 
+  fancyTimeFormat(duration) {
+    // Hours, minutes and seconds
+    const hrs = ~~(duration / 3600);
+    const mins = ~~((duration % 3600) / 60);
+    const secs = ~~duration % 60;
+
+    // Output like "1:01" or "4:03:59" or "123:03:59"
+    let ret = "";
+
+    if (hrs > 0) {
+      ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+    }
+
+    ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+    ret += "" + secs;
+
+    return ret;
+  }
+
+
   render() {
     const {
       item, selected, selectedMarker, imageMargin,
@@ -47,6 +67,7 @@ class ImageItem extends Component {
 
     const { image } = item.node;
 
+
     return (
       <TouchableOpacity
         style={{ marginBottom: imageMargin, marginRight: imageMargin }}
@@ -57,6 +78,9 @@ class ImageItem extends Component {
           style={{ height: this.imageSize, width: this.imageSize, backgroundColor: 'grey' }}
         />
         { marker }
+        {
+          image.playableDuration && <Text style={{position: 'absolute', fontSize: 12, color: '#fffffffa', bottom: 10, right: 8}}>{this.fancyTimeFormat(image.playableDuration)}</Text>
+        }
       </TouchableOpacity>
     );
   }

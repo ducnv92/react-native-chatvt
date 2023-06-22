@@ -26,6 +26,7 @@ import ParsedText from 'react-native-parsed-text';
 import ImageViewing from "../../components/imageView";
 import {Image as ImageC, uuidv4} from 'react-native-compressor';
 import {Navigation} from "react-native-navigation";
+import Video from 'react-native-video';
 
 export const ChatScreen =  observer(function ChatScreen(props) {
   const conversation = props.data;
@@ -92,44 +93,73 @@ export const ChatScreen =  observer(function ChatScreen(props) {
 
   const renderItem = ({item, index})=>{
     let right = item.sender===(appStore.user.type+'_'+appStore.user.user_id);
+
     if(item.type==='MESSAGE'){
-      if(item.has_attachment){
+
+
+        if(item.has_attachment){
         return <View style={{marginVertical: 8, marginHorizontal: 16, }}>
           <View style={{flexDirection: 'row', justifyContent: right?'flex-end':'flex-start', alignItems: 'center'}}>
             {
               item.status ==='error' && right &&
               <Image source={require('../../assets/ic_send_error.png')} style={{width: 16, height: 16, resizeMode: 'contain', marginRight: 14}}/>
             }
-            <View style={{backgroundColor: "#F2F2F2" ,  borderRadius: 10, overflow: 'hidden'}}>
+            <View style={{  borderRadius: 10, overflow: 'hidden', maxWidth: '75%'}}>
               {
                 item.attachmentLocal && (
-                  <View style={{flexDirection: 'row'}}>
+                  <View style={{flexDirection: 'row', gap: 4, }}>
                     {
-                      item.attachmentLocal.map(image=>(
-                        <Image source={{uri: image}} style={{marginLeft: 4, width:item.attachmentLocal.length===1? 250: 120, height: item.attachmentLocal.length===1? 250: 120 }}/>
-                      ))
+                      item.attachmentLocal.map(attach=>{
+
+                        if(attach.includes('jpg')||attach.includes('png')||attach.includes('jpeg')){
+                          return  <Image source={{uri: attach}} style={{ backgroundColor: "#F2F2F2", borderRadius: 5, overflow: 'hidden', width:item.attachmentLocal.length===1? 200: 120, height: item.attachmentLocal.length===1? 200: 120 }}/>
+                        }
+                        if(attach.includes('.mov')||attach.includes('.mp4')){
+                          return (<Video source={{uri: attach}}
+                                        resizeMode={'contain'}
+                                 allowsExternalPlayback
+                                 style={{width: 200, height: 200, backgroundColor:  '#f2f2f2', borderRadius: 10, marginVertical: 16}}
+                          >
+
+                          </Video>)
+                        }
+                        return <View/>
+                      })
                     }
                   </View>
                 )
               }
               {
                 item.attachments && (
-                  <View style={{flexDirection: 'row'}}>
+                  <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 4}}>
                     {
-                      item.attachments.map(image=>(
-                        <TouchableOpacity onPress={()=>{
-                          setImages([
-                            {
-                              uri: image.url
-                            }
-                          ])
-                          setImageVisible(
-                            true
-                          )
-                        }}>
-                          <Image source={{uri: image.url}} style={{ marginLeft: 4, width:item.attachments.length===1? 250: 120, height: item.attachments.length===1? 250: 120 }}/>
-                        </TouchableOpacity>
-                      ))
+                      item.attachments.map(attach=>{
+
+                        if(attach.url.includes('jpg')||attach.url.includes('png')||attach.url.includes('jpeg')){
+                          return <TouchableOpacity
+                            key={attach.url}
+                            onPress={()=>{
+                              setImages([
+                                {
+                                  uri: attach.url
+                                }
+                              ])
+                              setImageVisible(
+                                true
+                              )
+                            }}>
+                            <Image source={{uri: attach.url}} style={{ backgroundColor: "#F2F2F2", borderRadius: 5, overflow: 'hidden', width:item.attachments.length===1? 200: 120, height: item.attachments.length===1? 200: 120 }}/>
+                          </TouchableOpacity>
+                        }
+
+                        if(attach.url.includes('-mov')||attach.url.includes('-mp4')){
+                          return <Video
+                            poster={'https://icons.veryicon.com/png/o/miscellaneous/food-time/play-video-1.png'}
+                            allowsExternalPlayback
+                            resizeMode={'contain'} source={{uri: attach.url}} style={{ backgroundColor: "#F2F2F2", borderRadius: 5, overflow: 'hidden', width:item.attachments.length===1? 200: 120, height: item.attachments.length===1? 200: 120 }}/>
+                        }
+
+                      })
                     }
                   </View>
                 )
@@ -176,7 +206,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
               //       break;
               //   }
               // }}
-                  style={{fontWeight: '400', fontSize: 15, whiteSpace: "pre-line", color: right? 'white':colors.primaryText }}
+                  style={{fontWeight: '400', fontSize: 15,  color: right? 'white':colors.primaryText }}
                         parse={
                           [
                             {type: 'url',                       style: styles.url, onPress: handleUrlPress},
@@ -397,9 +427,10 @@ export const ChatScreen =  observer(function ChatScreen(props) {
     >
           <CameraRollPicker
             style={{}}
+            assetType={'All'}
             selected={chatStore.images}
             callback={(images)=>{
-              Log('image picked', images)
+              console.log('image picked', images)
               chatStore.images = images
             }} />
 

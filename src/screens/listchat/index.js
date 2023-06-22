@@ -119,7 +119,6 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
 
       }
 
-
       return(
         <ChatSwipeableRow
           isPin={setting?.is_pin}

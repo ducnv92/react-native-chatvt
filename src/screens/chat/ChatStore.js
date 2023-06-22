@@ -1,6 +1,7 @@
 import {observable, action, makeAutoObservable} from 'mobx';
 import services from "../../services";
 import {Log} from "../../utils";
+import * as mime from "react-native-mime-types";
 
 class ChatStore {
    isLoading = false;
@@ -86,13 +87,17 @@ class ChatStore {
     if(params.attachmentLocal){
       const formData = new FormData()
       for (let i = 0; i < params.attachmentLocal.length; i++) {
+        const fileName = params.attachmentLocal[i].slice(params.attachmentLocal[i].lastIndexOf('/')+1, params.attachmentLocal[i].length)
+        let match = /\.(\w+)$/.exec(fileName);
+        let type = match ? `image/${match[1]}` : `image`;
         formData.append("files", {
-          name: params.attachmentLocal[i].slice(params.attachmentLocal[i].lastIndexOf('/')+1, params.attachmentLocal[i].length),
+          name: fileName,
           uri: params.attachmentLocal[i],
-          type: 'image/jpg',
+          type:type,
         })
 
       }
+
       const response = await services.create().uploadFile(formData);
       Log(response)
       try{
