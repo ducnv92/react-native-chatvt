@@ -221,9 +221,16 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
 
           <View style={{flexDirection: 'row', alignItems: 'center',}}>
             <TouchableOpacity
-              onPress={()=>Navigation.pop(props.componentId)}
+              onPress={()=>{
+                if(props.buttonBack!==false){
+                  Navigation.pop(props.componentId)
+                }
+              }}
               style={{width: 50, height: 50, justifyContent: 'center', alignItems: 'center'}}>
-              <Image style={{height: 36, width: 36, resizeMode: 'contain',  }} source={require('../../assets/ic_back.png')} />
+              {
+                props.buttonBack!==false &&
+                <Image style={{height: 36, width: 36, resizeMode: 'contain',  }} source={require('../../assets/ic_back.png')} />
+              }
             </TouchableOpacity>
             <Text style={{fontWeight: '600', fontSize: 17, color: 'white', flex: 1, textAlign: 'center' }}>{
               appStore.lang.list_chat.message

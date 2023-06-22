@@ -6,11 +6,13 @@ import {ChatScreen} from "./screens/chat";
 
 
 class ChatVT {
+  AsyncStorage;
   /** */
-  init(env, lang, appId,  token, tokenSSO, onSuccess, onError){
+  init(env, storage, lang, appId,  token, tokenSSO, onSuccess, onError){
     Navigation.registerComponent('ListChatScreen', () => ListChatScreen);
     Navigation.registerComponent('ChatScreen', () => ChatScreen);
 
+    this.AsyncStorage = storage
     appStore.appId = appId
     appStore.env = env
     appStore.changeLanguage(lang)
@@ -74,3 +76,4 @@ class ChatVT {
 
 }
 export const chatVT = new ChatVT()
+export const ListChat = ListChatScreen

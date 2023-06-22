@@ -182,9 +182,9 @@ export const ChatScreen =  observer(function ChatScreen(props) {
                             {type: 'url',                       style: styles.url, onPress: handleUrlPress},
                             {type: 'phone',                     style: styles.phone, onPress: handlePhonePress},
                             {type: 'email',                     style: styles.email, onPress: handleEmailPress},
-                            {pattern: /Bob|David/,              style: styles.name, onPress: handleNamePress},
-                            {pattern: /\[(@[^:]+):([^\]]+)\]/i, style: styles.username, onPress: handleNamePress, renderText: renderText},
-                            {pattern: /42/,                     style: styles.magicNumber},
+                            // {pattern: /Bob|David/,              style: styles.name, onPress: handleNamePress},
+                            // {pattern: /\[(@[^:]+):([^\]]+)\]/i, style: styles.username, onPress: handleNamePress, renderText: renderText},
+                            // {pattern: /42/,                     style: styles.magicNumber},
                             {pattern: /#(\w+)/,                 style: styles.hashTag},
                           ]
                         }
@@ -451,7 +451,7 @@ const styles = StyleSheet.create({
   },
 
   magicNumber: {
-    fontSize: 42,
+    // fontSize: 42,
   },
 
   hashTag: {

@@ -1,17 +1,21 @@
 import * as React from 'react';
-import {chatVT} from 'react-native-chatvt'
+import {chatVT, ListChat} from 'react-native-chatvt'
 import {useEffect, useState} from "react";
 import {Button, SafeAreaView, View} from "react-native";
 import { Text } from 'react-native';
-
+import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage2 from "@react-native-async-storage/async-storage";
 
 export default function App(props: any) {
+  const AppId = "VTMan"
+  // const AppId = "VTPost"
 
   const [auth, setAuth] = useState(false)
 
   useEffect(() => {
     // chatVT.init(
     //   "DEV",
+    //   AsyncStorage2,
     //   "VN",
     //   "VTPost",
     //   'eyJhbGciOiJFUzI1NiJ9.eyJzdWIiOiIwMzI3NDk3OTk2IiwiU1NPSWQiOiJkZmMxYmFjYy1jNjE4LTRkNDctOTBhZS1jZDRmMTMzMDNmM2MiLCJVc2VySWQiOjcyNDEyOTgsIkZyb21Tb3VyY2UiOjMsIlRva2VuIjoiNEU2QzAyRUVGODU4MkYxNDMwMkU1Q0NBMEM1MjEzMDkiLCJleHAiOjE3MTg1MjY2NDEsIlBhcnRuZXIiOjY5MzU5MzF9.4hvyYpPN6ABdGXi0Imjoqi18Luxo9xokg7GFPT_iczfqSEQ-VXzG-KCjL__SB5O77ZU1SohGEOvxbMpgXEQoMA',
@@ -21,8 +25,9 @@ export default function App(props: any) {
     //   })
     chatVT.init(
       "DEV",
+      AsyncStorage,
       "VN",
-      "VTMan",
+      AppId,
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI5ODU5NzkiLCJ1c2VybmFtZSI6Im5ndW9udGVzdDEiLCJtYV9idXVjdWMiOiJUTjIiLCJuYW1lIjoiVGVzdCAxIiwicGhvbmUiOiI4NDM4ODAyMjA3MSIsImRvbl92aSI6IlRDVCIsIm1hX2NodWNkYW5oIjoiVlRCMDA5IiwiaXNzIjoiLTEwIiwiZW1wbG95ZWVfZ3JvdXBfaWQiOiI0Iiwic291cmNlIjoiLTEwIiwic291cmNlMiI6IiIsInRva2VuIjoiZWE4MGY3MmMtYmNmYy00OGRmLTk1NWMtMTM1ZmY2NDgzMWU1IiwidG9rZW4yIjoiIiwiY2FwX2J1dWN1YyI6IjUwIiwibG9ja19kdCI6IjAiLCJtYW5oYW52aWVuIjoiSTI3MDQxNzIyIiwiY2hpX25oYW5oIjoiVENUIiwidnVuZyI6IjEyIiwiZXhwIjoiMTY4ODAzOTM5MDk4MSIsImRuX3VzZXJpZCI6IjMxNjgyIn0.BW7UAD8ecYVDywNhRjIAhXSy5pGqcfWvtf19EeNkJnE',
       ''
       , () => {
@@ -35,28 +40,31 @@ export default function App(props: any) {
   return (<>
       {
         auth?
+        (
+          AppId === 'VTMan'?
+          <ListChat {...props} buttonBack={false}/>:
           <SafeAreaView style={{padding: 16}}>
-            <Button
-              onPress={(() => {
-                chatVT.toListChat(props.componentId)
-              })}
-              title={'List chat'}>
+                      <Button
+                        onPress={(() => {
+                          chatVT.toListChat(props.componentId)
+                        })}
+                        title={'List chat'}>
 
-            </Button>
-            <View style={{height: 16}}/>
-            <Button
-              onPress={(() => {
-                chatVT.toChat(props.componentId, {
-                  vtm_user_ids: [
-                    985979
-                  ],
-                  order_number: "1694287621393"
-                })
-              })}
-              title={'Chat Detail'}>
+                      </Button>
+                      <View style={{height: 16}}/>
+                      <Button
+                        onPress={(() => {
+                          chatVT.toChat(props.componentId, {
+                            vtm_user_ids: [
+                              985979
+                            ]
+                          })
+                        })}
+                        title={'Chat Detail'}>
 
-            </Button>
-          </SafeAreaView>
+                      </Button>
+                    </SafeAreaView>
+        )
           :
           <Text> Đang xác thực tài khoản</Text>
       }

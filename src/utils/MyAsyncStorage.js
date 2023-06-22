@@ -1,11 +1,11 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {chatVT} from "../index";
 
 export const TOKEN = 'TOKEN';
 export const USER = 'USER';
 export const LANG = 'LANG';
 
 export async function load(key) {
-  let user = await AsyncStorage.getItem(key);
+  let user = await chatVT.AsyncStorage.getItem(key);
   if (user !== undefined && user !== null) {
     return JSON.parse(user);
   } else {
@@ -14,9 +14,9 @@ export async function load(key) {
 }
 
 export function save(key, data) {
-  AsyncStorage.setItem(key, JSON.stringify(data));
+  chatVT.AsyncStorage.setItem(key, JSON.stringify(data));
 }
 
 export function clearAll() {
-  AsyncStorage.clear();
+  chatVT.AsyncStorage.clear();
 }
