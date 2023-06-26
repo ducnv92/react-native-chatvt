@@ -233,7 +233,7 @@ class CameraRollPicker extends Component {
 
     const flatListOrEmptyText = this.state.data.length > 0 ? (
       <BottomSheetFlatList
-        style={{ flex: 1,  backgroundColor: '#1e1c1d' }}
+        style={{ paddingLeft: 4, paddingTop: 4, backgroundColor: '#1e1c1d' }}
         ListFooterComponent={this.renderFooterSpinner}
         initialNumToRender={initialNumToRender}
         onEndReached={this.onEndReached}
@@ -247,11 +247,9 @@ class CameraRollPicker extends Component {
     );
 
     return (
-      <View
-        style={[styles.wrapper, { padding: imageMargin, paddingRight: 0, backgroundColor }]}
-      >
+      <>
         {flatListOrEmptyText}
-      </View>
+      </>
     );
   }
 }
