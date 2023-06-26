@@ -8,7 +8,7 @@ import {
   TextInput,
   Platform,
   KeyboardAvoidingView,
-  StyleSheet, Linking, PermissionsAndroid, Alert
+  StyleSheet, Linking, PermissionsAndroid, Alert, ActivityIndicator
 } from 'react-native';
 import colors from '../../Styles';
 // import EmojiPicker from 'rn-emoji-keyboard'
@@ -30,33 +30,63 @@ import Image from 'react-native-fast-image';
 
 import { createThumbnail } from "react-native-create-thumbnail";
 
-const VideoItem = (props) => {
+const VideoItem = function (props){
   const [thumbnail, setThumbnail] = useState('')
-
+  const [isPause, setIsPause] = useState(true)
   useEffect(()=>{
-    const createThumbnail = async () => {
-      const response = await createThumbnail({url: props.url})
-      console.log(response)
+    const createThumb = async () => {
+      console.log('createThumbnail', props.url)
+
+      const fileName = props.url.slice(props.url.lastIndexOf('/')+1, props.url.length)
+
+      const response = await createThumbnail({url: props.url, format: 'jpeg', cacheName:  fileName, timeStamp: 0})
+      console.log('createThumbnail', response)
+      setThumbnail(response.path)
+
     }
 
-    createThumbnail()
+    createThumb()
   }, [])
 
   return(
     <View>
-      <Video
-        source={{uri: props.url}}
-             resizeMode={'contain'}
-             paused={true}
-             allowsExternalPlayback
-             poster={thumbnail}
-             style={props.style}
-      >
+      {
+        isPause ?
+          <View style={props.style}>
+            {!thumbnail ? (
+              <ActivityIndicator size="large" />
+            ) : (
+              <TouchableOpacity
+                onPress={()=>setIsPause(false)}
+              >
+                <Image
+                  style={props.style}
+                  source={thumbnail ? {uri: thumbnail} : {}}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
+:
+          <TouchableOpacity
+            onPress={()=>setIsPause(true)}
+          >
+          <Video
+            source={{uri: props.url}}
+            resizeMode={'contain'}
+            paused={isPause}
+            allowsExternalPlayback
+            poster={thumbnail}
+            style={props.style}
+          >
 
-      </Video>
+          </Video>
+          </TouchableOpacity>
+
+      }
     </View>
   )
 }
+
 
 export const ChatScreen =  observer(function ChatScreen(props) {
   const conversation = props.data;
@@ -137,21 +167,22 @@ export const ChatScreen =  observer(function ChatScreen(props) {
             <View style={{  borderRadius: 10, overflow: 'hidden', maxWidth: '75%', }}>
               {
                 item.attachmentLocal && (
-                  <View style={{flexDirection: 'row', gap: 4, justifyContent: right?'flex-end':'flex-start',}}>
-                    {
+                  <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 4, justifyContent: right?'flex-end':'flex-start',}}>
+                  {
                       item.attachmentLocal.map(attach=>{
 
                         if(attach.includes('jpg')||attach.includes('png')||attach.includes('jpeg')){
                           return  <Image source={{uri: attach}} style={{ backgroundColor: "#F2F2F2", borderRadius: 5, overflow: 'hidden', width:item.attachmentLocal.length===1? 200: 120, height: item.attachmentLocal.length===1? 200: 120 }}/>
                         }
                         if(attach.includes('.mov')||attach.includes('.mp4')){
-                          return (<Video source={{uri: attach}}
+                          return (<VideoItem source={{uri: attach}}
+                                             url={attach}
                                         resizeMode={'contain'}
                                  allowsExternalPlayback
                                  style={{width: 200, height: 200, backgroundColor:  '#f2f2f2', borderRadius: 10, marginVertical: 16}}
                           >
 
-                          </Video>)
+                          </VideoItem>)
                         }
                         return <View/>
                       })
@@ -178,7 +209,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
                                 true
                               )
                             }}>
-                            <Image source={{uri: attach.url}} style={{ backgroundColor: "#F2F2F2", borderRadius: 5, overflow: 'hidden', width:item.attachments.length===1? 200: 120, height: item.attachments.length===1? 200: 120 }}/>
+                            <Image source={{uri: attach.url}} style={{ borderWidth: 0.5, borderColor: '#f2f2f2', backgroundColor: "#F2F2F2", borderRadius: 5, overflow: 'hidden', width:item.attachments.length===1? 200: 120, height: item.attachments.length===1? 200: 120 }}/>
                           </TouchableOpacity>
                         }
 
@@ -396,7 +427,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
       inverted={true}
       renderItem={renderItem}
       onEndReached={() => handleLoadMore()}
-      onEndReachedThreshold={1}
+      onEndReachedThreshold={0.5}
       removeClippedSubviews={true}
       keyExtractor={(item)=>item._id}
       refreshing={chatStore.isLoading}
@@ -455,7 +486,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
     >
           <CameraRollPicker
             style={{}}
-            assetType={'All'}
+            // assetType={'All'}
             selected={chatStore.images}
             callback={(images)=>{
               console.log('image picked', images)

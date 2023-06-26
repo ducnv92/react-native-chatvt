@@ -56,6 +56,8 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
     let setting = {}
     try{
       setting = item.settings.find(i=>i.user_id===(appStore.user.type+'_'+appStore.user.user_id))
+      // if(index%2===0)
+      // setting.unread_message_count = 2
     }catch (e) {
 
     }
@@ -133,10 +135,12 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
         //     })
         //   }}
         // >
-      <Swipeable  rightButtons={[
-        <TouchableOpacity><Text>Button 1</Text></TouchableOpacity>,
-        <TouchableOpacity><Text>Button 2</Text></TouchableOpacity>
-      ]}>
+      <Swipeable
+      //   rightButtons={[
+      //   <TouchableOpacity><Text>Button 1</Text></TouchableOpacity>,
+      //   <TouchableOpacity><Text>Button 2</Text></TouchableOpacity>
+      // ]}
+      >
           <TouchableOpacity
             onPress={()=>{
               navigationChat( {...item, ...{receiver: receiver}})

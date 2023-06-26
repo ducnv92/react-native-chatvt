@@ -118,7 +118,6 @@
     "react-native-compressor": "^1.6.1",
     "react-native-create-thumbnail": "^1.6.4",
     "react-native-mime-types": "^2.4.0",
-    "react-native-navigation": "^7.33.3-hotfix.2",
     "react-native-parsed-text": "^0.0.22",
     "react-native-swipeable": "^0.6.0",
     "socket.io-client": "^4.6.2",

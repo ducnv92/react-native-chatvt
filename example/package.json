@@ -19,6 +19,8 @@
     "react-native-navigation": "^7.33.3-hotfix.2",
     "react-native-permissions": "3.6.1",
     "react-native-reanimated": "^1.8.0",
+    "react-native-create-thumbnail": "^1.6.4",
+    "react-native-compressor": "^1.6.1",
     "react-native-video": "^5.2.1"
   },
   "devDependencies": {
