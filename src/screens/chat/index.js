@@ -27,6 +27,7 @@ import ImageViewing from "../../components/imageView";
 import {Image as ImageC, uuidv4} from 'react-native-compressor';
 import {Navigation} from "react-native-navigation";
 import Video from 'react-native-video';
+import FastImage from 'react-native-fast-image';
 
 export const ChatScreen =  observer(function ChatScreen(props) {
   const conversation = props.data;
@@ -112,7 +113,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
                       item.attachmentLocal.map(attach=>{
 
                         if(attach.includes('jpg')||attach.includes('png')||attach.includes('jpeg')){
-                          return  <Image source={{uri: attach}} style={{ backgroundColor: "#F2F2F2", borderRadius: 5, overflow: 'hidden', width:item.attachmentLocal.length===1? 200: 120, height: item.attachmentLocal.length===1? 200: 120 }}/>
+                          return  <FastImage source={{uri: attach}} style={{ backgroundColor: "#F2F2F2", borderRadius: 5, overflow: 'hidden', width:item.attachmentLocal.length===1? 200: 120, height: item.attachmentLocal.length===1? 200: 120 }}/>
                         }
                         if(attach.includes('.mov')||attach.includes('.mp4')){
                           return (<Video source={{uri: attach}}
@@ -148,13 +149,13 @@ export const ChatScreen =  observer(function ChatScreen(props) {
                                 true
                               )
                             }}>
-                            <Image source={{uri: attach.url}} style={{ backgroundColor: "#F2F2F2", borderRadius: 5, overflow: 'hidden', width:item.attachments.length===1? 200: 120, height: item.attachments.length===1? 200: 120 }}/>
+                            <FastImage source={{uri: attach.url}} style={{ backgroundColor: "#F2F2F2", borderRadius: 5, overflow: 'hidden', width:item.attachments.length===1? 200: 120, height: item.attachments.length===1? 200: 120 }}/>
                           </TouchableOpacity>
                         }
 
                         if(attach.url.includes('-mov')||attach.url.includes('-mp4')){
                           return <Video
-                            poster={'https://icons.veryicon.com/png/o/miscellaneous/food-time/play-video-1.png'}
+                            // poster={'https://icons.veryicon.com/png/o/miscellaneous/food-time/play-video-1.png'}
                             allowsExternalPlayback
                             resizeMode={'contain'} source={{uri: attach.url}} style={{ backgroundColor: "#F2F2F2", borderRadius: 5, overflow: 'hidden', width:item.attachments.length===1? 200: 120, height: item.attachments.length===1? 200: 120 }}/>
                         }

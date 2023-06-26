@@ -9,6 +9,7 @@ class ListChatStore {
    isError = false;
    error = 0;
    page = 0;
+   search = '';
    data = [];
 
   constructor() {
@@ -19,16 +20,20 @@ class ListChatStore {
   async getData(params, onSuccess, onError) {
 
     try {
-      if(this.isLoading || this.isLoadingMore){
+      if((this.isLoading || this.isLoadingMore) && this.page!==0 ){
         return
       }
       this.page+=1;
       if(this.page === 1){
         this.isLoading = true;
-        this.canLoadMore = false;
+        this.canLoadMore = true;
       }else{
+        if(!this.canLoadMore){
+          return
+        }
         this.isLoadingMore = true;
       }
+      params = {...params, ...{search: this.search, page: this.page}}
       const response = await services.create().getConversations(params);
 
       Log(response);
@@ -36,11 +41,12 @@ class ListChatStore {
       if (response.status === 200) {
         if (response.data.status === 200) {
           if (response.data.data) {
-            if(this.page===1){
+            if(params.page===1){
               this.data = response.data.data;
             }else{
               this.data = [...this.data, ...response.data.data];
             }
+            this.canLoadMore = response.data.data.length
             this.isLoading = false;
             this.isLoadingMore = false;
             this.isError = false;

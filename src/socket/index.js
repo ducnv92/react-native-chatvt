@@ -12,11 +12,11 @@ class Socket{
   constructor() {
    }
 
-  onConnect = (event)=>{
-    Log('socket onConnect', event)
+  onConnect = ()=>{
+    Log('socket onConnected')
   }
-  onDisconnect = (event)=>{
-    Log('socket onDisconnect', event)
+  onDisconnect = ()=>{
+    Log('socket onDisconnect')
   }
   onUserMessage = (event)=>{
     try{
@@ -25,7 +25,6 @@ class Socket{
       runInAction(()=>{
         listChatStore.data  = listChatStore.data.map(c=>{
           if(c._id===event?.message?.conversation_id){
-            console.log('conversation', event?.message?.conversation_id)
             c.message = event.message
           }
           return c
@@ -37,18 +36,17 @@ class Socket{
 
       //Handler message
 
-          if(chatStore.conversation_id === event.message?.conversation_id){
-          const message = chatStore.data.find(m=>m._id===event?.message?._id)
-            Log(message)
-          if(!message){
-            runInAction(()=>{
-              console.log('evnet', event.message)
-              chatStore.data.unshift(event.message)
-              chatStore.data = [...chatStore.data]
-            })
+      if(chatStore.conversation_id === event.message?.conversation_id){
+      const message = chatStore.data.find(m=>m._id===event?.message?._id)
+        Log(message)
+        if(!message){
+          runInAction(()=>{
+            chatStore.data.unshift(event.message)
+            chatStore.data = [...chatStore.data]
+          })
 
-          }
         }
+      }
 
 
     }catch (e) {

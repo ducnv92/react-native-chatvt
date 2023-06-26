@@ -1,6 +1,7 @@
 import {observable, action, makeAutoObservable} from 'mobx';
 import services from "../../services";
 import {Log} from "../../utils";
+import { Image } from 'react-native-compressor';
 import * as mime from "react-native-mime-types";
 
 class ChatStore {
@@ -87,6 +88,11 @@ class ChatStore {
     if(params.attachmentLocal){
       const formData = new FormData()
       for (let i = 0; i < params.attachmentLocal.length; i++) {
+        const result = await Image.compress(params.attachmentLocal[i], {
+          compressionMethod: 'auto',
+        });
+        console.log('compresser', result)
+
         const fileName = params.attachmentLocal[i].slice(params.attachmentLocal[i].lastIndexOf('/')+1, params.attachmentLocal[i].length)
         let match = /\.(\w+)$/.exec(fileName);
         let type = match ? `image/${match[1]}` : `image`;

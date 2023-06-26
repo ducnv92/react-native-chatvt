@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { observer } from 'mobx-react-lite';
 import colors from '../../Styles';
-import ChatSwipeableRow from "../../components/ChatSwipeableRow";
+import Swipeable from 'react-native-swipeable';
 import listChatStore from "./ListChatStore";
 import appStore from "../AppStore";
 import moment from "moment";
@@ -21,12 +21,12 @@ import { Navigation } from 'react-native-navigation';
 
 export const ListChatScreen =  observer(function ListChatScreen ( props){
   const [showSearch, setShowSearch] = useState(false);
-  const [search, setSearch] = useState('');
 
   useEffect(()=>{
+    listChatStore.search = ''
     listChatStore.page = 0
     listChatStore.getData({
-      search: search
+
     })
   }, [])
 
@@ -120,19 +120,23 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
       }
 
       return(
-        <ChatSwipeableRow
-          isPin={setting?.is_pin}
-          onPress1={(isPin)=>{
-            listChatStore.pin({
-              conversation_id: item._id
-            })
-          }}
-          onPress3={()=>{
-            listChatStore.hide({
-              conversation_id: item._id
-            })
-          }}
-        >
+        // <ChatSwipeableRow
+        //   isPin={setting?.is_pin}
+        //   onPress1={(isPin)=>{
+        //     listChatStore.pin({
+        //       conversation_id: item._id
+        //     })
+        //   }}
+        //   onPress3={()=>{
+        //     listChatStore.hide({
+        //       conversation_id: item._id
+        //     })
+        //   }}
+        // >
+      <Swipeable  rightButtons={[
+        <TouchableOpacity><Text>Button 1</Text></TouchableOpacity>,
+        <TouchableOpacity><Text>Button 2</Text></TouchableOpacity>
+      ]}>
           <TouchableOpacity
             onPress={()=>{
               navigationChat( {...item, ...{receiver: receiver}})
@@ -172,7 +176,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
               </View>
             </View>
           </TouchableOpacity>
-        </ChatSwipeableRow>
+      </Swipeable>
       )
 
     }
@@ -194,16 +198,27 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
             </View>
 
             <TextInput
-              placeholder={appStore.lang.list_chat.placeholder_search}
+              placeholder={appStore.appId==='VTPost'? appStore.lang.list_chat.placeholder_search: appStore.lang.list_chat.placeholder_search_VTM}
               placeholderTextColor={'white'}
-              value={search}
+              value={listChatStore.search}
               autoFocus={true}
-              onChangeText={text=>setSearch(text)}
+              onChangeText={text=> {
+                console.log('text', text)
+                listChatStore.search = text
+                listChatStore.page = 0;
+                listChatStore.getData({})
+              }}
               style={{fontWeight: '400', fontSize: 15, color: 'white',  flex: 1,}}/>
             {
-              search !=='' &&
+              listChatStore.search !=='' &&
               <TouchableOpacity
-                onPress={()=>setSearch('')}
+                onPress={()=> {
+                  listChatStore.search = ''
+                  listChatStore.page = 0;
+                  listChatStore.getData({
+
+                  })
+                }}
                 style={{width: 50, height: 50, justifyContent: 'center', alignItems: 'center'}}>
                 <Image style={{height: 24, width: 24, resizeMode: 'contain' }} source={require('../../assets/ic_clear.png')} />
               </TouchableOpacity>
@@ -247,7 +262,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
       refreshing={listChatStore.isLoading}
       onRefresh={()=>{
         listChatStore.page = 0;
-        listChatStore.getData({search})
+        listChatStore.getData({})
       }}
       style={{flex: 1, backgroundColor: 'white'}}
       data={listChatStore.data}

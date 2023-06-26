@@ -9,6 +9,7 @@
     "message": "Message",
     "message_system": "Message system",
     "placeholder_search": "Input postman name, group",
+    "placeholder_search_VTM": "Input name, group",
     "you": "You"
   },
   "chat": {
