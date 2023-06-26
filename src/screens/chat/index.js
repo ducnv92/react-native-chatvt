@@ -4,7 +4,6 @@ import {
   View,
   Text,
   SafeAreaView,
-  Image,
   FlatList,
   TextInput,
   Platform,
@@ -27,7 +26,37 @@ import ImageViewing from "../../components/imageView";
 import {Image as ImageC, uuidv4} from 'react-native-compressor';
 import {Navigation} from "react-native-navigation";
 import Video from 'react-native-video';
-import FastImage from 'react-native-fast-image';
+import Image from 'react-native-fast-image';
+
+import { createThumbnail } from "react-native-create-thumbnail";
+
+const VideoItem = (props) => {
+  const [thumbnail, setThumbnail] = useState('')
+
+  useEffect(()=>{
+    const createThumbnail = async () => {
+      const response = await createThumbnail({url: props.url})
+      console.log(response)
+    }
+
+    createThumbnail()
+  }, [])
+
+  return(
+    <View>
+      <Video
+        source={{uri: props.url}}
+             resizeMode={'contain'}
+             paused={true}
+             allowsExternalPlayback
+             poster={thumbnail}
+             style={props.style}
+      >
+
+      </Video>
+    </View>
+  )
+}
 
 export const ChatScreen =  observer(function ChatScreen(props) {
   const conversation = props.data;
@@ -105,15 +134,15 @@ export const ChatScreen =  observer(function ChatScreen(props) {
               item.status ==='error' && right &&
               <Image source={require('../../assets/ic_send_error.png')} style={{width: 16, height: 16, resizeMode: 'contain', marginRight: 14}}/>
             }
-            <View style={{  borderRadius: 10, overflow: 'hidden', maxWidth: '75%'}}>
+            <View style={{  borderRadius: 10, overflow: 'hidden', maxWidth: '75%', }}>
               {
                 item.attachmentLocal && (
-                  <View style={{flexDirection: 'row', gap: 4, }}>
+                  <View style={{flexDirection: 'row', gap: 4, justifyContent: right?'flex-end':'flex-start',}}>
                     {
                       item.attachmentLocal.map(attach=>{
 
                         if(attach.includes('jpg')||attach.includes('png')||attach.includes('jpeg')){
-                          return  <FastImage source={{uri: attach}} style={{ backgroundColor: "#F2F2F2", borderRadius: 5, overflow: 'hidden', width:item.attachmentLocal.length===1? 200: 120, height: item.attachmentLocal.length===1? 200: 120 }}/>
+                          return  <Image source={{uri: attach}} style={{ backgroundColor: "#F2F2F2", borderRadius: 5, overflow: 'hidden', width:item.attachmentLocal.length===1? 200: 120, height: item.attachmentLocal.length===1? 200: 120 }}/>
                         }
                         if(attach.includes('.mov')||attach.includes('.mp4')){
                           return (<Video source={{uri: attach}}
@@ -132,7 +161,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
               }
               {
                 item.attachments && (
-                  <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 4}}>
+                  <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 4, justifyContent: right?'flex-end':'flex-start',}}>
                     {
                       item.attachments.map(attach=>{
 
@@ -149,15 +178,13 @@ export const ChatScreen =  observer(function ChatScreen(props) {
                                 true
                               )
                             }}>
-                            <FastImage source={{uri: attach.url}} style={{ backgroundColor: "#F2F2F2", borderRadius: 5, overflow: 'hidden', width:item.attachments.length===1? 200: 120, height: item.attachments.length===1? 200: 120 }}/>
+                            <Image source={{uri: attach.url}} style={{ backgroundColor: "#F2F2F2", borderRadius: 5, overflow: 'hidden', width:item.attachments.length===1? 200: 120, height: item.attachments.length===1? 200: 120 }}/>
                           </TouchableOpacity>
                         }
 
                         if(attach.url.includes('-mov')||attach.url.includes('-mp4')){
-                          return <Video
-                            // poster={'https://icons.veryicon.com/png/o/miscellaneous/food-time/play-video-1.png'}
-                            allowsExternalPlayback
-                            resizeMode={'contain'} source={{uri: attach.url}} style={{ backgroundColor: "#F2F2F2", borderRadius: 5, overflow: 'hidden', width:item.attachments.length===1? 200: 120, height: item.attachments.length===1? 200: 120 }}/>
+                          return <VideoItem url={attach.url}
+                            style={{ backgroundColor: "#F2F2F2", borderRadius: 5, overflow: 'hidden', width:item.attachments.length===1? 200: 120, height: item.attachments.length===1? 200: 120 }}/>
                         }
 
                       })
@@ -186,7 +213,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
             item.status ==='error' && right &&
               <Image source={require('../../assets/ic_send_error.png')} style={{width: 16, height: 16, resizeMode: 'contain', marginRight: 14}}/>
           }
-          <View style={{backgroundColor: right?colors.primary:"#F2F2F2" , padding: 12,  borderRadius: 10, maxWidth: '75%'}}>
+          <View style={{backgroundColor: appStore.appId==='VTPost'?(right?colors.primary:"#F2F2F2"):(right?colors.bgVTM:"#F2F2F2"), padding: 12,  borderRadius: 10, maxWidth: '75%'}}>
             <ParsedText
               accessible={true}
               // accessibilityActions={[
@@ -207,7 +234,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
               //       break;
               //   }
               // }}
-                  style={{fontWeight: '400', fontSize: 15,  color: right? 'white':colors.primaryText }}
+                  style={{fontWeight: '400', fontSize: 15,  color: appStore.appId==='VTPost'? (right? 'white':colors.primaryText):colors.primaryText }}
                         parse={
                           [
                             {type: 'url',                       style: styles.url, onPress: handleUrlPress},

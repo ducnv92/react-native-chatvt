@@ -1,8 +1,9 @@
 import {observable, action, makeAutoObservable} from 'mobx';
 import services from "../../services";
 import {Log} from "../../utils";
-import { Image } from 'react-native-compressor';
+import { Image, Video } from 'react-native-compressor';
 import * as mime from "react-native-mime-types";
+import ImageResizer from '@bam.tech/react-native-image-resizer';
 
 class ChatStore {
    isLoading = false;
@@ -88,17 +89,34 @@ class ChatStore {
     if(params.attachmentLocal){
       const formData = new FormData()
       for (let i = 0; i < params.attachmentLocal.length; i++) {
-        const result = await Image.compress(params.attachmentLocal[i], {
-          compressionMethod: 'auto',
-        });
-        console.log('compresser', result)
+        const mimeFile = mime.lookup(params.attachmentLocal[i])
+        console.log('mimeFile', mimeFile)
+        let fileUri = ''
+        if(mimeFile.includes('video')){
+          const result = await Video.compress(params.attachmentLocal[i], {
+            compressionMethod: 'auto',
+          });
+          console.log('compresser', result)
+        }else{
+          const result = await ImageResizer.createResizedImage(
+            params.attachmentLocal[i],
+            1000,
+            1000,
+            'JPEG',
+            80,
+            0
+          )
+          console.log('compresser', result)
+          fileUri = result.uri
+        }
 
-        const fileName = params.attachmentLocal[i].slice(params.attachmentLocal[i].lastIndexOf('/')+1, params.attachmentLocal[i].length)
+
+        const fileName = fileUri.slice(fileUri.lastIndexOf('/')+1, fileUri.length)
         let match = /\.(\w+)$/.exec(fileName);
         let type = match ? `image/${match[1]}` : `image`;
         formData.append("files", {
           name: fileName,
-          uri: params.attachmentLocal[i],
+          uri: fileUri,
           type:type,
         })
 
@@ -123,10 +141,9 @@ class ChatStore {
     }
 
     const response = await services.create().sendMessage({...params, ...{attachment_ids: attachment_ids}});
+    Log(response)
 
     if(response.status===201 && response.data.status === 200){
-      Log(response)
-
       this.data = this.data.filter(item=>{
         return item.id !== params.id;
 

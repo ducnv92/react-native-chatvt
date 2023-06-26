@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import colors from "../../Styles";
-
+import FastImage from 'react-native-fast-image'
 
 const styles = StyleSheet.create({
   marker: {
@@ -73,7 +73,7 @@ class ImageItem extends Component {
         style={{ marginBottom: imageMargin, marginRight: imageMargin }}
         onPress={() => this.handleClick(image)}
       >
-        <Image
+        <FastImage
           source={{ uri: image.uri }}
           style={{ height: this.imageSize, width: this.imageSize, backgroundColor: 'grey' }}
         />

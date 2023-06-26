@@ -3,14 +3,14 @@ import appStore from "./screens/AppStore";
 // import {ChatStack} from './App.js'
 import {ListChatScreen} from "./screens/listchat";
 import {ChatScreen} from "./screens/chat";
-
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 class ChatVT {
   AsyncStorage;
   /** */
   init(env, storage, lang, appId,  token, tokenSSO, onSuccess, onError){
-    Navigation.registerComponent('ListChatScreen', () => ListChatScreen);
-    Navigation.registerComponent('ChatScreen', () => ChatScreen);
+    Navigation.registerComponent('ListChatScreen', () => gestureHandlerRootHOC(ListChatScreen));
+    Navigation.registerComponent('ChatScreen', () => gestureHandlerRootHOC(ChatScreen));
 
     this.AsyncStorage = storage
     appStore.appId = appId

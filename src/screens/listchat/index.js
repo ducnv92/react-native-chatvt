@@ -4,7 +4,6 @@ import {
   View,
   Text,
   SafeAreaView,
-  Image,
   FlatList,
   TextInput,
   Platform,
@@ -17,6 +16,7 @@ import listChatStore from "./ListChatStore";
 import appStore from "../AppStore";
 import moment from "moment";
 import { Navigation } from 'react-native-navigation';
+import Image from 'react-native-fast-image';
 
 
 export const ListChatScreen =  observer(function ListChatScreen ( props){
