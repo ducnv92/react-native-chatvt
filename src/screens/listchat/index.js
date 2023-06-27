@@ -107,12 +107,12 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
     //
     //
     // } else
-      if(item.participants.length==2){
+      if(item.detail_participants.length==2){
       //Private Chat
       let receiver = {}
       let isMe = false
       try{
-        receiver = item.participants.find(i=>i.user_id!==appStore.user.user_id)
+        receiver = item.detail_participants.find(i=>i.user_id!==appStore.user.user_id)
 
         isMe = (appStore.user.type+'_'+appStore.user.user_id)===item.message.sender
       }catch (e) {

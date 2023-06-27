@@ -50,7 +50,7 @@ export const ChatScreen =  observer(function ChatScreen(props) {
   useEffect(()=>{
     let receiver = {}
     try{
-      receiver = conversation.participants.find(i=>i.user_id!==appStore.user.user_id)
+      receiver = conversation.detail_participants.find(i=>i.user_id!==appStore.user.user_id)
       setReceiver(receiver)
     }catch (e) {
 
