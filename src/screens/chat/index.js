@@ -29,6 +29,7 @@ import {Navigation} from "react-native-navigation";
 import Video from 'react-native-video';
 import FastImage from 'react-native-fast-image';
 import moment from 'moment';
+import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 
 import {createThumbnail} from "react-native-create-thumbnail";
 
@@ -351,27 +352,28 @@ export const ChatScreen = observer(function ChatScreen(props) {
                 childrenProps={{allowFontScaling: false}}
               >{item.text}</ParsedText>
             </View>
-            {
-              item.status === 'sending' &&
-              <Text style={{
-                fontWeight: '500',
-                fontSize: 15,
-                color: colors.neutralText,
-                marginTop: 8,
-                textAlign: right ? 'right' : 'left'
-              }}>{appStore.lang.chat.sending + '...'}</Text>
-            }
-            {
-              item.status === 'error' &&
-              <Text style={{
-                fontWeight: '500',
-                fontSize: 15,
-                color: colors.primary,
-                marginTop: 8,
-                textAlign: right ? 'right' : 'left'
-              }}>{appStore.lang.chat.send_error}</Text>
-            }
+
           </View>
+          {
+            item.status === 'sending' &&
+            <Text style={{
+              fontWeight: '500',
+              fontSize: 15,
+              color: colors.neutralText,
+              marginTop: 8,
+              textAlign: right ? 'right' : 'left'
+            }}>{appStore.lang.chat.sending + '...'}</Text>
+          }
+          {
+            item.status === 'error' &&
+            <Text style={{
+              fontWeight: '500',
+              fontSize: 15,
+              color: colors.primary,
+              marginTop: 8,
+              textAlign: right ? 'right' : 'left'
+            }}>{appStore.lang.chat.send_error}</Text>
+          }
         </View>
       )
 
@@ -481,7 +483,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
       const message = {
         id: uuidv4(),
         "type": "MESSAGE",
-        attachmentLocal: chatStore.images.map(i => i.uri),
+        attachmentLocal: chatStore.images.map(i => i.uri).filter(i => i),
         has_attachment: true,
         "attachment_ids": [],
         "text": '',
@@ -491,7 +493,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
         conversation_id: conversation._id
       }
       chatStore.data.unshift(message)
-      chatStore.sendMessage(message)
+      await chatStore.sendMessage(message)
       chatStore.images = []
     }
 
@@ -606,8 +608,8 @@ export const ChatScreen = observer(function ChatScreen(props) {
           }}
         >
           <CameraRollPicker
-            style={{}}
-            // assetType={'All'}
+            assetType={'All'}
+            // groupTypes={'Videos'}
             selected={chatStore.images}
             callback={(images) => {
               console.log('image picked', images)

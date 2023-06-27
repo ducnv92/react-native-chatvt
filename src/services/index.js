@@ -2,7 +2,7 @@ import apisauce from 'apisauce';
 import * as Endpoint from './Endpoint';
 import { USER } from '../utils/MyAsyncStorage';
 import * as MyAsyncStorage from '../utils/MyAsyncStorage';
-
+import rax from 'retry-axios'
 
 export async function getHeader() {
   const user = await MyAsyncStorage.load(USER)
@@ -25,6 +25,7 @@ const create = (baseURL = Endpoint.API_BASE) => {
     timeout: 30000,
   });
 
+
   const apiMultipart = apisauce.create({
     baseURL,
     headers: {
@@ -32,6 +33,8 @@ const create = (baseURL = Endpoint.API_BASE) => {
     },
     timeout: 300000,
   });
+
+  const interceptorId = rax.attach(apiMultipart.axiosInstance)
 
   const authVTP = (data) => api.post(Endpoint.AUTH_VTP, data );
   const authVTM = (data) => api.post(Endpoint.AUTH_VTM, data );
@@ -41,7 +44,7 @@ const create = (baseURL = Endpoint.API_BASE) => {
   const conversationHide = async (data) => api.post(Endpoint.CONVERSATION_HIDE(data.conversation_id), data, await getHeader() );
   const conversationMessages = async (data) => api.get(Endpoint.CONVERSATION_MESSAGES(data.conversation_id), data, await getHeader() );
   const sendMessage = async (data) => api.post(Endpoint.SEND_MESSAGE(data.conversation_id), data, await getHeader() );
-  const uploadFile = async (data) => apiMultipart.post(Endpoint.UPLOAD_FILE, data, await getHeader() );
+  const uploadFile = async (data) => apiMultipart.post(Endpoint.UPLOAD_FILE+"?time="+new Date().getTime(), data, await getHeader() );
   const downloadFile = async (data) => api.get(Endpoint.DOWNLOAD_FILE, data, await getHeader() );
   const createConversation = async (data) => api.post(Endpoint.CREATE_CONVERSATION_WITH_VTM, data, await getHeader() );
 

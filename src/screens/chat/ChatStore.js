@@ -162,9 +162,8 @@ class ChatStore {
         formData.append("files", {
           name: fileName,
           uri: fileUri,
-          type:'image/png',
+          type:'image/jpg',
         })
-
       }
 
 
@@ -177,6 +176,10 @@ class ChatStore {
           attachment_ids = response.data.data.map(a=>a._id)
         }
       }catch (e) {
+        if(response.status === 201){
+          return
+
+        }
         this.data = this.data.map(item=>{
           if(item.id===params.id){
             item.status = 'error'

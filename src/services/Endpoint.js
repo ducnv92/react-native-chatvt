@@ -1,4 +1,5 @@
 export const API_BASE = 'http://139.59.195.132';
+// export const API_BASE = 'http://192.168.1.8:8000';
 
 //Auth
 exports.AUTH_VTP = `${API_BASE}/auth/vtp`;

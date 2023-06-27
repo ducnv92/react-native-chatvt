@@ -57,7 +57,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
     try{
       setting = item.settings.find(i=>i.user_id===(appStore.user.type+'_'+appStore.user.user_id))
       // if(index%2===0)
-      // setting.unread_message_count = 2
+      // setting.unread_count = 2
     }catch (e) {
 
     }
@@ -157,7 +157,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
                 <Text style={{textAlign: 'right', color: colors.neutralText}}>{moment(item.message.created_at).format('DD/MM')}</Text>
               </View>
               <View style={{flexDirection: 'row',  paddingTop: 6, alignItems: 'center'}}>
-                <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_message_count>0?colors.primaryText:colors.neutralText,}}>{item.message.has_attachment ?(<><Image source={require('../../assets/ic_attach_message.png')} style={{width: 16, height: 16,  resizeMode: 'contain'}}/>{isMe?`Bạn đã gửi ${item.message.attachment_ids.length} ảnh`: `Bạn đã nhận ${item.message.attachment_ids.length} ảnh`} </>):(item.message.type==='CREATED_QUOTE_ORDER'? <Text>{appStore.lang.list_chat.message_system}</Text>:<Text>{isMe && (appStore.lang.list_chat.you+':')} {item.message.text}</Text>)}</Text>
+                <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}>{item.message.has_attachment ?(<><Image source={require('../../assets/ic_attach_message.png')} style={{width: 16, height: 16,  resizeMode: 'contain'}}/>{isMe?`Bạn đã gửi ${item.message.attachment_ids.length} ảnh`: `Bạn đã nhận ${item.message.attachment_ids.length} ảnh`} </>):(item.message.type==='CREATED_QUOTE_ORDER'? <Text>{appStore.lang.list_chat.message_system}</Text>:<Text>{isMe && (appStore.lang.list_chat.you+':')} {item.message.text}</Text>)}</Text>
                 <View style={{flexDirection: 'row',}}>
                   {
                     setting?.is_pin &&
@@ -170,8 +170,8 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
                   }
                   {/*<Image style={{height: 16, width: 16, resizeMode: 'center',  marginLeft: 10  }} source={require('../../assets/avatar_default.png')} />*/}
                   {
-                    setting?.unread_message_count>0 && <View style={{height: 16, width: 16, backgroundColor: colors.primary, borderRadius: 8,  marginLeft: 10, alignItems: 'center', justifyContent: 'center'  }}>
-                      <Text style={{color: 'white', fontSize: 10, textAlign: 'center'}}>{setting?.unread_message_count}</Text>
+                    setting?.unread_count>0 && <View style={{height: 16, width: 16, backgroundColor: colors.primary, borderRadius: 8,  marginLeft: 10, alignItems: 'center', justifyContent: 'center'  }}>
+                      <Text style={{color: 'white', fontSize: 10, textAlign: 'center'}}>{setting?.unread_count}</Text>
                     </View>
                   }
 

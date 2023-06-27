@@ -72,15 +72,31 @@ class CameraRollPicker extends Component {
     this.renderImage = this.renderImage.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.fetch();
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      selected: nextProps.selected,
-    });
+
+  static getDerivedStateFromProps(nextProps, prevState){
+    if(nextProps.selected!==prevState.selected){
+      return { selected: nextProps.selected};
+    }
+    return null;
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.selected!==this.props.selected){
+      //Perform some operation here
+      this.setState({selected: this.props.selected});
+
+    }
+  }
+
+  // componentWillReceiveProps(nextProps) {
+  //   this.setState({
+  //     selected: nextProps.selected,
+  //   });
+  // }
 
   onEndReached() {
     if (!this.state.noMore) {
