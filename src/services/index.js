@@ -4,7 +4,7 @@ import { USER } from '../utils/MyAsyncStorage';
 import * as MyAsyncStorage from '../utils/MyAsyncStorage';
 
 
-async function getHeader() {
+export async function getHeader() {
   const user = await MyAsyncStorage.load(USER)
   if (user) {
     return {

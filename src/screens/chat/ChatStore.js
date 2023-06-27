@@ -1,8 +1,14 @@
 import {observable, action, makeAutoObservable} from 'mobx';
-import services from "../../services";
+import services, {getHeader} from "../../services";
 import {Log} from "../../utils";
-import { Image } from 'react-native-compressor';
+import { Image, Video } from 'react-native-compressor';
 import * as mime from "react-native-mime-types";
+import ImageResizer from '@bam.tech/react-native-image-resizer';
+// import { backgroundUpload } from 'react-native-compressor';
+import * as Endpoint from "../../services/Endpoint";
+import * as MyAsyncStorage from "../../utils/MyAsyncStorage";
+import {USER} from "../../utils/MyAsyncStorage";
+var RNFS = require('react-native-fs');
 
 class ChatStore {
    isLoading = false;
@@ -79,7 +85,9 @@ class ChatStore {
     }
   }
 
-
+  delay = (delayInms) => {
+    return new Promise(resolve => setTimeout(resolve, delayInms));
+  }
 
   async sendMessage(params) {
     console.log('add send', params)
@@ -88,21 +96,79 @@ class ChatStore {
     if(params.attachmentLocal){
       const formData = new FormData()
       for (let i = 0; i < params.attachmentLocal.length; i++) {
-        const result = await Image.compress(params.attachmentLocal[i], {
-          compressionMethod: 'auto',
-        });
-        console.log('compresser', result)
+        const mimeFile = mime.lookup(params.attachmentLocal[i])
+        console.log('mimeFile', mimeFile)
+        let fileUri = ''
+        if(mimeFile.includes('video')){
 
-        const fileName = params.attachmentLocal[i].slice(params.attachmentLocal[i].lastIndexOf('/')+1, params.attachmentLocal[i].length)
+
+          console.log('Compression Progress: ', params.attachmentLocal[i]);
+
+          // const result = await Video.compress(
+          //   params.attachmentLocal[i],
+          //   {
+          //     compressionMethod: 'auto',
+          //   },
+          //   (progress) => {
+          //       console.log('Compression Progress: ', progress);
+          //   }
+          // );
+          // console.log('Compression Progress: ', result);
+
+        }else{
+          // const result = await ImageResizer.createResizedImage(
+          //   params.attachmentLocal[i],
+          //   1000,
+          //   1000,
+          //   'JPEG',
+          //   80,
+          //   0
+          // )
+          // console.log('compresser', result)
+
+          const result = await Image.compress(
+            params.attachmentLocal[i],
+            {
+              compressionMethod: 'auto',
+            },
+            (progress) => {
+                console.log('Compression Progress: ', progress);
+            }
+          );
+          console.log('Compression Progress: ', result);
+          fileUri = result
+
+          // const user = await MyAsyncStorage.load(USER)
+
+          //
+          // const uploadResult = await backgroundUpload(
+          //   Endpoint.UPLOAD_FILE,
+          //   fileUri,
+          //   { httpMethod: 'POST',  headers: {
+          //       Authorization: `Bearer ${user.token}`,
+          //       'Content-Type': 'multipart/form-data',
+          //     }, },
+          //   (written, total) => {
+          //     console.log(written, total);
+          //   }
+          // );
+          // console.log('uploadResult', uploadResult)
+        }
+
+
+        const fileName = fileUri.slice(fileUri.lastIndexOf('/')+1, fileUri.length)
         let match = /\.(\w+)$/.exec(fileName);
         let type = match ? `image/${match[1]}` : `image`;
         formData.append("files", {
           name: fileName,
-          uri: params.attachmentLocal[i],
-          type:type,
+          uri: fileUri,
+          type:'image/png',
         })
 
       }
+
+
+      await this.delay(1000);
 
       const response = await services.create().uploadFile(formData);
       Log(response)
@@ -123,10 +189,9 @@ class ChatStore {
     }
 
     const response = await services.create().sendMessage({...params, ...{attachment_ids: attachment_ids}});
+    Log(response)
 
     if(response.status===201 && response.data.status === 200){
-      Log(response)
-
       this.data = this.data.filter(item=>{
         return item.id !== params.id;
 
