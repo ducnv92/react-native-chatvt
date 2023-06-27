@@ -1,4 +1,4 @@
-export const API_BASE = 'http://139.59.195.132';
+export const API_BASE = 'https://hw3.shoptool.vn';
 // export const API_BASE = 'http://192.168.1.8:8000';
 
 //Auth
