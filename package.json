@@ -109,7 +109,7 @@
   "dependencies": {
     "@gorhom/bottom-sheet": "2.4.1",
     "add": "^2.0.6",
-    "apisauce": "^3.0.1",
+    "apisauce": "1.1.1",
     "fbjs": "^3.0.5",
     "mobx": "^6.9.0",
     "mobx-react-lite": "^3.4.3",
@@ -120,7 +120,6 @@
     "react-native-mime-types": "^2.4.0",
     "react-native-parsed-text": "^0.0.22",
     "react-native-swipeable": "^0.6.0",
-    "retry-axios": "^2.6.0",
     "socket.io-client": "^4.6.2",
     "yarn": "^1.22.19"
   },

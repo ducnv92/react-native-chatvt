@@ -114,7 +114,14 @@ class ChatStore {
           //   }
           // );
           // console.log('Compression Progress: ', result);
+          fileUri= params.attachmentLocal[i]
+          const fileName = fileUri.slice(fileUri.lastIndexOf('/')+1, fileUri.length)
 
+          formData.append("files", {
+            name: fileName,
+            uri: fileUri,
+            type:'video/mp4',
+          })
         }else{
           // const result = await ImageResizer.createResizedImage(
           //   params.attachmentLocal[i],
@@ -153,21 +160,19 @@ class ChatStore {
           //   }
           // );
           // console.log('uploadResult', uploadResult)
+
+          const fileName = fileUri.slice(fileUri.lastIndexOf('/')+1, fileUri.length)
+          let match = /\.(\w+)$/.exec(fileName);
+          let type = match ? `image/${match[1]}` : `image`;
+          formData.append("files", {
+            name: fileName,
+            uri: fileUri,
+            type:'image/jpg',
+          })
         }
 
 
-        const fileName = fileUri.slice(fileUri.lastIndexOf('/')+1, fileUri.length)
-        let match = /\.(\w+)$/.exec(fileName);
-        let type = match ? `image/${match[1]}` : `image`;
-        formData.append("files", {
-          name: fileName,
-          uri: fileUri,
-          type:'image/jpg',
-        })
       }
-
-
-      await this.delay(1000);
 
       const response = await services.create().uploadFile(formData);
       Log(response)

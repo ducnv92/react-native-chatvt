@@ -2,7 +2,6 @@ import apisauce from 'apisauce';
 import * as Endpoint from './Endpoint';
 import { USER } from '../utils/MyAsyncStorage';
 import * as MyAsyncStorage from '../utils/MyAsyncStorage';
-import rax from 'retry-axios'
 
 export async function getHeader() {
   const user = await MyAsyncStorage.load(USER)
@@ -34,7 +33,7 @@ const create = (baseURL = Endpoint.API_BASE) => {
     timeout: 300000,
   });
 
-  const interceptorId = rax.attach(apiMultipart.axiosInstance)
+  // const interceptorId = rax.attach(apiMultipart.axiosInstance)
 
   const authVTP = (data) => api.post(Endpoint.AUTH_VTP, data );
   const authVTM = (data) => api.post(Endpoint.AUTH_VTM, data );

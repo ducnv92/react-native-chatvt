@@ -64,12 +64,14 @@ const VideoItem = function (props) {
               <ActivityIndicator size="large" />
             ) : (
               <TouchableOpacity
+                style={{alignItems: 'center', justifyContent: 'center'}}
                 onPress={() => setIsPause(false)}
               >
                 <FastImage
                   style={props.style}
                   source={thumbnail ? { uri: thumbnail } : {}}
                 />
+                <FastImage source={require('../../assets/ic_play.png')} style={{width: 56, height: 56, position: 'absolute', }}/>
               </TouchableOpacity>
             )}
           </View>
@@ -253,7 +255,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                           </TouchableOpacity>
                         }
 
-                        if (attach.url.includes('-mov') || attach.url.includes('-mp4')) {
+                        if (attach.url.includes('.mov') || attach.url.includes('.mp4')) {
                           return <VideoItem url={attach.url}
                             style={{
                               backgroundColor: "#F2F2F2",
@@ -608,8 +610,8 @@ export const ChatScreen = observer(function ChatScreen(props) {
         }}
       >
         <CameraRollPicker
-          style={{}}
-          // assetType={'All'}
+          assetType={'All'}
+          include={['playableDuration']}
           selected={chatStore.images}
           callback={(images) => {
             console.log('image picked', images)
