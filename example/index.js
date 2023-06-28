@@ -25,4 +25,4 @@ Navigation.events().registerAppLaunchedListener(() => {
          }
     });
   });
-LogBox.ignoreLogs(['[MobX]', 'Remote', 'Each', 'new Native']);
+LogBox.ignoreAllLogs(true);
