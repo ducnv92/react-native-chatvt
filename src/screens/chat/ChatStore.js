@@ -200,10 +200,14 @@ class ChatStore {
     Log(response)
 
     if(response.status===201 && response.data.status === 200){
-      this.data = this.data.filter(item=>{
-        return item.id !== params.id;
-
-      })
+      this.data = [...this.data.map((item)=>{
+        if(item.request_id === params.request_id){
+          console.log(item)
+          item.status = 'sent'
+        }
+        return item
+      })]
+      console.log(this.data[0])
     }else{
       this.data = this.data.map(item=>{
         if(item.id===params.id){

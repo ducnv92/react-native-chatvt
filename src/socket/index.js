@@ -4,6 +4,7 @@ import listChatStore from "../screens/listchat/ListChatStore";
 import chatStore from "../screens/chat/ChatStore";
 import {Log} from "../utils";
 import {runInAction} from "mobx";
+import appStore from "../screens/AppStore";
 
 
 class Socket{
@@ -41,9 +42,14 @@ class Socket{
       const message = chatStore.data.find(m=>m._id===event?.message?._id)
         Log(message)
         if(!message){
+
+          const right =  event?.message.sender === (appStore.user.type + '_' + appStore.user.user_id);
           runInAction(()=>{
-            chatStore.data.unshift(event.message)
-            chatStore.data = [...chatStore.data]
+            if(!right){
+              chatStore.data.unshift(event.message)
+              chatStore.data = [...chatStore.data]
+            }
+
           })
 
         }
