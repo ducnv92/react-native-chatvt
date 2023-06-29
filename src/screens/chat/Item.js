@@ -5,11 +5,53 @@ import colors from "../../Styles";
 import moment from "moment/moment";
 import ParsedText from "react-native-parsed-text";
 import {orderStatus} from "../../utils";
-import {createThumbnail} from "react-native-create-thumbnail";
+import {createThumbnail} from "../../components/createThumbnail";
 import ImageViewing from "../../components/imageView/ImageViewing";
 import Video from 'react-native-video';
 import FastImage from 'react-native-fast-image';
 import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import MapView, { PROVIDER_GOOGLE, Marker  } from 'react-native-maps';
+
+
+const MapItem = function (props) {
+  const right =  props.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
+
+  return(
+    <View style={{ flexDirection: 'row', justifyContent: right ? 'flex-end' : 'flex-start', alignItems: 'center', marginVertical: 8, marginHorizontal: 16, }}>
+      <TouchableOpacity
+        onPress={()=>{
+
+        }}
+        style={{ height: 178,
+        width: 290 ,
+        borderRadius: 10,
+        overflow: 'hidden', backgroundColor: colors.blueBG}}>
+      <MapView
+        provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+        style={{
+          height: 178,
+          width: 290 ,
+          borderRadius: 10,
+          overflow: 'hidden'
+        }}
+        region={{
+          latitude: props.item.latitude,
+          longitude: props.item.longitude,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        }}
+      >
+        <Marker
+          coordinate={{latitude: props.item.latitude, longitude: props.item.longitude}}
+          image={require('../../assets/ic_map_pin.png')}
+        />
+      </MapView>
+      </TouchableOpacity>
+    </View>
+
+  )
+}
+
 
 const VideoItem = function (props) {
   const [thumbnail, setThumbnail] = useState('')
@@ -407,6 +449,9 @@ export class ChatItem extends React.Component{
     }
     if (this.item.type === 'CREATED_QUOTE_ORDER') {
       return (<OrderItem item={this.props.item}/>)
+    }
+    if (this.item.type === 'MAP') {
+      return (<MapItem item={this.props.item}/>)
     }
   }
 

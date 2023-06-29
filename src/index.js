@@ -68,6 +68,35 @@ class ChatVT {
 
   }
 
+  handleNotification(data){
+    if(appStore.appId==='VTPost'){
+      const dataTest = {
+        "id": "0",
+        "title":"Tên nhóm chat",
+        "content":"chat mesage",
+        "type": 3,
+        "status":0,
+        "time":1666952956000,
+        "ref": "group:<abc>",
+        "owner": "<cus_id>",
+        "app": "vtp"
+    }
+
+    }else{
+      const dataTest = {
+        "action": "NONE/HEN_NHAN/....",
+        "content": "Thủ đô của Việt Nam là Hà Nội",
+        "icon": "string",
+        "mapExt": {
+          "additionalProp1": "string", "additionalProp2": "string", "additionalProp3": "string"
+        },
+        "receiverID": 528493,
+        "senderID": 0,
+        "title": "Thông báo"
+      }
+    }
+  }
+
   /** Lang: 'VN' | 'EN' */
   changeLanguage(lang){
     appStore.changeLanguage(lang)

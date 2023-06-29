@@ -104,6 +104,8 @@
     "react-native-reanimated": "*",
     "react-native-svg": "*",
     "react-native-vector-icons": "*",
+    "react-native-maps": "*",
+    "react-native-geolocation-service": "*",
     "react-native-video": "*"
   },
   "dependencies": {

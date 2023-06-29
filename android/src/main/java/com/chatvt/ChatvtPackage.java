@@ -17,6 +17,7 @@ public class ChatvtPackage implements ReactPackage {
   public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
     List<NativeModule> modules = new ArrayList<>();
     modules.add(new ChatvtModule(reactContext));
+    modules.add(new CreateThumbnailModule(reactContext));
     return modules;
   }
 

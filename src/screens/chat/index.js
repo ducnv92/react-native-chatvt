@@ -28,8 +28,8 @@ import { Image as ImageC, uuidv4 } from 'react-native-compressor';
 import { Navigation } from "react-native-navigation";
 
 import {ChatItem} from "./Item";
-
-
+import Geolocation from 'react-native-geolocation-service';
+import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
 
 export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
@@ -87,6 +87,58 @@ export const ChatScreen = observer(function ChatScreen(props) {
     setInput('')
   }
 
+  const sendMap = () => {
+
+    request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION).then((result) => {
+      switch (result) {
+        case RESULTS.UNAVAILABLE:
+          console.log('This feature is not available (on this device / in this context)');
+          break;
+        case RESULTS.DENIED:
+          console.log('The permission has not been requested / is denied but requestable');
+          break;
+        case RESULTS.LIMITED:
+          console.log('The permission is limited: some actions are possible');
+          break;
+        case RESULTS.GRANTED:
+          console.log('The permission is granted');
+          Geolocation.getCurrentPosition(
+            (position) => {
+              console.log(position);
+              const message = {
+                id: uuidv4(),
+                "type": "MAP",
+                longitude: position.coords.longitude,
+                latitude: position.coords.latitude,
+                "status": "sending",
+                sender: appStore.user.type + '_' + appStore.user.user_id,
+                conversation_id: conversation._id
+              }
+              console.log('map',message)
+              chatStore.data.unshift(message)
+              // chatStore.sendMessage(message)
+              // messages.unshift()
+              // setMessages(messages)
+              setInput('')
+            },
+            (error) => {
+              // See error code charts below.
+              console.log(error.code, error.message);
+            },
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+          );
+
+          break;
+        case RESULTS.BLOCKED:
+          console.log('The permission is denied and not requestable anymore');
+          break;
+      }
+    });
+
+
+  }
+
+
   const onClickEmoji = emoji => {
     Log(emoji);
     setInput(input + emoji.emoji)
@@ -118,7 +170,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
     bottomSheetRef.current?.dismiss();
 
     const message = {
-      request_id: uuidv4(),
+      id: uuidv4(),
       "type": "MESSAGE",
       attachmentLocal: chatStore.images.map(i => i.uri),
       has_attachment: true,
@@ -213,11 +265,11 @@ export const ChatScreen = observer(function ChatScreen(props) {
             value={input}
             style={{ fontSize: 15, color: colors.primaryText, flex: 1 }}
           />
-          {/*<TouchableOpacity*/}
-          {/*  onPress={()=>setShowEmoji(true)}*/}
-          {/*  style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>*/}
-          {/*  <Image source={require('../../assets/ic_emoj.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>*/}
-          {/*</TouchableOpacity>*/}
+          <TouchableOpacity
+            onPress={()=>sendMap()}
+            style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>
+            <Image source={require('../../assets/nav_location_active.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
+          </TouchableOpacity>
           {
             input.trim() !== '' &&
             <TouchableOpacity

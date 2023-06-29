@@ -201,8 +201,7 @@ class ChatStore {
 
     if(response.status===201 && response.data.status === 200){
       this.data = [...this.data.map((item)=>{
-        if(item.request_id === params.request_id){
-          console.log(item)
+        if(item.id === params.id){
           item.status = 'sent'
         }
         return item
