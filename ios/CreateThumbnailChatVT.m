@@ -1,4 +1,4 @@
-#import "Chatvt.h"
+#import "CreateThumbnailChatVT.h"
 
 @implementation CreateThumbnailChatVT
 

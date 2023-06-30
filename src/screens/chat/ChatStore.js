@@ -1,7 +1,6 @@
 import {observable, action, makeAutoObservable} from 'mobx';
 import services, {getHeader} from "../../services";
 import {Log} from "../../utils";
-import { Image, Video } from 'react-native-compressor';
 import * as mime from "react-native-mime-types";
 import ImageResizer from '@bam.tech/react-native-image-resizer';
 // import { backgroundUpload } from 'react-native-compressor';
@@ -123,26 +122,26 @@ class ChatStore {
             type:'video/mp4',
           })
         }else{
-          // const result = await ImageResizer.createResizedImage(
-          //   params.attachmentLocal[i],
-          //   1000,
-          //   1000,
-          //   'JPEG',
-          //   80,
-          //   0
-          // )
-          // console.log('compresser', result)
-
-          const result = await Image.compress(
+          const result = await ImageResizer.createResizedImage(
             params.attachmentLocal[i],
-            {
-              compressionMethod: 'auto',
-            },
-            (progress) => {
-                console.log('Compression Progress: ', progress);
-            }
-          );
-          console.log('Compression Progress: ', result);
+            1000,
+            1000,
+            'JPEG',
+            80,
+            0
+          )
+          console.log('compresser', result)
+
+          // const result = await Image.compress(
+          //   params.attachmentLocal[i],
+          //   {
+          //     compressionMethod: 'auto',
+          //   },
+          //   (progress) => {
+          //       console.log('Compression Progress: ', progress);
+          //   }
+          // );
+          // console.log('Compression Progress: ', result);
           fileUri = result
 
           // const user = await MyAsyncStorage.load(USER)

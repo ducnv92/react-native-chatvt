@@ -24,12 +24,19 @@ import appStore from "../AppStore";
 import { observer } from "mobx-react-lite";
 import ParsedText from 'react-native-parsed-text';
 import ImageViewing from "../../components/imageView";
-import { Image as ImageC, uuidv4 } from 'react-native-compressor';
 import { Navigation } from "react-native-navigation";
 
 import {ChatItem} from "./Item";
 import Geolocation from 'react-native-geolocation-service';
 import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
+import DocumentPicker, {
+  DirectoryPickerResponse,
+  DocumentPickerResponse,
+  isCancel,
+  isInProgress,
+  types,
+} from 'react-native-document-picker'
+import uuid from 'react-native-uuid';
 
 export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
@@ -72,7 +79,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
   const sendMessage = () => {
     const message = {
-      id: uuidv4(),
+      id: uuid.v4(),
       "type": "MESSAGE",
       "text": input,
       "status": "sending",
@@ -87,9 +94,21 @@ export const ChatScreen = observer(function ChatScreen(props) {
     setInput('')
   }
 
+  const pickDocument = () => {
+    DocumentPicker.pick({
+      allowMultiSelection: true,
+    })
+      .then((res)=>{
+        console.log(res)
+      })
+      .catch((res)=>{
+        console.log(res)
+      })
+  }
   const sendMap = () => {
+    const permission = Platform.OS ==='android'?PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION:PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
 
-    request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION).then((result) => {
+    request(permission).then((result) => {
       switch (result) {
         case RESULTS.UNAVAILABLE:
           console.log('This feature is not available (on this device / in this context)');
@@ -106,7 +125,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
             (position) => {
               console.log(position);
               const message = {
-                id: uuidv4(),
+                id: uuid.v4(),
                 "type": "MAP",
                 longitude: position.coords.longitude,
                 latitude: position.coords.latitude,
@@ -116,7 +135,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
               }
               console.log('map',message)
               chatStore.data.unshift(message)
-              // chatStore.sendMessage(message)
+              chatStore.sendMessage(message)
               // messages.unshift()
               // setMessages(messages)
               setInput('')
@@ -146,16 +165,46 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
   const requestCameraPermission = async () => {
     try {
-      const permission = Platform.Version >= 33 ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
-
-      const granted = await PermissionsAndroid.request(permission);
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        Log('You can use the camera');
-        bottomSheetRef.current?.present();
-
-      } else {
-        Log('Camera permission denied');
+      let permission = ''
+      if(Platform.OS === 'android'){
+        permission = Platform.Version >= 33 ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
+      }else{
+        permission = PERMISSIONS.IOS.PHOTO_LIBRARY;
       }
+
+
+      request(permission).then((result) => {
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+            console.log('This feature is not available (on this device / in this context)');
+            break;
+          case RESULTS.DENIED:
+            console.log('The permission has not been requested / is denied but requestable');
+            break;
+          case RESULTS.LIMITED:
+            console.log('The permission is limited: some actions are possible');
+            break;
+          case RESULTS.GRANTED:
+            console.log('The permission is granted');
+            bottomSheetRef.current?.present();
+
+            break;
+          case RESULTS.BLOCKED:
+            console.log('The permission is denied and not requestable anymore');
+            break;
+        }
+      });
+
+
+
+      // const granted = await PermissionsAndroid.request(permission);
+      // if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      //   Log('You can use the camera');
+      //   bottomSheetRef.current?.present();
+      //
+      // } else {
+      //   Log('Camera permission denied');
+      // }
 
     } catch (err) {
       Log(err);
@@ -170,7 +219,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
     bottomSheetRef.current?.dismiss();
 
     const message = {
-      id: uuidv4(),
+      id: uuid.v4(),
       "type": "MESSAGE",
       attachmentLocal: chatStore.images.map(i => i.uri),
       has_attachment: true,
@@ -263,12 +312,17 @@ export const ChatScreen = observer(function ChatScreen(props) {
             multiline={true}
             onChangeText={text => setInput(text)}
             value={input}
-            style={{ fontSize: 15, color: colors.primaryText, flex: 1 }}
+            style={{ fontSize: 15, color: colors.primaryText, flex: 1, minHeight: 56, paddingTop: 18,   }}
           />
           <TouchableOpacity
             onPress={()=>sendMap()}
             style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>
             <Image source={require('../../assets/nav_location_active.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={()=>pickDocument()}
+            style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>
+            <Image source={require('../../assets/nav_document.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
           </TouchableOpacity>
           {
             input.trim() !== '' &&
