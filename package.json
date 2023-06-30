@@ -117,6 +117,7 @@
     "moment": "^2.29.4",
     "react-native-clipboard-toast": "^1.0.0",
     "react-native-create-thumbnail": "^1.6.4",
+    "react-native-document-picker": "^9.0.1",
     "react-native-mime-types": "^2.4.0",
     "react-native-parsed-text": "^0.0.22",
     "react-native-swipeable": "^0.6.0",

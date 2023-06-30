@@ -26,7 +26,7 @@ import ParsedText from 'react-native-parsed-text';
 import ImageViewing from "../../components/imageView";
 import { Navigation } from "react-native-navigation";
 
-import {ChatItem} from "./Item";
+import { ChatItem } from "./Item";
 import Geolocation from 'react-native-geolocation-service';
 import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
 import DocumentPicker, {
@@ -52,6 +52,33 @@ export const ChatScreen = observer(function ChatScreen(props) {
   // callbacks
   const handleSheetChanges = useCallback((index) => {
     Log('handleSheetChanges', index);
+  }, []);
+
+  const handleDocumentSelection = useCallback(async () => {
+    try {
+      const response = await DocumentPicker.pick({
+        presentationStyle: 'fullScreen',
+        type: [types.pdf, types.xls, types.docx, types.xlsx],
+        allowMultiSelection: true
+      });
+
+      const message = {
+        id: uuidv4(),
+        "type": "DOCUMENT",
+        attachmentLocal: response,
+        has_attachment: true,
+        "text": input,
+        "status": "sending",
+        sender: appStore.user.type + '_' + appStore.user.user_id,
+        conversation_id: conversation._id
+      }
+      console.log('document', message);
+      chatStore.data.unshift(message)
+      // chatStore.sendMessage(message)
+      setInput('')
+    } catch (err) {
+      console.warn(err);
+    }
   }, []);
 
   useEffect(() => {
@@ -133,7 +160,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                 sender: appStore.user.type + '_' + appStore.user.user_id,
                 conversation_id: conversation._id
               }
-              console.log('map',message)
+              console.log('map', message)
               chatStore.data.unshift(message)
               chatStore.sendMessage(message)
               // messages.unshift()
@@ -278,7 +305,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
           style={{ flex: 1, backgroundColor: 'white' }}
           data={chatStore.data}
           inverted={true}
-          renderItem={({item})=><ChatItem item={item}/>}
+          renderItem={({ item }) => <ChatItem item={item} />}
           onEndReached={() => handleLoadMore()}
           onEndReachedThreshold={0.5}
           removeClippedSubviews={true}
@@ -315,9 +342,14 @@ export const ChatScreen = observer(function ChatScreen(props) {
             style={{ fontSize: 15, color: colors.primaryText, flex: 1, minHeight: 56, paddingTop: 18,   }}
           />
           <TouchableOpacity
-            onPress={()=>sendMap()}
-            style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>
-            <Image source={require('../../assets/nav_location_active.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
+            onPress={() => handleDocumentSelection()}
+            style={{ width: 40, height: 56, alignItems: 'center', justifyContent: 'center' }}>
+            <Image source={require('../../assets/nav_document.png')} style={{ height: 24, width: 24, resizeMode: "contain" }} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => sendMap()}
+            style={{ width: 40, height: 56, alignItems: 'center', justifyContent: 'center' }}>
+            <Image source={require('../../assets/nav_location_active.png')} style={{ height: 24, width: 24, resizeMode: "contain" }} />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={()=>pickDocument()}
