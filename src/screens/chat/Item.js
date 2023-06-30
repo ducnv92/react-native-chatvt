@@ -1,51 +1,54 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import appStore from "../AppStore";
-import {ActivityIndicator, Image, Linking, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import { ActivityIndicator, Image, Linking, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import colors from "../../Styles";
 import moment from "moment/moment";
 import ParsedText from "react-native-parsed-text";
-import {orderStatus} from "../../utils";
-import {createThumbnail} from "../../components/createThumbnail";
+import { orderStatus } from "../../utils";
+import { createThumbnail } from "../../components/createThumbnail";
 import ImageViewing from "../../components/imageView/ImageViewing";
 import Video from 'react-native-video';
 import FastImage from 'react-native-fast-image';
-import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
-import MapView, { PROVIDER_GOOGLE, Marker  } from 'react-native-maps';
+import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import { toJS } from 'mobx';
 
 
 const MapItem = function (props) {
-  const right =  props.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
+  const right = props.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
 
-  return(
+  return (
     <View style={{ flexDirection: 'row', justifyContent: right ? 'flex-end' : 'flex-start', alignItems: 'center', marginVertical: 8, marginHorizontal: 16, }}>
       <TouchableOpacity
-        onPress={()=>{
+        onPress={() => {
 
         }}
-        style={{ height: 178,
-        width: 290 ,
-        borderRadius: 10,
-        overflow: 'hidden', backgroundColor: colors.blueBG}}>
-      <MapView
-        provider={PROVIDER_GOOGLE} // remove if not using Google Maps
         style={{
           height: 178,
-          width: 290 ,
+          width: 290,
           borderRadius: 10,
-          overflow: 'hidden'
-        }}
-        region={{
-          latitude: props.item.latitude,
-          longitude: props.item.longitude,
-          latitudeDelta: 0.015,
-          longitudeDelta: 0.0121,
-        }}
-      >
-        <Marker
-          coordinate={{latitude: props.item.latitude, longitude: props.item.longitude}}
-          image={require('../../assets/ic_map_pin.png')}
-        />
-      </MapView>
+          overflow: 'hidden', backgroundColor: colors.blueBG
+        }}>
+        <MapView
+          provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+          style={{
+            height: 178,
+            width: 290,
+            borderRadius: 10,
+            overflow: 'hidden'
+          }}
+          region={{
+            latitude: props.item.latitude,
+            longitude: props.item.longitude,
+            latitudeDelta: 0.015,
+            longitudeDelta: 0.0121,
+          }}
+        >
+          <Marker
+            coordinate={{ latitude: props.item.latitude, longitude: props.item.longitude }}
+            image={require('../../assets/ic_map_pin.png')}
+          />
+        </MapView>
       </TouchableOpacity>
     </View>
 
@@ -84,14 +87,14 @@ const VideoItem = function (props) {
               <ActivityIndicator size="large" />
             ) : (
               <TouchableOpacity
-                style={{alignItems: 'center', justifyContent: 'center'}}
+                style={{ alignItems: 'center', justifyContent: 'center' }}
                 onPress={() => setIsPause(false)}
               >
                 <FastImage
                   style={props.style}
                   source={thumbnail ? { uri: thumbnail } : {}}
                 />
-                <FastImage source={require('../../assets/ic_play.png')} style={{width: 56, height: 56, position: 'absolute', }}/>
+                <FastImage source={require('../../assets/ic_play.png')} style={{ width: 56, height: 56, position: 'absolute', }} />
               </TouchableOpacity>
             )}
           </View>
@@ -120,7 +123,7 @@ const VideoItem = function (props) {
 
 const MessageItem = function (props) {
   const item = props.item
-  const right =  item.sender === (appStore.user.type + '_' + appStore.user.user_id);
+  const right = item.sender === (appStore.user.type + '_' + appStore.user.user_id);
   const [images, setImages] = useState([])
   const [imageVisible, setImageVisible] = useState(false);
 
@@ -154,142 +157,141 @@ const MessageItem = function (props) {
     <>
       {
         item.has_attachment ?
-        <View style={{ marginVertical: 8, marginHorizontal: 16, }}>
-          <View style={{ flexDirection: 'row', justifyContent: right ? 'flex-end' : 'flex-start', alignItems: 'center' }}>
-            {
-              item.status === 'error' && right &&
-              <Image source={require('../../assets/ic_send_error.png')}
-                     style={{ width: 16, height: 16, resizeMode: 'contain', marginRight: 14 }} />
-            }
-
-            <View style={{ borderRadius: 10, overflow: 'hidden', maxWidth: '75%', }}>
-              {
-                item.attachmentLocal && (
-                  <View style={{
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    gap: 4,
-                    justifyContent: right ? 'flex-end' : 'flex-start',
-                  }}>
-                    {
-                      item.attachmentLocal.map(attach => {
-
-                        if (attach.includes('jpg') || attach.includes('png') || attach.includes('jpeg')) {
-                          return <Image source={{ uri: attach }} style={{
-                            backgroundColor: "#F2F2F2",
-                            borderRadius: 5,
-                            overflow: 'hidden',
-                            width: item.attachmentLocal.length === 1 ? 200 : 120,
-                            height: item.attachmentLocal.length === 1 ? 200 : 120
-                          }} />
-                        }
-                        if (attach.includes('.mov') || attach.includes('.mp4')) {
-                          return (<VideoItem source={{ uri: attach }}
-                                             url={attach}
-                                             resizeMode={'contain'}
-                                             allowsExternalPlayback
-                                             style={{
-                                               width: 200,
-                                               height: 200,
-                                               backgroundColor: '#f2f2f2',
-                                               borderRadius: 10,
-                                               marginVertical: 16
-                                             }}
-                          >
-
-                          </VideoItem>)
-                        }
-                        return <View />
-                      })
-                    }
-                  </View>
-                )
-              }
-              {
-                item.attachments && (
-                  <View style={{
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    gap: 4,
-                    justifyContent: right ? 'flex-end' : 'flex-start',
-                  }}>
-                    {
-                      item.attachments.map(attach => {
-
-                        if (attach.url.includes('jpg') || attach.url.includes('png') || attach.url.includes('jpeg')) {
-                          return <TouchableOpacity
-                            key={attach.url}
-                            onPress={() => {
-                              setImages([
-                                {
-                                  uri: attach.url
-                                }
-                              ])
-                              setImageVisible(
-                                true
-                              )
-                            }}>
-
-                            <Image source={{ uri: attach.url }} style={{
-                              borderWidth: 0.5,
-                              borderColor: '#f2f2f2',
-                              backgroundColor: "#F2F2F2",
-                              borderRadius: 5,
-                              overflow: 'hidden',
-                              width: item.attachments.length === 1 ? 200 : 120,
-                              height: item.attachments.length === 1 ? 200 : 120
-                            }} />
-                          </TouchableOpacity>
-                        }
-
-                        if (attach.url.includes('.mov') || attach.url.includes('.mp4')) {
-                          return <VideoItem url={attach.url}
-                                            style={{
-                                              backgroundColor: "#F2F2F2",
-                                              borderRadius: 5,
-                                              overflow: 'hidden',
-                                              width: item.attachments.length === 1 ? 200 : 120,
-                                              height: item.attachments.length === 1 ? 200 : 120
-                                            }} />
-                        }
-
-                      })
-                    }
-                  </View>
-                )
-              }
-            </View>
-          </View>
-          <View style={{ flexDirection: 'row', justifyContent: right ? 'flex-end' : 'flex-start', alignItems: 'center' }}>
-            <Text style={{
-              fontWeight: '400',
-              fontSize: 10,
-              color: colors.neutralText,
-              marginTop: 4,
-              textAlign: right ? 'right' : 'left'
-            }}>{new Date(item.created_at).getFullYear() < new Date().getFullYear() ? moment(item.created_at).format('DD/MM/YYYY') : moment(item.created_at).fromNow().includes('days') ? `${moment(item.created_at).format('DD/MM')}` : moment(item.created_at).fromNow().includes('day') ? `${moment(item.created_at).format('DD/MM')}` : moment(item.created_at).format('HH:mm')}</Text>
-          </View>
-          {/*{*/}
-          {/*  item.status ==='sending' &&*/}
-          {/*  <Text style={{fontWeight: '500', fontSize: 15, color: colors.neutralText,  marginTop: 8, textAlign: right?'right': 'left'}}>{'Đang gửi...'}</Text>*/}
-          {/*}*/}
-          {
-            item.status === 'error' &&
-            <Text style={{
-              fontWeight: '500',
-              fontSize: 15,
-              color: colors.primary,
-              marginTop: 8,
-              textAlign: right ? 'right' : 'left'
-            }}>{appStore.lang.chat.send_error}</Text>
-          }
-        </View>:
           <View style={{ marginVertical: 8, marginHorizontal: 16, }}>
             <View style={{ flexDirection: 'row', justifyContent: right ? 'flex-end' : 'flex-start', alignItems: 'center' }}>
               {
                 item.status === 'error' && right &&
                 <Image source={require('../../assets/ic_send_error.png')}
-                       style={{ width: 16, height: 16, resizeMode: 'contain', marginRight: 14 }} />
+                  style={{ width: 16, height: 16, resizeMode: 'contain', marginRight: 14 }} />
+              }
+
+              <View style={{ borderRadius: 10, overflow: 'hidden', maxWidth: '75%', }}>
+                {
+                  item.attachmentLocal && (
+                    <View style={{
+                      flexDirection: 'row',
+                      flexWrap: 'wrap',
+                      gap: 4,
+                      justifyContent: right ? 'flex-end' : 'flex-start',
+                    }}>
+                      {
+                        item.attachmentLocal.map(attach => {
+
+                          if (attach.includes('jpg') || attach.includes('png') || attach.includes('jpeg')) {
+                            return <Image source={{ uri: attach }} style={{
+                              backgroundColor: "#F2F2F2",
+                              borderRadius: 5,
+                              overflow: 'hidden',
+                              width: item.attachmentLocal.length === 1 ? 200 : 120,
+                              height: item.attachmentLocal.length === 1 ? 200 : 120
+                            }} />
+                          }
+                          if (attach.includes('.mov') || attach.includes('.mp4')) {
+                            return (<VideoItem source={{ uri: attach }}
+                              url={attach}
+                              resizeMode={'contain'}
+                              allowsExternalPlayback
+                              style={{
+                                width: 200,
+                                height: 200,
+                                backgroundColor: '#f2f2f2',
+                                borderRadius: 10,
+                                marginVertical: 16
+                              }}
+                            >
+
+                            </VideoItem>)
+                          }
+                          return <View />
+                        })
+                      }
+                    </View>
+                  )
+                }
+                {
+                  item.attachments && (
+                    <View style={{
+                      flexDirection: 'row',
+                      flexWrap: 'wrap',
+                      gap: 4,
+                      justifyContent: right ? 'flex-end' : 'flex-start',
+                    }}>
+                      {
+                        item.attachments.map(attach => {
+                          if (attach.url.includes('jpg') || attach.url.includes('png') || attach.url.includes('jpeg')) {
+                            return <TouchableOpacity
+                              key={attach.url}
+                              onPress={() => {
+                                setImages([
+                                  {
+                                    uri: attach.url
+                                  }
+                                ])
+                                setImageVisible(
+                                  true
+                                )
+                              }}>
+
+                              <Image source={{ uri: attach.url }} style={{
+                                borderWidth: 0.5,
+                                borderColor: '#f2f2f2',
+                                backgroundColor: "#F2F2F2",
+                                borderRadius: 5,
+                                overflow: 'hidden',
+                                width: item.attachments.length === 1 ? 200 : 120,
+                                height: item.attachments.length === 1 ? 200 : 120
+                              }} />
+                            </TouchableOpacity>
+                          }
+
+                          if (attach.url.includes('.mov') || attach.url.includes('.mp4')) {
+                            return <VideoItem url={attach.url}
+                              style={{
+                                backgroundColor: "#F2F2F2",
+                                borderRadius: 5,
+                                overflow: 'hidden',
+                                width: item.attachments.length === 1 ? 200 : 120,
+                                height: item.attachments.length === 1 ? 200 : 120
+                              }} />
+                          }
+
+                        })
+                      }
+                    </View>
+                  )
+                }
+              </View>
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: right ? 'flex-end' : 'flex-start', alignItems: 'center' }}>
+              <Text style={{
+                fontWeight: '400',
+                fontSize: 10,
+                color: colors.neutralText,
+                marginTop: 4,
+                textAlign: right ? 'right' : 'left'
+              }}>{new Date(item.created_at).getFullYear() < new Date().getFullYear() ? moment(item.created_at).format('DD/MM/YYYY') : moment(item.created_at).fromNow().includes('days') ? `${moment(item.created_at).format('DD/MM')}` : moment(item.created_at).fromNow().includes('day') ? `${moment(item.created_at).format('DD/MM')}` : moment(item.created_at).format('HH:mm')}</Text>
+            </View>
+            {/*{*/}
+            {/*  item.status ==='sending' &&*/}
+            {/*  <Text style={{fontWeight: '500', fontSize: 15, color: colors.neutralText,  marginTop: 8, textAlign: right?'right': 'left'}}>{'Đang gửi...'}</Text>*/}
+            {/*}*/}
+            {
+              item.status === 'error' &&
+              <Text style={{
+                fontWeight: '500',
+                fontSize: 15,
+                color: colors.primary,
+                marginTop: 8,
+                textAlign: right ? 'right' : 'left'
+              }}>{appStore.lang.chat.send_error}</Text>
+            }
+          </View> :
+          <View style={{ marginVertical: 8, marginHorizontal: 16, }}>
+            <View style={{ flexDirection: 'row', justifyContent: right ? 'flex-end' : 'flex-start', alignItems: 'center' }}>
+              {
+                item.status === 'error' && right &&
+                <Image source={require('../../assets/ic_send_error.png')}
+                  style={{ width: 16, height: 16, resizeMode: 'contain', marginRight: 14 }} />
               }
               <View style={{
                 backgroundColor: appStore.appId === 'VTPost' ? (right ? colors.primary : "#F2F2F2") : (right ? colors.bgVTM : "#F2F2F2"),
@@ -375,6 +377,161 @@ const MessageItem = function (props) {
 
 }
 
+const DocumentItem = function (props) {
+  const item = props.item
+  const right = item.sender === (appStore.user.type + '_' + appStore.user.user_id);
+  return (
+    <>
+      {
+        item.has_attachment && (
+          <View style={{ marginVertical: 8, marginHorizontal: 16 }}>
+            <View style={{ flexDirection: 'row', justifyContent: right ? 'flex-end' : 'flex-start', alignItems: 'center' }}>
+              {
+                item.status === 'error' && right &&
+                <Image source={require('../../assets/ic_send_error.png')}
+                  style={{ width: 16, height: 16, resizeMode: 'contain', marginRight: 14 }} />
+              }
+
+              <View style={{ maxWidth: '85%', }}>
+                {
+                  item.attachmentLocal && (
+                    <View style={{
+                      flexDirection: 'row',
+                      flexWrap: 'wrap',
+                      gap: 4,
+                      justifyContent: right ? 'flex-end' : 'flex-start',
+                    }}>
+                      {
+                        item.attachmentLocal.map(attach => {
+                          return (
+                            <View style={{
+                              borderRadius: 8,
+                              borderWidth: 1,
+                              borderColor: "#DCE6F0",
+                              backgroundColor: '#F8F8FA',
+                              paddingHorizontal: 8,
+                              paddingVertical: 8,
+                              flexDirection: 'row',
+                              width: '100%'
+                            }}>
+                              {attach.type.includes('pdf') && (
+                                <Image source={require('../../assets/file_pdf.png')}
+                                  style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
+                              )}
+                              {attach.type.includes('.doc') && (
+                                <Image source={require('../../assets/file_doc.png')}
+                                  style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
+                              )}
+                              {attach.type.includes('.sheet') && (
+                                <Image source={require('../../assets/file_xls.png')}
+                                  style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
+                              )}
+                              <View>
+                                <Text numberOfLines={1} style={{
+                                  fontSize: 15,
+                                  color: "#44494D"
+                                }}>
+                                  {attach.name}
+                                </Text>
+                                <Text style={{
+                                  fontSize: 13,
+                                  color: "#828282",
+                                  marginTop: 5
+                                }}>
+                                  {(attach.size / (1024 * 1024)).toFixed(2)} Mb
+                                </Text>
+                              </View>
+                            </View>
+                          )
+
+                        })
+                      }
+                    </View>
+                  )
+                }
+                {
+                  item.attachments && (
+                    <View style={{
+                      flexDirection: 'row',
+                      flexWrap: 'wrap',
+                      gap: 4,
+                      justifyContent: right ? 'flex-end' : 'flex-start',
+                    }}>
+                      {
+                        item.attachments.map(attach => {
+                          return (
+                            <View style={{
+                              borderRadius: 8,
+                              borderWidth: 1,
+                              borderColor: "#DCE6F0",
+                              backgroundColor: '#F8F8FA',
+                              paddingHorizontal: 8,
+                              paddingVertical: 8,
+                              flexDirection: 'row',
+                              width: '100%'
+                            }}>
+                              {attach.url.includes('pdf') && (
+                                <Image source={require('../../assets/file_pdf.png')}
+                                  style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
+                              )}
+                              {attach.url.includes('.doc') && (
+                                <Image source={require('../../assets/file_doc.png')}
+                                  style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
+                              )}
+                              {attach.url.includes('.sheet') && (
+                                <Image source={require('../../assets/file_xls.png')}
+                                  style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
+                              )}
+                              <View>
+                                <Text numberOfLines={1} style={{
+                                  fontSize: 15,
+                                  color: "#44494D"
+                                }}>
+                                  {attach?.name}
+                                </Text>
+                                <Text style={{
+                                  fontSize: 13,
+                                  color: "#828282",
+                                  marginTop: 5
+                                }}>
+                                  {(attach?.size / (1024 * 1024)).toFixed(2)} Mb
+                                </Text>
+                              </View>
+                            </View>
+                          )
+                        })
+                      }
+                    </View>
+                  )
+                }
+              </View>
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: right ? 'flex-end' : 'flex-start', alignItems: 'center' }}>
+              <Text style={{
+                fontWeight: '400',
+                fontSize: 10,
+                color: colors.neutralText,
+                marginTop: 4,
+                textAlign: right ? 'right' : 'left'
+              }}>{new Date(item.created_at).getFullYear() < new Date().getFullYear() ? moment(item.created_at).format('DD/MM/YYYY') : moment(item.created_at).fromNow().includes('days') ? `${moment(item.created_at).format('DD/MM')}` : moment(item.created_at).fromNow().includes('day') ? `${moment(item.created_at).format('DD/MM')}` : moment(item.created_at).format('HH:mm')}</Text>
+            </View>
+            {
+              item.status === 'error' &&
+              <Text style={{
+                fontWeight: '500',
+                fontSize: 15,
+                color: colors.primary,
+                marginTop: 8,
+                textAlign: right ? 'right' : 'left'
+              }}>{appStore.lang.chat.send_error}</Text>
+            }
+          </View>
+        )
+      }
+    </>
+  )
+}
+
 const OrderItem = function (props) {
   const item = props.item
 
@@ -432,7 +589,7 @@ const OrderItem = function (props) {
 }
 
 
-export class ChatItem extends React.Component{
+export class ChatItem extends React.Component {
 
   constructor(props) {
     super(props);
@@ -440,18 +597,21 @@ export class ChatItem extends React.Component{
 
     }
     this.item = this.props.item
-    this.right =  this.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
+    this.right = this.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
   }
 
   render() {
     if (this.item.type === 'MESSAGE') {
-      return (<MessageItem item={this.props.item}/>)
+      return (<MessageItem item={this.props.item} />)
     }
     if (this.item.type === 'CREATED_QUOTE_ORDER') {
-      return (<OrderItem item={this.props.item}/>)
+      return (<OrderItem item={this.props.item} />)
     }
     if (this.item.type === 'MAP') {
-      return (<MapItem item={this.props.item}/>)
+      return (<MapItem item={this.props.item} />)
+    }
+    if (this.item.type === 'DOCUMENT') {
+      return (<DocumentItem item={this.props.item} />)
     }
   }
 
