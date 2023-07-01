@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import appStore from "../AppStore";
-import { ActivityIndicator, Image, Linking, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {ActivityIndicator, Image, Linking, Platform, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import colors from "../../Styles";
 import moment from "moment/moment";
 import ParsedText from "react-native-parsed-text";
@@ -12,7 +12,7 @@ import FastImage from 'react-native-fast-image';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { toJS } from 'mobx';
-
+import {createMapLink, createOpenLink} from 'react-native-open-maps';
 
 const MapItem = function (props) {
   const right = props.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
@@ -21,7 +21,11 @@ const MapItem = function (props) {
     <View style={{ flexDirection: 'row', justifyContent: right ? 'flex-end' : 'flex-start', alignItems: 'center', marginVertical: 8, marginHorizontal: 16, }}>
       <TouchableOpacity
         onPress={() => {
-
+          try{
+            createOpenLink({ provider: 'google', latitude: props.item.location.latitude, longitude: props.item.location.longitude })
+          }catch (e) {
+            console.log(e)
+          }
         }}
         style={{
           height: 178,
@@ -30,6 +34,9 @@ const MapItem = function (props) {
           overflow: 'hidden', backgroundColor: colors.blueBG
         }}>
         <MapView
+          zoomEnabled={false}
+          zoomTapEnabled={false}
+          scrollEnabled={false}
           provider={PROVIDER_GOOGLE} // remove if not using Google Maps
           style={{
             height: 178,
@@ -38,14 +45,14 @@ const MapItem = function (props) {
             overflow: 'hidden'
           }}
           region={{
-            latitude: props.item.latitude,
-            longitude: props.item.longitude,
+            latitude: props.item.location.latitude,
+            longitude: props.item.location.longitude,
             latitudeDelta: 0.015,
             longitudeDelta: 0.0121,
           }}
         >
           <Marker
-            coordinate={{ latitude: props.item.latitude, longitude: props.item.longitude }}
+            coordinate={{ latitude: props.item.location.latitude, longitude: props.item.location.longitude }}
             image={require('../../assets/ic_map_pin.png')}
           />
         </MapView>
@@ -412,6 +419,7 @@ const DocumentItem = function (props) {
                               paddingHorizontal: 8,
                               paddingVertical: 8,
                               flexDirection: 'row',
+                              alignItems: 'center',
                               width: '100%'
                             }}>
                               {attach.type.includes('pdf') && (
@@ -422,7 +430,7 @@ const DocumentItem = function (props) {
                                 <Image source={require('../../assets/file_doc.png')}
                                   style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
                               )}
-                              {attach.type.includes('.sheet') && (
+                              {attach.type.includes('.xls') && (
                                 <Image source={require('../../assets/file_xls.png')}
                                   style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
                               )}
@@ -468,6 +476,7 @@ const DocumentItem = function (props) {
                               paddingHorizontal: 8,
                               paddingVertical: 8,
                               flexDirection: 'row',
+                              alignItems: 'center',
                               width: '100%'
                             }}>
                               {attach.url.includes('pdf') && (
@@ -482,21 +491,22 @@ const DocumentItem = function (props) {
                                 <Image source={require('../../assets/file_xls.png')}
                                   style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
                               )}
-                              <View>
+                              {/*<View>*/}
                                 <Text numberOfLines={1} style={{
                                   fontSize: 15,
+                                  flex: 1,
                                   color: "#44494D"
                                 }}>
-                                  {attach?.name}
+                                  {attach.key.replace("conversation/", "")}
                                 </Text>
-                                <Text style={{
-                                  fontSize: 13,
-                                  color: "#828282",
-                                  marginTop: 5
-                                }}>
-                                  {(attach?.size / (1024 * 1024)).toFixed(2)} Mb
-                                </Text>
-                              </View>
+                                {/*<Text style={{*/}
+                                {/*  fontSize: 13,*/}
+                                {/*  color: "#828282",*/}
+                                {/*  marginTop: 5*/}
+                                {/*}}>*/}
+                                {/*  {(attach?.size / (1024 * 1024)).toFixed(2)} Mb*/}
+                                {/*</Text>*/}
+                              {/*</View>*/}
                             </View>
                           )
                         })
@@ -607,10 +617,10 @@ export class ChatItem extends React.Component {
     if (this.item.type === 'CREATED_QUOTE_ORDER') {
       return (<OrderItem item={this.props.item} />)
     }
-    if (this.item.type === 'MAP') {
+    if (this.item.type === 'LOCATION') {
       return (<MapItem item={this.props.item} />)
     }
-    if (this.item.type === 'DOCUMENT') {
+    if (this.item.type === 'FILE') {
       return (<DocumentItem item={this.props.item} />)
     }
   }

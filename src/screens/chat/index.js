@@ -127,6 +127,20 @@ export const ChatScreen = observer(function ChatScreen(props) {
     })
       .then((res)=>{
         console.log(res)
+
+        const message = {
+          id: uuid.v4(),
+          _id: uuid.v4(),
+          type: "FILE",
+          attachmentLocal: res.map(i => i.uri),
+          status: "sending",
+          order_number: conversation.order_info?.order_number,
+          sender: appStore.user.type + '_' + appStore.user.user_id,
+          conversation_id: conversation._id
+        }
+        chatStore.data.unshift(message)
+        chatStore.sendMessage(message)
+        setInput('')
       })
       .catch((res)=>{
         console.log(res)
@@ -153,18 +167,18 @@ export const ChatScreen = observer(function ChatScreen(props) {
               console.log(position);
               const message = {
                 id: uuid.v4(),
-                "type": "MAP",
-                longitude: position.coords.longitude,
-                latitude: position.coords.latitude,
-                "status": "sending",
+                type: "LOCATION",
+                location: {
+                  longitude: position.coords.longitude,
+                  latitude: position.coords.latitude,
+                },
+                status: "sending",
                 sender: appStore.user.type + '_' + appStore.user.user_id,
                 conversation_id: conversation._id
               }
               console.log('map', message)
               chatStore.data.unshift(message)
               chatStore.sendMessage(message)
-              // messages.unshift()
-              // setMessages(messages)
               setInput('')
             },
             (error) => {

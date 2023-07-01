@@ -96,22 +96,11 @@ class ChatStore {
     if (params.attachmentLocal) {
       const formData = new FormData()
       for (let i = 0; i < params.attachmentLocal.length; i++) {
-        const mimeFile = mime.lookup(params.attachmentLocal[i])
+        let mimeFile = mime.lookup(params.attachmentLocal[i])
+        if(!mimeFile) mimeFile = 'jpg'
         console.log('mimeFile', mimeFile)
         let fileUri = ''
-        if (mimeFile.includes('video')) {
-          console.log('Compression Progress: ', params.attachmentLocal[i]);
-
-          // const result = await Video.compress(
-          //   params.attachmentLocal[i],
-          //   {
-          //     compressionMethod: 'auto',
-          //   },
-          //   (progress) => {
-          //       console.log('Compression Progress: ', progress);
-          //   }
-          // );
-          // console.log('Compression Progress: ', result);
+        if (mimeFile?.includes('video')) {
           fileUri = params.attachmentLocal[i]
           const fileName = fileUri.slice(fileUri.lastIndexOf('/') + 1, fileUri.length)
 
@@ -120,6 +109,21 @@ class ChatStore {
             uri: fileUri,
             type: 'video/mp4',
           })
+
+        }else if(mimeFile?.includes('doc')||mimeFile.includes('pdf')||mimeFile.includes('xls')){
+          try{
+            fileUri = params.attachmentLocal[i]
+            const fileName = fileUri.slice(fileUri.lastIndexOf('/') + 1, fileUri.length)
+
+            formData.append("files", {
+              name: fileName,
+              uri: fileUri,
+              type: mimeFile,
+            })
+          }catch (e) {
+            console.log(e)
+          }
+
         }else{
           const result = await ImageResizer.createResizedImage(
             params.attachmentLocal[i],

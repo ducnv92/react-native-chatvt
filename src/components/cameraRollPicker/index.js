@@ -14,6 +14,7 @@ import Row from './Row';
 import ImageItem from './ImageItem';
 import {BottomSheetFlatList} from "@gorhom/bottom-sheet";
 import {Log} from "../../utils";
+import {getAssetInfoAsync} from "expo-media-library";
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -105,6 +106,7 @@ class CameraRollPicker extends Component {
   }
 
   appendImages(data) {
+    console.log('images', data)
     const assets = data.edges;
     const newState = {
       loadingMore: false,
@@ -130,12 +132,17 @@ class CameraRollPicker extends Component {
     }
   }
 
+  convertLocalIdentifierToAssetLibrary = (localIdentifier, ext) => {
+    const hash = localIdentifier.split('/')[0];
+    return `assets-library://asset/asset.${ext}?id=${hash}&ext=${ext}`;
+  };
+
   doFetch() {
     const { groupTypes, assetType } = this.props;
 
     const fetchParams = {
       first: 100,
-      groupTypes,
+      // groupTypes,
       assetType,
     };
 
@@ -149,7 +156,22 @@ class CameraRollPicker extends Component {
     }
 
     CameraRoll.getPhotos(fetchParams)
-      .then(data => this.appendImages(data), e => Log(e));
+      .then(data => {
+        data.edges.map(async (edge) => {
+          if (Platform.OS === 'ios') {
+
+            try {
+              let myAssetId = edge.node.image.uri.slice(5);
+              let returnedAssetInfo = await getAssetInfoAsync(myAssetId);
+              console.log(returnedAssetInfo)
+            }
+            catch (error) {}
+            edge.node.image.uri = this.convertLocalIdentifierToAssetLibrary(edge.node.image.uri.replace('ph://', ''), edge.node.type === 'image' ? 'jpg' : 'mov')
+          }
+          return edge
+        })
+        this.appendImages(data)
+      }, e => Log(e));
   }
 
   selectImage(image) {
@@ -302,12 +324,12 @@ CameraRollPicker.propTypes = {
 
 CameraRollPicker.defaultProps = {
   initialNumToRender: 5,
-  groupTypes: 'SavedPhotos',
+  groupTypes: 'All',
   maximum: 15,
   imagesPerRow: 3,
   imageMargin: 5,
   selectSingleItem: false,
-  assetType: 'Photos',
+  assetType: 'All',
   backgroundColor: 'white',
   selected: [],
   callback(selectedImages, currentImage) {

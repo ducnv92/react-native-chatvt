@@ -37,22 +37,27 @@ class ImageItem extends Component {
   }
 
   fancyTimeFormat(duration) {
-    // Hours, minutes and seconds
-    const hrs = ~~(duration / 3600);
-    const mins = ~~((duration % 3600) / 60);
-    const secs = ~~duration % 60;
+    try{
+      // Hours, minutes and seconds
+      const hrs = ~~(duration / 3600);
+      const mins = ~~((duration % 3600) / 60);
+      const secs = ~~duration % 60;
 
-    // Output like "1:01" or "4:03:59" or "123:03:59"
-    let ret = "";
+      // Output like "1:01" or "4:03:59" or "123:03:59"
+      let ret = "";
 
-    if (hrs > 0) {
-      ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+      if (hrs > 0) {
+        ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+      }
+
+      ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+      ret += "" + secs;
+      return ret;
+    }catch (e) {
+      console.log(e)
+      return ''
     }
 
-    ret += "" + mins + ":" + (secs < 10 ? "0" : "");
-    ret += "" + secs;
-
-    return ret;
   }
 
 
@@ -67,20 +72,21 @@ class ImageItem extends Component {
 
     const { image } = item.node;
 
+    console.log(Image.resolveAssetSource(image.uri))
 
     return (
       <TouchableOpacity
         style={{ marginBottom: imageMargin, marginRight: imageMargin }}
         onPress={() => this.handleClick(image)}
       >
-        <FastImage
+        <Image
           source={{ uri: image.uri }}
           style={{ height: this.imageSize, width: this.imageSize, backgroundColor: 'grey' }}
         />
         { marker }
-        {
-          image.playableDuration && <Text style={{position: 'absolute', fontSize: 12, color: '#fffffffa', bottom: 10, right: 8}}>{this.fancyTimeFormat(image.playableDuration)}</Text>
-        }
+        {/*{*/}
+        {/*  image.playableDuration && image.playableDuration!==0 && <Text style={{position: 'absolute', fontSize: 12, color: '#fffffffa', bottom: 10, right: 8}}>{this.fancyTimeFormat(image.playableDuration)}</Text>*/}
+        {/*}*/}
       </TouchableOpacity>
     );
   }
