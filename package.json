@@ -82,7 +82,6 @@
     "react": "18.2.0",
     "react-app-rewired": "^2.2.1",
     "react-native": "0.71.11",
-    "react-native-builder-bob": "^0.20.4",
     "release-it": "^15.0.0",
     "typescript": "^4.5.2"
   },
@@ -111,9 +110,6 @@
   "dependencies": {
     "@gorhom/bottom-sheet": "2.4.1",
     "apisauce": "1.1.1",
-    "expo-media-library": "^15.2.3",
-    "expo-modules-core": "^1.2.7",
-    "expo-core": "^3.0.1",
     "fbjs": "^3.0.5",
     "mobx": "^6.9.0",
     "mobx-react-lite": "^3.4.3",
@@ -130,7 +126,7 @@
     "yarn": "^1.22.19"
   },
   "engines": {
-    "node": ">= 16.0.0"
+    "node": ">= 14.0.0"
   },
   "packageManager": "^yarn@1.22.15",
   "jest": {

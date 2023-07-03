@@ -14,7 +14,6 @@ import Row from './Row';
 import ImageItem from './ImageItem';
 import {BottomSheetFlatList} from "@gorhom/bottom-sheet";
 import {Log} from "../../utils";
-import {getAssetInfoAsync} from "expo-media-library";
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -159,13 +158,6 @@ class CameraRollPicker extends Component {
       .then(data => {
         data.edges.map(async (edge) => {
           if (Platform.OS === 'ios') {
-
-            try {
-              let myAssetId = edge.node.image.uri.slice(5);
-              let returnedAssetInfo = await getAssetInfoAsync(myAssetId);
-              console.log(returnedAssetInfo)
-            }
-            catch (error) {}
             edge.node.image.uri = this.convertLocalIdentifierToAssetLibrary(edge.node.image.uri.replace('ph://', ''), edge.node.type === 'image' ? 'jpg' : 'mov')
           }
           return edge
