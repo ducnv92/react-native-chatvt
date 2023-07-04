@@ -3,6 +3,8 @@ import invariant from 'invariant'
 import type { PlatformTypes, SupportedPlatforms } from './fileTypes'
 import { perPlatformTypes } from './fileTypes'
 
+// @ts-nocheck
+
 export type DocumentPickerResponse = {
   uri: string
   name: string | null
@@ -49,6 +51,7 @@ export async function pickDirectory<OS extends SupportedPlatforms>(
       allowMultiSelection: false,
       type: ['public.folder'],
     })
+    // @ts-ignore
     return { uri: result[0].uri }
   } else {
     return RNDocumentPicker.pickDirectory()
@@ -71,6 +74,7 @@ export function pickSingle<OS extends SupportedPlatforms>(
     ...opts,
     allowMultiSelection: false,
   }
+  // @ts-ignore
   return pick(options).then((results) => results[0])
 }
 

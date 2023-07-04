@@ -5,7 +5,7 @@ import {
   NativeModules,
   Platform,
 } from 'react-native';
-
+// @ts-nocheck
 const {RNAudioRecorderPlayer} = NativeModules;
 
 export enum AudioSourceAndroidType {
@@ -149,13 +149,13 @@ export type PlayBackType = {
 };
 
 class AudioRecorderPlayer {
-  private _isRecording: boolean;
-  private _isPlaying: boolean;
-  private _hasPaused: boolean;
-  private _hasPausedRecord: boolean;
-  private _recorderSubscription: EmitterSubscription;
-  private _playerSubscription: EmitterSubscription;
-  private _playerCallback: (event: PlayBackType) => void;
+  private _isRecording: boolean | undefined;
+  private _isPlaying: boolean | undefined;
+  private _hasPaused: boolean | undefined;
+  private _hasPausedRecord: boolean | undefined;
+  private _recorderSubscription: EmitterSubscription | undefined | null;
+  private _playerSubscription: EmitterSubscription | undefined;
+  private _playerCallback: ((event: PlayBackType) => void) | undefined | null;
 
   mmss = (secs: number): string => {
     let minutes = Math.floor(secs / 60);
@@ -321,16 +321,15 @@ class AudioRecorderPlayer {
     }
   };
 
+  // @ts-ignore
   /**
    * Start playing with param.
    * @param {string} uri audio uri.
    * @param {Record<string, string>} httpHeaders Set of http headers.
    * @returns {Promise<string>}
    */
-  startPlayer = async (
-    uri?: string,
-    httpHeaders?: Record<string, string>,
-  ): Promise<string> => {
+    // @ts-ignore
+  startPlayer = async (uri?: string, httpHeaders?: Record<string, string>): Promise<string> => {
     if (!uri) {
       uri = 'DEFAULT';
     }
@@ -378,6 +377,7 @@ class AudioRecorderPlayer {
    * Pause playing.
    * @returns {Promise<string>}
    */
+    // @ts-ignore
   pausePlayer = async (): Promise<string> => {
     if (!this._isPlaying) {
       return 'No audio playing';
