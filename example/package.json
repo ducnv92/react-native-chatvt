@@ -14,8 +14,6 @@
     "@react-native-community/cameraroll": "^2.0.0",
     "react": "18.2.0",
     "react-native": "0.71.8",
-    "react-native-audio-recorder-player": "^3.5.3",
-    "react-native-document-picker": "^9.0.1",
     "react-native-fast-image": "^8.6.3",
     "react-native-geolocation-service": "^5.3.1",
     "react-native-gesture-handler": "^1.8.0",

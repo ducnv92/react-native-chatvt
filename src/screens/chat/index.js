@@ -35,7 +35,7 @@ import DocumentPicker, {
   isCancel,
   isInProgress,
   types,
-} from 'react-native-document-picker'
+} from '../../components/documentPicker'
 import uuid from 'react-native-uuid';
 
 export const ChatScreen = observer(function ChatScreen(props) {
