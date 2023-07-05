@@ -1,4 +1,4 @@
-#import "RNDocumentPicker.h"
+#import "RNDocumentPickerChatVT.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
@@ -126,7 +126,7 @@ RCT_EXPORT_METHOD(pick:(NSDictionary *)options
         result[FIELD_URI] = ((mode == UIDocumentPickerModeOpen) ? url : newURL).absoluteString;
 
         NSError *copyError;
-        NSURL *maybeFileCopyPath = copyDestination ? [RNDocumentPicker copyToUniqueDestinationFrom:newURL usingDestinationPreset:copyDestination error:&copyError] : nil;
+        NSURL *maybeFileCopyPath = copyDestination ? [RNDocumentPickerChatVT copyToUniqueDestinationFrom:newURL usingDestinationPreset:copyDestination error:&copyError] : nil;
 
         if (!copyError) {
             result[FIELD_FILE_COPY_URI] = RCTNullIfNil(maybeFileCopyPath.absoluteString);
