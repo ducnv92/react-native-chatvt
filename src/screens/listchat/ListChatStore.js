@@ -11,6 +11,7 @@ class ListChatStore {
    page = 0;
    search = '';
    data = [];
+   dataPin = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -27,6 +28,7 @@ class ListChatStore {
       if(this.page === 1){
         this.isLoading = true;
         this.canLoadMore = true;
+        this.getConversationPin()
       }else{
         if(!this.canLoadMore){
           return
@@ -104,9 +106,9 @@ class ListChatStore {
 
     }
 
-  async hide(params, onSuccess, onError) {
+  async mute(params, onSuccess, onError) {
 
-      const response = await services.create().conversationHide(params);
+      const response = await services.create().conversationMute(params);
     Log(response);
         if (response.status === 200) {
           if (response.data.status === 200) {
@@ -117,6 +119,33 @@ class ListChatStore {
         }
 
     }
+
+  async hide(params, onSuccess, onError) {
+
+    const response = await services.create().conversationHide(params);
+    Log(response);
+    if (response.status === 200) {
+      if (response.data.status === 200) {
+        if(onSuccess)
+          onSuccess()
+        return
+      }
+    }
+
+  }
+
+
+  async getConversationPin() {
+
+    const response = await services.create().getConversationPin({});
+    Log(response);
+    if (response.status === 200) {
+      if (response.data.status === 200) {
+          this.dataPin = response.data.data
+      }
+    }
+
+  }
 
 }
 

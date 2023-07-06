@@ -132,7 +132,8 @@ export const ChatScreen = observer(function ChatScreen(props) {
           id: uuid.v4(),
           _id: uuid.v4(),
           type: "FILE",
-          attachmentLocal: res.map(i => i.uri),
+          has_attachment: true,
+          attachmentLocal: res,
           status: "sending",
           order_number: conversation.order_info?.order_number,
           sender: appStore.user.type + '_' + appStore.user.user_id,
@@ -257,23 +258,27 @@ export const ChatScreen = observer(function ChatScreen(props) {
   }, []);
 
   const sendImages = async () => {
-    bottomSheetRef.current?.dismiss();
+    try{
+      bottomSheetRef.current?.dismiss();
 
-    const message = {
-      id: uuid.v4(),
-      "type": "MESSAGE",
-      attachmentLocal: chatStore.images.map(i => i.uri),
-      has_attachment: true,
-      "attachment_ids": [],
-      "text": '',
-      "status": "sending",
-      order_number: conversation.order_info?.order_number,
-      sender: appStore.user.type + '_' + appStore.user.user_id,
-      conversation_id: conversation._id
+      const message = {
+        id: uuid.v4(),
+        "type": "MESSAGE",
+        attachmentLocal: chatStore.images,
+        has_attachment: true,
+        "attachment_ids": [],
+        "text": '',
+        "status": "sending",
+        order_number: conversation.order_info?.order_number,
+        sender: appStore.user.type + '_' + appStore.user.user_id,
+        conversation_id: conversation._id
+      }
+      chatStore.data.unshift(message)
+      chatStore.sendMessage(message)
+      chatStore.images = []
+    }catch (e) {
+      console.log(e)
     }
-    chatStore.data.unshift(message)
-    chatStore.sendMessage(message)
-    chatStore.images = []
   }
 
   return <SafeAreaView style={{ flex: 1 }}>

@@ -13,8 +13,8 @@ export async function load(key) {
   }
 }
 
-export function save(key, data) {
-  chatVT.AsyncStorage.setItem(key, JSON.stringify(data));
+export async function save(key, data)  {
+  await chatVT.AsyncStorage.setItem(key, JSON.stringify(data));
 }
 
 export function clearAll() {

@@ -26,7 +26,6 @@ class AppStore {
     try {
 
       this.isLoading = true;
-      console.log('this.appId', this.appId)
       const response = this.appId === 'VTMan' ? await services.create().authVTM(params) : await services.create().authVTP(params);
 
       Log(response);
@@ -35,8 +34,8 @@ class AppStore {
         if (response.data.status === 200) {
           if (response.data.data) {
             this.user = response.data.data;
-            MyAsyncStorage.save(USER, {...response.data.data, ...{vtp_token: params.token}})
-            socket.init()
+            await MyAsyncStorage.save(USER, {...response.data.data, ...{vtp_token: params.token}})
+            await socket.init()
             this.isError = false;
             if (onSuccess) {
               onSuccess(response.data.data);
@@ -68,7 +67,13 @@ class AppStore {
   async createConversation(params, onSuccess, onError) {
 
     try {
-      const response = await services.create().createConversation(params);
+      let response
+
+      if(appStore.appId==='VTPost'){
+        response = await services.create().createConversationVTM(params);
+      }else{
+        response = await services.create().createConversationVTP(params);
+      }
 
       Log(response);
       this.createConversationLoading = false;
@@ -99,6 +104,35 @@ class AppStore {
         onError(error);
       }
       Log(error);
+    }
+  }
+
+
+  async onlineState() {
+
+    try {
+      const response = await services.create().onlineState({
+        time: new Date().getTime()
+      });
+      Log(response)
+
+    } catch (error) {
+
+    }
+  }
+  async orderValidate(params, onSuccess, onError) {
+
+    try {
+      const response = await services.create().orderValidate(params);
+      Log(response)
+      if(response.data.status === 200){
+        onSuccess()
+      }else{
+        onError(response.data.message)
+      }
+
+    } catch (error) {
+
     }
   }
 }

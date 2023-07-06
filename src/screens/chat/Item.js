@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import appStore from "../AppStore";
-import {ActivityIndicator, Image, Linking, Platform, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  Linking,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View
+} from "react-native";
 import colors from "../../Styles";
 import moment from "moment/moment";
 import ParsedText from "react-native-parsed-text";
@@ -13,6 +23,8 @@ import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { toJS } from 'mobx';
 import {createMapLink, createOpenLink} from 'react-native-open-maps';
+import Swipeable from 'react-native-swipeable';
+import { ReactionBarSelector } from '@charkour/react-reactions';
 
 const MapItem = function (props) {
   const right = props.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
@@ -182,8 +194,8 @@ const MessageItem = function (props) {
                       justifyContent: right ? 'flex-end' : 'flex-start',
                     }}>
                       {
-                        item.attachmentLocal.map(attach => {
-
+                        item.attachmentLocal.map(File => {
+                          const attach = File.uri
                           if (attach.includes('jpg') || attach.includes('png') || attach.includes('jpeg')) {
                             return <Image source={{ uri: attach }} style={{
                               backgroundColor: "#F2F2F2",
@@ -554,7 +566,7 @@ const OrderItem = function (props) {
               fontWeight: '600',
               fontSize: 16,
               color: colors.primaryText
-            }}>{item.order_info.order_number}</Text>
+            }}>{item.order_info?.order_number}</Text>
             <View style={{
               paddingVertical: 5,
               paddingHorizontal: 8,
@@ -566,7 +578,7 @@ const OrderItem = function (props) {
                 fontWeight: '600',
                 fontSize: 11,
                 color: 'white'
-              }}>{orderStatus(item.order_info.order_status)}</Text>
+              }}>{orderStatus(item.order_info?.order_status)}</Text>
             </View>
           </View>
         </View>
@@ -575,13 +587,13 @@ const OrderItem = function (props) {
           fontSize: 17,
           color: colors.primaryText,
           marginTop: 10
-        }}>{item.order_info.receiver_full_name} - {item.order_info.receiver_phone}</Text>
+        }}>{item.order_info?.receiver_full_name} - {item.order_info?.receiver_phone}</Text>
         <Text style={{
           fontWeight: '500',
           fontSize: 15,
           color: colors.neutralText,
           marginTop: 2
-        }}>{item.order_info.product}</Text>
+        }}>{item.order_info?.product}</Text>
 
       </View>
       {
@@ -611,18 +623,34 @@ export class ChatItem extends React.Component {
   }
 
   render() {
+    let messageView
     if (this.item.type === 'MESSAGE') {
-      return (<MessageItem item={this.props.item} />)
+      messageView =  (<MessageItem item={this.props.item} />)
     }
     if (this.item.type === 'CREATED_QUOTE_ORDER') {
-      return (<OrderItem item={this.props.item} />)
+      messageView = (<OrderItem item={this.props.item} />)
     }
     if (this.item.type === 'LOCATION') {
-      return (<MapItem item={this.props.item} />)
+      messageView = (<MapItem item={this.props.item} />)
     }
     if (this.item.type === 'FILE') {
-      return (<DocumentItem item={this.props.item} />)
+      messageView = (<DocumentItem item={this.props.item} />)
     }
+
+    let setting = {}
+    try{
+      const mySetting  = this.item.settings.find(i=>i.user_id === (appStore.user.type + '_' + appStore.user.user_id))
+      setting = mySetting?mySetting:{}
+    }catch (e) {
+      console.log(e)
+    }
+
+
+    return (
+      <View>
+        {messageView}
+      </View>
+    )
   }
 
 

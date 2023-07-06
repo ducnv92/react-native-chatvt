@@ -78,6 +78,8 @@ export default function App(props: any) {
             <View style={{height: 16}}/>
             <Button
               onPress={(() => {
+
+                /** VTP tạo chat với bưu tá */
                 chatVT.toChat(props.componentId, {
                   /** vtm_user_ids: mảng gồm id của bưu tá */
                   /** order_number: mã vận đơn */
@@ -86,6 +88,17 @@ export default function App(props: any) {
                   ],
                   order_number: '1694287621393'
                 })
+
+
+                // /** VTM tạo chat với khách hàng */
+                // chatVT.toChat(props.componentId, {
+                //   /** vtm_user_ids: mảng gồm id của bưu tá */
+                //   /** order_number: mã vận đơn */
+                //   vtp_user_ids: [
+                //     985979
+                //   ],
+                //   order_number: '1694287621393'
+                // })
               })}
               title={'Chat Detail'}>
 

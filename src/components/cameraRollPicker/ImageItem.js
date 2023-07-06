@@ -72,8 +72,6 @@ class ImageItem extends Component {
 
     const { image } = item.node;
 
-    console.log(Image.resolveAssetSource(image.uri))
-
     return (
       <TouchableOpacity
         style={{ marginBottom: imageMargin, marginRight: imageMargin }}

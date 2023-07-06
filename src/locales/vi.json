@@ -10,6 +10,11 @@
     "message_system": "Tin nhắn hệ thống",
     "placeholder_search": "Nhập tên bưu tá, nhóm",
     "placeholder_search_VTM": "Nhập tên khách hàng, nhóm",
+    "pin": "Ghim",
+    "unpin": "Bỏ Ghim",
+    "mute": "Tắt t.báo",
+    "unmute": "Bật t.báo",
+    "delete": "Xoá",
     "you": "Bạn"
   },
   "chat": {

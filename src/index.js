@@ -7,6 +7,8 @@ import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 class ChatVT {
   AsyncStorage;
+
+  interval;
   /** */
   init(env, storage, lang, appId,  token, tokenSSO, onSuccess, onError){
     Navigation.registerComponent('ListChatScreen', () => gestureHandlerRootHOC(ListChatScreen));
@@ -20,7 +22,19 @@ class ChatVT {
     appStore.Auth({
       token: token,
       token_sso: tokenSSO
-    }, onSuccess, onError)
+    }, (res)=>{
+      if(this.interval){
+        clearInterval(this.interval)
+      }
+      this.interval = setInterval(()=>{
+        appStore.onlineState()
+      }, 30000)
+      if(onSuccess)
+      onSuccess(res)
+    }, onError)
+
+
+
   }
 
   toListChat(componentId){

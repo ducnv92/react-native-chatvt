@@ -45,11 +45,21 @@ const create = (baseURL = Endpoint.API_BASE) => {
   const sendMessage = async (data) => api.post(Endpoint.SEND_MESSAGE(data.conversation_id), data, await getHeader() );
   const uploadFile = async (data) => apiMultipart.post(Endpoint.UPLOAD_FILE+"?time="+new Date().getTime(), data, await getHeader() );
   const downloadFile = async (data) => api.get(Endpoint.DOWNLOAD_FILE, data, await getHeader() );
-  const createConversation = async (data) => api.post(Endpoint.CREATE_CONVERSATION_WITH_VTM, data, await getHeader() );
+  const createConversationVTM = async (data) => api.post(Endpoint.CREATE_CONVERSATION_WITH_VTM, data, await getHeader() );
+  const createConversationVTP = async (data) => api.post(Endpoint.CREATE_CONVERSATION_WITH_VTP, data, await getHeader() );
+  const onlineState = async (data) => api.post(Endpoint.ONLINE_STATE, data, await getHeader() );
+  const orderValidate = async (data) => api.post(Endpoint.ORDER_VALIDATE, data, await getHeader() );
+  const getConversationPin = async data => api.get(Endpoint.GET_CONVERSATION_PIN, data, await getHeader());
+  const conversationMute = async data => api.post(Endpoint.CONVERSATION_MUTE(data.conversation_id), data, await getHeader());
 
 
   return {
-    createConversation,
+    conversationMute,
+    getConversationPin,
+    orderValidate,
+    onlineState,
+    createConversationVTM,
+    createConversationVTP,
     uploadFile,
     downloadFile,
     authVTP,

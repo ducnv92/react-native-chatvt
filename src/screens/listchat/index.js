@@ -55,7 +55,8 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
 
     let setting = {}
     try{
-      setting = item.settings.find(i=>i.user_id===(appStore.user.type+'_'+appStore.user.user_id))
+      let mySetting = item.settings.find(i=>i.user_id===(appStore.user.type+'_'+appStore.user.user_id))
+      setting = mySetting?mySetting:{}
       // if(index%2===0)
       // setting.unread_count = 2
     }catch (e) {
@@ -121,7 +122,69 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
 
       }
 
-      return(
+        const rightButtons = [
+          <TouchableOpacity
+            onPress={()=>{
+              if(setting.is_pin){
+                listChatStore.unPin({ conversation_id: item._id })
+              }else{
+                listChatStore.pin({ conversation_id: item._id })
+              }
+            }}
+            style={{
+            width: 66,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#3B7CEC',
+            flex: 1,
+          }}>
+            <Image  resizeMode={'contain'}  source={setting.is_pin?require('../../assets/ic_unpin.png'):require('../../assets/ic_pin_white.png')} style={{width: 20, height: 20, resizeMode: 'contain'}}/>
+            <Text style={{  color: 'white',
+              fontSize: 13,
+              backgroundColor: 'transparent',
+              textAlign: 'center',
+              paddingTop: 4,}}>{setting.is_pin?appStore.lang.list_chat.unpin:appStore.lang.list_chat.pin}</Text>
+          </TouchableOpacity>,
+          <TouchableOpacity
+            onPress={()=>{
+              listChatStore.mute({ conversation_id: item._id, is_show: !setting.is_hide_notification})
+            }}
+            style={{
+            width: 66,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#EB960A',
+            flex: 1,
+          }}>
+            <Image resizeMode={'contain'} source={!setting.is_hide_notification?require('../../assets/ic_notify_off.png'):require('../../assets/ic_notify.png')} style={{width: 24, height: 24, resizeMode: 'contain'}}/>
+            <Text style={{  color: 'white',
+              fontSize: 13,
+              backgroundColor: 'transparent',
+              textAlign: 'center',
+              paddingTop: 4,}}>{setting.is_hide_notification?appStore.lang.list_chat.unmute:appStore.lang.list_chat.mute}</Text>
+          </TouchableOpacity>,
+          <TouchableOpacity
+            onPress={()=>{
+                listChatStore.hide({ conversation_id: item._id })
+            }}
+            style={{
+            width: 66,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#EE0033',
+            flex: 1,
+          }}>
+            <Image resizeMode={'contain'} source={require('../../assets/ic_delete.png')} style={{width: 24, height: 24, resizeMode: 'contain'}}/>
+            <Text style={{  color: 'white',
+              fontSize: 13,
+              backgroundColor: 'transparent',
+              textAlign: 'center',
+              paddingTop: 4,}}>{appStore.lang.list_chat.delete}</Text>
+          </TouchableOpacity>,
+        ];
+
+
+        return(
         // <ChatSwipeableRow
         //   isPin={setting?.is_pin}
         //   onPress1={(isPin)=>{
@@ -136,10 +199,8 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
         //   }}
         // >
       <Swipeable
-      //   rightButtons={[
-      //   <TouchableOpacity><Text>Button 1</Text></TouchableOpacity>,
-      //   <TouchableOpacity><Text>Button 2</Text></TouchableOpacity>
-      // ]}
+        rightButtonWidth={66}
+        rightButtons={rightButtons}
       >
           <TouchableOpacity
             onPress={()=>{
@@ -268,6 +329,18 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
         listChatStore.page = 0;
         listChatStore.getData({})
       }}
+      ListHeaderComponent={()=> <FlatList
+        refreshing={listChatStore.isLoading}
+        onRefresh={()=>{
+          listChatStore.page = 0;
+          listChatStore.getData({})
+        }}
+        keyExtractor={(item) => item._id}
+        style={{ backgroundColor: 'white'}}
+        data={listChatStore.dataPin}
+        ItemSeparatorComponent={()=>  (<View style={{backgroundColor: 'white', height: 1,}}><View style={{backgroundColor: '#E5E5E5', height: 1, marginLeft: 76, marginRight: 16}}></View></View>)}
+        renderItem={renderItem}
+      />}
       keyExtractor={(item) => item._id}
       style={{flex: 1, backgroundColor: 'white'}}
       data={listChatStore.data}

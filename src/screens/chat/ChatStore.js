@@ -96,12 +96,12 @@ class ChatStore {
     if (params.attachmentLocal) {
       const formData = new FormData()
       for (let i = 0; i < params.attachmentLocal.length; i++) {
-        let mimeFile = mime.lookup(params.attachmentLocal[i])
+        let mimeFile = mime.lookup(params.attachmentLocal[i].uri)
         if(!mimeFile) mimeFile = 'jpg'
         console.log('mimeFile', mimeFile)
         let fileUri = ''
         if (mimeFile?.includes('video')) {
-          fileUri = params.attachmentLocal[i]
+          fileUri = params.attachmentLocal[i].uri
           const fileName = fileUri.slice(fileUri.lastIndexOf('/') + 1, fileUri.length)
 
           formData.append("files", {
@@ -112,7 +112,7 @@ class ChatStore {
 
         }else if(mimeFile?.includes('doc')||mimeFile.includes('pdf')||mimeFile.includes('xls')){
           try{
-            fileUri = params.attachmentLocal[i]
+            fileUri = params.attachmentLocal[i].uri
             const fileName = fileUri.slice(fileUri.lastIndexOf('/') + 1, fileUri.length)
 
             formData.append("files", {
@@ -126,7 +126,7 @@ class ChatStore {
 
         }else{
           const result = await ImageResizer.createResizedImage(
-            params.attachmentLocal[i],
+            params.attachmentLocal[i].uri,
             1000,
             1000,
             'JPEG',
@@ -135,42 +135,22 @@ class ChatStore {
           )
           console.log('compresser', result)
 
-          // const result = await Image.compress(
-          //   params.attachmentLocal[i],
-          //   {
-          //     compressionMethod: 'auto',
-          //   },
-          //   (progress) => {
-          //       console.log('Compression Progress: ', progress);
-          //   }
-          // );
-          // console.log('Compression Progress: ', result);
-          fileUri = result
 
-          // const user = await MyAsyncStorage.load(USER)
+          fileUri = result.uri
 
-          //
-          // const uploadResult = await backgroundUpload(
-          //   Endpoint.UPLOAD_FILE,
-          //   fileUri,
-          //   { httpMethod: 'POST',  headers: {
-          //       Authorization: `Bearer ${user.token}`,
-          //       'Content-Type': 'multipart/form-data',
-          //     }, },
-          //   (written, total) => {
-          //     console.log(written, total);
-          //   }
-          // );
-          // console.log('uploadResult', uploadResult)
+          try{
+            const fileName = fileUri.slice(fileUri.lastIndexOf('/') + 1, fileUri.length)
+            let match = /\.(\w+)$/.exec(fileName);
+            let type = match ? `image/${match[1]}` : `image`;
+            formData.append("files", {
+              name: fileName,
+              uri: fileUri,
+              type: 'image/jpg',
+            })
+          }catch (e) {
+            console.log(e)
+          }
 
-          const fileName = fileUri.slice(fileUri.lastIndexOf('/') + 1, fileUri.length)
-          let match = /\.(\w+)$/.exec(fileName);
-          let type = match ? `image/${match[1]}` : `image`;
-          formData.append("files", {
-            name: fileName,
-            uri: fileUri,
-            type: 'image/jpg',
-          })
         }
       }
 
