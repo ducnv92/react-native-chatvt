@@ -124,7 +124,7 @@ class ChatStore {
             console.log(e)
           }
 
-        }else{
+        }else if(mimeFile?.includes('jpg')||mimeFile?.includes('png') || mimeFile?.includes('jpeg')){
           const result = await ImageResizer.createResizedImage(
             params.attachmentLocal[i].uri,
             1000,

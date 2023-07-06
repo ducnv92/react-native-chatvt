@@ -37,6 +37,7 @@ import DocumentPicker, {
   types,
 } from '../../components/documentPicker'
 import uuid from 'react-native-uuid';
+import {AttachScreen}  from './Attach';
 
 export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
@@ -46,13 +47,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
   const bottomSheetRef = useRef(null);
 
-  // variables
-  const snapPoints = useMemo(() => ['50%', '80%'], []);
 
-  // callbacks
-  const handleSheetChanges = useCallback((index) => {
-    Log('handleSheetChanges', index);
-  }, []);
 
   const handleDocumentSelection = useCallback(async () => {
     try {
@@ -228,6 +223,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
             break;
           case RESULTS.GRANTED:
             console.log('The permission is granted');
+            console.log(bottomSheetRef)
             bottomSheetRef.current?.present();
 
             break;
@@ -391,26 +387,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
         </View>
       </KeyboardAvoidingView>
       {/*<EmojiPicker onEmojiSelected={onClickEmoji} open={showEmoji} onClose={() => setShowEmoji(false)} />*/}
-      <BottomSheetModal
-        ref={bottomSheetRef}
-        // index={0}
-        bottomInset={0}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-        onDismiss={() => {
-          chatStore.images = []
-        }}
-      >
-        <CameraRollPicker
-          assetType={'All'}
-          include={['playableDuration']}
-          selected={chatStore.images}
-          callback={(images) => {
-            console.log('image picked', images)
-            chatStore.images = images
-          }} />
-
-      </BottomSheetModal>
+     <AttachScreen  ref={bottomSheetRef}/>
     </BottomSheetModalProvider>
     {
       chatStore.images.length > 0 &&

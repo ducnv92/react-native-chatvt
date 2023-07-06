@@ -81,7 +81,7 @@ class ListChatStore {
 
       const response = await services.create().conversationPin(params);
     Log(response);
-        if (response.status === 200) {
+    if (response.status === 200||response.status === 201) {
           if (response.data.status === 200) {
             if(onSuccess)
               onSuccess()
@@ -96,7 +96,7 @@ class ListChatStore {
 
       const response = await services.create().conversationUnPin(params);
     Log(response);
-        if (response.status === 200) {
+    if (response.status === 200||response.status === 201) {
           if (response.data.status === 200) {
             if(onSuccess)
             onSuccess()
@@ -110,11 +110,10 @@ class ListChatStore {
 
       const response = await services.create().conversationMute(params);
     Log(response);
-        if (response.status === 200) {
+    if (response.status === 200||response.status === 201) {
           if (response.data.status === 200) {
             if(onSuccess)
             onSuccess()
-            return
           }
         }
 
@@ -124,11 +123,10 @@ class ListChatStore {
 
     const response = await services.create().conversationHide(params);
     Log(response);
-    if (response.status === 200) {
+    if (response.status === 200||response.status === 201) {
       if (response.data.status === 200) {
         if(onSuccess)
           onSuccess()
-        return
       }
     }
 
@@ -139,7 +137,7 @@ class ListChatStore {
 
     const response = await services.create().getConversationPin({});
     Log(response);
-    if (response.status === 200) {
+    if (response.status === 200||response.status === 201) {
       if (response.data.status === 200) {
           this.dataPin = response.data.data
       }

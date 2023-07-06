@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react';
 import appStore from "../AppStore";
 import {
   ActivityIndicator,
@@ -26,7 +26,7 @@ import {createMapLink, createOpenLink} from 'react-native-open-maps';
 import Swipeable from 'react-native-swipeable';
 import { ReactionBarSelector } from '@charkour/react-reactions';
 
-const MapItem = function (props) {
+const MapItem = memo(function (props) {
   const right = props.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
 
   return (
@@ -72,10 +72,10 @@ const MapItem = function (props) {
     </View>
 
   )
-}
+})
 
 
-const VideoItem = function (props) {
+const VideoItem =memo( function (props) {
   const [thumbnail, setThumbnail] = useState('')
   const [isPause, setIsPause] = useState(true)
   useEffect(() => {
@@ -136,11 +136,11 @@ const VideoItem = function (props) {
       }
     </View>
   )
-}
+})
 
 
 
-const MessageItem = function (props) {
+const MessageItem = memo(function (props) {
   const item = props.item
   const right = item.sender === (appStore.user.type + '_' + appStore.user.user_id);
   const [images, setImages] = useState([])
@@ -394,9 +394,9 @@ const MessageItem = function (props) {
   )
 
 
-}
+})
 
-const DocumentItem = function (props) {
+const DocumentItem = memo(function (props) {
   const item = props.item
   const right = item.sender === (appStore.user.type + '_' + appStore.user.user_id);
   return (
@@ -552,9 +552,9 @@ const DocumentItem = function (props) {
       }
     </>
   )
-}
+})
 
-const OrderItem = function (props) {
+const OrderItem = memo(function (props) {
   const item = props.item
 
   return (
@@ -608,7 +608,7 @@ const OrderItem = function (props) {
     </View>
   )
 
-}
+})
 
 
 export class ChatItem extends React.Component {
