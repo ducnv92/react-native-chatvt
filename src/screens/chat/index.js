@@ -5,7 +5,6 @@ import {
   Text,
   SafeAreaView,
   Image,
-  FlatList,
   TextInput,
   Platform,
   KeyboardAvoidingView,
@@ -38,6 +37,8 @@ import DocumentPicker, {
 } from '../../components/documentPicker'
 import uuid from 'react-native-uuid';
 import {AttachScreen}  from './Attach';
+import { FlatList, ScrollView } from '../../components/flatlist';
+import { MenuProvider } from 'react-native-popup-menu';
 
 export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
@@ -277,7 +278,9 @@ export const ChatScreen = observer(function ChatScreen(props) {
     }
   }
 
-  return <SafeAreaView style={{ flex: 1 }}>
+  return
+  <MenuProvider>
+  <SafeAreaView style={{ flex: 1 }}>
     <BottomSheetModalProvider style={{ flex: 1 }}>
       <KeyboardAvoidingView
         style={{ flex: 1, }}
@@ -317,6 +320,10 @@ export const ChatScreen = observer(function ChatScreen(props) {
           </TouchableOpacity>
         </View>
         <FlatList
+          maintainVisibleContentPosition={{
+            autoscrollToTopThreshold: 10,
+            minIndexForVisible: 1,
+          }}
           style={{ flex: 1, backgroundColor: 'white' }}
           data={chatStore.data}
           inverted={true}
@@ -399,6 +406,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
     }
 
   </SafeAreaView>
-
+  </MenuProvider>
 })
 

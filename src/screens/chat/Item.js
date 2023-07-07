@@ -3,7 +3,7 @@ import appStore from "../AppStore";
 import {
   ActivityIndicator,
   Image,
-  Linking,
+  Linking, Modal,
   Platform,
   StyleSheet,
   Text,
@@ -23,22 +23,17 @@ import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { toJS } from 'mobx';
 import {createMapLink, createOpenLink} from 'react-native-open-maps';
-import Swipeable from 'react-native-swipeable';
 import { ReactionBarSelector } from '@charkour/react-reactions';
+import ContextMenu from "../../components/menuContext";
+import {MenuProvider} from "react-native-popup-menu";
 
 const MapItem = memo(function (props) {
   const right = props.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
 
   return (
     <View style={{ flexDirection: 'row', justifyContent: right ? 'flex-end' : 'flex-start', alignItems: 'center', marginVertical: 8, marginHorizontal: 16, }}>
-      <TouchableOpacity
-        onPress={() => {
-          try{
-            createOpenLink({ provider: 'google', latitude: props.item.location.latitude, longitude: props.item.location.longitude })
-          }catch (e) {
-            console.log(e)
-          }
-        }}
+      <View
+
         style={{
           height: 178,
           width: 290,
@@ -64,11 +59,12 @@ const MapItem = memo(function (props) {
           }}
         >
           <Marker
+            style={{width: 24, height: 24}}
             coordinate={{ latitude: props.item.location.latitude, longitude: props.item.location.longitude }}
             image={require('../../assets/ic_map_pin.png')}
           />
         </MapView>
-      </TouchableOpacity>
+      </View>
     </View>
 
   )
@@ -616,7 +612,7 @@ export class ChatItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      visible: false
     }
     this.item = this.props.item
     this.right = this.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
@@ -645,11 +641,67 @@ export class ChatItem extends React.Component {
       console.log(e)
     }
 
+    const ReactionItems = [
+      {
+        id: 0,
+        emoji: '😇',
+        title: 'like',
+      },
+      {
+        id: 1,
+        emoji: '🥰',
+        title: 'love',
+      },
+      {
+        id: 2,
+        emoji: '🤗',
+        title: 'care',
+      },
+      {
+        id: 3,
+        emoji: '😘',
+        title: 'kiss',
+      },
+      {
+        id: 4,
+        emoji: '😂',
+        title: 'laugh',
+      },
+      {
+        id: 5,
+        emoji: '😎',
+        title: 'cool',
+      },
+    ];
+
 
     return (
-      <View>
+      <TouchableOpacity
+        onPress={()=>{
+          try{
+            if(this.item.type === "FILE"){
+              Linking.openURL(this.item.attachments[0].url)
+            }
+            if(this.item.type === "LOCATION"){
+              try{
+                Linking.openURL(createMapLink({ provider: 'google', latitude: this.item.location.latitude, longitude: this.item.location.longitude }))
+              }catch (e) {
+                console.log(e)
+              }
+            }
+          }catch (e) {
+            console.log(e)
+          }
+
+        }}
+        onLongPress={()=>{
+          this.setState({ visible: true })
+        }}
+      >
+
         {messageView}
-      </View>
+
+      </TouchableOpacity>
     )
   }
 

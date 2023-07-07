@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A93AFB3B2A57D6D3000B0D2E /* RCTConvert+ContextMenuAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A93AFB332A57D6CF000B0D2E /* RCTConvert+ContextMenuAction.m */; };
+		A93AFB3C2A57D6D4000B0D2E /* ContextMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = A93AFB352A57D6D0000B0D2E /* ContextMenu.m */; };
+		A93AFB3D2A57D6D4000B0D2E /* ContextMenuAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A93AFB382A57D6D1000B0D2E /* ContextMenuAction.m */; };
+		A93AFB3E2A57D6D4000B0D2E /* ContextMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = A93AFB3A2A57D6D2000B0D2E /* ContextMenuView.m */; };
 		A9AFA1DE2A4E719500E71C84 /* CreateThumbnail.m in Sources */ = {isa = PBXBuildFile; fileRef = A9AFA1DD2A4E719500E71C84 /* CreateThumbnail.m */; };
 		A9B0E0C42A540305000E9B36 /* RNCPromiseWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B0E0BE2A540304000E9B36 /* RNCPromiseWrapper.m */; };
 		A9B0E0C52A540305000E9B36 /* RNDocumentPickerChatVT.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B0E0BF2A540304000E9B36 /* RNDocumentPickerChatVT.m */; };
@@ -27,6 +31,14 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libChatvt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libChatvt.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A93AFB332A57D6CF000B0D2E /* RCTConvert+ContextMenuAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+ContextMenuAction.m"; sourceTree = "<group>"; };
+		A93AFB342A57D6D0000B0D2E /* ContextMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextMenu.h; sourceTree = "<group>"; };
+		A93AFB352A57D6D0000B0D2E /* ContextMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContextMenu.m; sourceTree = "<group>"; };
+		A93AFB362A57D6D1000B0D2E /* ContextMenuAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextMenuAction.h; sourceTree = "<group>"; };
+		A93AFB372A57D6D1000B0D2E /* ContextMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextMenuView.h; sourceTree = "<group>"; };
+		A93AFB382A57D6D1000B0D2E /* ContextMenuAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContextMenuAction.m; sourceTree = "<group>"; };
+		A93AFB392A57D6D2000B0D2E /* RCTConvert+ContextMenuAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+ContextMenuAction.h"; sourceTree = "<group>"; };
+		A93AFB3A2A57D6D2000B0D2E /* ContextMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContextMenuView.m; sourceTree = "<group>"; };
 		A9AFA1DD2A4E719500E71C84 /* CreateThumbnail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateThumbnail.m; sourceTree = "<group>"; };
 		A9AFA1DF2A4E729B00E71C84 /* CreateThumbnail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateThumbnail.h; sourceTree = "<group>"; };
 		A9B0E0BE2A540304000E9B36 /* RNCPromiseWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCPromiseWrapper.m; sourceTree = "<group>"; };
@@ -68,6 +80,14 @@
 				A9B0E0C02A540304000E9B36 /* RCTConvert+RNDocumentPicker.h */,
 				A9B0E0C32A540305000E9B36 /* RCTConvert+RNDocumentPicker.m */,
 				A9B0E0C22A540304000E9B36 /* RNCPromiseWrapper.h */,
+				A93AFB342A57D6D0000B0D2E /* ContextMenu.h */,
+				A93AFB352A57D6D0000B0D2E /* ContextMenu.m */,
+				A93AFB362A57D6D1000B0D2E /* ContextMenuAction.h */,
+				A93AFB382A57D6D1000B0D2E /* ContextMenuAction.m */,
+				A93AFB372A57D6D1000B0D2E /* ContextMenuView.h */,
+				A93AFB3A2A57D6D2000B0D2E /* ContextMenuView.m */,
+				A93AFB392A57D6D2000B0D2E /* RCTConvert+ContextMenuAction.h */,
+				A93AFB332A57D6CF000B0D2E /* RCTConvert+ContextMenuAction.m */,
 				A9B0E0BE2A540304000E9B36 /* RNCPromiseWrapper.m */,
 				A9B0E0C12A540304000E9B36 /* RNDocumentPickerChatVT.h */,
 				A9B0E0BF2A540304000E9B36 /* RNDocumentPickerChatVT.m */,
@@ -132,10 +152,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A93AFB3C2A57D6D4000B0D2E /* ContextMenu.m in Sources */,
+				A93AFB3E2A57D6D4000B0D2E /* ContextMenuView.m in Sources */,
+				A93AFB3D2A57D6D4000B0D2E /* ContextMenuAction.m in Sources */,
 				A9AFA1DE2A4E719500E71C84 /* CreateThumbnail.m in Sources */,
 				A9B0E0C52A540305000E9B36 /* RNDocumentPickerChatVT.m in Sources */,
 				A9B0E0C62A540305000E9B36 /* RCTConvert+RNDocumentPicker.m in Sources */,
 				A9B0E0C42A540305000E9B36 /* RNCPromiseWrapper.m in Sources */,
+				A93AFB3B2A57D6D3000B0D2E /* RCTConvert+ContextMenuAction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

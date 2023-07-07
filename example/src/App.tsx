@@ -70,3 +70,6 @@ export default function App(props: any) {
     </>
   );
 }
+
+
+//appcenter codepush release-react -a chatvt/ios -d Production

@@ -19,6 +19,9 @@ public class ChatvtPackage implements ReactPackage {
     modules.add(new ChatvtModule(reactContext));
     modules.add(new CreateThumbnailModule(reactContext));
     modules.add(new DocumentPickerModule(reactContext));
+    modules.add(new DocumentPickerModule(reactContext));
+    modules.add(new ContextMenuManager());
+    modules.add(new MvcpScrollViewManagerModule(reactContext));
     return modules;
   }
 

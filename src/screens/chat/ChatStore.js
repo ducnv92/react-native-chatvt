@@ -4,10 +4,11 @@ import {Log} from "../../utils";
 
 import * as mime from "react-native-mime-types";
 import ImageResizer from '@bam.tech/react-native-image-resizer';
-// import { backgroundUpload } from 'react-native-compressor';
 import * as Endpoint from "../../services/Endpoint";
 import * as MyAsyncStorage from "../../utils/MyAsyncStorage";
 import { USER } from "../../utils/MyAsyncStorage";
+import {Platform} from "react-native";
+import uuid from "react-native-uuid";
 var RNFS = require('react-native-fs');
 
 class ChatStore {
@@ -125,18 +126,26 @@ class ChatStore {
           }
 
         }else if(mimeFile?.includes('jpg')||mimeFile?.includes('png') || mimeFile?.includes('jpeg')){
-          const result = await ImageResizer.createResizedImage(
-            params.attachmentLocal[i].uri,
-            1000,
-            1000,
-            'JPEG',
-            80,
-            0
-          )
-          console.log('compresser', result)
+
+          let absolutePath = params.attachmentLocal[i].uri
+          if (Platform.OS === 'android'){
+
+            const result = await ImageResizer.createResizedImage(
+              absolutePath,
+              1000,
+              1000,
+              'JPEG',
+              40,
+              0
+            )
+            console.log('compresser', result)
 
 
-          fileUri = result.uri
+            fileUri = result.uri
+          }else{
+            fileUri = absolutePath
+          }
+
 
           try{
             const fileName = fileUri.slice(fileUri.lastIndexOf('/') + 1, fileUri.length)
