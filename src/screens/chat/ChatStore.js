@@ -18,7 +18,7 @@ class ChatStore {
   isError = false;
   error = 0;
   page = 0;
-  tab = 1;
+  tab = 0;
   conversation_id = '';
   data = [];
   images = [];
@@ -99,6 +99,9 @@ class ChatStore {
       const formData = new FormData()
       for (let i = 0; i < params.attachmentLocal.length; i++) {
         let mimeFile = mime.lookup(params.attachmentLocal[i].uri)
+        if(params.attachmentLocal[i].type){
+          mimeFile = params.attachmentLocal[i].type
+        }
         if(!mimeFile) mimeFile = 'jpg'
         console.log('mimeFile', mimeFile)
         let fileUri = ''

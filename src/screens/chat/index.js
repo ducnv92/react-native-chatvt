@@ -14,7 +14,7 @@ import colors from '../../Styles';
 // import EmojiPicker from 'rn-emoji-keyboard'
 import {
   BottomSheetModal,
-  BottomSheetModalProvider,
+  BottomSheetModalProvider, useBottomSheetModal,
 } from '@gorhom/bottom-sheet';
 import CameraRollPicker from '../../components/cameraRollPicker';
 import chatStore from "./ChatStore";
@@ -44,9 +44,16 @@ export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
   const [input, setInput] = useState('')
   const [receiver, setReceiver] = useState({})
-
   const bottomSheetRef = useRef(null);
 
+  useEffect(() => {
+    const listener = Navigation.events().registerNavigationButtonPressedListener(
+      () => {
+          chatStore.images = []
+      }
+    );
+    return () => listener.remove();
+  }, []);
 
 
   const handleDocumentSelection = useCallback(async () => {
@@ -58,7 +65,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
       });
 
       const message = {
-        id: uuidv4(),
+        id: uuid.v4(),
         "type": "DOCUMENT",
         attachmentLocal: response,
         has_attachment: true,
@@ -194,6 +201,31 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
   }
 
+  const sendImages = async () => {
+    try{
+      bottomSheetRef.current?.dismiss();
+
+      const message = {
+        id: uuid.v4(),
+        "type": "MESSAGE",
+        attachmentLocal: chatStore.images,
+        has_attachment: true,
+        "attachment_ids": [],
+        "text": '',
+        "status": "sending",
+        order_number: conversation.order_info?.order_number,
+        sender: appStore.user.type + '_' + appStore.user.user_id,
+        conversation_id: conversation._id
+      }
+      chatStore.data.unshift(message)
+      chatStore.sendMessage(message)
+      chatStore.images = []
+    }catch (e) {
+      console.log(e)
+    }
+  }
+
+
   const requestCameraPermission = async () => {
     try {
       let permission = ''
@@ -246,30 +278,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
   const handlePresentModalPress = useCallback(() => {
     requestCameraPermission()
   }, []);
-
-  const sendImages = async () => {
-    try{
-      bottomSheetRef.current?.dismiss();
-
-      const message = {
-        id: uuid.v4(),
-        "type": "MESSAGE",
-        attachmentLocal: chatStore.images,
-        has_attachment: true,
-        "attachment_ids": [],
-        "text": '',
-        "status": "sending",
-        order_number: conversation.order_info?.order_number,
-        sender: appStore.user.type + '_' + appStore.user.user_id,
-        conversation_id: conversation._id
-      }
-      chatStore.data.unshift(message)
-      chatStore.sendMessage(message)
-      chatStore.images = []
-    }catch (e) {
-      console.log(e)
-    }
-  }
 
   return <MenuProvider>
   <SafeAreaView style={{ flex: 1 }}>
@@ -386,16 +394,17 @@ export const ChatScreen = observer(function ChatScreen(props) {
         </View>
       </KeyboardAvoidingView>
       {/*<EmojiPicker onEmojiSelected={onClickEmoji} open={showEmoji} onClose={() => setShowEmoji(false)} />*/}
-     <AttachScreen  ref={bottomSheetRef}/>
+      <AttachScreen ref={bottomSheetRef} />
+      {
+        chatStore.images.length > 0 &&
+        <TouchableOpacity
+          onPress={sendImages}
+          style={{ position: 'absolute', zIndex: 99999, bottom: 16, left: 16, right: 16, alignItems: 'center', justifyContent: 'center', padding: 16, margin: 16, backgroundColor: colors.primary, borderRadius: 10 }}>
+          <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>{appStore.lang.chat.send}</Text>
+        </TouchableOpacity>
+      }
     </BottomSheetModalProvider>
-    {
-      chatStore.images.length > 0 &&
-      <TouchableOpacity
-        onPress={sendImages}
-        style={{ position: 'absolute', bottom: 16, left: 16, right: 16, alignItems: 'center', justifyContent: 'center', padding: 16, margin: 16, backgroundColor: colors.primary, borderRadius: 10 }}>
-        <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>{appStore.lang.chat.send}</Text>
-      </TouchableOpacity>
-    }
+
 
   </SafeAreaView>
   </MenuProvider>

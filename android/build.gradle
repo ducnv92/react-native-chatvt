@@ -67,6 +67,9 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation 'commons-io:commons-io:2.8.0'
+  implementation 'com.facebook.fresco:animated-gif:2.0.0'
+  implementation 'com.google.code.gson:gson:2.8.6'
+  implementation 'com.facebook.fresco:fresco:2.3.0'
 }
 
 if (isNewArchitectureEnabled()) {

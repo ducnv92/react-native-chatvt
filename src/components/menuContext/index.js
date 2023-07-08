@@ -1,7 +1,7 @@
 import React from "react";
 import { requireNativeComponent, View, Platform, StyleSheet } from "react-native";
 
-const NativeContextMenu = requireNativeComponent("ContextMenu", null);
+const NativeContextMenu = requireNativeComponent("ContextMenu",);
 
 const ContextMenu = (props) => {
   return (

@@ -26,6 +26,8 @@ import {createMapLink, createOpenLink} from 'react-native-open-maps';
 import Popover from 'react-native-popover-view';
 import services from "../../services";
 import {utils} from "prettier/doc";
+import uuid from 'react-native-uuid';
+
 
 const MapItem = memo(function (props) {
   const right = props.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
@@ -38,6 +40,8 @@ const MapItem = memo(function (props) {
       marginVertical: 8,
       marginHorizontal: 16,
     }}>
+      <ContainChatItem {...props}>
+
       <View
 
         style={{
@@ -71,7 +75,7 @@ const MapItem = memo(function (props) {
           />
         </MapView>
       </View>
-      <Emoj {...props}/>
+      </ContainChatItem>
     </View>
 
   )
@@ -122,6 +126,7 @@ const VideoItem = memo(function (props) {
             )}
           </View>
           :
+          <ContainChatItem {...props}>
           <TouchableOpacity
             onPress={() => setIsPause(true)}
           >
@@ -136,7 +141,7 @@ const VideoItem = memo(function (props) {
 
             </Video>
           </TouchableOpacity>
-
+          </ContainChatItem>
       }
     </View>
   )
@@ -284,6 +289,7 @@ const MessageItem = memo(function (props) {
                 }
               </View>
             </View>
+            <ContainChatItem {...props}>
             <View
               style={{flexDirection: 'row', justifyContent: right ? 'flex-end' : 'flex-start', alignItems: 'center'}}>
               <Text style={{
@@ -308,7 +314,7 @@ const MessageItem = memo(function (props) {
                 textAlign: right ? 'right' : 'left'
               }}>{appStore.lang.chat.send_error}</Text>
             }
-            <Emoj {...props}/>
+            </ContainChatItem>
           </View> :
           <View style={{marginVertical: 8, marginHorizontal: 16,}}>
             <View
@@ -324,6 +330,7 @@ const MessageItem = memo(function (props) {
                 borderRadius: 10,
                 maxWidth: '75%'
               }}>
+                <ContainChatItem {...props}>
                 <ParsedText
                   accessible={true}
                   // accessibilityActions={[
@@ -352,20 +359,21 @@ const MessageItem = memo(function (props) {
                   parse={
                     [
                       {type: 'url', style: styles.url, onPress: handleUrlPress},
-                      {type: 'phone', style: styles.phone, onPress: handlePhonePress},
-                      {type: 'email', style: styles.email, onPress: handleEmailPress},
+                      // {type: 'phone', style: styles.phone, onPress: handlePhonePress},
+                      // {type: 'email', style: styles.email, onPress: handleEmailPress},
                       // {pattern: /Bob|David/,              style: styles.name, onPress: handleNamePress},
                       // {pattern: /\[(@[^:]+):([^\]]+)\]/i, style: styles.username, onPress: handleNamePress, renderText: renderText},
                       // {pattern: /42/,                     style: styles.magicNumber},
-                      {pattern: /#(\w+)/, style: styles.hashTag},
+                      // {pattern: /#(\w+)/, style: styles.hashTag},
                     ]
                   }
                   childrenProps={{allowFontScaling: false}}
                 >{item.text}</ParsedText>
+                </ContainChatItem>
               </View>
 
             </View>
-            <Emoj {...props}/>
+            {/*<Emoji {...props}/>*/}
 
             {
               item.status === 'sending' &&
@@ -421,6 +429,7 @@ const DocumentItem = memo(function (props) {
               }
 
               <View style={{maxWidth: '85%',}}>
+                <ContainChatItem {...props}>
                 {
                   item.attachmentLocal && (
                     <View style={{
@@ -535,8 +544,8 @@ const DocumentItem = memo(function (props) {
                     </View>
                   )
                 }
+                </ContainChatItem>
               </View>
-              <Emoj {...props}/>
             </View>
             <View style={{flexDirection: 'row', justifyContent: right ? 'flex-end' : 'flex-start', alignItems: 'center'}}>
               <Text style={{
@@ -626,38 +635,28 @@ export class ChatItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: uuid.v4,
       showPopover: false
     }
     this.item = this.props.item
     this.right = this.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
   }
 
-  async reaction(react){
-    this.setState({
-      showPopover: false
-    })
-    const response = await services.create().conversationReact({
-      is_enable: true,
-      reaction_type: react,
-      conversation_id: this.item.conversation_id,
-      message_id: this.item._id,
-    });
-    console.log(response)
-  }
+
 
   render() {
     let messageView
     if (this.item.type === 'MESSAGE') {
-      messageView = (<MessageItem item={this.props.item}/>)
+      messageView = (<MessageItem item={this.props.item} id={this.state.id}/>)
     }
     if (this.item.type === 'CREATED_QUOTE_ORDER') {
-      messageView = (<OrderItem item={this.props.item}/>)
+      messageView = (<OrderItem item={this.props.item} id={this.state.id}/>)
     }
     if (this.item.type === 'LOCATION') {
-      messageView = (<MapItem item={this.props.item}/>)
+      messageView = (<MapItem item={this.props.item} id={this.state.id}/>)
     }
     if (this.item.type === 'FILE') {
-      messageView = (<DocumentItem item={this.props.item}/>)
+      messageView = (<DocumentItem item={this.props.item} id={this.state.id}/>)
     }
 
     // let setting = {}
@@ -667,125 +666,143 @@ export class ChatItem extends React.Component {
     // } catch (e) {
     //   console.log(e)
     // }
+    return  messageView
+  }
+}
 
+function ContainChatItem(props) {
+  const [showPopover, setShowPopover] = useState(false)
+  const [reactions, setReactions] = useState(props.item.reactions)
+  const [reactObject, setReactObject] = useState(new Map())
 
+  useEffect(()=>{
+    setReactObject(reactions? groupBy(reactions, react => react.type): new Map())
+  }, [reactions])
 
-    return (
-      <Popover
-        isVisible={this.state.showPopover}
-        onRequestClose={() => this.setState({showPopover: false})}
-        backgroundStyle={{backgroundColor: 'transparent'}}
-        from={(sourceRef, showPopover) => (
-          <TouchableOpacity
-            onPress={() => {
+  const  reaction = async (react)=>{
+
+    setShowPopover(false)
+    let is_enable = true
+    const currentReact  = reactions.find(r=>r.user_id === (appStore.user.type + '_' + appStore.user.user_id))
+    if(currentReact?.type === react){
+      is_enable = false
+    }
+    const response = await services.create().conversationReact({
+      is_enable: is_enable,
+      reaction_type: react,
+      conversation_id: props.item.conversation_id,
+      message_id: props.item._id,
+    });
+    if(response.data.status ===200){
+      if(is_enable){
+        setReactions([...reactions, {type: react,  user_id:  (appStore.user.type + '_' + appStore.user.user_id)}])
+      }else{
+        setReactions(reactions.filter(r=>r.user_id!==(appStore.user.type + '_' + appStore.user.user_id)))
+      }
+    }
+  }
+
+  return(
+    <>
+      <TouchableOpacity
+        onPress={()=>{
+          try {
+            if (props.item.type === "FILE") {
+              Linking.openURL(props.item.attachments[0].url)
+            }
+            if (props.item.type === "LOCATION") {
               try {
-                if (this.item.type === "FILE") {
-                  Linking.openURL(this.item.attachments[0].url)
-                }
-                if (this.item.type === "LOCATION") {
-                  try {
-                    Linking.openURL(createMapLink({
-                      provider: 'google',
-                      latitude: this.item.location.latitude,
-                      longitude: this.item.location.longitude
-                    }))
-                  } catch (e) {
-                    console.log(e)
-                  }
-                }
+                Linking.openURL(createMapLink({
+                  provider: 'google',
+                  latitude: props.item.location.latitude,
+                  longitude: props.item.location.longitude
+                }))
               } catch (e) {
                 console.log(e)
               }
+            }
+          } catch (e) {
+            console.log(e)
+          }
+        }}
+        onLongPress={()=>setShowPopover(true)}
+      >
+        {props.children}
 
-            }}
-            onLongPress={()=>this.setState({showPopover: true})}
-          >
-            {messageView}
-          </TouchableOpacity>
+        {
+          reactions?.length> 0 &&
+          <View style={{flexDirection: 'row', gap: 4,  zIndex: 99, borderWidth: 1, borderColor: 'white', position: 'absolute', bottom: -14, right: 16, borderRadius: 10, padding: 4, backgroundColor: '#F8F8FA',  }}>
+            {
+              reactObject.get('LIKE') &&
+              <FastImage source={require('../../components/reactions/Images/ic_like.png')}
+                         style={{width: 16, height: 16, resizeMode: 'contain'}} resizeMode={'contain'}/>
+            }
+            {
+              reactObject.get('LOVE')&&
+              <FastImage source={require('../../components/reactions/Images/love2.png')}
+                         style={{width: 16, height: 16, resizeMode: 'contain'}} resizeMode={'contain'}/>
+            }
+            {
+              reactObject.get('WOW') &&
+              <FastImage source={require('../../components/reactions/Images/wow2.png')}
+                         style={{width: 16, height: 16, resizeMode: 'contain'}} resizeMode={'contain'}/>
+            }
+            {
+              reactObject.get('SAD')&&
+              <FastImage source={require('../../components/reactions/Images/sad2.png')}
+                         style={{width: 16, height: 16, resizeMode: 'contain'}} resizeMode={'contain'}/>
+            }
+            {
+              reactObject.get('ANGRY')&&
+              <FastImage source={require('../../components/reactions/Images/angry2.png')}
+                         style={{width: 16, height: 16, resizeMode: 'contain'}} resizeMode={'contain'}/>
+            }
+          </View>
+        }
 
-        )}>
+
+      </TouchableOpacity>
+      <Popover
+        reactions={reactions}
+        isVisible={showPopover}
+        onRequestClose={() => setShowPopover(false)}
+        backgroundStyle={{backgroundColor: 'transparent'}}
+      >
         <View style={{flexDirection: 'row', gap: 10, padding: 10, borderRadius: 24, backgroundColor: '#252526', overflow: 'hidden'}}>
           <TouchableWithoutFeedback
-            onPress={()=>this.reaction('LIKE')}
+            onPress={()=>reaction('LIKE')}
           >
-            <Image source={require('../../components/reactions/Images/like.gif')}
-                   style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
+            <FastImage source={require('../../components/reactions/Images/like.gif')}
+                       style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
-            onPress={()=>this.reaction('LOVE')}
+            onPress={()=>reaction('LOVE')}
           >
-            <Image source={require('../../components/reactions/Images/love.gif')}
-                   style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
+            <FastImage source={require('../../components/reactions/Images/love.gif')}
+                       style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
-            onPress={()=>this.reaction('WOW')}
+            onPress={()=>reaction('WOW')}
           >
-            <Image source={require('../../components/reactions/Images/wow.gif')}
-                   style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
+            <FastImage source={require('../../components/reactions/Images/wow.gif')}
+                       style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
-            onPress={()=>this.reaction('SAD')}
+            onPress={()=>reaction('SAD')}
           >
-            <Image source={require('../../components/reactions/Images/sad.gif')}
-                   style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
+            <FastImage source={require('../../components/reactions/Images/sad.gif')}
+                       style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
-            onPress={()=>this.reaction('ANGRY')}
+            onPress={()=>reaction('ANGRY')}
           >
-            <Image source={require('../../components/reactions/Images/angry.gif')}
-                   style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
+            <FastImage source={require('../../components/reactions/Images/angry.gif')}
+                       style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
         </View>
       </Popover>
-    )
-  }
-
-
-}
-class Emoj extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      grouped:  groupBy(this.props.item.reactions, react => react.type)
-    }
-    console.log('LIKE', this.state.grouped)
-  }
-
-  render(){
-    return(
-      <View style={{flexDirection: 'row', gap: 4,  zIndex: 99, borderWidth: 1, borderColor: 'white', position: 'absolute', bottom: -14, right: 16, borderRadius: 10, padding: 4, backgroundColor: '#F8F8FA',  }}>
-        {
-          this.state.grouped['LIKE'] &&
-          <Image source={require('../../components/reactions/Images/ic_like.png')}
-                 style={{width: 16, height: 16, resizeMode: 'contain'}} resizeMode={'contain'}/>
-        }
-        {
-          this.state.grouped['LOVE'] &&
-          <Image source={require('../../components/reactions/Images/love2.png')}
-                 style={{width: 16, height: 16, resizeMode: 'contain'}} resizeMode={'contain'}/>
-        }
-        {
-          this.state.grouped['WOW'] &&
-
-          <Image source={require('../../components/reactions/Images/wow2.png')}
-                 style={{width: 16, height: 16, resizeMode: 'contain'}} resizeMode={'contain'}/>
-        }
-        {
-          this.state.grouped['SAD'] &&
-
-          <Image source={require('../../components/reactions/Images/sad2.png')}
-                 style={{width: 16, height: 16, resizeMode: 'contain'}} resizeMode={'contain'}/>
-        }
-        {
-          this.state.grouped['ANGRY'] &&
-          <Image source={require('../../components/reactions/Images/angry2.png')}
-                 style={{width: 16, height: 16, resizeMode: 'contain'}} resizeMode={'contain'}/>
-        }
-      </View>
-
-    )
-  }
+    </>
+  )
 }
 
 

@@ -16,12 +16,12 @@ public class ChatvtPackage implements ReactPackage {
   @Override
   public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
     List<NativeModule> modules = new ArrayList<>();
-    modules.add(new ChatvtModule(reactContext));
+    modules.add(new ContextMenuManager());
     modules.add(new CreateThumbnailModule(reactContext));
     modules.add(new DocumentPickerModule(reactContext));
-    modules.add(new DocumentPickerModule(reactContext));
-    modules.add(new ContextMenuManager());
     modules.add(new MvcpScrollViewManagerModule(reactContext));
+    modules.add(new CameraRollModule(reactContext));
+    modules.add(new ChatvtModule(reactContext));
     return modules;
   }
 
