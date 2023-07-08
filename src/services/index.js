@@ -51,9 +51,20 @@ const create = (baseURL = Endpoint.API_BASE) => {
   const orderValidate = async (data) => api.post(Endpoint.ORDER_VALIDATE, data, await getHeader() );
   const getConversationPin = async data => api.get(Endpoint.GET_CONVERSATION_PIN, data, await getHeader());
   const conversationMute = async data => api.post(Endpoint.CONVERSATION_MUTE(data.conversation_id), data, await getHeader());
+  const conversationReact = async data => api.post(Endpoint.CONVERSATION_REACT(data.conversation_id, data.message_id), data, await getHeader());
+
+  const createQuickMessage = async data => api.post(Endpoint.QUICK_MESSAGE_CREATE, data, await getHeader());
+  const updateQuickMessage = async data => api.put(Endpoint.QUICK_MESSAGE_UPDATE(data.id), data, await getHeader());
+  const deleteQuickMessage = async data => api.delete(Endpoint.QUICK_MESSAGE_UPDATE(data.id), data, await getHeader());
+  const listQuickMessage = async data => api.delete(Endpoint.QUICK_MESSAGE_LIST, data, await getHeader());
 
 
   return {
+    createQuickMessage,
+    updateQuickMessage,
+    deleteQuickMessage,
+    listQuickMessage,
+    conversationReact,
     conversationMute,
     getConversationPin,
     orderValidate,

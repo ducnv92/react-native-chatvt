@@ -23,12 +23,12 @@ class ChatVT {
       token: token,
       token_sso: tokenSSO
     }, (res)=>{
-      if(this.interval){
-        clearInterval(this.interval)
-      }
-      this.interval = setInterval(()=>{
-        appStore.onlineState()
-      }, 30000)
+      // if(this.interval){
+      //   clearInterval(this.interval)
+      // }
+      // this.interval = setInterval(()=>{
+      //   appStore.onlineState()
+      // }, 30000)
       if(onSuccess)
       onSuccess(res)
     }, onError)

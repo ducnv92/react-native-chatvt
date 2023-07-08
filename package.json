@@ -123,6 +123,7 @@
     "react-native-mime-types": "^2.4.0",
     "react-native-open-maps": "^0.4.2",
     "react-native-parsed-text": "^0.0.22",
+    "react-native-popover-view": "^5.1.7",
     "react-native-popup-menu": "^0.16.1",
     "react-native-swipeable": "^0.6.0",
     "react-native-uuid": "^2.0.1",

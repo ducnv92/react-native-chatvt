@@ -29,7 +29,7 @@ export const AttachScreen =forwardRef(function AttachScreen(props, ref) {
 
   return(<>
     <BottomSheetModal
-    ref={ref}
+      ref={ref}
       index={0}
       bottomInset={0}
       snapPoints={snapPoints}
@@ -39,7 +39,7 @@ export const AttachScreen =forwardRef(function AttachScreen(props, ref) {
       }}
     >
       {
-        tab === 1 && <CameraRoll/>
+        chatStore.tab === 0 && <CameraRoll/>
       }
     </BottomSheetModal>
   </>)

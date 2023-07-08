@@ -17,7 +17,13 @@ exports.CONVERSATION_HIDE =  (conversation_id) =>`${API_BASE}/conversation/${con
 exports.CONVERSATION_MUTE =  (conversation_id) =>`${API_BASE}/conversation/${conversation_id}/notification-settings`;
 exports.ORDER_VALIDATE =  `${API_BASE}/conversation/order-validate`;
 exports.GET_CONVERSATION_PIN =  `${API_BASE}/conversation/pin/conversation`;
+exports.CONVERSATION_REACT = (conversation_id, message_id)=> `${API_BASE}/conversation/${conversation_id}/${message_id}/reaction`;
 
 //Space
 exports.UPLOAD_FILE = `${API_BASE}/space/upload`;
 exports.DOWNLOAD_FILE = `${API_BASE}/space/download`;
+
+//quick-message
+exports.QUICK_MESSAGE_CREATE = `${API_BASE}/quick-message/create`;
+exports.QUICK_MESSAGE_UPDATE =(conversation_id) => `${API_BASE}/quick-message/${conversation_id}`;
+exports.QUICK_MESSAGE_LIST = `${API_BASE}/quick-message/list`;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { chatVT, ListChat } from 'react-native-chatvt';
 import { useEffect, useState } from 'react';
-import {Alert, Button, SafeAreaView, View} from 'react-native';
+import {Alert, Button, SafeAreaView, TouchableOpacity, View} from 'react-native';
 import { Text } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 // import AsyncStorage2 from "@react-native-async-storage/async-storage";
@@ -47,21 +47,22 @@ export default function App(props: any) {
           <ListChat {...props} buttonBack={false} />
         ) : (
           <SafeAreaView style={{ padding: 16 }}>
-            <Button
+            <TouchableOpacity
+              style={{backgroundColor: '#F57C00', padding: 16, borderRadius: 10, margin: 16}}
               onPress={() => {
                 chatVT.toListChat(props.componentId);
               }}
-              title={'List chat'}
-            ></Button>
-            <View style={{ height: 16 }} />
-            <Button
-              onPress={() => {
-                chatVT.toChat(props.componentId, {
-                  vtm_user_ids: [985979],
-                });
-              }}
-              title={'Chat Detail'}
-            ></Button>
+
+            ><Text style={{fontSize: 16,color: 'white'}}>List chat</Text></TouchableOpacity>
+            {/*<View style={{ height: 16 }} />*/}
+            {/*<Button*/}
+            {/*  onPress={() => {*/}
+            {/*    chatVT.toChat(props.componentId, {*/}
+            {/*      vtm_user_ids: [985979],*/}
+            {/*    });*/}
+            {/*  }}*/}
+            {/*  title={'Chat Detail'}*/}
+            {/*></Button>*/}
           </SafeAreaView>
         )
       ) : (

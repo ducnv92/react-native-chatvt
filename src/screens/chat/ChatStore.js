@@ -18,6 +18,7 @@ class ChatStore {
   isError = false;
   error = 0;
   page = 0;
+  tab = 1;
   conversation_id = '';
   data = [];
   images = [];

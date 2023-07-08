@@ -44,7 +44,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
   const [input, setInput] = useState('')
   const [receiver, setReceiver] = useState({})
-  const [showEmoji, setShowEmoji] = useState(false);
 
   const bottomSheetRef = useRef(null);
 
@@ -195,12 +194,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
   }
 
-
-  const onClickEmoji = emoji => {
-    Log(emoji);
-    setInput(input + emoji.emoji)
-  };
-
   const requestCameraPermission = async () => {
     try {
       let permission = ''
@@ -278,8 +271,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
     }
   }
 
-  return
-  <MenuProvider>
+  return <MenuProvider>
   <SafeAreaView style={{ flex: 1 }}>
     <BottomSheetModalProvider style={{ flex: 1 }}>
       <KeyboardAvoidingView
