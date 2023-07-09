@@ -146,6 +146,27 @@ android {
 
         }
     }
+  flavorDimensions "version"
+  productFlavors {
+    vtp {
+      dimension "version"
+      applicationIdSuffix ".vtp"
+    }
+    vtm {
+      dimension "version"
+      applicationIdSuffix ".vtm"
+    }
+    admin {
+      dimension "version"
+      applicationIdSuffix ".admin"
+    }
+  }
+
+  sourceSets {
+    main {
+      res.srcDirs = ['src/main/res-admin']
+    }
+  }
 }
 
 dependencies {
