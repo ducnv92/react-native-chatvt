@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">SDK VTP</string>
+    <string name="app_name">SDK VTM</string>
     <string moduleConfig="true" name="CodePushDeploymentKey">vT3n6AflcQ7ugORWqJfh2OKRAy0NaXclLJk1m</string>
 </resources>

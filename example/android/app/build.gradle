@@ -163,7 +163,13 @@ android {
   }
 
   sourceSets {
-    main {
+    vtp {
+      res.srcDirs = ['src/main/res-vtp']
+    }
+    vtm {
+      res.srcDirs = ['src/main/res-vtm']
+    }
+    admin {
       res.srcDirs = ['src/main/res-admin']
     }
   }
