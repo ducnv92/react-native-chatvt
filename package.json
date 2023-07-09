@@ -34,6 +34,7 @@
     "debug-vtp": "yarn example android --variant=vtpDebug",
     "release": "release-it",
     "example": "yarn --cwd example",
+    "push": "git add . && git commit -m 'update' && git push origin main",
     "bootstrap": "yarn example && yarn install && yarn example pods",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build"
   },
