@@ -4,6 +4,9 @@ import appStore from "./screens/AppStore";
 import {ListChatScreen} from "./screens/listchat";
 import {ChatScreen} from "./screens/chat";
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import * as MyAsyncStorage from './utils/MyAsyncStorage';
+import { USER } from './utils/MyAsyncStorage';
+import socket from './socket';
 
 class ChatVT {
   AsyncStorage;
@@ -116,6 +119,35 @@ class ChatVT {
     appStore.changeLanguage(lang)
   }
 
+  loginAdmin(componentId, storage, username, password, onSuccess, onError){
+    Navigation.registerComponent('ListChatScreen', () => gestureHandlerRootHOC(ListChatScreen));
+    Navigation.registerComponent('ChatScreen', () => gestureHandlerRootHOC(ChatScreen));
+
+    appStore.loginAdmin({username, password}, async data=>{
+      this.AsyncStorage = storage
+      appStore.appId = "Admin"
+      appStore.env = "DEV"
+      appStore.changeLanguage("VI")
+      await MyAsyncStorage.save(USER, data)
+      await socket.init()
+
+      Navigation.push(componentId, {
+        component: {
+          name: 'ListChatScreen',
+          options: {
+            popGesture: false,
+            bottomTabs: {
+              visible: false,
+            },
+            topBar: {
+              visible: false,
+              height: 0,
+            },
+          },
+        }
+      })
+    })
+  }
 
 }
 export const chatVT = new ChatVT()

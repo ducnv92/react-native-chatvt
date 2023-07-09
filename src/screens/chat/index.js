@@ -87,7 +87,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
     let receiver = {}
     try {
       receiver = conversation.detail_participants.find(i => i.user_id !== appStore.user.user_id)
-      setReceiver(receiver)
+      setReceiver(receiver?receiver:{})
     } catch (e) {
 
     }

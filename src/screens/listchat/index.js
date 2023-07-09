@@ -357,9 +357,13 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
       ItemSeparatorComponent={()=>  (<View style={{backgroundColor: 'white', height: 1,}}><View style={{backgroundColor: '#E5E5E5', height: 1, marginLeft: 76, marginRight: 16}}></View></View>)}
       renderItem={renderItem}
     />
-    {/*<View style={{width: 58, height: 58, alignItems: 'center', justifyContent: 'center', position: 'absolute', right: 27, bottom: 27, backgroundColor: colors.primary, borderRadius: 58/2}}>*/}
-    {/*  <Image style={{height: 25, width: 25, resizeMode: 'contain',  }} source={require('../../assets/ic_add_chat.png')} />*/}
-    {/*</View>*/}
+      {
+        props.admin &&  <View style={{width: 58, height: 58, alignItems: 'center', justifyContent: 'center', position: 'absolute', right: 27, bottom: 27, backgroundColor: colors.primary, borderRadius: 58/2}}>
+          <Image style={{height: 25, width: 25, resizeMode: 'contain',  }} source={require('../../assets/ic_add_chat.png')} />
+        </View>
+
+      }
+
     </KeyboardAvoidingView>
   </SafeAreaView>;
 })

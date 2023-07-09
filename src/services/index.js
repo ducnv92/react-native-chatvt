@@ -2,6 +2,7 @@ import apisauce from 'apisauce';
 import * as Endpoint from './Endpoint';
 import { USER } from '../utils/MyAsyncStorage';
 import * as MyAsyncStorage from '../utils/MyAsyncStorage';
+import appStore from '../screens/AppStore';
 
 export async function getHeader() {
   const user = await MyAsyncStorage.load(USER)
@@ -16,6 +17,11 @@ export async function getHeader() {
 }
 
 const create = (baseURL = Endpoint.API_BASE) => {
+
+  if(appStore.appId === 'Admin'){
+    baseURL = Endpoint.API_BASE_ADMIN
+  }
+
   const api = apisauce.create({
     baseURL,
     headers: {
@@ -38,6 +44,7 @@ const create = (baseURL = Endpoint.API_BASE) => {
   const authVTP = (data) => api.post(Endpoint.AUTH_VTP, data );
   const authVTM = (data) => api.post(Endpoint.AUTH_VTM, data );
   const getConversations = async (data) => api.get(Endpoint.CONVERSATION_ME, data, await getHeader() );
+  const getConversationsAdmin = async (data) => api.get(Endpoint.CONVERSATION_ADMIN, data, await getHeader() );
   const conversationPin = async (data) => api.post(Endpoint.CONVERSATION_PIN(data.conversation_id), data, await getHeader() );
   const conversationUnPin = async (data) => api.delete(Endpoint.CONVERSATION_PIN(data.conversation_id), data, await getHeader() );
   const conversationHide = async (data) => api.post(Endpoint.CONVERSATION_HIDE(data.conversation_id), data, await getHeader() );
@@ -57,9 +64,11 @@ const create = (baseURL = Endpoint.API_BASE) => {
   const updateQuickMessage = async data => api.put(Endpoint.QUICK_MESSAGE_UPDATE(data.id), data, await getHeader());
   const deleteQuickMessage = async data => api.delete(Endpoint.QUICK_MESSAGE_UPDATE(data.id), data, await getHeader());
   const listQuickMessage = async data => api.delete(Endpoint.QUICK_MESSAGE_LIST, data, await getHeader());
+  const loginAdmin = async data => api.post(Endpoint.ADMIN_LOGIN, data);
 
 
   return {
+    loginAdmin,
     createQuickMessage,
     updateQuickMessage,
     deleteQuickMessage,
@@ -76,6 +85,7 @@ const create = (baseURL = Endpoint.API_BASE) => {
     authVTP,
     authVTM,
     getConversations,
+    getConversationsAdmin,
     conversationPin,
     conversationUnPin,
     conversationHide,

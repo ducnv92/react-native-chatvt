@@ -1,6 +1,7 @@
 import {observable, action, makeAutoObservable} from 'mobx';
 import services from "../../services";
 import {Log} from "../../utils";
+import appStore from '../AppStore';
 
 class ListChatStore {
    isLoading = false;
@@ -28,7 +29,8 @@ class ListChatStore {
       if(this.page === 1){
         this.isLoading = true;
         this.canLoadMore = true;
-        this.getConversationPin()
+        if(appStore.appId!=='Admin')
+          this.getConversationPin()
       }else{
         if(!this.canLoadMore){
           return
@@ -36,7 +38,13 @@ class ListChatStore {
         this.isLoadingMore = true;
       }
       params = {...params, ...{search: this.search, page: this.page}}
-      const response = await services.create().getConversations(params);
+      let response
+      if(appStore.appId==='Admin'){
+        response = await services.create().getConversationsAdmin(params);
+      }else{
+        response = await services.create().getConversations(params);
+      }
+
 
       Log(response);
 

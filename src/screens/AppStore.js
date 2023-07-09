@@ -135,6 +135,22 @@ class AppStore {
 
     }
   }
+
+  async loginAdmin(params, onSuccess, onError) {
+
+    try {
+      const response = await services.create().loginAdmin(params);
+      Log(response)
+      if(response.data.status === 200){
+        onSuccess(response.data.data)
+      }else{
+        alert(response.data.message)
+      }
+
+    } catch (error) {
+      alert(error)
+    }
+  }
 }
 
 const appStore = new AppStore();
