@@ -236,7 +236,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
       }
 
 
-      request(permission).then((result) => {
+      const result = await request(permission)
         switch (result) {
           case RESULTS.UNAVAILABLE:
             console.log('This feature is not available (on this device / in this context)');
@@ -249,15 +249,15 @@ export const ChatScreen = observer(function ChatScreen(props) {
             break;
           case RESULTS.GRANTED:
             console.log('The permission is granted');
-            console.log(bottomSheetRef)
-            bottomSheetRef.current?.present();
-
+            // console.log(bottomSheetRef)
+            // bottomSheetRef.current?.present();
+            chatStore.showAttachModal = true
             break;
           case RESULTS.BLOCKED:
             console.log('The permission is denied and not requestable anymore');
             break;
         }
-      });
+
 
 
 
@@ -275,9 +275,9 @@ export const ChatScreen = observer(function ChatScreen(props) {
     }
   };
 
-  const handlePresentModalPress = useCallback(() => {
+  const handlePresentModalPress = () => {
     requestCameraPermission()
-  }, []);
+  };
 
   return <MenuProvider>
   <SafeAreaView style={{ flex: 1 }}>

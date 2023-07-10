@@ -36,5 +36,6 @@ exports.ADMIN_LOGIN = `${API_BASE}/admin/login`;
 //VTP
 exports.VTP_Login = `https://apiexsso.viettelpost.vn/api/Login/LoginUserPass`;
 exports.VTP_Login_Client = `https://apivtp-dev.viettelpost.vn/api/user/ssoUpdateUser`;
+
 //VTM
 exports.VTM_Login = `https://devapp.viettelpost.vn/api/user/loginWithPhone`;

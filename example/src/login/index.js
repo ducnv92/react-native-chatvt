@@ -26,16 +26,41 @@ export const Login =  observer(function Login ( props){
     console.log('props', props)
   }, [])
 
+  const toListChat = (data) => {
+    Navigation.setRoot({
+      root: {
+        stack: {
+          children: [
+            {
+              component: {
+                name: 'ListChatScreen',
+                options: {
+                  topBar: {
+                    visible: false,
+                    height: 0,
+                  },
+                }
+              }
+            }
+          ]
+        }
+      }
+    });
 
+  }
 
   const login = () => {
     if (props.data.app === 'VTPost') {
-
+      chatVT.loginVTP(props.componentId, AsyncStorage, username, password, ()=>{
+        toListChat()
+      })
     }else  if (props.data.app === 'VTMan') {
-
+      chatVT.loginVTM(props.componentId, AsyncStorage, username, password, ()=>{
+        toListChat()
+      })
     }else  if (props.data.app === 'Admin') {
       chatVT.loginAdmin(props.componentId, AsyncStorage, username, password, ()=>{
-
+        toListChat()
       })
     }
 

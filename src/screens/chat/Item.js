@@ -27,6 +27,7 @@ import Popover from 'react-native-popover-view';
 import services from "../../services";
 import {utils} from "prettier/doc";
 import uuid from 'react-native-uuid';
+import { observer } from 'mobx-react-lite';
 
 
 const MapItem = memo(function (props) {
@@ -671,6 +672,8 @@ export class ChatItem extends React.Component {
 }
 
 function ContainChatItem(props) {
+  const right = props.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
+
   const [showPopover, setShowPopover] = useState(false)
   const [reactions, setReactions] = useState(props.item.reactions)
   const [reactObject, setReactObject] = useState(new Map())
@@ -731,7 +734,7 @@ function ContainChatItem(props) {
 
         {
           reactions?.length> 0 &&
-          <View style={{flexDirection: 'row', gap: 4,  zIndex: 99, borderWidth: 1, borderColor: 'white', position: 'absolute', bottom: -14, right: 16, borderRadius: 10, padding: 4, backgroundColor: '#F8F8FA',  }}>
+          <View style={{flexDirection: 'row', gap: 4,  zIndex: 99, borderWidth: 1, borderColor: 'white', position: 'absolute', bottom: -16, right: -16, borderRadius: 10, padding: 1, backgroundColor: '#F8F8FA',  }}>
             {
               reactObject.get('LIKE') &&
               <FastImage source={require('../../components/reactions/Images/ic_like.png')}

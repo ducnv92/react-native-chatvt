@@ -161,9 +161,7 @@ class ChatVT {
           "VTPost",
           data.TokenKey,
           data.TokenSSO,
-          () => {
-            onSuccess()
-          }
+          onSuccess
         );
     })
   }
@@ -183,9 +181,7 @@ class ChatVT {
         "VTMan",
         data.token,
         '',
-        () => {
-          onSuccess()
-        }
+        onSuccess
       );
     })
   }

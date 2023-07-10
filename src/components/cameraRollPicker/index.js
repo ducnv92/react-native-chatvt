@@ -319,15 +319,15 @@ CameraRollPicker.defaultProps = {
   groupTypes: 'All',
   maximum: 15,
   imagesPerRow: 3,
-  // imageMargin: 5,
-  // selectSingleItem: false,
+  imageMargin: 5,
+  selectSingleItem: false,
   assetType: 'All',
-  // backgroundColor: 'white',
-  // selected: [],
-  // callback(selectedImages, currentImage) {
-  //   Log(currentImage);
-  //   Log(selectedImages);
-  // },
+  backgroundColor: 'white',
+  selected: [],
+  callback(selectedImages, currentImage) {
+    Log(currentImage);
+    Log(selectedImages);
+  },
   emptyText: 'No photos.',
 };
 

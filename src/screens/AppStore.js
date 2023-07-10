@@ -169,9 +169,10 @@ class AppStore {
           "TokenIdSSO": "",
           "Type": "VTP"
         });
+        Log(responseClient)
         if(responseClient.status === 200) {
-          responseClient.data.TokenSSO = response.data.accessToken
-          onSuccess(responseClient.data)
+          responseClient.data.data.TokenSSO = response.data.accessToken
+          onSuccess(responseClient.data.data)
         }else{
           alert(responseClient.data.errorMessage)
         }
@@ -196,7 +197,7 @@ class AppStore {
           "uniqueID": "string"
         }});
       Log(response)
-      if(response.data.status === 200){
+      if(response.status === 200){
           onSuccess(response.data.data)
       }else{
         alert(response.data.message)

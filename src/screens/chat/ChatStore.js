@@ -18,10 +18,11 @@ class ChatStore {
   isError = false;
   error = 0;
   page = 0;
-  tab = 0;
+  tab = 1;
   conversation_id = '';
   data = [];
   images = [];
+  showAttachModal = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -98,7 +99,12 @@ class ChatStore {
     if (params.attachmentLocal) {
       const formData = new FormData()
       for (let i = 0; i < params.attachmentLocal.length; i++) {
-        const extension = params.attachmentLocal[i].extension
+
+        let extension = params.attachmentLocal[i].extension
+
+        if(Platform.OS === 'android'){
+          extension = params.attachmentLocal[i].uri.split(".").pop();
+        }
 
         let fileUri = ''
         if (extension === 'mov' || extension === 'mp4') {
@@ -191,7 +197,6 @@ class ChatStore {
         }
         return item
       })]
-      console.log(this.data[0])
     } else {
       this.data = this.data.map(item => {
         if (item.id === params.id) {
