@@ -14,8 +14,8 @@ const CameraRoll =observer(function CameraRoll ( props) {
 
   return(
     <CameraRollPicker
-      assetType={'All'}
-      include={['playableDuration']}
+      groupTypes={'All'}
+      include={['playableDuration', 'filename', 'fileExtension']}
       selected={chatStore.images}
       callback={(images) => {
         console.log('image picked', images)

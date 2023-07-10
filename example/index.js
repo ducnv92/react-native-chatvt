@@ -12,75 +12,33 @@ import { NativeModules } from 'react-native';
 
 // Navigation.registerComponent(appName, () => App);
 
-
-import { MD3LightTheme as DefaultTheme, PaperProvider } from 'react-native-paper';
 import { Login } from './src/login';
 
-const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: 'tomato',
-    secondary: 'yellow',
-  },
-};
-
-function Main() {
-  return (
-    <PaperProvider theme={theme}>
-      <App />
-    </PaperProvider>
-  );
-}
+Navigation.registerComponent("Login",  ()=>Login)
 
 Navigation.registerComponent("App",  ()=>CodePush({
   checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
   updateDialog: false,
   installMode: CodePush.InstallMode.IMMEDIATE,
-})(Main))
-Navigation.registerComponent("Login",  ()=>Login)
+})(App))
 
 
 
-if(NativeModules.RNDeviceInfo.bundleId === 'com.chatvtexample.admin' ) {
-  Navigation.events().registerAppLaunchedListener(() => {
-    Navigation.setRoot({
-      root: {
-        stack: {
-          children: [
-            {
-              component: {
-                name: 'Login',
-                options: {
-                  topBar: {
-                    visible: false,
-                    height: 0,
-                  },
-                }
-              }
+Navigation.events().registerAppLaunchedListener(() => {
+  Navigation.setRoot({
+    root: {
+      stack: {
+        children: [
+          {
+            component: {
+              name: 'App',
+
             }
-          ]
-        }
+          }
+        ]
       }
-    });
-  });
-}else{
-  Navigation.events().registerAppLaunchedListener(() => {
-    Navigation.setRoot({
-      root: {
-        stack: {
-          children: [
-            {
-              component: {
-                name: 'App',
-
-              }
-            }
-          ]
-        }
-      }
-    })
-  });
-}
+    }
+  })
+});
 
 LogBox.ignoreAllLogs(true);

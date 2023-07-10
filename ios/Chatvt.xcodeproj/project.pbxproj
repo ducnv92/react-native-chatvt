@@ -15,6 +15,10 @@
 		A9B0E0C42A540305000E9B36 /* RNCPromiseWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B0E0BE2A540304000E9B36 /* RNCPromiseWrapper.m */; };
 		A9B0E0C52A540305000E9B36 /* RNDocumentPickerChatVT.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B0E0BF2A540304000E9B36 /* RNDocumentPickerChatVT.m */; };
 		A9B0E0C62A540305000E9B36 /* RCTConvert+RNDocumentPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B0E0C32A540305000E9B36 /* RCTConvert+RNDocumentPicker.m */; };
+		A9EE0C252A5BAE3200A0FE7C /* RNCCameraRollChatVT.mm in Sources */ = {isa = PBXBuildFile; fileRef = A9EE0C1F2A5BAE3100A0FE7C /* RNCCameraRollChatVT.mm */; };
+		A9EE0C262A5BAE3200A0FE7C /* RNCAssetsLibraryRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EE0C202A5BAE3200A0FE7C /* RNCAssetsLibraryRequestHandler.m */; };
+		A9EE0C272A5BAE3200A0FE7C /* RNCCameraRollPermission.mm in Sources */ = {isa = PBXBuildFile; fileRef = A9EE0C232A5BAE3200A0FE7C /* RNCCameraRollPermission.mm */; };
+		A9EE0C282A5BAE3200A0FE7C /* RNCPermissionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A9EE0C242A5BAE3200A0FE7C /* RNCPermissionHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -47,6 +51,14 @@
 		A9B0E0C12A540304000E9B36 /* RNDocumentPickerChatVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDocumentPickerChatVT.h; sourceTree = "<group>"; };
 		A9B0E0C22A540304000E9B36 /* RNCPromiseWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCPromiseWrapper.h; sourceTree = "<group>"; };
 		A9B0E0C32A540305000E9B36 /* RCTConvert+RNDocumentPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+RNDocumentPicker.m"; sourceTree = "<group>"; };
+		A9EE0C1C2A5BAE3100A0FE7C /* RNCCameraRollPermission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCCameraRollPermission.h; sourceTree = "<group>"; };
+		A9EE0C1D2A5BAE3100A0FE7C /* RNCCameraRollChatVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCCameraRollChatVT.h; sourceTree = "<group>"; };
+		A9EE0C1E2A5BAE3100A0FE7C /* RNCPermissionHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCPermissionHelper.h; sourceTree = "<group>"; };
+		A9EE0C1F2A5BAE3100A0FE7C /* RNCCameraRollChatVT.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNCCameraRollChatVT.mm; sourceTree = "<group>"; };
+		A9EE0C202A5BAE3200A0FE7C /* RNCAssetsLibraryRequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCAssetsLibraryRequestHandler.m; sourceTree = "<group>"; };
+		A9EE0C212A5BAE3200A0FE7C /* RNCAssetsLibraryRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCAssetsLibraryRequestHandler.h; sourceTree = "<group>"; };
+		A9EE0C232A5BAE3200A0FE7C /* RNCCameraRollPermission.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNCCameraRollPermission.mm; sourceTree = "<group>"; };
+		A9EE0C242A5BAE3200A0FE7C /* RNCPermissionHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCPermissionHelper.m; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* Chatvt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chatvt.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* Chatvt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Chatvt.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -91,6 +103,14 @@
 				A9B0E0BE2A540304000E9B36 /* RNCPromiseWrapper.m */,
 				A9B0E0C12A540304000E9B36 /* RNDocumentPickerChatVT.h */,
 				A9B0E0BF2A540304000E9B36 /* RNDocumentPickerChatVT.m */,
+				A9EE0C212A5BAE3200A0FE7C /* RNCAssetsLibraryRequestHandler.h */,
+				A9EE0C202A5BAE3200A0FE7C /* RNCAssetsLibraryRequestHandler.m */,
+				A9EE0C1D2A5BAE3100A0FE7C /* RNCCameraRollChatVT.h */,
+				A9EE0C1F2A5BAE3100A0FE7C /* RNCCameraRollChatVT.mm */,
+				A9EE0C1C2A5BAE3100A0FE7C /* RNCCameraRollPermission.h */,
+				A9EE0C232A5BAE3200A0FE7C /* RNCCameraRollPermission.mm */,
+				A9EE0C1E2A5BAE3100A0FE7C /* RNCPermissionHelper.h */,
+				A9EE0C242A5BAE3200A0FE7C /* RNCPermissionHelper.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -152,11 +172,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9EE0C282A5BAE3200A0FE7C /* RNCPermissionHelper.m in Sources */,
+				A9EE0C272A5BAE3200A0FE7C /* RNCCameraRollPermission.mm in Sources */,
 				A93AFB3C2A57D6D4000B0D2E /* ContextMenu.m in Sources */,
 				A93AFB3E2A57D6D4000B0D2E /* ContextMenuView.m in Sources */,
 				A93AFB3D2A57D6D4000B0D2E /* ContextMenuAction.m in Sources */,
+				A9EE0C252A5BAE3200A0FE7C /* RNCCameraRollChatVT.mm in Sources */,
 				A9AFA1DE2A4E719500E71C84 /* CreateThumbnail.m in Sources */,
 				A9B0E0C52A540305000E9B36 /* RNDocumentPickerChatVT.m in Sources */,
+				A9EE0C262A5BAE3200A0FE7C /* RNCAssetsLibraryRequestHandler.m in Sources */,
 				A9B0E0C62A540305000E9B36 /* RCTConvert+RNDocumentPicker.m in Sources */,
 				A9B0E0C42A540305000E9B36 /* RNCPromiseWrapper.m in Sources */,
 				A93AFB3B2A57D6D3000B0D2E /* RCTConvert+ContextMenuAction.m in Sources */,

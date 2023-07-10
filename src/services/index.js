@@ -65,9 +65,15 @@ const create = (baseURL = Endpoint.API_BASE) => {
   const deleteQuickMessage = async data => api.delete(Endpoint.QUICK_MESSAGE_UPDATE(data.id), data, await getHeader());
   const listQuickMessage = async data => api.delete(Endpoint.QUICK_MESSAGE_LIST, data, await getHeader());
   const loginAdmin = async data => api.post(Endpoint.ADMIN_LOGIN, data);
+  const loginVTP = async data => api.post(Endpoint.VTP_Login, data);
+  const loginVTPClient = async data => api.post(Endpoint.VTP_Login_Client, data);
+  const loginVTM = async data => api.post(Endpoint.VTM_Login, data);
 
 
   return {
+    loginVTP,
+    loginVTPClient,
+    loginVTM,
     loginAdmin,
     createQuickMessage,
     updateQuickMessage,

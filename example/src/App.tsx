@@ -1,10 +1,20 @@
 import * as React from 'react';
 import { chatVT, ListChat } from 'react-native-chatvt';
 import { useEffect, useState } from 'react';
-import {Alert, Button, SafeAreaView, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  KeyboardAvoidingView,
+  NativeModules,
+  Platform,
+  SafeAreaView,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import { Text } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import {Navigation} from "react-native-navigation";
 // import AsyncStorage2 from "@react-native-async-storage/async-storage";
+import {Button, TextInput} from 'react-native-paper'
 
 //App VTPost thay thư viện "@react-native-community/async-storage" bằng "@react-native-async-storage/async-storage"
 
@@ -12,63 +22,83 @@ export default function App(props: any) {
   // const AppId = "VTMan"
   const AppId = 'VTPost';
 
-  const [auth, setAuth] = useState(false);
-
-  useEffect(() => {
-    chatVT.init(
-      'DEV',
-      AsyncStorage,
-      'VN',
-      AppId,
-      'eyJhbGciOiJFUzI1NiJ9.eyJzdWIiOiIwMzI3NDk3OTk2IiwiU1NPSWQiOiJkZmMxYmFjYy1jNjE4LTRkNDctOTBhZS1jZDRmMTMzMDNmM2MiLCJVc2VySWQiOjcyNDEyOTgsIkZyb21Tb3VyY2UiOjMsIlRva2VuIjoiNEU2QzAyRUVGODU4MkYxNDMwMkU1Q0NBMEM1MjEzMDkiLCJleHAiOjE3MTg1MjY2NDEsIlBhcnRuZXIiOjY5MzU5MzF9.4hvyYpPN6ABdGXi0Imjoqi18Luxo9xokg7GFPT_iczfqSEQ-VXzG-KCjL__SB5O77ZU1SohGEOvxbMpgXEQoMA',
-      'eyJhbGciOiJSUzI1NiIsImtpZCI6IjEzODFCMzg2OUFGRDlBRTU4NDYwREY0M0VENEZGQkE5NzhFNzg3QTQiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJFNEd6aHByOW11V0VZTjlEN1VfN3FYam5oNlEifQ.eyJuYmYiOjE2ODY5OTA2MzcsImV4cCI6MTY4OTU4MjYzNywiaXNzIjoiaHR0cHM6Ly9jcG5zc28udmlldHRlbHBvc3Qudm4iLCJhdWQiOlsiaHR0cHM6Ly9jcG5zc28udmlldHRlbHBvc3Qudm4vcmVzb3VyY2VzIiwic2UtcHVibGljLWFwaSJdLCJjbGllbnRfaWQiOiJ2dHAud2ViIiwic3ViIjoiZGZjMWJhY2MtYzYxOC00ZDQ3LTkwYWUtY2Q0ZjEzMzAzZjNjIiwiYXV0aF90aW1lIjoxNjg2OTkwNjM3LCJpZHAiOiJsb2NhbCIsImVtYWlsIjoiNzI0MTI5OEBnbWFpbC5jb20iLCJwaG9uZV9udW1iZXIiOiIwMzI3NDk3OTk2IiwicHJlZmVycmVkX3VzZXJuYW1lIjoiNzI0MTI5OEBnbWFpbC5jb20iLCJjcmVhdGVkX2RhdGUiOiIyNi8wNy8yMDIyIDE2OjA4OjQzIiwiY29uZmlybV9waG9uZSI6IlRydWUiLCJjb25maXJtX2VtYWlsIjoiVHJ1ZSIsImZ1bGxfbmFtZSI6Ikhvw6BuZyBMaW5rIHRpbmt5eSIsInBob25lIjoiMDMyNzQ5Nzk5NiIsInVzZXJuYW1lIjoiNzI0MTI5OEBnbWFpbC5jb20iLCJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIiwic2UtcHVibGljLWFwaSIsIm9mZmxpbmVfYWNjZXNzIl0sImFtciI6WyJwd2QiXX0.y23RaKyA3JIdU4Oq4fsbWeD-BGG0zz4n4FbmNT7GCEXybi9YmZ7khInAygovKrbPvWncAjM7qfyIfzuzvJ24ZZmMJWpex9vONwPywE_4yMdcx6xckI7VOLNZPqCpu9-TGj03cj8srzeqI7Y_hKTezhOcLD0RWxIsRkJwcyg6a3b9s5uesW2CmBHYSxO2hbB5X2FQRlEjABje2keNxqwj5R7kZX13C6J_0JvdV9DPtE_aSHkM5kW3M5elOQq6Z7E48xHHQF3gM1y5AWuPquBeg_AO05sfBRxUlzMjYdHTjn0isZ7BPJlCQXMaUP_kFYRQmjkkEZpx5dFdgVZK8FaO2Q',
-      () => {
-        setAuth(true);
-      }, (error: string)=>{
-        Alert.alert("Thông báo", error)
+  const login = (data) => {
+    Navigation.setRoot({
+      root: {
+        stack: {
+          children: [
+            {
+              component: {
+                name: 'Login',
+                options: {
+                  topBar: {
+                    visible: false,
+                    height: 0,
+                  },
+                },
+                passProps: {
+                  data
+                },
+              }
+            }
+          ]
+        }
       }
-    );
-    // chatVT.init(
-    //   "DEV",
-    //   AsyncStorage,
-    //   "VN",
-    //   AppId,
-    //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI5ODU5NzkiLCJ1c2VybmFtZSI6Im5ndW9udGVzdDEiLCJtYV9idXVjdWMiOiJUTjIiLCJuYW1lIjoiVGVzdCAxIiwicGhvbmUiOiI4NDM4ODAyMjA3MSIsImRvbl92aSI6IlRDVCIsIm1hX2NodWNkYW5oIjoiVlRCMDA5IiwiaXNzIjoiLTEwIiwiZW1wbG95ZWVfZ3JvdXBfaWQiOiI0Iiwic291cmNlIjoiLTEwIiwic291cmNlMiI6IiIsInRva2VuIjoiZWE4MGY3MmMtYmNmYy00OGRmLTk1NWMtMTM1ZmY2NDgzMWU1IiwidG9rZW4yIjoiIiwiY2FwX2J1dWN1YyI6IjUwIiwibG9ja19kdCI6IjAiLCJtYW5oYW52aWVuIjoiSTI3MDQxNzIyIiwiY2hpX25oYW5oIjoiVENUIiwidnVuZyI6IjEyIiwiZXhwIjoiMTY4ODAzOTM5MDk4MSIsImRuX3VzZXJpZCI6IjMxNjgyIn0.BW7UAD8ecYVDywNhRjIAhXSy5pGqcfWvtf19EeNkJnE',
-    //   ''
-    //   , () => {
-    //     setAuth(true)
-    //   })
-  });
+    });
+
+  }
+
+  const VTP = () => {
+    login({
+      username: '0327497996',
+      password: '123456a',
+      app: 'VTPost',
+    })
+
+  }
+
+  const VTM = () => {
+    login({
+      username: '84972188133',
+      password: 'TN2',
+      app: 'VTMan',
+    })
+  }
+
+  const ADMIN = () => {
+    login({
+      username: 'superadmin',
+      password: 'viettel@admin',
+      app: 'Admin',
+    })
+  }
+
 
   return (
-    <>
-      {auth ? (
-        AppId === 'VTMan' ? (
-          <ListChat {...props} buttonBack={false} />
-        ) : (
-          <SafeAreaView style={{ padding: 16 }}>
-            <TouchableOpacity
-              style={{backgroundColor: '#F57C00', padding: 16, borderRadius: 10, margin: 16}}
-              onPress={() => {
-                chatVT.toListChat(props.componentId);
-              }}
-
-            ><Text style={{fontSize: 16,color: 'white'}}>List chat</Text></TouchableOpacity>
-            {/*<View style={{ height: 16 }} />*/}
-            {/*<Button*/}
-            {/*  onPress={() => {*/}
-            {/*    chatVT.toChat(props.componentId, {*/}
-            {/*      vtm_user_ids: [985979],*/}
-            {/*    });*/}
-            {/*  }}*/}
-            {/*  title={'Chat Detail'}*/}
-            {/*></Button>*/}
-          </SafeAreaView>
-        )
-      ) : (
-        <Text> Đang xác thực tài khoản</Text>
-      )}
-    </>
+    <SafeAreaView style={{  flex: 1, }} >
+      <KeyboardAvoidingView
+        style={{flex: 1, paddingHorizontal: 16, justifyContent: 'center'}}
+        behavior={Platform.OS === 'ios' ? 'padding' : ''}>
+        <Button
+          style={{marginTop: 30}}
+          mode="contained"
+          onPress={VTP}>
+          VTP
+        </Button>
+        <Button
+          style={{marginTop: 30}}
+          mode="contained"
+          onPress={VTM}>
+          VTM
+        </Button>
+        <Button
+          style={{marginTop: 30}}
+          mode="contained"
+          onPress={ADMIN}>
+          ADMIN
+        </Button>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 

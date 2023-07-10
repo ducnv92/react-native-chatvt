@@ -149,6 +149,47 @@ class ChatVT {
     })
   }
 
+  loginVTP(componentId, storage, username, password, onSuccess, onError){
+    Navigation.registerComponent('ListChatScreen', () => gestureHandlerRootHOC(ListChatScreen));
+    Navigation.registerComponent('ChatScreen', () => gestureHandlerRootHOC(ChatScreen));
+
+    appStore.loginVTP({ username, password}, async data=>{
+      this.init(
+          'DEV',
+        storage,
+          'VN',
+          "VTPost",
+          data.TokenKey,
+          data.TokenSSO,
+          () => {
+            onSuccess()
+          }
+        );
+    })
+  }
+
+
+
+  loginVTM(componentId, storage, username, password, onSuccess, onError){
+    Navigation.registerComponent('ListChatScreen', () => gestureHandlerRootHOC(ListChatScreen));
+    Navigation.registerComponent('ChatScreen', () => gestureHandlerRootHOC(ChatScreen));
+
+    appStore.loginVTM({  "phone": username,
+      "ma_buucuc":  password}, async data=>{
+      this.init(
+        'DEV',
+        storage,
+        'VN',
+        "VTMan",
+        data.token,
+        '',
+        () => {
+          onSuccess()
+        }
+      );
+    })
+  }
+
 }
 export const chatVT = new ChatVT()
 export const ListChat = ListChatScreen

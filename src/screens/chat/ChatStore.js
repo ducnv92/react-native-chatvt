@@ -98,38 +98,34 @@ class ChatStore {
     if (params.attachmentLocal) {
       const formData = new FormData()
       for (let i = 0; i < params.attachmentLocal.length; i++) {
-        let mimeFile = mime.lookup(params.attachmentLocal[i].uri)
-        if(params.attachmentLocal[i].type){
-          mimeFile = params.attachmentLocal[i].type
-        }
-        if(!mimeFile) mimeFile = 'jpg'
-        console.log('mimeFile', mimeFile)
+        const extension = params.attachmentLocal[i].extension
+
         let fileUri = ''
-        if (mimeFile?.includes('video')) {
+        if (extension === 'mov' || extension === 'mp4') {
           fileUri = params.attachmentLocal[i].uri
           const fileName = fileUri.slice(fileUri.lastIndexOf('/') + 1, fileUri.length)
 
           formData.append("files", {
-            name: fileName,
+            name: uuid.v4()+'.'+extension,
             uri: fileUri,
-            type: 'video/mp4',
+            type: 'video/'+extension,
           })
 
-        }else if(mimeFile?.includes('doc')||mimeFile.includes('pdf')||mimeFile.includes('xls')){
+        }else if(extension === 'doc' || extension === 'pdf'|| extension==='xls'){
           try{
             fileUri = params.attachmentLocal[i].uri
             const fileName = fileUri.slice(fileUri.lastIndexOf('/') + 1, fileUri.length)
 
             formData.append("files", {
-              name: fileName,
+              name: uuid.v4()+'.'+extension,
               uri: fileUri,
-              type: mimeFile,
+              type: params.attachmentLocal[i].type,
             })
           }catch (e) {
             console.log(e)
           }
 
-        }else if(mimeFile?.includes('jpg')||mimeFile?.includes('png') || mimeFile?.includes('jpeg')){
+        }else if(extension === 'jpg' ||extension ==='png'||extension ==='jpeg'){
 
           let absolutePath = params.attachmentLocal[i].uri
           if (Platform.OS === 'android'){
@@ -152,13 +148,10 @@ class ChatStore {
 
 
           try{
-            const fileName = fileUri.slice(fileUri.lastIndexOf('/') + 1, fileUri.length)
-            let match = /\.(\w+)$/.exec(fileName);
-            let type = match ? `image/${match[1]}` : `image`;
             formData.append("files", {
-              name: fileName,
+              name: uuid.v4()+'.'+extension,
               uri: fileUri,
-              type: 'image/jpg',
+              type: 'image/'+extension,
             })
           }catch (e) {
             console.log(e)

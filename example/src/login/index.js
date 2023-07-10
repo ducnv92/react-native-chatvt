@@ -18,41 +18,28 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 export const Login =  observer(function Login ( props){
 
-  const [username, setUsername] = React.useState("superadmin");
-  const [password, setPassword] = React.useState("viettel@admin");
-
+  const [username, setUsername] = React.useState(props.data.username);
+  const [password, setPassword] = React.useState(props.data.password);
   const [showSearch, setShowSearch] = useState(false);
 
   useEffect(()=>{
+    console.log('props', props)
   }, [])
 
 
-  const navigationChat = (data) =>{
-    Navigation.push(props.componentId, {
-      component: {
-        name: "ChatScreen",
-        passProps: {
-          data: data
-        },
-        options: {
-          popGesture: false,
-          bottomTabs: {
-            visible: false,
-          },
-          topBar: {
-            visible: false,
-            height: 0,
-          },
-        },
-      }
-    })
-  }
-
 
   const login = () => {
-    chatVT.loginAdmin(props.componentId, AsyncStorage, username, password, ()=>{
+    if (props.data.app === 'VTPost') {
 
-    })
+    }else  if (props.data.app === 'VTMan') {
+
+    }else  if (props.data.app === 'Admin') {
+      chatVT.loginAdmin(props.componentId, AsyncStorage, username, password, ()=>{
+
+      })
+    }
+
+
   }
 
   return <SafeAreaView style={{  flex: 1, }} >
