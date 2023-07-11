@@ -42,9 +42,8 @@ import {RecordButton} from "./RecordButton";
 
 export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
-  const [input, setInput] = useState('')
   const [receiver, setReceiver] = useState({})
-  const bottomSheetRef = useRef(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     const listener = Navigation.events().registerNavigationButtonPressedListener(
@@ -52,39 +51,20 @@ export const ChatScreen = observer(function ChatScreen(props) {
           chatStore.images = []
       }
     );
+
+    chatStore.inputRef = ()=>{
+      try{
+        inputRef.current?.focus()
+      }catch (e) {
+        Log(e)
+      }
+    }
     return () => {
       listener.remove()
       chatStore.showAttachModal = false
     };
   }, []);
 
-
-  const handleDocumentSelection = useCallback(async () => {
-    try {
-      const response = await DocumentPicker.pick({
-        presentationStyle: 'fullScreen',
-        type: [types.pdf, types.xls, types.docx, types.xlsx],
-        allowMultiSelection: true
-      });
-
-      const message = {
-        id: uuid.v4(),
-        "type": "DOCUMENT",
-        attachmentLocal: response,
-        has_attachment: true,
-        "text": input,
-        "status": "sending",
-        sender: appStore.user.type + '_' + appStore.user.user_id,
-        conversation_id: conversation._id
-      }
-      console.log('document', message);
-      chatStore.data.unshift(message)
-      // chatStore.sendMessage(message)
-      setInput('')
-    } catch (err) {
-      console.warn(err);
-    }
-  }, []);
 
   useEffect(() => {
     let receiver = {}
@@ -113,7 +93,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
     const message = {
       id: uuid.v4(),
       "type": "MESSAGE",
-      "text": input,
+      "text": chatStore.input,
       "status": "sending",
       order_number: conversation.order_info?.order_number,
       sender: appStore.user.type + '_' + appStore.user.user_id,
@@ -121,9 +101,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
     }
     chatStore.data.unshift(message)
     chatStore.sendMessage(message)
-    // messages.unshift()
-    // setMessages(messages)
-    setInput('')
+    chatStore.input = ''
   }
 
   const pickDocument = () => {
@@ -152,112 +130,10 @@ export const ChatScreen = observer(function ChatScreen(props) {
         console.log(res)
       })
   }
-  const sendMap = () => {
-    const permission = Platform.OS ==='android'?PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION:PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-
-    request(permission).then((result) => {
-      switch (result) {
-        case RESULTS.UNAVAILABLE:
-          console.log('This feature is not available (on this device / in this context)');
-          break;
-        case RESULTS.DENIED:
-          console.log('The permission has not been requested / is denied but requestable');
-          break;
-        case RESULTS.LIMITED:
-          console.log('The permission is limited: some actions are possible');
-          break;
-        case RESULTS.GRANTED:
-          console.log('The permission is granted');
-          Geolocation.getCurrentPosition(
-            (position) => {
-              console.log(position);
-              const message = {
-                id: uuid.v4(),
-                type: "LOCATION",
-                location: {
-                  longitude: position.coords.longitude,
-                  latitude: position.coords.latitude,
-                },
-                status: "sending",
-                sender: appStore.user.type + '_' + appStore.user.user_id,
-                conversation_id: conversation._id
-              }
-              console.log('map', message)
-              chatStore.data.unshift(message)
-              chatStore.sendMessage(message)
-              setInput('')
-            },
-            (error) => {
-              // See error code charts below.
-              console.log(error.code, error.message);
-            },
-            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-          );
-
-          break;
-        case RESULTS.BLOCKED:
-          console.log('The permission is denied and not requestable anymore');
-          break;
-      }
-    });
-
-
-  }
-
-
-
-  const requestCameraPermission = async () => {
-    try {
-      let permission = ''
-      if(Platform.OS === 'android'){
-        permission = Platform.Version >= 33 ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
-      }else{
-        permission = PERMISSIONS.IOS.PHOTO_LIBRARY;
-      }
-
-
-      const result = await request(permission)
-        switch (result) {
-          case RESULTS.UNAVAILABLE:
-            console.log('This feature is not available (on this device / in this context)');
-            break;
-          case RESULTS.DENIED:
-            console.log('The permission has not been requested / is denied but requestable');
-            break;
-          case RESULTS.LIMITED:
-            console.log('The permission is limited: some actions are possible');
-            break;
-          case RESULTS.GRANTED:
-            console.log('The permission is granted');
-            // console.log(bottomSheetRef)
-            // bottomSheetRef.current?.present();
-            chatStore.showAttachModal = true
-            break;
-          case RESULTS.BLOCKED:
-            console.log('The permission is denied and not requestable anymore');
-            break;
-        }
-
-
-
-
-      // const granted = await PermissionsAndroid.request(permission);
-      // if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      //   Log('You can use the camera');
-      //   bottomSheetRef.current?.present();
-      //
-      // } else {
-      //   Log('Camera permission denied');
-      // }
-
-    } catch (err) {
-      Log(err);
-    }
-  };
 
   const handlePresentModalPress = () => {
     Keyboard.dismiss()
-    requestCameraPermission()
+    chatStore.showAttachModal = true
   };
 
   return <MenuProvider>
@@ -277,21 +153,24 @@ export const ChatScreen = observer(function ChatScreen(props) {
             <View style={{ flexDirection: 'row', alignItems: 'center', }}>
 
               <Text style={{ fontWeight: '600', fontSize: 17, color: 'white', gap: 7 }}>{
-                receiver.first_name + " " + receiver.last_name
+                conversation.type==='GROUP'?('Đơn '+conversation.order_numbers[0]) : (receiver.first_name + " " + receiver.last_name)
               }
 
               </Text>
               {/* <Image style={{ height: 10, width: 10, resizeMode: 'center', }} source={require('../../assets/ic_arrow_down.png')} /> */}
 
             </View>
-            <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center', marginTop: 2 }}>
-              <View style={{ height: 8, width: 8, borderRadius: 4, backgroundColor: '#30F03B' }} />
+            {
+              conversation.type==='PAIR' &&
+              <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center', marginTop: 2 }}>
+                <View style={{ height: 8, width: 8, borderRadius: 4, backgroundColor: '#30F03B' }} />
 
-              <Text style={{ fontWeight: 'bold', fontSize: 13, color: 'white', textAlign: 'center' }}>{
-                receiver.type === 'VTMAN' && appStore.lang.common.postman
-              }
-              </Text>
-            </View>
+                <Text style={{ fontWeight: 'bold', fontSize: 13, color: 'white', textAlign: 'center' }}>{
+                  conversation.type==='PAIR' && receiver.type === 'VTMAN' && appStore.lang.common.postman
+                }
+                </Text>
+              </View>
+            }
 
           </View>
 
@@ -335,14 +214,19 @@ export const ChatScreen = observer(function ChatScreen(props) {
             <Image source={require('../../assets/ic_attach.png')}
               style={{ height: 24, width: 24, resizeMode: "contain" }} />
           </TouchableOpacity>
-          <View style={{ width: 1, backgroundColor: 'red', marginVertical: 14 }} />
+          <View style={{width: 1, height: '100%'}}>
+            <View style={{ width: 1, backgroundColor: '#DCE6F0', marginVertical: 14, flex: 1, }} />
+          </View>
           <TextInput
+            ref={inputRef}
             placeholder={appStore.lang.chat.input_message}
             placeholderTextColor={'#B5B4B8'}
             multiline={true}
-            onChangeText={text => setInput(text)}
-            value={input}
-            style={{ fontSize: 15, color: colors.primaryText, flex: 1, minHeight: 56, paddingTop: 18,   }}
+            onChangeText={text =>{
+              chatStore.input= text
+            }}
+            value={chatStore.input}
+            style={{ fontSize: 15, color: colors.primaryText, flex: 1, minHeight: 56, paddingTop: 18, padding: 12,}}
           />
           {/*<TouchableOpacity*/}
           {/*  onPress={() => handleDocumentSelection()}*/}
@@ -360,7 +244,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
           {/*  <Image source={require('../../assets/nav_document.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>*/}
           {/*</TouchableOpacity>*/}
           {
-            input.trim() !== '' &&
+            chatStore.input.trim() !== '' &&
             <TouchableOpacity
               onPress={sendMessage}
               style={{ width: 40, height: 56, alignItems: 'center', justifyContent: 'center' }}>
@@ -369,7 +253,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
             </TouchableOpacity>
           }
           {
-            input.trim() === '' &&
+            chatStore.input.trim() === '' &&
             <RecordButton
               style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>
               <Image source={require('../../assets/ic_microphone.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>

@@ -9,6 +9,7 @@ import * as MyAsyncStorage from "../../utils/MyAsyncStorage";
 import { USER } from "../../utils/MyAsyncStorage";
 import {Platform} from "react-native";
 import uuid from "react-native-uuid";
+import {useRef} from "react";
 var RNFS = require('react-native-fs');
 
 class ChatStore {
@@ -20,6 +21,8 @@ class ChatStore {
   page = 0;
   tab = 1;
   conversation_id = '';
+  input = '';
+  inputRef = null;
   data = [];
   images = [];
   showAttachModal = __DEV__;

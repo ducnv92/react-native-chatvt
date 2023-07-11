@@ -4,7 +4,18 @@ import chatStore from './ChatStore';
 import CameraRollPicker from '../../components/cameraRollPicker';
 import { observer } from 'mobx-react-lite';
 import { Log } from '../../utils';
-import { Dimensions, FlatList, Image, Platform, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  Modal,
+  Platform,
+  SafeAreaView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
 import colors from '../../Styles';
 import appStore from '../AppStore';
@@ -12,27 +23,76 @@ import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import DocumentPicker, {types} from "../../components/documentPicker";
 import uuid from "react-native-uuid";
 import Geolocation from 'react-native-geolocation-service';
+import quickMessageStore from "./QuickMessageStore";
 
 
 const QuickMessage =observer(function QuickMessage ( props) {
   const snapPoints = useMemo(() => ['40%', '80%'], []);
   const bottomSheetModalRef = useRef(null);
+  const [isCreate, setIsCreate] = useState(false)
+  const [textInput, onChangeText] = useState('')
+  const [currentMessage, setCurrentMessage] = useState({})
 
   useEffect(()=>{
+    console.log('quickMessage', props)
+    quickMessageStore.getData({})
     bottomSheetModalRef.current?.present();
   }, [])
 
+  const showUpdate = (message) => {
+    useCallback(()=>{
+      setIsCreate(true)
+    }, [currentMessage])
+    setCurrentMessage(message)
+  }
+
+  const sendMessage = (msg) => {
+    chatStore.input = msg.text
+    chatStore.showAttachModal = false;
+    chatStore.tab = 1;
+    try{
+      chatStore.inputRef()
+    }catch (e) {
+      Log(e)
+    }
+  }
+
+  const updateQuickMessage = () => {
+    if(currentMessage._id){
+      quickMessageStore.update({
+        ...currentMessage,
+        ...{
+          text: textInput
+        }
+      }, ()=>{
+        setIsCreate(false)
+        setCurrentMessage({})
+      })
+    }else{
+      quickMessageStore.create({
+        text: textInput,
+        type: "MESSAGE",
+      }, ()=>{
+        setIsCreate(false)
+        setCurrentMessage({})
+      })
+    }
+  }
+
   const renderItem = ({item, index}) => {
     return (
-      <View style={{flexDirection: 'row', padding: 16 }}>
-          <Text style={{flex: 1,}}>
-            sdfhhdfkhdsjkfh
+      <TouchableOpacity
+        onPress={()=>sendMessage(item)}
+        style={{flexDirection: 'row', padding: 16 }}>
+          <Text style={{flex: 1, flexWrap: 'wrap', fontWeight: '500', fontSize: 15, color: colors.neutralText}}>
+            {item.text}
           </Text>
         <TouchableOpacity
+          onPress={()=>showUpdate(item)}
           style={{width: 24, height: 24, alignItems: 'center', justifyContent: 'center'}}>
           <Image source={require('../../assets/ic_edit_quick_message.png')} style={{width: 16, height: 16,  resizeMode: 'contain'}} resizeMode={'contain'}/>
         </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
     )
   }
 
@@ -40,7 +100,7 @@ const QuickMessage =observer(function QuickMessage ( props) {
     <BottomSheetModal
       ref={bottomSheetModalRef}
       index={0}
-      bottomInset={76}
+      bottomInset={77}
       snapPoints={snapPoints}
       onDismiss={() => {
         if(chatStore.tab === 1){
@@ -48,10 +108,85 @@ const QuickMessage =observer(function QuickMessage ( props) {
         }
       }}
     >
+      <View style={{height: 56, flexDirection: 'row', alignItems: 'center', backgroundColor: '#F8F8FA'}}>
+        <Text style={{ position: 'absolute', width: '100%', textAlign: 'center', fontWeight: '600', fontSize: 17, color: '#44494D'}} >Chat nhanh</Text>
+        <TouchableOpacity
+          onPress={()=>{
+            chatStore.showAttachModal = false
+          }}
+          style={{width: 56, height: 56, alignItems: 'center', justifyContent: 'center'}}>
+          <Image source={require('../../assets/ic_close.png')} style={{width: 24, height: 24, resizeMode: 'contain'}} resizeMode={'contain'}/>
+
+        </TouchableOpacity>
+        <View style={{flex: 1}}/>
+        {
+          quickMessageStore.data.length>0?
+            <TouchableOpacity
+              onPress={()=>setIsCreate(true)}
+              style={{paddingHorizontal: 16, height: 56, alignItems: 'center', justifyContent: 'center'}}>
+              <Text style={{fontSize: 15, fontWeight: '600', color: '#3B7CEC'}}>Thêm mới</Text>
+            </TouchableOpacity>:
+            <View
+              style={{paddingHorizontal: 16, height: 56}}>
+            </View>
+        }
+
+      </View>
+      {
+        quickMessageStore.data.length ===0 &&
+        <View style={{flex: 1,}}>
+          <Image source={require('../../assets/ic_quick_message_empty.png')} style={{width: 124, height: 99, alignSelf: 'center' }}/>
+          <Text style={{color: colors.neutralText, fontSize: 15, fontWeight: '500', textAlign: 'center'}}>Bạn chưa có tin nhắn chat nhanh</Text>
+          <TouchableOpacity
+            onPress={()=>setIsCreate(true)}
+            style={{ position: 'absolute', bottom: 56, left: 16, right: 16, alignItems: 'center', justifyContent: 'center', padding: 16,  backgroundColor: colors.primary, borderRadius: 10 }}>
+            <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>Tạo tin nhắn nhanh</Text>
+          </TouchableOpacity>
+        </View>
+      }
     <FlatList
-      data={[12, 2, 3, ]}
+      data={quickMessageStore.data}
       renderItem={renderItem}
+      ItemSeparatorComponent={()=><View style={{height: 1, backgroundColor: ''} }/>}
        />
+      <Modal
+        visible={isCreate}
+        transparent={true}
+        animationType={'fade'}
+      >
+        <SafeAreaView style={{flex: 1, backgroundColor: '#00000059',  justifyContent: 'flex-end'}}>
+          <>
+            <View style={{height: 56, flexDirection: 'row', alignItems: 'center', backgroundColor: '#F8F8FA'}}>
+              <Text style={{ position: 'absolute', width: '100%', textAlign: 'center', fontWeight: '600', fontSize: 17, color: '#44494D'}} >Tạo tin chat nhanh</Text>
+              <TouchableOpacity
+                onPress={()=>{
+                  setIsCreate(false)
+                }}
+                style={{width: 56, height: 56, alignItems: 'center', justifyContent: 'center', }}>
+                <Image source={require('../../assets/ic_close.png')} style={{width: 24, height: 24, resizeMode: 'contain'}} resizeMode={'contain'}/>
+
+              </TouchableOpacity>
+              <View style={{flex: 1}}/>
+
+            </View>
+            <View style={{backgroundColor: 'white'}}>
+              <TextInput
+                value={textInput}
+                multiline={true}
+                placeholder={'Nội dung tin nhắn'}
+                numberOfLines={10}
+                style={{textAlignVertical: 'top',   margin: 16, borderColor: '#DCE6F0', borderWidth: 1, borderRadius: 10, padding: 12 }}
+                onChangeText={onChangeText}
+              />
+              <TouchableOpacity
+                onPress={updateQuickMessage}
+                style={{ margin: 16, alignItems: 'center', justifyContent: 'center', padding: 16,  backgroundColor: colors.primary, borderRadius: 10 }}>
+                <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>Lưu chỉnh sửa</Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        </SafeAreaView>
+      </Modal>
     </BottomSheetModal>
   )
 })
@@ -95,7 +230,7 @@ const ImageMessage =observer(function ImageMessage ( props) {
       <BottomSheetModal
         ref={bottomSheetModalRef}
         index={0}
-        bottomInset={76}
+        bottomInset={77}
         snapPoints={snapPoints}
         // onChange={handleSheetChanges}
         onDismiss={() => {
@@ -128,7 +263,7 @@ const ImageMessage =observer(function ImageMessage ( props) {
   )
 })
 
-const LocationMessage =observer(function QuickMessage ( props) {
+const LocationMessage =observer(function LocationMessage ( props) {
   const bottomSheetModalRef = useRef(null);
 
   const [location, setLocation] = useState({coords: {
@@ -201,7 +336,7 @@ const LocationMessage =observer(function QuickMessage ( props) {
     <BottomSheetModal
       ref={bottomSheetModalRef}
       index={0}
-      bottomInset={76}
+      bottomInset={77}
       snapPoints={['40%']}
       onDismiss={() => {
         if(chatStore.tab===3){
@@ -239,8 +374,8 @@ const LocationMessage =observer(function QuickMessage ( props) {
       </MapView>
       <TouchableOpacity
         onPress={sendMap}
-        style={{ position: 'absolute', zIndex: 99999, bottom: 16, left: 16, right: 16, alignItems: 'center', justifyContent: 'center', padding: 16, margin: 16, backgroundColor: colors.primary, borderRadius: 10 }}>
-        <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>{appStore.lang.chat.send}</Text>
+        style={{ position: 'absolute', zIndex: 99999, bottom: 16, left: 16, right: 16, alignItems: 'center', justifyContent: 'center', padding: 16,  backgroundColor: colors.primary, borderRadius: 10 }}>
+        <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>Chia sẻ vị trí hiện tại</Text>
       </TouchableOpacity>
     </View>
     </BottomSheetModal>
@@ -279,11 +414,48 @@ export const AttachScreen = observer(function AttachScreen(props) {
     }
   }
 
+  const requestCameraPermission = async (callback) => {
+    try {
+      let permission = ''
+      if(Platform.OS === 'android'){
+        permission = Platform.Version >= 33 ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
+      }else{
+        permission = PERMISSIONS.IOS.PHOTO_LIBRARY;
+      }
+
+
+      const result = await request(permission)
+      switch (result) {
+        case RESULTS.UNAVAILABLE:
+          console.log('This feature is not available (on this device / in this context)');
+          break;
+        case RESULTS.DENIED:
+          console.log('The permission has not been requested / is denied but requestable');
+          break;
+        case RESULTS.LIMITED:
+          console.log('The permission is limited: some actions are possible');
+          break;
+        case RESULTS.GRANTED:
+          console.log('The permission is granted');
+          // console.log(bottomSheetRef)
+          // bottomSheetRef.current?.present();
+         callback()
+          break;
+        case RESULTS.BLOCKED:
+          console.log('The permission is denied and not requestable anymore');
+          break;
+      }
+    } catch (err) {
+      Log(err);
+    }
+  };
+
+
 
   return(<>
     {
       chatStore.showAttachModal &&
-      <>
+      <SafeAreaView>
           <>{
             chatStore.tab === 0 &&
             <ImageMessage {...props}/>
@@ -293,7 +465,7 @@ export const AttachScreen = observer(function AttachScreen(props) {
         {
 
           chatStore.tab === 1 &&
-            <QuickMessage/>
+            <QuickMessage {...props}/>
 
         }
         </>
@@ -305,10 +477,12 @@ export const AttachScreen = observer(function AttachScreen(props) {
             <LocationMessage {...props}/>
         }
         </>
-        <View style={{ bottom:  0, width:  '100%',  height: 76,  position: 'absolute',backgroundColor: 'white', flexDirection: 'row' }}>
+        <View style={{ bottom:  0, width:  '100%',  height: 77,  position: 'absolute',backgroundColor: 'white', flexDirection: 'row', borderTopWidth: 1, borderColor: '#DCE6F0' }}>
           <TouchableOpacity
             onPress={()=>{
-              chatStore.tab = 0
+              requestCameraPermission(()=>{
+                chatStore.tab = 0
+              })
             }}
             style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <Image source={chatStore.tab===0?require('../../assets/nav_photo_video_active.png'):require('../../assets/nav_photo_video.png')}
@@ -341,7 +515,7 @@ export const AttachScreen = observer(function AttachScreen(props) {
             <Text style={{color: chatStore.tab===3?colors.primary: colors.neutralText, fontSize: 13, fontWeight: '500', paddingTop: 6}}>Gửi vị trí</Text>
           </TouchableOpacity>
         </View>
-      </>
+      </SafeAreaView>
 
     }
 
