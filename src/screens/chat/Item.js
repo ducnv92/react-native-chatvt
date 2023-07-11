@@ -74,6 +74,7 @@ const MapItem = memo(function (props) {
             style={{width: 24, height: 24}}
             coordinate={{latitude: props.item.location.latitude, longitude: props.item.location.longitude}}
             image={require('../../assets/ic_map_pin.png')}
+            resizeMode="contain"
           />
         </MapView>
       </View>

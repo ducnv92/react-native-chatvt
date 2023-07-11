@@ -109,6 +109,7 @@
     "react-native-reanimated": "*",
     "react-native-svg": "*",
     "react-native-vector-icons": "*",
+    "react-native-safe-area-context": "*",
     "react-native-video": "*"
   },
   "dependencies": {

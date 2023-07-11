@@ -24,7 +24,7 @@ import DocumentPicker, {types} from "../../components/documentPicker";
 import uuid from "react-native-uuid";
 import Geolocation from 'react-native-geolocation-service';
 import quickMessageStore from "./QuickMessageStore";
-
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const QuickMessage =observer(function QuickMessage ( props) {
   const snapPoints = useMemo(() => ['40%', '80%'], []);
@@ -32,6 +32,7 @@ const QuickMessage =observer(function QuickMessage ( props) {
   const [isCreate, setIsCreate] = useState(false)
   const [textInput, onChangeText] = useState('')
   const [currentMessage, setCurrentMessage] = useState({})
+  const insets = useSafeAreaInsets();
 
   useEffect(()=>{
     console.log('quickMessage', props)
@@ -100,7 +101,7 @@ const QuickMessage =observer(function QuickMessage ( props) {
     <BottomSheetModal
       ref={bottomSheetModalRef}
       index={0}
-      bottomInset={77}
+      bottomInset={77+insets.bottom}
       snapPoints={snapPoints}
       onDismiss={() => {
         if(chatStore.tab === 1){
@@ -192,6 +193,8 @@ const QuickMessage =observer(function QuickMessage ( props) {
 })
 
 const ImageMessage =observer(function ImageMessage ( props) {
+  const insets = useSafeAreaInsets();
+
   const snapPoints = useMemo(() => ['50%', '80%'], []);
 
   const bottomSheetModalRef = useRef(null);
@@ -230,7 +233,7 @@ const ImageMessage =observer(function ImageMessage ( props) {
       <BottomSheetModal
         ref={bottomSheetModalRef}
         index={0}
-        bottomInset={77}
+        bottomInset={77+insets.bottom}
         snapPoints={snapPoints}
         // onChange={handleSheetChanges}
         onDismiss={() => {
@@ -265,6 +268,8 @@ const ImageMessage =observer(function ImageMessage ( props) {
 
 const LocationMessage =observer(function LocationMessage ( props) {
   const bottomSheetModalRef = useRef(null);
+  const insets = useSafeAreaInsets();
+
 
   const [location, setLocation] = useState({coords: {
       longitude: 0,
@@ -336,7 +341,7 @@ const LocationMessage =observer(function LocationMessage ( props) {
     <BottomSheetModal
       ref={bottomSheetModalRef}
       index={0}
-      bottomInset={77}
+      bottomInset={77+insets.bottom}
       snapPoints={['40%']}
       onDismiss={() => {
         if(chatStore.tab===3){
