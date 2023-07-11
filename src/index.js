@@ -41,6 +41,7 @@ class ChatVT {
   }
 
   toListChat(componentId){
+    appStore.componentId = componentId
     Navigation.push(componentId, {
       component: {
         name: 'ListChatScreen',
@@ -59,6 +60,7 @@ class ChatVT {
   }
 
   toChat(componentId, orderChat){
+    appStore.componentId = componentId
     if(orderChat){
       appStore.createConversation(orderChat, (conversation)=>{
         Navigation.push(componentId, {
@@ -120,6 +122,7 @@ class ChatVT {
   }
 
   loginAdmin(componentId, storage, username, password, onSuccess, onError){
+    appStore.componentId = componentId
     Navigation.registerComponent('ListChatScreen', () => gestureHandlerRootHOC(ListChatScreen));
     Navigation.registerComponent('ChatScreen', () => gestureHandlerRootHOC(ChatScreen));
 

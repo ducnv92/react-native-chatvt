@@ -95,7 +95,7 @@ android {
 
     namespace "com.chatvtexample"
     defaultConfig {
-        applicationId "com.chatvtexample"
+        applicationId "com.chatvtexample.admin"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

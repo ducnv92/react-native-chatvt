@@ -8,6 +8,7 @@ import en from "../locales/en.json";
 import {Log} from "../utils";
 
 class AppStore {
+  componentId = null;
   user = {};
   isLoading = false;
   isError = false;

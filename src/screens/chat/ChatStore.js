@@ -22,7 +22,7 @@ class ChatStore {
   conversation_id = '';
   data = [];
   images = [];
-  showAttachModal = false;
+  showAttachModal = __DEV__;
 
   constructor() {
     makeAutoObservable(this);
@@ -103,7 +103,11 @@ class ChatStore {
         let extension = params.attachmentLocal[i].extension
 
         if(Platform.OS === 'android'){
-          extension = params.attachmentLocal[i].uri.split(".").pop();
+          if(params.attachmentLocal[i].name==null){
+            extension = params.attachmentLocal[i].uri.split(".").pop();
+          }else{
+            extension = params.attachmentLocal[i].name.split(".").pop();
+          }
         }
 
         let fileUri = ''

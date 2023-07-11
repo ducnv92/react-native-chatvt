@@ -1,4 +1,5 @@
 import appStore from "../screens/AppStore";
+import {check, PERMISSIONS, RESULTS, requestMultiple} from 'react-native-permissions';
 
 export const orderStatus = (status) => {
   switch (status) {
@@ -64,4 +65,45 @@ export function groupBy(list, keyGetter) {
 
   return map;
 }
+
+export async function requestPermission(permissions, callback) {
+  try{
+    const result =  await requestMultiple(permissions)
+    console.log('result', result)
+    let grantedAll = true
+    permissions.map(p=>{
+      if(result[p] !== RESULTS.GRANTED){
+        grantedAll = false
+      }
+    })
+    if(grantedAll){
+      callback()
+    }else{
+      requestPermission(permissions, callback)
+    }
+    // switch (result) {
+    //   case RESULTS.UNAVAILABLE:
+    //     console.log('This feature is not available (on this device / in this context)');
+    //     break;
+    //   case RESULTS.DENIED:
+    //     console.log('The permission has not been requested / is denied but requestable');
+    //     break;
+    //   case RESULTS.LIMITED:
+    //     console.log('The permission is limited: some actions are possible');
+    //     break;
+    //   case RESULTS.GRANTED:
+    //     callback()
+    //     break;
+    //   case RESULTS.BLOCKED:
+    //     console.log('The permission is denied and not requestable anymore');
+    //     break;
+    // }
+  }catch (e) {
+    alert(e)
+
+  }
+
+
+}
+
 

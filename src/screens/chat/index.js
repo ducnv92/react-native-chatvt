@@ -8,7 +8,7 @@ import {
   TextInput,
   Platform,
   KeyboardAvoidingView,
-  StyleSheet, Linking, PermissionsAndroid, Alert, ActivityIndicator
+  StyleSheet, Linking, PermissionsAndroid, Alert, ActivityIndicator, Keyboard
 } from 'react-native';
 import colors from '../../Styles';
 // import EmojiPicker from 'rn-emoji-keyboard'
@@ -26,7 +26,6 @@ import ImageViewing from "../../components/imageView";
 import { Navigation } from "react-native-navigation";
 
 import { ChatItem } from "./Item";
-import Geolocation from 'react-native-geolocation-service';
 import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
 import DocumentPicker, {
   DirectoryPickerResponse,
@@ -39,6 +38,7 @@ import uuid from 'react-native-uuid';
 import {AttachScreen}  from './Attach';
 import { FlatList, ScrollView } from '../../components/flatlist';
 import { MenuProvider } from 'react-native-popup-menu';
+import {RecordButton} from "./RecordButton";
 
 export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
@@ -52,7 +52,10 @@ export const ChatScreen = observer(function ChatScreen(props) {
           chatStore.images = []
       }
     );
-    return () => listener.remove();
+    return () => {
+      listener.remove()
+      chatStore.showAttachModal = false
+    };
   }, []);
 
 
@@ -201,29 +204,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
   }
 
-  const sendImages = async () => {
-    try{
-      bottomSheetRef.current?.dismiss();
-
-      const message = {
-        id: uuid.v4(),
-        "type": "MESSAGE",
-        attachmentLocal: chatStore.images,
-        has_attachment: true,
-        "attachment_ids": [],
-        "text": '',
-        "status": "sending",
-        order_number: conversation.order_info?.order_number,
-        sender: appStore.user.type + '_' + appStore.user.user_id,
-        conversation_id: conversation._id
-      }
-      chatStore.data.unshift(message)
-      chatStore.sendMessage(message)
-      chatStore.images = []
-    }catch (e) {
-      console.log(e)
-    }
-  }
 
 
   const requestCameraPermission = async () => {
@@ -276,6 +256,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
   };
 
   const handlePresentModalPress = () => {
+    Keyboard.dismiss()
     requestCameraPermission()
   };
 
@@ -363,21 +344,21 @@ export const ChatScreen = observer(function ChatScreen(props) {
             value={input}
             style={{ fontSize: 15, color: colors.primaryText, flex: 1, minHeight: 56, paddingTop: 18,   }}
           />
-          <TouchableOpacity
-            onPress={() => handleDocumentSelection()}
-            style={{ width: 40, height: 56, alignItems: 'center', justifyContent: 'center' }}>
-            <Image source={require('../../assets/nav_document.png')} style={{ height: 24, width: 24, resizeMode: "contain" }} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => sendMap()}
-            style={{ width: 40, height: 56, alignItems: 'center', justifyContent: 'center' }}>
-            <Image source={require('../../assets/nav_location_active.png')} style={{ height: 24, width: 24, resizeMode: "contain" }} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={()=>pickDocument()}
-            style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>
-            <Image source={require('../../assets/nav_document.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
-          </TouchableOpacity>
+          {/*<TouchableOpacity*/}
+          {/*  onPress={() => handleDocumentSelection()}*/}
+          {/*  style={{ width: 40, height: 56, alignItems: 'center', justifyContent: 'center' }}>*/}
+          {/*  <Image source={require('../../assets/nav_document.png')} style={{ height: 24, width: 24, resizeMode: "contain" }} />*/}
+          {/*</TouchableOpacity>*/}
+          {/*<TouchableOpacity*/}
+          {/*  onPress={() => sendMap()}*/}
+          {/*  style={{ width: 40, height: 56, alignItems: 'center', justifyContent: 'center' }}>*/}
+          {/*  <Image source={require('../../assets/nav_location_active.png')} style={{ height: 24, width: 24, resizeMode: "contain" }} />*/}
+          {/*</TouchableOpacity>*/}
+          {/*<TouchableOpacity*/}
+          {/*  onPress={()=>pickDocument()}*/}
+          {/*  style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>*/}
+          {/*  <Image source={require('../../assets/nav_document.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>*/}
+          {/*</TouchableOpacity>*/}
           {
             input.trim() !== '' &&
             <TouchableOpacity
@@ -386,23 +367,19 @@ export const ChatScreen = observer(function ChatScreen(props) {
               <Image source={require('../../assets/ic_send.png')}
                 style={{ height: 24, width: 24, resizeMode: "contain" }} />
             </TouchableOpacity>
-            // <TouchableOpacity
-            //   style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>
-            //   <Image source={require('../../assets/ic_microphone.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
-            // </TouchableOpacity>
+          }
+          {
+            input.trim() === '' &&
+            <RecordButton
+              style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>
+              <Image source={require('../../assets/ic_microphone.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
+            </RecordButton>
           }
         </View>
       </KeyboardAvoidingView>
       {/*<EmojiPicker onEmojiSelected={onClickEmoji} open={showEmoji} onClose={() => setShowEmoji(false)} />*/}
-      <AttachScreen ref={bottomSheetRef} />
-      {
-        chatStore.images.length > 0 &&
-        <TouchableOpacity
-          onPress={sendImages}
-          style={{ position: 'absolute', zIndex: 99999, bottom: 16, left: 16, right: 16, alignItems: 'center', justifyContent: 'center', padding: 16, margin: 16, backgroundColor: colors.primary, borderRadius: 10 }}>
-          <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>{appStore.lang.chat.send}</Text>
-        </TouchableOpacity>
-      }
+      <AttachScreen {...props}/>
+
     </BottomSheetModalProvider>
 
 

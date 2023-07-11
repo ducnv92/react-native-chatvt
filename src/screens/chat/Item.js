@@ -28,6 +28,7 @@ import services from "../../services";
 import {utils} from "prettier/doc";
 import uuid from 'react-native-uuid';
 import { observer } from 'mobx-react-lite';
+import {Navigation} from "react-native-navigation";
 
 
 const MapItem = memo(function (props) {
@@ -83,7 +84,7 @@ const MapItem = memo(function (props) {
 })
 
 
-const VideoItem = memo(function (props) {
+const VideoItem = function (props) {
   const [thumbnail, setThumbnail] = useState('')
   const [isPause, setIsPause] = useState(true)
   useEffect(() => {
@@ -146,10 +147,10 @@ const VideoItem = memo(function (props) {
       }
     </View>
   )
-})
+}
 
 
-const MessageItem = memo(function (props) {
+const MessageItem = function (props) {
   const item = props.item
   const right = item.sender === (appStore.user.type + '_' + appStore.user.user_id);
   const [images, setImages] = useState([])
@@ -412,9 +413,9 @@ const MessageItem = memo(function (props) {
   )
 
 
-})
+}
 
-const DocumentItem = memo(function (props) {
+const DocumentItem = function (props) {
   const item = props.item
   const right = item.sender === (appStore.user.type + '_' + appStore.user.user_id);
   return (
@@ -572,13 +573,35 @@ const DocumentItem = memo(function (props) {
       }
     </>
   )
-})
+}
 
-const OrderItem = memo(function (props) {
+const OrderItem = function (props) {
   const item = props.item
 
   return (
-    <View>
+    <TouchableOpacity
+    onPress={()=>{
+      try{
+        Navigation.push(appStore.componentId, {
+          component: {
+            id: 'chat',
+            name: 'OrderInfomationtScreen',
+            passProps: {
+              orderId: item.order,
+              selectItem: item.order,
+            },
+            options: {
+              bottomTabs: {
+                visible: false,
+              },
+            },
+          },
+        });
+      }catch (e) {
+        alert(e)
+      }
+    }}
+    >
       <View style={{backgroundColor: colors.blueBG, padding: 12, marginVertical: 8}}>
         <View style={{flexDirection: 'row',}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -625,10 +648,10 @@ const OrderItem = memo(function (props) {
           marginTop: 8
         }}>{appStore.lang.chat.sending + '...'}</Text>
       }
-    </View>
+    </TouchableOpacity>
   )
 
-})
+}
 
 
 export class ChatItem extends React.Component {
