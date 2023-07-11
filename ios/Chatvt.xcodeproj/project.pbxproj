@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A922C34B2A5CE785001B78CB /* RNAudioRecorderPlayerChatVT.m in Sources */ = {isa = PBXBuildFile; fileRef = A922C3482A5CE785001B78CB /* RNAudioRecorderPlayerChatVT.m */; };
+		A922C34C2A5CE785001B78CB /* RNAudioRecorderPlayerChatVT.swift in Sources */ = {isa = PBXBuildFile; fileRef = A922C3492A5CE785001B78CB /* RNAudioRecorderPlayerChatVT.swift */; };
 		A93AFB3B2A57D6D3000B0D2E /* RCTConvert+ContextMenuAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A93AFB332A57D6CF000B0D2E /* RCTConvert+ContextMenuAction.m */; };
 		A93AFB3C2A57D6D4000B0D2E /* ContextMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = A93AFB352A57D6D0000B0D2E /* ContextMenu.m */; };
 		A93AFB3D2A57D6D4000B0D2E /* ContextMenuAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A93AFB382A57D6D1000B0D2E /* ContextMenuAction.m */; };
@@ -35,6 +37,10 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libChatvt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libChatvt.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A922C3472A5CE784001B78CB /* Chatvt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Chatvt-Bridging-Header.h"; sourceTree = "<group>"; };
+		A922C3482A5CE785001B78CB /* RNAudioRecorderPlayerChatVT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNAudioRecorderPlayerChatVT.m; sourceTree = "<group>"; };
+		A922C3492A5CE785001B78CB /* RNAudioRecorderPlayerChatVT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNAudioRecorderPlayerChatVT.swift; sourceTree = "<group>"; };
+		A922C34A2A5CE785001B78CB /* RNAudioRecorderPlayerChatVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNAudioRecorderPlayerChatVT.h; sourceTree = "<group>"; };
 		A93AFB332A57D6CF000B0D2E /* RCTConvert+ContextMenuAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+ContextMenuAction.m"; sourceTree = "<group>"; };
 		A93AFB342A57D6D0000B0D2E /* ContextMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextMenu.h; sourceTree = "<group>"; };
 		A93AFB352A57D6D0000B0D2E /* ContextMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContextMenu.m; sourceTree = "<group>"; };
@@ -111,7 +117,11 @@
 				A9EE0C232A5BAE3200A0FE7C /* RNCCameraRollPermission.mm */,
 				A9EE0C1E2A5BAE3100A0FE7C /* RNCPermissionHelper.h */,
 				A9EE0C242A5BAE3200A0FE7C /* RNCPermissionHelper.m */,
+				A922C34A2A5CE785001B78CB /* RNAudioRecorderPlayerChatVT.h */,
+				A922C3482A5CE785001B78CB /* RNAudioRecorderPlayerChatVT.m */,
+				A922C3492A5CE785001B78CB /* RNAudioRecorderPlayerChatVT.swift */,
 				134814211AA4EA7D00B7C361 /* Products */,
+				A922C3472A5CE784001B78CB /* Chatvt-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -146,6 +156,7 @@
 				TargetAttributes = {
 					58B511DA1A9E6C8500147676 = {
 						CreatedOnToolsVersion = 6.1.1;
+						LastSwiftMigration = 1500;
 					};
 				};
 			};
@@ -172,6 +183,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A922C34B2A5CE785001B78CB /* RNAudioRecorderPlayerChatVT.m in Sources */,
 				A9EE0C282A5BAE3200A0FE7C /* RNCPermissionHelper.m in Sources */,
 				A9EE0C272A5BAE3200A0FE7C /* RNCCameraRollPermission.mm in Sources */,
 				A93AFB3C2A57D6D4000B0D2E /* ContextMenu.m in Sources */,
@@ -180,6 +192,7 @@
 				A9EE0C252A5BAE3200A0FE7C /* RNCCameraRollChatVT.mm in Sources */,
 				A9AFA1DE2A4E719500E71C84 /* CreateThumbnail.m in Sources */,
 				A9B0E0C52A540305000E9B36 /* RNDocumentPickerChatVT.m in Sources */,
+				A922C34C2A5CE785001B78CB /* RNAudioRecorderPlayerChatVT.swift in Sources */,
 				A9EE0C262A5BAE3200A0FE7C /* RNCAssetsLibraryRequestHandler.m in Sources */,
 				A9B0E0C62A540305000E9B36 /* RCTConvert+RNDocumentPicker.m in Sources */,
 				A9B0E0C42A540305000E9B36 /* RNCPromiseWrapper.m in Sources */,
@@ -288,6 +301,7 @@
 		58B511F01A9E6C8500147676 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -298,12 +312,16 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Chatvt;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Chatvt-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
 		58B511F11A9E6C8500147676 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -314,6 +332,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Chatvt;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Chatvt-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

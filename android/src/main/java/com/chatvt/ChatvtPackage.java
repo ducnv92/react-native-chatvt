@@ -22,6 +22,7 @@ public class ChatvtPackage implements ReactPackage {
     modules.add(new MvcpScrollViewManagerModule(reactContext));
     modules.add(new CameraRollModule(reactContext));
     modules.add(new ChatvtModule(reactContext));
+    modules.add(new RNAudioRecorderPlayerModule(reactContext));
     return modules;
   }
 
