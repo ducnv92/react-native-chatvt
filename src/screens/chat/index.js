@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import colors from '../../Styles';
 // import EmojiPicker from 'rn-emoji-keyboard'
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {
   BottomSheetModal,
   BottomSheetModalProvider, useBottomSheetModal,
@@ -104,39 +105,13 @@ export const ChatScreen = observer(function ChatScreen(props) {
     chatStore.input = ''
   }
 
-  const pickDocument = () => {
-    DocumentPicker.pick({
-      allowMultiSelection: true,
-    })
-      .then((res)=>{
-        console.log(res)
-
-        const message = {
-          id: uuid.v4(),
-          _id: uuid.v4(),
-          type: "FILE",
-          has_attachment: true,
-          attachmentLocal: res,
-          status: "sending",
-          order_number: conversation.order_info?.order_number,
-          sender: appStore.user.type + '_' + appStore.user.user_id,
-          conversation_id: conversation._id
-        }
-        chatStore.data.unshift(message)
-        chatStore.sendMessage(message)
-        setInput('')
-      })
-      .catch((res)=>{
-        console.log(res)
-      })
-  }
-
   const handlePresentModalPress = () => {
     Keyboard.dismiss()
     chatStore.showAttachModal = true
   };
 
   return <MenuProvider>
+    <SafeAreaProvider  style={{ flex: 1 }}>
   <SafeAreaView style={{ flex: 1 }}>
     <BottomSheetModalProvider style={{ flex: 1 }}>
       <KeyboardAvoidingView
@@ -268,6 +243,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
 
   </SafeAreaView>
+    </SafeAreaProvider>
   </MenuProvider>
 })
 

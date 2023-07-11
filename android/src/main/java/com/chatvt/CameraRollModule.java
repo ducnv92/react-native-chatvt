@@ -19,6 +19,7 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
 import android.text.TextUtils;
 import android.media.ExifInterface;
+import android.util.Log;
 
 import com.facebook.common.logging.FLog;
 import com.facebook.react.bridge.GuardedAsyncTask;
@@ -139,6 +140,8 @@ public class CameraRollModule extends ReactContextBaseJavaModule {
       File source = new File(mUri.getPath());
       FileInputStream input = null;
       OutputStream output = null;
+
+      Log.e("file", mUri.toString());
 
       String mimeType = Utils.getMimeType(mUri.toString());
       Boolean isVideo = mimeType != null && mimeType.contains("video");
@@ -280,8 +283,8 @@ public class CameraRollModule extends ReactContextBaseJavaModule {
   public void getPhotos(final ReadableMap params, final Promise promise) {
     int first = params.getInt("first");
     String after = params.hasKey("after") ? params.getString("after") : null;
-    String groupName = params.hasKey("groupName") ? params.getString("groupName") : null;
-    String assetType = params.hasKey("assetType") ? params.getString("assetType") : ASSET_TYPE_PHOTOS;
+//    String groupName = params.hasKey("groupName") ? params.getString("groupName") : null;
+    String assetType = params.hasKey("assetType") ? params.getString("assetType") : ASSET_TYPE_ALL;
     long fromTime = params.hasKey("fromTime") ? (long) params.getDouble("fromTime") : 0;
     long toTime = params.hasKey("toTime") ? (long) params.getDouble("toTime") : 0;
     ReadableArray mimeTypes = params.hasKey("mimeTypes")
@@ -293,7 +296,7 @@ public class CameraRollModule extends ReactContextBaseJavaModule {
       getReactApplicationContext(),
       first,
       after,
-      groupName,
+      null,
       mimeTypes,
       assetType,
       fromTime,

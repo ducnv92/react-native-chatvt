@@ -95,11 +95,12 @@ android {
 
     namespace "com.chatvtexample"
     defaultConfig {
-        applicationId "com.chatvtexample.admin"
+        applicationId "com.chatvtexample"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        resValue 'string', "CODE_PUSH_APK_BUILD_TIME", String.format("\"%d\"", System.currentTimeMillis())
     }
 
     splits {

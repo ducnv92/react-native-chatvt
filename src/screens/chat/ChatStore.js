@@ -25,7 +25,11 @@ class ChatStore {
   inputRef = null;
   data = [];
   images = [];
-  showAttachModal = __DEV__;
+  showAttachModal = false;
+  location = {
+    latitude: 0,
+    longitude: 0,
+  };
 
   constructor() {
     makeAutoObservable(this);

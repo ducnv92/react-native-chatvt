@@ -244,7 +244,6 @@ const ImageMessage =observer(function ImageMessage ( props) {
         }}
       >
         <CameraRollPicker
-          groupTypes={'All'}
           assetType={'All'}
           include={['playableDuration', 'filename', 'fileExtension']}
           selected={chatStore.images}
@@ -270,11 +269,6 @@ const LocationMessage =observer(function LocationMessage ( props) {
   const bottomSheetModalRef = useRef(null);
   const insets = useSafeAreaInsets();
 
-
-  const [location, setLocation] = useState({coords: {
-      longitude: 0,
-      latitude: 0,
-    }})
 
   const requestPermission = (callback)=>{
     const permission = Platform.OS ==='android'?PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION:PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
@@ -307,8 +301,12 @@ const LocationMessage =observer(function LocationMessage ( props) {
     requestPermission(()=>{
       Geolocation.getCurrentPosition(
         (position) => {
-          setLocation(position)
-          console.log(position);
+          chatStore.location = {
+            longitude: position.coords.longitude,
+            latitude: position.coords.latitude,
+          }
+          console.log(chatStore.location);
+
         },
         (error) => {
           // See error code charts below.
@@ -320,16 +318,14 @@ const LocationMessage =observer(function LocationMessage ( props) {
   }, [])
 
   const sendMap = () => {
+    chatStore.showAttachModal = false
     const message = {
       id: uuid.v4(),
       type: "LOCATION",
-      location: {
-        longitude: location.coords.longitude,
-        latitude: location.coords.latitude,
-      },
+      location:  chatStore.location,
       status: "sending",
       sender: appStore.user.type + '_' + appStore.user.user_id,
-      conversation_id: props.item._id
+      conversation_id: props.data._id
     }
     console.log('map', message)
     chatStore.data.unshift(message)
@@ -365,15 +361,16 @@ const LocationMessage =observer(function LocationMessage ( props) {
           width: '100%',
         }}
         region={{
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
+          latitude: chatStore.location.latitude,
+          longitude: chatStore.location.longitude,
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}
       >
         <Marker
+          resizeMode={'contain'}
           style={{width: 24, height: 24}}
-          coordinate={{latitude: location.coords.latitude, longitude: location.coords.longitude}}
+          coordinate={{latitude: chatStore.location.latitude, longitude: chatStore.location.longitude}}
           image={require('../../assets/ic_map_pin.png')}
         />
       </MapView>
