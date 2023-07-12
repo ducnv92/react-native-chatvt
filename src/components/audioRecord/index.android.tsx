@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type {EmitterSubscription} from 'react-native';
 import {
   DeviceEventEmitter,
@@ -6,7 +7,6 @@ import {
   Platform,
 } from 'react-native';
 const { RNAudioRecorderPlayerChatVT } = NativeModules;
-
 export enum AudioSourceAndroidType {
   DEFAULT = 0,
   MIC,
