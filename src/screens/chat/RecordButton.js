@@ -37,7 +37,7 @@ export class RecordButton extends React.Component{
   startRecord = async () => {
     console.log('RecordButton')
     try{
-      requestPermission(Platform.OS==='android'?[PERMISSIONS.ANDROID.RECORD_AUDIO, PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE, PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE]:PERMISSIONS.IOS.MICROPHONE, async()=>{
+      requestPermission(Platform.OS==='android'?[PERMISSIONS.ANDROID.RECORD_AUDIO, PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE, PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE]:[PERMISSIONS.IOS.MICROPHONE], async()=>{
         console.log('startRecord');
         const result = await this.audioRecorderPlayer.startRecorder();
         this.audioRecorderPlayer.addRecordBackListener((e) => {

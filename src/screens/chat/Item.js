@@ -207,7 +207,7 @@ const MessageItem = function (props) {
                       {
                         item.attachmentLocal.map(File => {
                           const attach = File.uri
-                          if (attach.includes('jpg') || attach.includes('png') || attach.includes('jpeg')) {
+                          if (attach.includes('jpg') || attach.includes('png') || attach.includes('jpeg')|| attach.includes('heic')) {
                             return <Image source={{uri: attach}} style={{
                               backgroundColor: "#F2F2F2",
                               borderRadius: 5,
@@ -248,7 +248,7 @@ const MessageItem = function (props) {
                     }}>
                       {
                         item.attachments.map(attach => {
-                          if (attach.url.includes('jpg') || attach.url.includes('png') || attach.url.includes('jpeg')) {
+                          if (attach.url.includes('jpg') || attach.url.includes('png') || attach.url.includes('jpeg')|| attach.url.includes('heic')) {
                             return <TouchableOpacity
                               key={attach.url}
                               onPress={() => {

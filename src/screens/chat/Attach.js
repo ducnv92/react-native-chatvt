@@ -239,9 +239,9 @@ const ImageMessage =observer(function ImageMessage ( props) {
         }}
       >
         <CameraRollPicker
-          // assetType={'Videos'}
-          groupTypes={"Library"}
-          // include={['playableDuration', 'filename', 'fileExtension']}
+          assetType={'All'}
+          groupTypes={"All"}
+          include={['playableDuration', 'filename', 'fileExtension']}
           selected={chatStore.images}
           callback={(images) => {
             console.log('image picked', images)
