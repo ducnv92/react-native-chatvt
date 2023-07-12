@@ -1,6 +1,6 @@
 import { NativeModules } from "react-native";
 
-const { RNCCameraRollChatVT } = NativeModules;
+const { RNCCameraRoll } = NativeModules;
 
-export const CameraRollChatVT= RNCCameraRollChatVT;
+export const CameraRollChatVT= RNCCameraRoll;
 export default CameraRollChatVT;

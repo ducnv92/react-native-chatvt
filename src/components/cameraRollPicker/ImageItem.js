@@ -82,9 +82,9 @@ class ImageItem extends Component {
           style={{ height: this.imageSize, width: this.imageSize, backgroundColor: 'grey' }}
         />
         { marker }
-        {/*{*/}
-        {/*  image.playableDuration && image.playableDuration!==0 && <Text style={{position: 'absolute', fontSize: 12, color: '#fffffffa', bottom: 10, right: 8}}>{this.fancyTimeFormat(image.playableDuration)}</Text>*/}
-        {/*}*/}
+        {
+          image.playableDuration && image.playableDuration!==0 && <Text style={{position: 'absolute', fontSize: 12, color: '#fffffffa', bottom: 10, right: 8}}>{this.fancyTimeFormat(image.playableDuration)}</Text>
+        }
       </TouchableOpacity>
     );
   }
