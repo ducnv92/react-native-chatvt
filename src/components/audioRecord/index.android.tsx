@@ -238,9 +238,11 @@ class AudioRecorderPlayer {
   ): Promise<string> => {
     if (!this._isRecording) {
       this._isRecording = true;
+      if (!uri) uri = 'DEFAULT';
+      console.log('uri', uri)
 
       return RNAudioRecorderPlayerChatVT.startRecorder(
-        uri ?? 'DEFAULT',
+        uri,
         audioSets,
         meteringEnabled ?? false,
       );

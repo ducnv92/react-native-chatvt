@@ -83,7 +83,7 @@ class ImageItem extends Component {
         />
         { marker }
         {
-          image.playableDuration!==0 &&
+          item.node.type==='video' &&
           <Text style={{position: 'absolute', fontSize: 12, color: '#fffffffa', bottom: 10, right: 8}}>{this.fancyTimeFormat(image.playableDuration)}</Text>
         }
       </TouchableOpacity>

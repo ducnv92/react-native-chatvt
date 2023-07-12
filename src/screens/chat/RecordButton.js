@@ -8,7 +8,9 @@ import { Dimensions, FlatList, Image, Platform, Text, TouchableOpacity, View } f
 import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
 import colors from '../../Styles';
 import appStore from '../AppStore';
-import AudioRecorderPlayer from '../../components/audioRecord';
+import AudioRecorderPlayer from '../../components/audioRecord/index';
+import RNFS from 'react-native-fs'
+import uuid from "react-native-uuid";
 
 export class RecordButton extends React.Component{
 
@@ -18,8 +20,8 @@ export class RecordButton extends React.Component{
       recordSecs: 0,
       recordTime: "00:00"
     }
+    this.path = `${RNFS.CachesDirectoryPath}/${uuid.v4()+'.mp3'}`
     this.audioRecorderPlayer =  new AudioRecorderPlayer();
-    console.log('RecordButton')
 
   }
 
@@ -35,11 +37,11 @@ export class RecordButton extends React.Component{
 
 
   startRecord = async () => {
-    console.log('RecordButton')
+    console.log('RecordButton', this.path)
     try{
       requestPermission(Platform.OS==='android'?[PERMISSIONS.ANDROID.RECORD_AUDIO, PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE, PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE]:[PERMISSIONS.IOS.MICROPHONE], async()=>{
         console.log('startRecord');
-        const result = await this.audioRecorderPlayer.startRecorder();
+        const result = await this.audioRecorderPlayer.startRecorder(this.path);
         this.audioRecorderPlayer.addRecordBackListener((e) => {
           console.log(e)
           this.setState({

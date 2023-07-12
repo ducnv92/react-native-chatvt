@@ -9,6 +9,7 @@ import { USER } from './utils/MyAsyncStorage';
 import socket from './socket';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import hoistNonReactStatics from 'hoist-non-react-statics';
+import colors from "./Styles";
 
 function safeAreaProviderHOC(
   Component
@@ -16,7 +17,7 @@ function safeAreaProviderHOC(
 
   function Wrapper(props) {
     return (
-      <SafeAreaProvider style={[{flex: 1}]}>
+      <SafeAreaProvider style={[{flex: 1, backgroundColor: colors.primary}]}>
         <Component {...props} />
       </SafeAreaProvider>
     );

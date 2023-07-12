@@ -375,7 +375,7 @@ PODS:
     - glog
   - react-native-cameraroll (2.0.0):
     - React
-  - react-native-chatvt (0.1.41):
+  - react-native-chatvt (0.1.43):
     - React-Core
   - react-native-geolocation-service (5.3.1):
     - React
@@ -845,7 +845,7 @@ SPEC CHECKSUMS:
   React-jsinspector: c712f9e3bb9ba4122d6b82b4f906448b8a281580
   React-logger: 342f358b8decfbf8f272367f4eacf4b6154061be
   react-native-cameraroll: 30bd140ba2b34439d3cd501c7299cc5c60b45959
-  react-native-chatvt: 6db182011a477098802303cc9dbbb7aac8c6f033
+  react-native-chatvt: 14cdd03812b5146116bd3b16ae213f0ae879023f
   react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
   react-native-google-maps: dd12cdd86b8e3fedbbb671676aedaa2f656e2ccd
   react-native-image-resizer: 00ceb0e05586c7aadf061eea676957a6c2ec60fa

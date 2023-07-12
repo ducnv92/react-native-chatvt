@@ -41,6 +41,7 @@ import { FlatList, ScrollView } from '../../components/flatlist';
 import { MenuProvider } from 'react-native-popup-menu';
 import {RecordButton} from "./RecordButton";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import CameraRoll from "../../components/cameraRollPicker/CameraRoll";
 
 
 export const ChatScreen = observer(function ChatScreen(props) {
@@ -116,6 +117,17 @@ export const ChatScreen = observer(function ChatScreen(props) {
     try{
       chatStore.showAttachModal = false
 
+      try {
+        for (let i = 0; i < chatStore.images.length; i++) {
+          const regex = /:\/\/(.{36})\//i;
+          const result = chatStore.images[i].uri.match(regex);
+          const photoDetail = await CameraRoll.getPhotoByInternalID(result[1], {})
+          chatStore.images[i].uri = photoDetail.node.image.filepath
+        }
+      }catch (e) {
+        console.log(e)
+      }
+
       const message = {
         id: uuid.v4(),
         "type": "MESSAGE",
@@ -138,7 +150,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
 
   return <MenuProvider>
-    <SafeAreaProvider  style={{ flex: 1 }}>
+    <SafeAreaProvider  style={{ flex: 1}}>
   <SafeAreaView style={{ flex: 1 }}>
     <BottomSheetModalProvider style={{ flex: 1 }}>
       <KeyboardAvoidingView

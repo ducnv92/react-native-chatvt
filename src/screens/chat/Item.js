@@ -89,15 +89,20 @@ const VideoItem = function (props) {
   const [thumbnail, setThumbnail] = useState('')
   const [isPause, setIsPause] = useState(true)
   useEffect(() => {
+    console.log('createThumbnail', 'useEffect')
+
     const createThumb = async () => {
-      console.log('createThumbnail', props.url)
+      try{
+        console.log('createThumbnail', props.url)
 
-      const fileName = props.url.slice(props.url.lastIndexOf('/') + 1, props.url.length)
+        const fileName = props.url.slice(props.url.lastIndexOf('/') + 1, props.url.length)
 
-      const response = await createThumbnail({url: props.url, format: 'jpeg', cacheName: fileName, timeStamp: 0})
-      console.log('createThumbnail', response)
-      setThumbnail(response.path)
-
+        const response = await createThumbnail({url: props.url, format: 'jpeg', cacheName: fileName, timeStamp: 0})
+        console.log('createThumbnail', response)
+        setThumbnail(response.path)
+      }catch (e) {
+        console.log(e)
+      }
     }
 
     createThumb()

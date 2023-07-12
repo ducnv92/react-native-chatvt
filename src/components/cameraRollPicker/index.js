@@ -158,9 +158,9 @@ class CameraRollPicker extends Component {
       .then(data => {
         data.edges.map(async (edge) => {
           console.log(edge.node)
-          if (Platform.OS === 'ios') {
-            edge.node.image.uri = this.convertLocalIdentifierToAssetLibrary(edge.node.image.uri.replace('ph://', ''), edge.node.type === 'image' ? 'jpg' : 'mov')
-          }
+          // if (Platform.OS === 'ios') {
+          //   edge.node.image.uri = this.convertLocalIdentifierToAssetLibrary(edge.node.image.uri.replace('ph://', ''), edge.node.type === 'image' ? 'jpg' : 'mov')
+          // }
           return edge
         })
         this.appendImages(data)

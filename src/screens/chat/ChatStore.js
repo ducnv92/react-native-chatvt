@@ -12,6 +12,7 @@ import uuid from "react-native-uuid";
 import {useRef} from "react";
 import {lookup} from "react-native-mime-types";
 var RNFS = require('react-native-fs');
+import CameraRoll from "../../components/cameraRollPicker/CameraRoll";
 
 class ChatStore {
   isLoading = false;
@@ -110,15 +111,13 @@ class ChatStore {
 
         let extension = params.attachmentLocal[i].extension
 
-        if(Platform.OS === 'android'){
+
           if(params.attachmentLocal[i].name==null){
-            extension = params.attachmentLocal[i].uri.split(".").pop();
+            extension = params.attachmentLocal[i].uri.split(".").pop().toLowerCase();
           }else{
-            extension = params.attachmentLocal[i].name.split(".").pop();
+            extension = params.attachmentLocal[i].name.split(".").pop().toLowerCase();
           }
-        }else if(!extension){
-          extension = params.attachmentLocal[i].uri.slice(params.attachmentLocal[i].uri.lastIndexOf('/') + 1, params.attachmentLocal[i].uri.length)
-        }
+
         console.log('extension', extension)
         let fileUri = ''
         if (extension === 'mov' || extension === 'mp4') {
