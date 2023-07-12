@@ -10,6 +10,8 @@ import socket from './socket';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import colors from "./Styles";
+import React from 'react'
+import { StatusBar } from 'react-native';
 
 function safeAreaProviderHOC(
   Component
@@ -18,6 +20,9 @@ function safeAreaProviderHOC(
   function Wrapper(props) {
     return (
       <SafeAreaProvider style={[{flex: 1, backgroundColor: colors.primary}]}>
+        <StatusBar
+          backgroundColor={colors.primary}
+        />
         <Component {...props} />
       </SafeAreaProvider>
     );
