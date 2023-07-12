@@ -1,11 +1,4 @@
-/**
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-package com.reactnativecommunity.cameraroll;
+package com.chatvt;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -59,10 +52,9 @@ import javax.annotation.Nullable;
  * {@link NativeModule} that allows JS to interact with the photos and videos on the device (i.e.
  * {@link MediaStore.Images}).
  */
-@ReactModule(name = CameraRollModule.NAME)
 public class CameraRollModule extends ReactContextBaseJavaModule {
 
-  public static final String NAME = "RNCCameraRoll";
+  public static final String NAME = "RNCCameraRollChatVT";
 
   private static final String ERROR_UNABLE_TO_LOAD = "E_UNABLE_TO_LOAD";
   private static final String ERROR_UNABLE_TO_LOAD_PERMISSION = "E_UNABLE_TO_LOAD_PERMISSION";
@@ -136,7 +128,7 @@ public class CameraRollModule extends ReactContextBaseJavaModule {
       FileChannel input = null, output = null;
       try {
         boolean isAlbumPresent = !"".equals(mOptions.getString("album"));
-        
+
         final File environment;
         // Media is not saved into an album when using Environment.DIRECTORY_DCIM.
         if (isAlbumPresent) {
