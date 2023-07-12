@@ -7,6 +7,31 @@ import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import * as MyAsyncStorage from './utils/MyAsyncStorage';
 import { USER } from './utils/MyAsyncStorage';
 import socket from './socket';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import hoistNonReactStatics from 'hoist-non-react-statics';
+
+function safeAreaProviderHOC(
+  Component
+){
+
+  function Wrapper(props) {
+    return (
+      <SafeAreaProvider style={[{flex: 1}]}>
+        <Component {...props} />
+      </SafeAreaProvider>
+    );
+  }
+
+Wrapper.displayName = `safeAreaProviderHOC(${
+  Component.displayName || Component.name
+})`;
+
+// @ts-ignore - hoistNonReactStatics uses old version of @types/react
+hoistNonReactStatics(Wrapper, Component);
+
+return Wrapper;
+}
+
 
 class ChatVT {
   AsyncStorage;
@@ -14,8 +39,8 @@ class ChatVT {
   interval;
   /** */
   init(env, storage, lang, appId,  token, tokenSSO, onSuccess, onError){
-    Navigation.registerComponent('ListChatScreen', () => gestureHandlerRootHOC(ListChatScreen));
-    Navigation.registerComponent('ChatScreen', () => gestureHandlerRootHOC(ChatScreen));
+    Navigation.registerComponent('ListChatScreen', () => gestureHandlerRootHOC(safeAreaProviderHOC(ListChatScreen)));
+    Navigation.registerComponent('ChatScreen', () => gestureHandlerRootHOC(safeAreaProviderHOC(ChatScreen)));
 
     this.AsyncStorage = storage
     appStore.appId = appId

@@ -10,6 +10,7 @@ import { USER } from "../../utils/MyAsyncStorage";
 import {Platform} from "react-native";
 import uuid from "react-native-uuid";
 import {useRef} from "react";
+import {lookup} from "react-native-mime-types";
 var RNFS = require('react-native-fs');
 
 class ChatStore {
@@ -115,12 +116,13 @@ class ChatStore {
           }else{
             extension = params.attachmentLocal[i].name.split(".").pop();
           }
+        }else if(!extension){
+          extension = params.attachmentLocal[i].uri.slice(params.attachmentLocal[i].uri.lastIndexOf('/') + 1, params.attachmentLocal[i].uri.length)
         }
-
+        console.log('extension', extension)
         let fileUri = ''
         if (extension === 'mov' || extension === 'mp4') {
           fileUri = params.attachmentLocal[i].uri
-          const fileName = fileUri.slice(fileUri.lastIndexOf('/') + 1, fileUri.length)
 
           formData.append("files", {
             name: uuid.v4()+'.'+extension,
@@ -131,7 +133,6 @@ class ChatStore {
         }else if(extension === 'doc' || extension === 'pdf'|| extension==='xls'){
           try{
             fileUri = params.attachmentLocal[i].uri
-            const fileName = fileUri.slice(fileUri.lastIndexOf('/') + 1, fileUri.length)
 
             formData.append("files", {
               name: uuid.v4()+'.'+extension,
@@ -142,7 +143,7 @@ class ChatStore {
             console.log(e)
           }
 
-        }else if(extension === 'jpg' ||extension ==='png'||extension ==='jpeg'){
+        }else if(extension === 'jpg' ||extension ==='png'||extension ==='jpeg'||extension ==='heic'){
 
           let absolutePath = params.attachmentLocal[i].uri
           if (Platform.OS === 'android'){

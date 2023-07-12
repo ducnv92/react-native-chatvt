@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
+import BottomSheet, {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
 import chatStore from './ChatStore';
 import CameraRollPicker from '../../components/cameraRollPicker';
 import { observer } from 'mobx-react-lite';
@@ -7,7 +7,7 @@ import { Log } from '../../utils';
 import {
   Dimensions,
   FlatList,
-  Image,
+  Image, KeyboardAvoidingView,
   Modal,
   Platform,
   SafeAreaView,
@@ -26,12 +26,85 @@ import Geolocation from 'react-native-geolocation-service';
 import quickMessageStore from "./QuickMessageStore";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+
+
+
+const QuickMessageModal =observer(function QuickMessageModal ( props) {
+
+  const updateQuickMessage = () => {
+    if(quickMessageStore.currentMessage._id){
+      quickMessageStore.update({
+        ...quickMessageStore.currentMessage,
+        ...{
+          text: quickMessageStore.currentMessage.text
+        }
+      }, ()=>{
+        quickMessageStore.showModal = false
+        quickMessageStore.currentMessage = {}
+      })
+    }else{
+      quickMessageStore.create({
+        text: quickMessageStore.currentMessage.text,
+        type: "MESSAGE",
+      }, ()=>{
+        quickMessageStore.showModal = false
+        quickMessageStore.currentMessage = {}
+      })
+    }
+  }
+
+  return (
+    <Modal
+      visible={quickMessageStore.showModal}
+      transparent={true}
+      animationType={'fade'}
+    >
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : ''}>
+        <SafeAreaView style={{flex: 1, backgroundColor: '#00000059',  justifyContent: 'flex-end'}}>
+          <>
+            <View style={{height: 56, flexDirection: 'row', alignItems: 'center', backgroundColor: '#F8F8FA'}}>
+              <Text style={{ position: 'absolute', width: '100%', textAlign: 'center', fontWeight: '600', fontSize: 17, color: '#44494D'}} >Tạo tin chat nhanh</Text>
+              <TouchableOpacity
+                onPress={()=>{
+                  quickMessageStore.showModal = false
+                }}
+                style={{width: 56, height: 56, alignItems: 'center', justifyContent: 'center', }}>
+                <Image source={require('../../assets/ic_close.png')} style={{width: 24, height: 24, resizeMode: 'contain'}} resizeMode={'contain'}/>
+
+              </TouchableOpacity>
+              <View style={{flex: 1}}/>
+
+            </View>
+            <View style={{backgroundColor: 'white'}}>
+              <TextInput
+                value={quickMessageStore.currentMessage.text}
+                multiline={true}
+                autoFocus={true}
+                placeholder={'Nội dung tin nhắn'}
+                numberOfLines={10}
+                style={{textAlignVertical: 'top', minHeight: 179,   margin: 16, borderColor: '#DCE6F0', borderWidth: 1, borderRadius: 10, padding: 12 }}
+                onChangeText={text =>{
+                  quickMessageStore.currentMessage = {...quickMessageStore.currentMessage, ...{text}}
+                }}
+              />
+              <TouchableOpacity
+                onPress={updateQuickMessage}
+                style={{ margin: 16, alignItems: 'center', justifyContent: 'center', padding: 16,  backgroundColor: colors.primary, borderRadius: 10 }}>
+                <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>Lưu chỉnh sửa</Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        </SafeAreaView>
+      </KeyboardAvoidingView>
+    </Modal>
+  )
+
+})
 const QuickMessage =observer(function QuickMessage ( props) {
   const snapPoints = useMemo(() => ['40%', '80%'], []);
   const bottomSheetModalRef = useRef(null);
-  const [isCreate, setIsCreate] = useState(false)
-  const [textInput, onChangeText] = useState('')
-  const [currentMessage, setCurrentMessage] = useState({})
   const insets = useSafeAreaInsets();
 
   useEffect(()=>{
@@ -41,10 +114,8 @@ const QuickMessage =observer(function QuickMessage ( props) {
   }, [])
 
   const showUpdate = (message) => {
-    useCallback(()=>{
-      setIsCreate(true)
-    }, [currentMessage])
-    setCurrentMessage(message)
+    quickMessageStore.currentMessage = message
+    quickMessageStore.showModal = true
   }
 
   const sendMessage = (msg) => {
@@ -58,39 +129,18 @@ const QuickMessage =observer(function QuickMessage ( props) {
     }
   }
 
-  const updateQuickMessage = () => {
-    if(currentMessage._id){
-      quickMessageStore.update({
-        ...currentMessage,
-        ...{
-          text: textInput
-        }
-      }, ()=>{
-        setIsCreate(false)
-        setCurrentMessage({})
-      })
-    }else{
-      quickMessageStore.create({
-        text: textInput,
-        type: "MESSAGE",
-      }, ()=>{
-        setIsCreate(false)
-        setCurrentMessage({})
-      })
-    }
-  }
 
   const renderItem = ({item, index}) => {
     return (
       <TouchableOpacity
         onPress={()=>sendMessage(item)}
-        style={{flexDirection: 'row', padding: 16 }}>
+        style={{flexDirection: 'row', alignItems: 'center',  paddingHorizontal: 16, paddingVertical: 8, borderBottomWidth: 1, borderColor: '#EEEEEE' }}>
           <Text style={{flex: 1, flexWrap: 'wrap', fontWeight: '500', fontSize: 15, color: colors.neutralText}}>
             {item.text}
           </Text>
         <TouchableOpacity
           onPress={()=>showUpdate(item)}
-          style={{width: 24, height: 24, alignItems: 'center', justifyContent: 'center'}}>
+          style={{width: 40, height: 40, alignItems: 'center', justifyContent: 'center'}}>
           <Image source={require('../../assets/ic_edit_quick_message.png')} style={{width: 16, height: 16,  resizeMode: 'contain'}} resizeMode={'contain'}/>
         </TouchableOpacity>
       </TouchableOpacity>
@@ -123,7 +173,9 @@ const QuickMessage =observer(function QuickMessage ( props) {
         {
           quickMessageStore.data.length>0?
             <TouchableOpacity
-              onPress={()=>setIsCreate(true)}
+              onPress={()=>{
+                quickMessageStore.showModal = true
+              }}
               style={{paddingHorizontal: 16, height: 56, alignItems: 'center', justifyContent: 'center'}}>
               <Text style={{fontSize: 15, fontWeight: '600', color: '#3B7CEC'}}>Thêm mới</Text>
             </TouchableOpacity>:
@@ -139,55 +191,20 @@ const QuickMessage =observer(function QuickMessage ( props) {
           <Image source={require('../../assets/ic_quick_message_empty.png')} style={{width: 124, height: 99, alignSelf: 'center' }}/>
           <Text style={{color: colors.neutralText, fontSize: 15, fontWeight: '500', textAlign: 'center'}}>Bạn chưa có tin nhắn chat nhanh</Text>
           <TouchableOpacity
-            onPress={()=>setIsCreate(true)}
+            onPress={()=>{
+              quickMessageStore.showModal = true
+            }}
             style={{ position: 'absolute', bottom: 56, left: 16, right: 16, alignItems: 'center', justifyContent: 'center', padding: 16,  backgroundColor: colors.primary, borderRadius: 10 }}>
             <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>Tạo tin nhắn nhanh</Text>
           </TouchableOpacity>
         </View>
       }
-    <FlatList
+    <BottomSheetFlatList
       data={quickMessageStore.data}
       renderItem={renderItem}
       ItemSeparatorComponent={()=><View style={{height: 1, backgroundColor: ''} }/>}
        />
-      <Modal
-        visible={isCreate}
-        transparent={true}
-        animationType={'fade'}
-      >
-        <SafeAreaView style={{flex: 1, backgroundColor: '#00000059',  justifyContent: 'flex-end'}}>
-          <>
-            <View style={{height: 56, flexDirection: 'row', alignItems: 'center', backgroundColor: '#F8F8FA'}}>
-              <Text style={{ position: 'absolute', width: '100%', textAlign: 'center', fontWeight: '600', fontSize: 17, color: '#44494D'}} >Tạo tin chat nhanh</Text>
-              <TouchableOpacity
-                onPress={()=>{
-                  setIsCreate(false)
-                }}
-                style={{width: 56, height: 56, alignItems: 'center', justifyContent: 'center', }}>
-                <Image source={require('../../assets/ic_close.png')} style={{width: 24, height: 24, resizeMode: 'contain'}} resizeMode={'contain'}/>
-
-              </TouchableOpacity>
-              <View style={{flex: 1}}/>
-
-            </View>
-            <View style={{backgroundColor: 'white'}}>
-              <TextInput
-                value={textInput}
-                multiline={true}
-                placeholder={'Nội dung tin nhắn'}
-                numberOfLines={10}
-                style={{textAlignVertical: 'top',   margin: 16, borderColor: '#DCE6F0', borderWidth: 1, borderRadius: 10, padding: 12 }}
-                onChangeText={onChangeText}
-              />
-              <TouchableOpacity
-                onPress={updateQuickMessage}
-                style={{ margin: 16, alignItems: 'center', justifyContent: 'center', padding: 16,  backgroundColor: colors.primary, borderRadius: 10 }}>
-                <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>Lưu chỉnh sửa</Text>
-              </TouchableOpacity>
-            </View>
-          </>
-        </SafeAreaView>
-      </Modal>
+      <QuickMessageModal/>
     </BottomSheetModal>
   )
 })
@@ -203,29 +220,6 @@ const ImageMessage =observer(function ImageMessage ( props) {
     bottomSheetModalRef.current?.present();
   }, [])
 
-  const sendImages = async () => {
-    try{
-      chatStore.showAttachModal = false
-
-      const message = {
-        id: uuid.v4(),
-        "type": "MESSAGE",
-        attachmentLocal: chatStore.images,
-        has_attachment: true,
-        "attachment_ids": [],
-        "text": '',
-        "status": "sending",
-        order_number: props.data.order_info?.order_number,
-        sender: appStore.user.type + '_' + appStore.user.user_id,
-        conversation_id: props.data._id
-      }
-      chatStore.data.unshift(message)
-      chatStore.sendMessage(message)
-      chatStore.images = []
-    }catch (e) {
-      console.log(e)
-    }
-  }
 
 
   return(
@@ -240,26 +234,21 @@ const ImageMessage =observer(function ImageMessage ( props) {
           chatStore.images = []
           if(chatStore.tab === 0){
             chatStore.showAttachModal = false
+            chatStore.tab = 1;
           }
         }}
       >
         <CameraRollPicker
-          assetType={'All'}
-          include={['playableDuration', 'filename', 'fileExtension']}
+          // assetType={'Videos'}
+          groupTypes={"Library"}
+          // include={['playableDuration', 'filename', 'fileExtension']}
           selected={chatStore.images}
           callback={(images) => {
             console.log('image picked', images)
             chatStore.images = images
           }} />
       </BottomSheetModal>
-      {
-        chatStore.images.length > 0 &&
-        <TouchableOpacity
-          onPress={sendImages}
-          style={{ position: 'absolute', zIndex: 99999, bottom: 92, left: 16, right: 16, alignItems: 'center', justifyContent: 'center', padding: 16, margin: 16, backgroundColor: colors.primary, borderRadius: 10 }}>
-          <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>{appStore.lang.chat.send}</Text>
-        </TouchableOpacity>
-      }
+
     </>
 
   )
@@ -319,10 +308,14 @@ const LocationMessage =observer(function LocationMessage ( props) {
 
   const sendMap = () => {
     chatStore.showAttachModal = false
+    chatStore.tab = 1;
     const message = {
       id: uuid.v4(),
       type: "LOCATION",
-      location:  chatStore.location,
+      location:  {
+        latitude: chatStore.location.latitude,
+        longitude: chatStore.location.longitude,
+      },
       status: "sending",
       sender: appStore.user.type + '_' + appStore.user.user_id,
       conversation_id: props.data._id
@@ -341,8 +334,8 @@ const LocationMessage =observer(function LocationMessage ( props) {
       snapPoints={['40%']}
       onDismiss={() => {
         if(chatStore.tab===3){
-          console.log('showAttachModal', 'onDismiss')
           chatStore.showAttachModal = false
+          chatStore.tab = 1;
         }
       }}
     >
@@ -352,9 +345,8 @@ const LocationMessage =observer(function LocationMessage ( props) {
         width: '100%',
       }}>
       <MapView
-        zoomEnabled={false}
         zoomTapEnabled={false}
-        scrollEnabled={false}
+        scrollEnabled={true}
         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
         style={{
           height: '100%',
@@ -497,7 +489,7 @@ export const AttachScreen = observer(function AttachScreen(props) {
             }}
             style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <Image source={chatStore.tab===1?require('../../assets/nav_quick_message_active.png'):require('../../assets/nav_quick_message_active.png')}
-                   style={{width: 28, height: 28, resizeMode: 'contain'}} resizeMode={'contain'}/>
+                   style={{width: 28, height: 28, resizeMode: 'contain', tintColor: chatStore.tab===1?colors.primary: colors.sending}} resizeMode={'contain'}/>
             <Text style={{color: chatStore.tab===1?colors.primary: colors.neutralText, fontSize: 13, fontWeight: '500', paddingTop: 6}}>Chat nhanh</Text>
           </TouchableOpacity>
           <TouchableOpacity

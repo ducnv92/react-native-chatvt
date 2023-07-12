@@ -107,9 +107,9 @@
     "react-native-permissions": "*",
     "react-native-reactions": "*",
     "react-native-reanimated": "*",
+    "react-native-safe-area-context": "*",
     "react-native-svg": "*",
     "react-native-vector-icons": "*",
-    "react-native-safe-area-context": "*",
     "react-native-video": "*"
   },
   "dependencies": {
@@ -117,6 +117,7 @@
     "@gorhom/bottom-sheet": "2.4.1",
     "apisauce": "1.1.1",
     "fbjs": "^3.0.5",
+    "hoist-non-react-statics": "^3.3.2",
     "invariant": "^2.2.4",
     "mobx": "^6.9.0",
     "mobx-react-lite": "^3.4.3",

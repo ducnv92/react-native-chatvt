@@ -40,6 +40,8 @@ import {AttachScreen}  from './Attach';
 import { FlatList, ScrollView } from '../../components/flatlist';
 import { MenuProvider } from 'react-native-popup-menu';
 import {RecordButton} from "./RecordButton";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 
 export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
@@ -109,6 +111,31 @@ export const ChatScreen = observer(function ChatScreen(props) {
     Keyboard.dismiss()
     chatStore.showAttachModal = true
   };
+
+  const sendImages = async () => {
+    try{
+      chatStore.showAttachModal = false
+
+      const message = {
+        id: uuid.v4(),
+        "type": "MESSAGE",
+        attachmentLocal: chatStore.images,
+        has_attachment: true,
+        "attachment_ids": [],
+        "text": '',
+        "status": "sending",
+        order_number: props.data.order_info?.order_number,
+        sender: appStore.user.type + '_' + appStore.user.user_id,
+        conversation_id: props.data._id
+      }
+      chatStore.data.unshift(message)
+      chatStore.sendMessage(message)
+      chatStore.images = []
+    }catch (e) {
+      console.log(e)
+    }
+  }
+
 
   return <MenuProvider>
     <SafeAreaProvider  style={{ flex: 1 }}>
@@ -238,7 +265,14 @@ export const ChatScreen = observer(function ChatScreen(props) {
       </KeyboardAvoidingView>
       {/*<EmojiPicker onEmojiSelected={onClickEmoji} open={showEmoji} onClose={() => setShowEmoji(false)} />*/}
       <AttachScreen {...props}/>
-
+      {
+        chatStore.images.length > 0 &&
+        <TouchableOpacity
+          onPress={sendImages}
+          style={{ position: 'absolute', zIndex: 99999, bottom: 92 +useSafeAreaInsets().bottom, left: 16, right: 16, alignItems: 'center', justifyContent: 'center', padding: 16, margin: 16, backgroundColor: colors.primary, borderRadius: 10 }}>
+          <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>{appStore.lang.chat.send}</Text>
+        </TouchableOpacity>
+      }
     </BottomSheetModalProvider>
 
 

@@ -1,5 +1,5 @@
-export const API_BASE = 'https://hw3.shoptool.vn';
-export const API_BASE_ADMIN = 'https://hw3.shoptool.vn/admin';
+export const API_BASE = 'http://139.59.195.132';
+export const API_BASE_ADMIN = 'http://139.59.195.132/admin';
 
 //Auth
 exports.AUTH_VTP = `/auth/vtp`;
