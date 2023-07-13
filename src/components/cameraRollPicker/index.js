@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import Row from './Row';
 
 import ImageItem from './ImageItem';
-import {BottomSheetFlatList} from "@gorhom/bottom-sheet";
+import {BottomSheetFlatList} from "../bottomSheet/bottom-sheet/src";
 import {Log} from "../../utils";
 
 const styles = StyleSheet.create({
@@ -105,7 +105,7 @@ class CameraRollPicker extends Component {
   }
 
   appendImages(data) {
-    
+
     const assets = data.edges;
     const newState = {
       loadingMore: false,
@@ -157,7 +157,7 @@ class CameraRollPicker extends Component {
     CameraRoll.getPhotos(fetchParams)
       .then(data => {
         data.edges.map(async (edge) => {
-          
+
           // if (Platform.OS === 'ios') {
           //   edge.node.image.uri = this.convertLocalIdentifierToAssetLibrary(edge.node.image.uri.replace('ph://', ''), edge.node.type === 'image' ? 'jpg' : 'mov')
           // }

@@ -1,5 +1,4 @@
 import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
 import chatStore from './ChatStore';
 import CameraRollPicker from '../../components/cameraRollPicker';
 import { observer } from 'mobx-react-lite';
@@ -35,24 +34,24 @@ export class RecordButton extends React.Component{
       this.audioRecorderPlayer.stopRecorder();
       this.audioRecorderPlayer.removeRecordBackListener();
     }catch (e) {
-      
+
     }
   }
 
 
   startRecord = async () => {
 
-    
+
     try{
       requestPermission(Platform.OS==='android'?[PERMISSIONS.ANDROID.RECORD_AUDIO, PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE, PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE]:[PERMISSIONS.IOS.MICROPHONE], async()=>{
-        
+
         this.setState({
           actionRecord: true
         })
 
         const result = await this.audioRecorderPlayer.startRecorder(this.path);
         this.audioRecorderPlayer.addRecordBackListener((e) => {
-          
+
           this.setState({
             isRecording: e.currentPosition!==undefined,
             recordSecs: e.currentPosition,
@@ -62,7 +61,7 @@ export class RecordButton extends React.Component{
           });
           return;
         });
-        
+
         if(result && result.includes('file://')){
           this.setState({
             isRecording: false,
@@ -71,7 +70,7 @@ export class RecordButton extends React.Component{
         }
       })
     }catch (e) {
-      
+
     }
 
 
@@ -96,7 +95,7 @@ export class RecordButton extends React.Component{
         sender: appStore.user.type + '_' + appStore.user.user_id,
         conversation_id: this.props.data._id
       }
-      
+
       chatStore.data.unshift(message)
       chatStore.sendMessage(message)
 
@@ -114,21 +113,21 @@ export class RecordButton extends React.Component{
   }
 
   onStopRecord = async () => {
-    
+
     const result = await this.audioRecorderPlayer.stopRecorder();
     this.audioRecorderPlayer.removeRecordBackListener();
     this.setState({
       recordSecs: 0,
     });
-    
+
   };
 
   onStartPlay = async () => {
-    
+
     const msg = await this.audioRecorderPlayer.startPlayer();
-    
+
     this.audioRecorderPlayer.addPlayBackListener((e) => {
-      
+
       this.setState({
         currentPositionSec: e.currentPosition,
         currentDurationSec: e.duration,
@@ -144,7 +143,7 @@ export class RecordButton extends React.Component{
   };
 
   onStopPlay = async () => {
-    
+
     this.audioRecorderPlayer.stopPlayer();
     this.audioRecorderPlayer.removePlayBackListener();
   };
@@ -154,7 +153,7 @@ export class RecordButton extends React.Component{
       {
         <TouchableOpacity
           onLayout={({nativeEvent}) => {
-            
+
             this.setState({
               layout: nativeEvent
             })

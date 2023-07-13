@@ -16,7 +16,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {
   BottomSheetModal,
   BottomSheetModalProvider, useBottomSheetModal,
-} from '@gorhom/bottom-sheet';
+} from '../../components/bottomSheet/bottom-sheet/src';
 import CameraRollPicker from '../../components/cameraRollPicker';
 import chatStore from "./ChatStore";
 import { Log, orderStatus } from "../../utils";
@@ -127,7 +127,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
           }
         }
       }catch (e) {
-        
+
       }
 
       const message = {
@@ -146,7 +146,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
       chatStore.sendMessage(message)
       chatStore.images = []
     }catch (e) {
-      
+
     }
   }
 
