@@ -108,7 +108,7 @@ const QuickMessage =observer(function QuickMessage ( props) {
   const insets = useSafeAreaInsets();
 
   useEffect(()=>{
-    console.log('quickMessage', props)
+    
     quickMessageStore.getData({})
     bottomSheetModalRef.current?.present();
   }, [])
@@ -244,7 +244,7 @@ const ImageMessage =observer(function ImageMessage ( props) {
           include={['playableDuration', 'filename', 'fileExtension']}
           selected={chatStore.images}
           callback={(images) => {
-            console.log('image picked', images)
+            
             chatStore.images = images
           }} />
       </BottomSheetModal>
@@ -265,20 +265,20 @@ const LocationMessage =observer(function LocationMessage ( props) {
     request(permission).then((result) => {
       switch (result) {
         case RESULTS.UNAVAILABLE:
-          console.log('This feature is not available (on this device / in this context)');
+          
           break;
         case RESULTS.DENIED:
-          console.log('The permission has not been requested / is denied but requestable');
+          
           break;
         case RESULTS.LIMITED:
-          console.log('The permission is limited: some actions are possible');
+          
           break;
         case RESULTS.GRANTED:
-          console.log('The permission is granted');
+          
           callback()
           break;
         case RESULTS.BLOCKED:
-          console.log('The permission is denied and not requestable anymore');
+          
           break;
       }
     });
@@ -294,12 +294,12 @@ const LocationMessage =observer(function LocationMessage ( props) {
             longitude: position.coords.longitude,
             latitude: position.coords.latitude,
           }
-          console.log(chatStore.location);
+          
 
         },
         (error) => {
           // See error code charts below.
-          console.log(error.code, error.message);
+          
         },
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
       );
@@ -320,7 +320,7 @@ const LocationMessage =observer(function LocationMessage ( props) {
       sender: appStore.user.type + '_' + appStore.user.user_id,
       conversation_id: props.data._id
     }
-    console.log('map', message)
+    
     chatStore.data.unshift(message)
     chatStore.sendMessage(message)
   }
@@ -390,6 +390,8 @@ export const AttachScreen = observer(function AttachScreen(props) {
         type: [types.pdf, types.xls, types.docx, types.xlsx, types.docx],
       });
 
+      chatStore.showAttachModal = false
+
       const message = {
         id: uuid.v4(),
         "type": "FILE",
@@ -400,7 +402,6 @@ export const AttachScreen = observer(function AttachScreen(props) {
         sender: appStore.user.type + '_' + appStore.user.user_id,
         conversation_id: props.data._id
       }
-      console.log('document', message);
       chatStore.data.unshift(message)
       chatStore.sendMessage(message)
     } catch (err) {
@@ -421,22 +422,22 @@ export const AttachScreen = observer(function AttachScreen(props) {
       const result = await request(permission)
       switch (result) {
         case RESULTS.UNAVAILABLE:
-          console.log('This feature is not available (on this device / in this context)');
+          
           break;
         case RESULTS.DENIED:
-          console.log('The permission has not been requested / is denied but requestable');
+          
           break;
         case RESULTS.LIMITED:
-          console.log('The permission is limited: some actions are possible');
+          
           break;
         case RESULTS.GRANTED:
-          console.log('The permission is granted');
-          // console.log(bottomSheetRef)
+          
+          // 
           // bottomSheetRef.current?.present();
          callback()
           break;
         case RESULTS.BLOCKED:
-          console.log('The permission is denied and not requestable anymore');
+          
           break;
       }
     } catch (err) {

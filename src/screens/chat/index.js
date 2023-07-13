@@ -118,14 +118,16 @@ export const ChatScreen = observer(function ChatScreen(props) {
       chatStore.showAttachModal = false
 
       try {
-        for (let i = 0; i < chatStore.images.length; i++) {
-          const regex = /:\/\/(.{36})\//i;
-          const result = chatStore.images[i].uri.match(regex);
-          const photoDetail = await CameraRoll.getPhotoByInternalID(result[1], {})
-          chatStore.images[i].uri = photoDetail.node.image.filepath
+        if(Platform.OS === 'ios'){
+          for (let i = 0; i < chatStore.images.length; i++) {
+            const regex = /:\/\/(.{36})\//i;
+            const result = chatStore.images[i].uri.match(regex);
+            const photoDetail = await CameraRoll.getPhotoByInternalID(result[1], {})
+            chatStore.images[i].uri = photoDetail.node.image.filepath
+          }
         }
       }catch (e) {
-        console.log(e)
+        
       }
 
       const message = {
@@ -144,7 +146,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
       chatStore.sendMessage(message)
       chatStore.images = []
     }catch (e) {
-      console.log(e)
+      
     }
   }
 
@@ -201,9 +203,10 @@ export const ChatScreen = observer(function ChatScreen(props) {
           style={{ flex: 1, backgroundColor: 'white' }}
           data={chatStore.data}
           inverted={true}
-          renderItem={({ item }) => <ChatItem item={item} />}
+          renderItem={({ item }) => <ChatItem item={item} conversation={conversation} />}
           onEndReached={() => handleLoadMore()}
           onEndReachedThreshold={0.5}
+          ListHeaderComponent={()=><View style={{height: 8}}/>}
           removeClippedSubviews={true}
           keyExtractor={(item) => item._id}
           refreshing={chatStore.isLoading}
@@ -269,6 +272,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
           {
             chatStore.input.trim() === '' &&
             <RecordButton
+              {...props}
               style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>
               <Image source={require('../../assets/ic_microphone.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
             </RecordButton>

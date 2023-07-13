@@ -102,7 +102,7 @@ class ChatStore {
   }
 
   async sendMessage(params) {
-    console.log('add send', params)
+    
 
     let attachment_ids = []
     if (params.attachmentLocal) {
@@ -118,7 +118,7 @@ class ChatStore {
             extension = params.attachmentLocal[i].name.split(".").pop().toLowerCase();
           }
 
-        console.log('extension', extension)
+        
         let fileUri = ''
         if (extension === 'mov' || extension === 'mp4') {
           fileUri = params.attachmentLocal[i].uri
@@ -139,26 +139,31 @@ class ChatStore {
               type: params.attachmentLocal[i].type,
             })
           }catch (e) {
-            console.log(e)
+            
           }
 
-        }else if(extension === 'jpg' ||extension ==='png'||extension ==='jpeg'||extension ==='heic'){
+        }
+        else if(extension === 'jpg' ||extension ==='png'||extension ==='jpeg'||extension ==='heic'){
 
           let absolutePath = params.attachmentLocal[i].uri
           if (Platform.OS === 'android'){
 
-            const result = await ImageResizer.createResizedImage(
-              absolutePath,
-              1000,
-              1000,
-              'JPEG',
-              40,
-              0
-            )
-            console.log('compresser', result)
+            if(params.attachmentLocal[i].width>=1000 || params.attachmentLocal[i].height>=1000 ){
+              const result = await ImageResizer.createResizedImage(
+                absolutePath,
+                1000,
+                1000,
+                'JPEG',
+                40,
+                0
+              )
+              
 
 
-            fileUri = result.uri
+              fileUri = result.uri
+            }else{
+              fileUri = params.attachmentLocal[i].uri
+            }
           }else{
             fileUri = absolutePath
           }
@@ -171,9 +176,23 @@ class ChatStore {
               type: 'image/'+extension,
             })
           }catch (e) {
-            console.log(e)
+            
           }
 
+        }
+        else{
+          
+          try{
+            formData.append("files", {
+              name: params.attachmentLocal[i].name,
+              uri: params.attachmentLocal[i].uri,
+              type: 'image/'+extension,
+            })
+            
+
+          }catch (e) {
+            
+          }
         }
       }
 

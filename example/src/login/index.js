@@ -23,7 +23,7 @@ export const Login =  observer(function Login ( props){
   const [showSearch, setShowSearch] = useState(false);
 
   useEffect(()=>{
-    console.log('props', props)
+    
   }, [])
 
   const toListChat = (data) => {

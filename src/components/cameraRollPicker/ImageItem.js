@@ -52,7 +52,7 @@ class ImageItem extends Component {
 
       ret += "" + mins + ":" + (secs < 10 ? "0" : "");
       ret += "" + secs;
-      console.log(ret)
+      
       return ret;
     }catch (e) {
       return ''

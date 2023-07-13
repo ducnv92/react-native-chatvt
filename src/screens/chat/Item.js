@@ -29,7 +29,7 @@ import {utils} from "prettier/doc";
 import uuid from 'react-native-uuid';
 import { observer } from 'mobx-react-lite';
 import {Navigation} from "react-native-navigation";
-
+import SoundPlayer from '../../components/playSound';
 
 const MapItem = memo(function (props) {
   const right = props.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
@@ -39,7 +39,7 @@ const MapItem = memo(function (props) {
       flexDirection: 'row',
       justifyContent: right ? 'flex-end' : 'flex-start',
       alignItems: 'center',
-      marginVertical: 8,
+      marginVertical: 4,
       marginHorizontal: 16,
     }}>
       <ContainChatItem {...props}>
@@ -83,32 +83,118 @@ const MapItem = memo(function (props) {
 
   )
 })
+const VoiceItem = memo(function (props) {
+  const right = props.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
+  const [isPlay, setIsPlay] =  useState(false);
+  const [isLoading, setIsLoading] =  useState(false);
+
+  useEffect(()=>{
+
+
+    return ()=>{
+
+    }
+  },[])
+
+  return (
+    <View style={{
+      flexDirection: 'row',
+      justifyContent: right ? 'flex-end' : 'flex-start',
+      alignItems: 'center',
+      marginVertical: 4,
+      marginHorizontal: 16,
+    }}>
+      <ContainChatItem {...props}>
+
+      <View
+
+        style={{
+          height: 56,
+          width: 251,
+          borderRadius: 10,
+          padding: 12,
+          flexDirection: 'row',
+          alignItems: 'center',
+          overflow: 'hidden', backgroundColor: colors.primary
+        }}>
+          <TouchableOpacity
+            onPress={()=>{
+              if(isPlay){
+                SoundPlayer.stop()
+                setIsPlay(false)
+              }else{
+                try {
+
+                  const _onFinishedPlayingSubscription = SoundPlayer.addEventListener('FinishedPlaying', finishedPlaying => {
+                    
+                    setIsPlay(false)
+                    _onFinishedPlayingSubscription.remove()
+                    _onFinishedLoadingSubscription.remove()
+                    _onFinishedLoadingFileSubscription.remove()
+                    _onFinishedLoadingURLSubscription.remove()
+                  })
+                  const _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoading', success => {
+                    
+                    // setIsLoading(false)
+                    // setIsPlay(true)
+                  })
+                  const _onFinishedLoadingFileSubscription = SoundPlayer.addEventListener('FinishedLoadingFile', success => {
+                    
+                    setIsLoading(false)
+                    setIsPlay(false)
+                  })
+                  const _onFinishedLoadingURLSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', ({success, url}) => {
+                    
+                    if(success && props.item.attachments[0]?.url===url){
+                      setIsLoading(false)
+                      setIsPlay(true)
+                    }
+                  })
+                  SoundPlayer.playUrl(props.item.attachments[0]?.url)
+
+                } catch (e) {
+                  
+                }
+              }
+            }}
+            style={{width: 32, height: 32, alignItems: 'center', justifyContent: 'center'}}>
+            <Image source={isPlay?require('../../assets/ic_pause.png'):require('../../assets/ic_play.png')} style={{height: 32, width: 32, resizeMode:"contain", }} />
+          </TouchableOpacity>
+          <Image source={require('../../assets/ic_wave_white.png')} style={{ flex: 1, height: 32, resizeMode:"contain"}} />
+          <Text style={{fontWeight: '500', fontSize: 15, color: 'white'}}>{`0:05`}</Text>
+
+      </View>
+      </ContainChatItem>
+    </View>
+
+  )
+})
 
 
 const VideoItem = function (props) {
   const [thumbnail, setThumbnail] = useState('')
   const [isPause, setIsPause] = useState(true)
   useEffect(() => {
-    console.log('createThumbnail', 'useEffect')
+    
 
     const createThumb = async () => {
       try{
-        console.log('createThumbnail', props.url)
+        
 
         const fileName = props.url.slice(props.url.lastIndexOf('/') + 1, props.url.length)
 
         const response = await createThumbnail({url: props.url, format: 'jpeg', cacheName: fileName, timeStamp: 0})
-        console.log('createThumbnail', response)
+        
         setThumbnail(response.path)
       }catch (e) {
-        console.log(e)
+        
       }
     }
 
     createThumb()
     return () => {
       setIsPause(true)
-      console.log("cleaned up");
+      
     };
   }, [])
 
@@ -192,7 +278,7 @@ const MessageItem = function (props) {
     <>
       {
         item.has_attachment ?
-          <View style={{marginVertical: 8, marginHorizontal: 16,}}>
+          <View style={{marginVertical: 4, marginHorizontal: 16,}}>
             <View style={{flexDirection: 'row', justifyContent: right ? 'flex-end' : 'flex-start', alignItems: 'center'}}>
               {
                 item.status === 'error' && right &&
@@ -324,7 +410,7 @@ const MessageItem = function (props) {
             }
             </ContainChatItem>
           </View> :
-          <View style={{marginVertical: 8, marginHorizontal: 16,}}>
+          <View style={{marginVertical: 4, marginHorizontal: 16,}}>
             <View
               style={{flexDirection: 'row', justifyContent: right ? 'flex-end' : 'flex-start', alignItems: 'center'}}>
               {
@@ -428,7 +514,7 @@ const DocumentItem = function (props) {
     <>
       {
         item.has_attachment && (
-          <View style={{marginVertical: 8, marginHorizontal: 16}}>
+          <View style={{marginVertical: 4, marginHorizontal: 16}}>
             <View style={{flexDirection: 'row', justifyContent: right ? 'flex-end' : 'flex-start', alignItems: 'center'}}>
               {
                 item.status === 'error' && right &&
@@ -672,9 +758,20 @@ export class ChatItem extends React.Component {
     this.right = this.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
   }
 
-
+  getFullName(user_id){
+    const find = this.props.conversation?.detail_participants?.find(p=>p.full_user_id===user_id)
+    if(find){
+      return find.first_name + ' '+ find.last_name
+    }
+    if(user_id.includes('ADMIN')){
+      return 'Admin'
+    }
+    return user_id
+  }
 
   render() {
+    const right = this.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
+
     let messageView
     if (this.item.type === 'MESSAGE') {
       messageView = (<MessageItem item={this.props.item} id={this.state.id}/>)
@@ -688,15 +785,28 @@ export class ChatItem extends React.Component {
     if (this.item.type === 'FILE') {
       messageView = (<DocumentItem item={this.props.item} id={this.state.id}/>)
     }
+    if (this.item.type === 'VOICE') {
+      messageView = (<VoiceItem item={this.props.item} id={this.state.id}/>)
+    }
 
-    // let setting = {}
-    // try {
-    //   const mySetting = this.item.settings.find(i => i.user_id === (appStore.user.type + '_' + appStore.user.user_id))
-    //   setting = mySetting ? mySetting : {}
-    // } catch (e) {
-    //   console.log(e)
-    // }
-    return  messageView
+    if(!right && this.props.conversation.type==='GROUP'){
+      return (
+        <View style={{flexDirection: 'row', paddingVertical: 4}}>
+          <Image source={require('../../assets/avatar_default.png')} style={{width: 32, height: 32, resizeMode: 'contain', marginLeft: 16, marginTop: 32}}/>
+          <View style={{flex: 1,}}>
+            <Text style={{color: '#828282', fontSize: 13, fontWeight: '500', marginLeft: 16 }}>{this.getFullName(this.item.sender)}</Text>
+              {messageView}
+          </View>
+        </View>
+      )
+    }
+
+    return (
+      <View style={{paddingVertical: 8}}>
+        {messageView}
+      </View>
+    )
+
   }
 }
 
@@ -750,11 +860,11 @@ function ContainChatItem(props) {
                   longitude: props.item.location.longitude
                 }))
               } catch (e) {
-                console.log(e)
+                
               }
             }
           } catch (e) {
-            console.log(e)
+            
           }
         }}
         onLongPress={()=>setShowPopover(true)}

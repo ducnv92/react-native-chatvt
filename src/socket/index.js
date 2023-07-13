@@ -20,7 +20,7 @@ class Socket{
     Log('socket onDisconnect')
   }
   onUserMessage = (event)=>{
-    console.log('event', event)
+    
     try{
       Log(event)
       //Handler conversation

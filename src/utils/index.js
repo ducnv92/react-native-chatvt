@@ -44,7 +44,7 @@ export const orderStatus = (status) => {
 
 export const Log = (data, data2) => {
   if (appStore.env === "DEV") {
-      console.log(data, data2)
+      
   }
 }
 export function groupBy(list, keyGetter) {
@@ -60,7 +60,7 @@ export function groupBy(list, keyGetter) {
       }
     });
   }catch (e) {
-    console.log(e)
+    
   }
 
   return map;
@@ -69,7 +69,7 @@ export function groupBy(list, keyGetter) {
 export async function requestPermission(permissions, callback) {
   try{
     const result =  await requestMultiple(permissions)
-    console.log('result', result)
+    
     let grantedAll = true
     permissions.map(p=>{
       if(result[p] !== RESULTS.GRANTED){
@@ -83,19 +83,19 @@ export async function requestPermission(permissions, callback) {
     }
     // switch (result) {
     //   case RESULTS.UNAVAILABLE:
-    //     console.log('This feature is not available (on this device / in this context)');
+    //     
     //     break;
     //   case RESULTS.DENIED:
-    //     console.log('The permission has not been requested / is denied but requestable');
+    //     
     //     break;
     //   case RESULTS.LIMITED:
-    //     console.log('The permission is limited: some actions are possible');
+    //     
     //     break;
     //   case RESULTS.GRANTED:
     //     callback()
     //     break;
     //   case RESULTS.BLOCKED:
-    //     console.log('The permission is denied and not requestable anymore');
+    //     
     //     break;
     // }
   }catch (e) {

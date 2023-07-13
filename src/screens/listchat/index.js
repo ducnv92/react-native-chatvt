@@ -289,7 +289,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
               value={listChatStore.search}
               autoFocus={true}
               onChangeText={text=> {
-                console.log('text', text)
+                
                 listChatStore.search = text
                 listChatStore.page = 0;
                 listChatStore.getData({})

@@ -11,13 +11,18 @@ import appStore from '../AppStore';
 import AudioRecorderPlayer from '../../components/audioRecord/index';
 import RNFS from 'react-native-fs'
 import uuid from "react-native-uuid";
+import DocumentPicker, {types} from "../../components/documentPicker";
 
 export class RecordButton extends React.Component{
 
   constructor(props) {
     super(props);
     this.state = {
+      fileRecorded: undefined,
+      isRecording: false,
+      actionRecord: false,
       recordSecs: 0,
+      layout: {x: 0},
       recordTime: "00:00"
     }
     this.path = `${RNFS.CachesDirectoryPath}/${uuid.v4()+'.mp3'}`
@@ -30,21 +35,26 @@ export class RecordButton extends React.Component{
       this.audioRecorderPlayer.stopRecorder();
       this.audioRecorderPlayer.removeRecordBackListener();
     }catch (e) {
-      console.log(e)
+      
     }
   }
 
 
-
   startRecord = async () => {
-    console.log('RecordButton', this.path)
+
+    
     try{
       requestPermission(Platform.OS==='android'?[PERMISSIONS.ANDROID.RECORD_AUDIO, PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE, PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE]:[PERMISSIONS.IOS.MICROPHONE], async()=>{
-        console.log('startRecord');
+        
+        this.setState({
+          actionRecord: true
+        })
+
         const result = await this.audioRecorderPlayer.startRecorder(this.path);
         this.audioRecorderPlayer.addRecordBackListener((e) => {
-          console.log(e)
+          
           this.setState({
+            isRecording: e.currentPosition!==undefined,
             recordSecs: e.currentPosition,
             recordTime: this.audioRecorderPlayer.mmssss(
               Math.floor(e.currentPosition),
@@ -52,32 +62,73 @@ export class RecordButton extends React.Component{
           });
           return;
         });
-        console.log(result);
+        
+        if(result && result.includes('file://')){
+          this.setState({
+            isRecording: false,
+            fileRecorded: result
+          })
+        }
       })
     }catch (e) {
-      console.log(e)
+      
     }
 
 
 
   }
 
+  sendRecorded = async () => {
+    try {
+      const message = {
+        id: uuid.v4(),
+        "type": "VOICE",
+        attachmentLocal: [
+          {
+            uri: this.state.fileRecorded,
+            extension: 'mp3',
+            name: uuid.v4()+'.mp3'
+          }
+        ],
+        has_attachment: true,
+        "text": '',
+        "status": "sending",
+        sender: appStore.user.type + '_' + appStore.user.user_id,
+        conversation_id: this.props.data._id
+      }
+      
+      chatStore.data.unshift(message)
+      chatStore.sendMessage(message)
+
+      this.setState({
+        isRecording: false,
+        actionRecord: false,
+        fileRecorded: undefined,
+        recordSecs: 0,
+        layout: {x: 0},
+        recordTime: "00:00"
+      })
+    } catch (err) {
+      console.warn(err);
+    }
+  }
+
   onStopRecord = async () => {
-    console.log('onStopRecord');
+    
     const result = await this.audioRecorderPlayer.stopRecorder();
     this.audioRecorderPlayer.removeRecordBackListener();
     this.setState({
       recordSecs: 0,
     });
-    console.log(result);
+    
   };
 
   onStartPlay = async () => {
-    console.log('onStartPlay');
+    
     const msg = await this.audioRecorderPlayer.startPlayer();
-    console.log(msg);
+    
     this.audioRecorderPlayer.addPlayBackListener((e) => {
-      console.log(e)
+      
       this.setState({
         currentPositionSec: e.currentPosition,
         currentDurationSec: e.duration,
@@ -93,7 +144,7 @@ export class RecordButton extends React.Component{
   };
 
   onStopPlay = async () => {
-    console.log('onStopPlay');
+    
     this.audioRecorderPlayer.stopPlayer();
     this.audioRecorderPlayer.removePlayBackListener();
   };
@@ -102,13 +153,59 @@ export class RecordButton extends React.Component{
     return(<>
       {
         <TouchableOpacity
-          onPress={()=>{
-            // if(this.audioRecorderPlayer.is)
-            this.startRecord()
+          onLayout={({nativeEvent}) => {
+            
+            this.setState({
+              layout: nativeEvent
+            })
           }}
-          style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>
+          onPress={()=>{
+            if(this.state.isRecording){
+              this.onStopRecord()
+            }else{
+              this.startRecord()
+            }
+          }}
+          style={{width: 56, height: 56, alignItems: 'center', justifyContent: 'center'}}>
           <Image source={require('../../assets/ic_microphone.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
         </TouchableOpacity>
+      }
+      {
+        this.state.actionRecord &&
+        <View style={{flexDirection: 'row', alignItems: 'center', height: 56, width: '100%', backgroundColor: '#F8F8FA', position: 'absolute', top: this.state.layout?.x}}>
+          <TouchableOpacity
+            onPress={()=>{
+
+            }}
+            style={{width: 56, height: 56, alignItems: 'center', justifyContent: 'center'}}>
+            <Image source={require('../../assets/ic_trash_primary.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={()=>{
+              this.onStopRecord()
+            }}
+            style={{width: 56, height: 56, alignItems: 'center', justifyContent: 'center'}}>
+            <Image source={require('../../assets/ic_pause.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
+          </TouchableOpacity>
+          <Image source={require('../../assets/ic_wave.png')} style={{ flex: 1, height: 32, resizeMode:"contain"}}/>
+          {/*<View*/}
+          {/*  style={{width: 56, height: 56, alignItems: 'center', justifyContent: 'center'}}>*/}
+          {/*>*/}
+          {/*  <Text style={{fontWeight: '500', fontSize: 15, color: colors.neutralText}}>{`${this.state.recordTime}`}</Text>*/}
+          {/*</View>*/}
+          <TouchableOpacity
+            onPress={()=>{
+              if(this.state.fileRecorded){
+                this.sendRecorded()
+              }
+            }}
+            style={{width: 56, height: 56, alignItems: 'center', justifyContent: 'center'}}>
+            {
+              this.state.fileRecorded &&
+              <Image source={require('../../assets/ic_send.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
+            }
+          </TouchableOpacity>
+        </View>
       }
 
     </>)

@@ -105,7 +105,7 @@ class CameraRollPicker extends Component {
   }
 
   appendImages(data) {
-    console.log('images', data)
+    
     const assets = data.edges;
     const newState = {
       loadingMore: false,
@@ -157,7 +157,7 @@ class CameraRollPicker extends Component {
     CameraRoll.getPhotos(fetchParams)
       .then(data => {
         data.edges.map(async (edge) => {
-          console.log(edge.node)
+          
           // if (Platform.OS === 'ios') {
           //   edge.node.image.uri = this.convertLocalIdentifierToAssetLibrary(edge.node.image.uri.replace('ph://', ''), edge.node.type === 'image' ? 'jpg' : 'mov')
           // }

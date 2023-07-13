@@ -239,7 +239,7 @@ class AudioRecorderPlayer {
     if (!this._isRecording) {
       this._isRecording = true;
       if (!uri) uri = 'DEFAULT';
-      console.log('uri', uri)
+      
 
       return RNAudioRecorderPlayerChatVT.startRecorder(
         uri,
