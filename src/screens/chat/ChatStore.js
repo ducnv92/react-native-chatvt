@@ -33,6 +33,11 @@ class ChatStore {
     longitude: 0,
   };
 
+  tabImage;
+  tabQuickMessage;
+  tabLocationMessage;
+
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -102,7 +107,7 @@ class ChatStore {
   }
 
   async sendMessage(params) {
-    
+
 
     let attachment_ids = []
     if (params.attachmentLocal) {
@@ -118,7 +123,7 @@ class ChatStore {
             extension = params.attachmentLocal[i].name.split(".").pop().toLowerCase();
           }
 
-        
+
         let fileUri = ''
         if (extension === 'mov' || extension === 'mp4') {
           fileUri = params.attachmentLocal[i].uri
@@ -139,7 +144,7 @@ class ChatStore {
               type: params.attachmentLocal[i].type,
             })
           }catch (e) {
-            
+
           }
 
         }
@@ -157,7 +162,7 @@ class ChatStore {
                 40,
                 0
               )
-              
+
 
 
               fileUri = result.uri
@@ -176,22 +181,22 @@ class ChatStore {
               type: 'image/'+extension,
             })
           }catch (e) {
-            
+
           }
 
         }
         else{
-          
+
           try{
             formData.append("files", {
               name: params.attachmentLocal[i].name,
               uri: params.attachmentLocal[i].uri,
               type: 'image/'+extension,
             })
-            
+
 
           }catch (e) {
-            
+
           }
         }
       }

@@ -104,13 +104,18 @@ const QuickMessageModal =observer(function QuickMessageModal ( props) {
 })
 const QuickMessage =observer(function QuickMessage ( props) {
   const snapPoints = useMemo(() => ['40%', '80%'], []);
-  const bottomSheetModalRef = useRef(null);
+  const bottomSheetModalRef = useRef();
   const insets = useSafeAreaInsets();
 
   useEffect(()=>{
-    
+
     quickMessageStore.getData({})
-    bottomSheetModalRef.current?.present();
+
+      bottomSheetModalRef.current?.present();
+
+    return()=>{
+      bottomSheetModalRef.current?.dismiss();
+    }
   }, [])
 
   const showUpdate = (message) => {
@@ -214,10 +219,14 @@ const ImageMessage =observer(function ImageMessage ( props) {
 
   const snapPoints = useMemo(() => ['50%', '80%'], []);
 
-  const bottomSheetModalRef = useRef(null);
+  const bottomSheetModalRef = useRef();
 
   useEffect(()=>{
-    bottomSheetModalRef.current?.present();
+      bottomSheetModalRef.current?.present();
+
+    return()=>{
+      bottomSheetModalRef.current?.dismiss();
+    }
   }, [])
 
 
@@ -244,7 +253,7 @@ const ImageMessage =observer(function ImageMessage ( props) {
           include={['playableDuration', 'filename', 'fileExtension']}
           selected={chatStore.images}
           callback={(images) => {
-            
+
             chatStore.images = images
           }} />
       </BottomSheetModal>
@@ -255,7 +264,7 @@ const ImageMessage =observer(function ImageMessage ( props) {
 })
 
 const LocationMessage =observer(function LocationMessage ( props) {
-  const bottomSheetModalRef = useRef(null);
+  const bottomSheetModalRef = useRef();
   const insets = useSafeAreaInsets();
 
 
@@ -265,20 +274,20 @@ const LocationMessage =observer(function LocationMessage ( props) {
     request(permission).then((result) => {
       switch (result) {
         case RESULTS.UNAVAILABLE:
-          
+
           break;
         case RESULTS.DENIED:
-          
+
           break;
         case RESULTS.LIMITED:
-          
+
           break;
         case RESULTS.GRANTED:
-          
+
           callback()
           break;
         case RESULTS.BLOCKED:
-          
+
           break;
       }
     });
@@ -286,7 +295,8 @@ const LocationMessage =observer(function LocationMessage ( props) {
 
   useEffect(()=>{
 
-    bottomSheetModalRef.current?.present();
+      bottomSheetModalRef.current?.present();
+
     requestPermission(()=>{
       Geolocation.getCurrentPosition(
         (position) => {
@@ -294,16 +304,19 @@ const LocationMessage =observer(function LocationMessage ( props) {
             longitude: position.coords.longitude,
             latitude: position.coords.latitude,
           }
-          
+
 
         },
         (error) => {
           // See error code charts below.
-          
+
         },
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
       );
     })
+    return()=>{
+      bottomSheetModalRef.current?.dismiss();
+    }
   }, [])
 
   const sendMap = () => {
@@ -320,7 +333,7 @@ const LocationMessage =observer(function LocationMessage ( props) {
       sender: appStore.user.type + '_' + appStore.user.user_id,
       conversation_id: props.data._id
     }
-    
+
     chatStore.data.unshift(message)
     chatStore.sendMessage(message)
   }
@@ -422,22 +435,22 @@ export const AttachScreen = observer(function AttachScreen(props) {
       const result = await request(permission)
       switch (result) {
         case RESULTS.UNAVAILABLE:
-          
+
           break;
         case RESULTS.DENIED:
-          
+
           break;
         case RESULTS.LIMITED:
-          
+
           break;
         case RESULTS.GRANTED:
-          
-          // 
+
+          //
           // bottomSheetRef.current?.present();
          callback()
           break;
         case RESULTS.BLOCKED:
-          
+
           break;
       }
     } catch (err) {
@@ -445,31 +458,61 @@ export const AttachScreen = observer(function AttachScreen(props) {
     }
   };
 
+  const getImageMessage = () => {
+    if(chatStore.tab === 0 ){
+      if(!chatStore.tabImage){
+        console.log('create tab iamge')
+        chatStore.tabImage = <ImageMessage {...props}/>
+      }
+      return chatStore.tabImage
+    }else{
+      return <View/>
+    }
+
+  }
+
+  const getQuickMessage = () => {
+    if(chatStore.tab === 1 ){
+
+      if(!chatStore.tabQuickMessage){
+        console.log('create tab quick message')
+        chatStore.tabQuickMessage =  <QuickMessage {...props}/>
+      }
+      return chatStore.tabQuickMessage
+    }else{
+      return <View/>
+    }
+  }
+
+  const getLocationMessage = () => {
+    if(chatStore.tab === 3 ){
+
+      if(!chatStore.tabLocationMessage){
+        console.log('create tab tabLocation message')
+        chatStore.tabLocationMessage =  <LocationMessage {...props}/>
+      }
+      return chatStore.tabLocationMessage
+    }else{
+      return <View/>
+    }
+  }
+
+
 
 
   return(<>
     {
       chatStore.showAttachModal &&
       <SafeAreaView>
-          <>{
-            chatStore.tab === 0 &&
-            <ImageMessage {...props}/>
+        <>
+          {
+            getImageMessage()
           }
-          </>
-        <>
         {
-
-          chatStore.tab === 1 &&
-            <QuickMessage {...props}/>
-
+          getQuickMessage()
         }
-        </>
-        <>
-
         {
-          chatStore.tab === 3 &&
-
-            <LocationMessage {...props}/>
+          getLocationMessage()
         }
         </>
         <View style={{ bottom:  0, width:  '100%',  height: 77,  position: 'absolute',backgroundColor: 'white', flexDirection: 'row', borderTopWidth: 1, borderColor: '#DCE6F0' }}>
