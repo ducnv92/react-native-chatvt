@@ -460,43 +460,36 @@ export const AttachScreen = observer(function AttachScreen(props) {
 
   const getImageMessage = () => {
     if(chatStore.tab === 0 ){
-      return <ImageMessage {...props}/>
-      // if(!chatStore.tabImage){
-      //   console.log('create tab iamge')
-      //   chatStore.tabImage = <ImageMessage {...props}/>
-      // }
-      // return chatStore.tabImage
+      if(!chatStore.tabImage){
+        chatStore.tabImage = <ImageMessage {...props}/>
+      }
+      return chatStore.tabImage
+    }else{
+      return <View/>
     }
-    // else{
-    //   return <View/>
-    // }
 
   }
 
   const getQuickMessage = () => {
     if(chatStore.tab === 1 ){
-
-      return <QuickMessage {...props}/>
-      // if(!chatStore.tabQuickMessage){
-      //   console.log('create tab quick message')
-      //   chatStore.tabQuickMessage =  <QuickMessage {...props}/>
-      // }
-      // return chatStore.tabQuickMessage
+      if(!chatStore.tabQuickMessage){
+        console.log('create tab quick message')
+        chatStore.tabQuickMessage =  <QuickMessage {...props}/>
+      }
+      return chatStore.tabQuickMessage
+    }else{
+      return <View/>
     }
-    // else{
-    //   return <View/>
-    // }
   }
 
   const getLocationMessage = () => {
     if(chatStore.tab === 3 ){
-      return <LocationMessage {...props}/>
-
-      // if(!chatStore.tabLocationMessage){
-      //   console.log('create tab tabLocation message')
-      //   chatStore.tabLocationMessage =  <LocationMessage {...props}/>
-      // }
-      // return chatStore.tabLocationMessage
+      if(!chatStore.tabLocationMessage){
+        chatStore.tabLocationMessage =  <LocationMessage {...props}/>
+      }
+      return chatStore.tabLocationMessage
+    }else{
+      return <View/>
     }
   }
 
@@ -507,7 +500,6 @@ export const AttachScreen = observer(function AttachScreen(props) {
     {
       chatStore.showAttachModal &&
       <SafeAreaView>
-        <>
           {
             getImageMessage()
           }
@@ -517,7 +509,6 @@ export const AttachScreen = observer(function AttachScreen(props) {
         {
           getLocationMessage()
         }
-        </>
         <View style={{ bottom:  0, width:  '100%',  height: 77,  position: 'absolute',backgroundColor: 'white', flexDirection: 'row', borderTopWidth: 1, borderColor: '#DCE6F0' }}>
           <TouchableOpacity
             onPress={()=>{
