@@ -16,7 +16,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {
   BottomSheetModal,
   BottomSheetModalProvider, useBottomSheetModal,
-} from '../../components/bottomSheet/bottom-sheet/src';
+} from '../../components/bottomSheet/bottom-sheet';
 import CameraRollPicker from '../../components/cameraRollPicker';
 import chatStore from "./ChatStore";
 import { Log, orderStatus } from "../../utils";

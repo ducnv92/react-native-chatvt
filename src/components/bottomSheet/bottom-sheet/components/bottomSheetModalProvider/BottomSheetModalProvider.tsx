@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { PortalProvider } from '../../../../portal';
+import { PortalProvider } from '../../../portal';
 import {
   BottomSheetModalProvider,
   BottomSheetModalInternalProvider,

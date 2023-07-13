@@ -3,7 +3,7 @@ import { useCallback, useRef, useMemo } from 'react';
 import { findNodeHandle } from 'react-native';
 import { event, useCode, onChange, set, call } from 'react-native-reanimated';
 import { useValue } from 'react-native-redash';
-import { useBottomSheetInternal } from '../hooks/useBottomSheetInternal';
+import { useBottomSheetInternal } from './useBottomSheetInternal';
 import type { Scrollable, ScrollableType } from '../types';
 
 export const useScrollableInternal = (type: ScrollableType) => {

@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import Row from './Row';
 
 import ImageItem from './ImageItem';
-import {BottomSheetFlatList} from "../bottomSheet/bottom-sheet/src";
+import {BottomSheetFlatList} from "../bottomSheet/bottom-sheet";
 import {Log} from "../../utils";
 
 const styles = StyleSheet.create({
