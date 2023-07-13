@@ -114,6 +114,7 @@
   },
   "dependencies": {
     "@charkour/react-reactions": "^0.11.0",
+    "@react-native-community/cameraroll": "^4.1.2",
     "apisauce": "1.1.1",
     "fbjs": "^3.0.5",
     "hoist-non-react-statics": "^3.3.2",
@@ -129,10 +130,10 @@
     "react-native-parsed-text": "^0.0.22",
     "react-native-popover-view": "^5.1.7",
     "react-native-popup-menu": "^0.16.1",
+    "react-native-redash": "^18.1.0",
     "react-native-swipeable": "^0.6.0",
     "react-native-uuid": "^2.0.1",
     "socket.io-client": "^4.6.2",
-    "@react-native-community/cameraroll": "^4.1.2",
     "yarn": "^1.22.19"
   },
   "engines": {
