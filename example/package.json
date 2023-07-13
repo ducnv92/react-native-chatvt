@@ -13,7 +13,7 @@
     "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/cameraroll": "^2.0.0",
     "react": "18.2.0",
-    "react-native": "0.71.8",
+    "react-native": "^0.71.8",
     "react-native-code-push": "^8.0.2",
     "react-native-device-info": "^10.7.0",
     "react-native-fast-image": "^8.6.3",

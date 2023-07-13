@@ -108,7 +108,7 @@ class ChatStore {
 
   async sendMessage(params) {
 
-
+    Log(params)
     let attachment_ids = []
     if (params.attachmentLocal) {
       const formData = new FormData()

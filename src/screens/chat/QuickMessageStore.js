@@ -58,8 +58,8 @@ class QuickMessageStore {
 
     if (response.status === 200||response.status === 201) {
       if (response.data.status === 200 ||response.data.status === 201) {
-        this.getData({})
         this.currentMessage = {}
+        this.getData({})
         onSuccess()
       }
     }

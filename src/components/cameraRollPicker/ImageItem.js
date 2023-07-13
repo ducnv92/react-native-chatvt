@@ -52,7 +52,7 @@ class ImageItem extends Component {
 
       ret += "" + mins + ":" + (secs < 10 ? "0" : "");
       ret += "" + secs;
-      
+
       return ret;
     }catch (e) {
       return ''
@@ -83,7 +83,7 @@ class ImageItem extends Component {
         />
         { marker }
         {
-          item.node.type==='video' &&
+          (item.node.type==='video' || (image.playableDuration!==null &&image.playableDuration>0)) &&
           <Text style={{position: 'absolute', fontSize: 12, color: '#fffffffa', bottom: 10, right: 8}}>{this.fancyTimeFormat(image.playableDuration)}</Text>
         }
       </TouchableOpacity>

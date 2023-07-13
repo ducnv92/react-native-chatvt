@@ -179,6 +179,7 @@ const QuickMessage =observer(function QuickMessage ( props) {
           quickMessageStore.data.length>0?
             <TouchableOpacity
               onPress={()=>{
+                quickMessageStore.currentMessage = {}
                 quickMessageStore.showModal = true
               }}
               style={{paddingHorizontal: 16, height: 56, alignItems: 'center', justifyContent: 'center'}}>
@@ -188,7 +189,6 @@ const QuickMessage =observer(function QuickMessage ( props) {
               style={{paddingHorizontal: 16, height: 56}}>
             </View>
         }
-
       </View>
       {
         quickMessageStore.data.length ===0 &&
@@ -460,40 +460,43 @@ export const AttachScreen = observer(function AttachScreen(props) {
 
   const getImageMessage = () => {
     if(chatStore.tab === 0 ){
-      if(!chatStore.tabImage){
-        console.log('create tab iamge')
-        chatStore.tabImage = <ImageMessage {...props}/>
-      }
-      return chatStore.tabImage
-    }else{
-      return <View/>
+      return <ImageMessage {...props}/>
+      // if(!chatStore.tabImage){
+      //   console.log('create tab iamge')
+      //   chatStore.tabImage = <ImageMessage {...props}/>
+      // }
+      // return chatStore.tabImage
     }
+    // else{
+    //   return <View/>
+    // }
 
   }
 
   const getQuickMessage = () => {
     if(chatStore.tab === 1 ){
 
-      if(!chatStore.tabQuickMessage){
-        console.log('create tab quick message')
-        chatStore.tabQuickMessage =  <QuickMessage {...props}/>
-      }
-      return chatStore.tabQuickMessage
-    }else{
-      return <View/>
+      return <QuickMessage {...props}/>
+      // if(!chatStore.tabQuickMessage){
+      //   console.log('create tab quick message')
+      //   chatStore.tabQuickMessage =  <QuickMessage {...props}/>
+      // }
+      // return chatStore.tabQuickMessage
     }
+    // else{
+    //   return <View/>
+    // }
   }
 
   const getLocationMessage = () => {
     if(chatStore.tab === 3 ){
+      return <LocationMessage {...props}/>
 
-      if(!chatStore.tabLocationMessage){
-        console.log('create tab tabLocation message')
-        chatStore.tabLocationMessage =  <LocationMessage {...props}/>
-      }
-      return chatStore.tabLocationMessage
-    }else{
-      return <View/>
+      // if(!chatStore.tabLocationMessage){
+      //   console.log('create tab tabLocation message')
+      //   chatStore.tabLocationMessage =  <LocationMessage {...props}/>
+      // }
+      // return chatStore.tabLocationMessage
     }
   }
 

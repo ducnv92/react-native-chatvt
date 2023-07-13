@@ -208,7 +208,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
           onEndReachedThreshold={0.5}
           ListHeaderComponent={()=><View style={{height: 8}}/>}
           removeClippedSubviews={true}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => item._id!==undefined?item._id: item.id}
           refreshing={chatStore.isLoading}
           onRefresh={() => {
             chatStore.page = 0;

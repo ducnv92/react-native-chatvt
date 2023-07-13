@@ -44,7 +44,7 @@ export const orderStatus = (status) => {
 
 export const Log = (data, data2) => {
   if (appStore.env === "DEV") {
-      
+      console.log(data, data2)
   }
 }
 export function groupBy(list, keyGetter) {
@@ -60,7 +60,7 @@ export function groupBy(list, keyGetter) {
       }
     });
   }catch (e) {
-    
+
   }
 
   return map;
@@ -69,7 +69,7 @@ export function groupBy(list, keyGetter) {
 export async function requestPermission(permissions, callback) {
   try{
     const result =  await requestMultiple(permissions)
-    
+
     let grantedAll = true
     permissions.map(p=>{
       if(result[p] !== RESULTS.GRANTED){
@@ -83,19 +83,19 @@ export async function requestPermission(permissions, callback) {
     }
     // switch (result) {
     //   case RESULTS.UNAVAILABLE:
-    //     
+    //
     //     break;
     //   case RESULTS.DENIED:
-    //     
+    //
     //     break;
     //   case RESULTS.LIMITED:
-    //     
+    //
     //     break;
     //   case RESULTS.GRANTED:
     //     callback()
     //     break;
     //   case RESULTS.BLOCKED:
-    //     
+    //
     //     break;
     // }
   }catch (e) {
