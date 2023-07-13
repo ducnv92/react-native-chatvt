@@ -31,7 +31,7 @@ import { observer } from 'mobx-react-lite';
 import {Navigation} from "react-native-navigation";
 import SoundPlayer from '../../components/playSound';
 
-const MapItem = memo(function (props) {
+const MapItem = function (props) {
   const right = props.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
 
   return (
@@ -64,15 +64,15 @@ const MapItem = memo(function (props) {
             overflow: 'hidden'
           }}
           region={{
-            latitude: props.item.location.latitude,
-            longitude: props.item.location.longitude,
+            latitude: props.item?.location?.latitude,
+            longitude: props.item?.location?.longitude,
             latitudeDelta: 0.015,
             longitudeDelta: 0.0121,
           }}
         >
           <Marker
             style={{width: 24, height: 24}}
-            coordinate={{latitude: props.item.location.latitude, longitude: props.item.location.longitude}}
+            coordinate={{latitude: props.item?.location?.latitude, longitude: props.item?.location?.longitude}}
             image={require('../../assets/ic_map_pin.png')}
             resizeMode="contain"
           />
@@ -82,8 +82,8 @@ const MapItem = memo(function (props) {
     </View>
 
   )
-})
-const VoiceItem = memo(function (props) {
+}
+const VoiceItem = function (props) {
   const right = props.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
   const [isPlay, setIsPlay] =  useState(false);
   const [isLoading, setIsLoading] =  useState(false);
@@ -126,7 +126,7 @@ const VoiceItem = memo(function (props) {
                 try {
 
                   const _onFinishedPlayingSubscription = SoundPlayer.addEventListener('FinishedPlaying', finishedPlaying => {
-                    
+
                     setIsPlay(false)
                     _onFinishedPlayingSubscription.remove()
                     _onFinishedLoadingSubscription.remove()
@@ -134,17 +134,17 @@ const VoiceItem = memo(function (props) {
                     _onFinishedLoadingURLSubscription.remove()
                   })
                   const _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoading', success => {
-                    
+
                     // setIsLoading(false)
                     // setIsPlay(true)
                   })
                   const _onFinishedLoadingFileSubscription = SoundPlayer.addEventListener('FinishedLoadingFile', success => {
-                    
+
                     setIsLoading(false)
                     setIsPlay(false)
                   })
                   const _onFinishedLoadingURLSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', ({success, url}) => {
-                    
+
                     if(success && props.item.attachments[0]?.url===url){
                       setIsLoading(false)
                       setIsPlay(true)
@@ -153,7 +153,7 @@ const VoiceItem = memo(function (props) {
                   SoundPlayer.playUrl(props.item.attachments[0]?.url)
 
                 } catch (e) {
-                  
+
                 }
               }
             }}
@@ -168,33 +168,33 @@ const VoiceItem = memo(function (props) {
     </View>
 
   )
-})
+}
 
 
 const VideoItem = function (props) {
   const [thumbnail, setThumbnail] = useState('')
   const [isPause, setIsPause] = useState(true)
   useEffect(() => {
-    
+
 
     const createThumb = async () => {
       try{
-        
+
 
         const fileName = props.url.slice(props.url.lastIndexOf('/') + 1, props.url.length)
 
         const response = await createThumbnail({url: props.url, format: 'jpeg', cacheName: fileName, timeStamp: 0})
-        
+
         setThumbnail(response.path)
       }catch (e) {
-        
+
       }
     }
 
     createThumb()
     return () => {
       setIsPause(true)
-      
+
     };
   }, [])
 
@@ -774,19 +774,19 @@ export class ChatItem extends React.Component {
 
     let messageView
     if (this.item.type === 'MESSAGE') {
-      messageView = (<MessageItem item={this.props.item} id={this.state.id}/>)
+      messageView = (<MessageItem item={this.props.item} />)
     }
     if (this.item.type === 'CREATED_QUOTE_ORDER') {
-      messageView = (<OrderItem item={this.props.item} id={this.state.id}/>)
+      messageView = (<OrderItem item={this.props.item} />)
     }
     if (this.item.type === 'LOCATION') {
-      messageView = (<MapItem item={this.props.item} id={this.state.id}/>)
+      messageView = (<MapItem item={this.props.item} />)
     }
     if (this.item.type === 'FILE') {
-      messageView = (<DocumentItem item={this.props.item} id={this.state.id}/>)
+      messageView = (<DocumentItem item={this.props.item} />)
     }
     if (this.item.type === 'VOICE') {
-      messageView = (<VoiceItem item={this.props.item} id={this.state.id}/>)
+      messageView = (<VoiceItem item={this.props.item} />)
     }
 
     if(!right && this.props.conversation.type==='GROUP'){
@@ -811,7 +811,6 @@ export class ChatItem extends React.Component {
 }
 
 function ContainChatItem(props) {
-  const right = props.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
 
   const [showPopover, setShowPopover] = useState(false)
   const [reactions, setReactions] = useState(props.item.reactions)
@@ -860,11 +859,11 @@ function ContainChatItem(props) {
                   longitude: props.item.location.longitude
                 }))
               } catch (e) {
-                
+
               }
             }
           } catch (e) {
-            
+
           }
         }}
         onLongPress={()=>setShowPopover(true)}
