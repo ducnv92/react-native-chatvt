@@ -122,6 +122,7 @@
     "mobx": "^6.9.0",
     "mobx-react-lite": "^3.4.3",
     "moment": "^2.29.4",
+    "nanoid": "^4.0.2",
     "react-native-builder-bob": "0.17.0",
     "react-native-clipboard-toast": "^1.0.0",
     "react-native-file-viewer": "^2.1.5",
