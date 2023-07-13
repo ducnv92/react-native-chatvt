@@ -8,7 +8,7 @@ import appStore from "../screens/AppStore";
 
 
 class Socket{
-  URL = 'http://146.190.193.226:80';
+  URL = 'https://dev-receiverchat.viettelpost.vn';
 
   constructor() {
    }
@@ -20,7 +20,7 @@ class Socket{
     Log('socket onDisconnect')
   }
   onUserMessage = (event)=>{
-    
+
     try{
       Log(event)
       //Handler conversation

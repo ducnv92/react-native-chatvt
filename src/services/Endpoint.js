@@ -1,5 +1,5 @@
-export const API_BASE = 'http://139.59.195.132';
-export const API_BASE_ADMIN = 'http://139.59.195.132/admin';
+export const API_BASE = 'https://dev-apichat.viettelpost.vn';
+export const API_BASE_ADMIN = 'https://dev-apichat.viettelpost.vn/admin';
 
 //Auth
 exports.AUTH_VTP = `/auth/vtp`;
