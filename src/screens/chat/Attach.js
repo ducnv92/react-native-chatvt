@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import BottomSheet, {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
+import BottomSheet, {BottomSheetFlatList, BottomSheetModal} from '../../components/bottomSheet/bottom-sheet';
 import chatStore from './ChatStore';
 import CameraRollPicker from '../../components/cameraRollPicker';
 import { observer } from 'mobx-react-lite';

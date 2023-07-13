@@ -19,7 +19,7 @@ function safeAreaProviderHOC(
 
   function Wrapper(props) {
     return (
-      <SafeAreaProvider style={[{flex: 1, backgroundColor: colors.primary}]}>
+      <SafeAreaProvider style={[{flex: 1}]}>
         <StatusBar
           backgroundColor={colors.primary}
         />
