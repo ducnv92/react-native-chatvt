@@ -8,7 +8,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Portal, usePortal } from '@gorhom/portal';
+import { Portal, usePortal } from '../../../../portal';
 import { nanoid } from 'nanoid/non-secure';
 import isEqual from 'lodash.isequal';
 import BottomSheet from '../bottomSheet';
