@@ -799,7 +799,7 @@ export class ChatItem extends React.Component {
     if(!right && this.props.conversation.type==='GROUP'){
       return (
         <View style={{flexDirection: 'row', paddingVertical: 4}}>
-          <Image source={require('../../assets/avatar_default.png')} style={{width: 32, height: 32, resizeMode: 'contain', marginLeft: 16, marginTop: 32}}/>
+          <Image source={require('../../assets/avatar_default.png')} style={{width: 32, height: 32, resizeMode: 'contain', marginLeft: 16, marginTop: 16}}/>
           <View style={{flex: 1,}}>
             <Text style={{color: '#828282', fontSize: 13, fontWeight: '500', marginLeft: 16 }}>{this.getFullName(this.item.sender)}</Text>
               {messageView}
