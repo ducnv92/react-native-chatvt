@@ -3,7 +3,6 @@ import {
   TouchableOpacity,
   View,
   Text,
-  SafeAreaView,
   Image,
   TextInput,
   Platform,
@@ -42,6 +41,7 @@ import { MenuProvider } from 'react-native-popup-menu';
 import {RecordButton} from "./RecordButton";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CameraRoll from "../../components/cameraRollPicker/CameraRoll";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 export const ChatScreen = observer(function ChatScreen(props) {

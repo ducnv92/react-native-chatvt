@@ -3,7 +3,6 @@ import {
   TouchableOpacity,
   View,
   Text,
-  SafeAreaView,
   FlatList,
   TextInput,
   Platform,
@@ -17,6 +16,7 @@ import appStore from "../AppStore";
 import moment from "moment";
 import { Navigation } from 'react-native-navigation';
 import Image from 'react-native-fast-image';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 export const ListChatScreen =  observer(function ListChatScreen ( props){
@@ -289,7 +289,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
               value={listChatStore.search}
               autoFocus={true}
               onChangeText={text=> {
-                
+
                 listChatStore.search = text
                 listChatStore.page = 0;
                 listChatStore.getData({})
