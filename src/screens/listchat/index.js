@@ -17,6 +17,7 @@ import moment from "moment";
 import { Navigation } from 'react-native-navigation';
 import Image from 'react-native-fast-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import {scale} from "../../utils";
 
 
 export const ListChatScreen =  observer(function ListChatScreen ( props){
@@ -270,11 +271,11 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
     )
   }
 
-  return <SafeAreaView style={{  flex: 1 }} >
+  return <SafeAreaView style={{  flex: 1, backgroundColor: colors.primary, }} >
     <KeyboardAvoidingView
       style={{flex: 1,}}
       behavior={Platform.OS === 'ios' ? 'padding' : ''}>
-    <View style={{ height: 50,  backgroundColor: colors.primary,}}>
+    <View style={{ height: scale(50),  backgroundColor: colors.primary,}}>
       {
         showSearch===true ?
           <View style={{flexDirection: 'row', alignItems: 'center',}}>
@@ -294,7 +295,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
                 listChatStore.page = 0;
                 listChatStore.getData({})
               }}
-              style={{fontWeight: '400', fontSize: 15, color: 'white',  flex: 1,}}/>
+              style={{fontWeight: '400', fontSize: scale(15), color: 'white',  flex: 1,}}/>
             {
               listChatStore.search !=='' &&
               <TouchableOpacity
@@ -311,8 +312,8 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
             }
             <TouchableOpacity
               onPress={()=>setShowSearch(false)}
-              style={{width: 50, height: 50, justifyContent: 'center', alignItems: 'flex-end'}}>
-              <Text style={{fontWeight: '400', fontSize: 15, color: 'white', marginRight: 16}}>{
+              style={{width: scale(50), height: scale(50), justifyContent: 'center', alignItems: 'flex-end'}}>
+              <Text style={{fontWeight: '400', fontSize: scale(15), color: 'white', marginRight: 16}}>{
                 appStore.lang.common.cancel
               }
               </Text>
@@ -332,7 +333,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
                 <Image style={{height: 36, width: 36, resizeMode: 'contain',  }} source={require('../../assets/ic_back.png')} />
               }
             </TouchableOpacity>
-            <Text style={{fontWeight: '600', fontSize: 17, color: 'white', flex: 1, textAlign: 'center' }}>{
+            <Text style={{fontWeight: '600', fontSize: scale(17), color: 'white', flex: 1, textAlign: 'center' }}>{
               appStore.lang.list_chat.message
             }
             </Text>

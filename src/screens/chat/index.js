@@ -7,33 +7,18 @@ import {
   TextInput,
   Platform,
   KeyboardAvoidingView,
-  StyleSheet, Linking, PermissionsAndroid, Alert, ActivityIndicator, Keyboard
+  Keyboard
 } from 'react-native';
 import colors from '../../Styles';
-// import EmojiPicker from 'rn-emoji-keyboard'
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {
-  BottomSheetModal,
-  BottomSheetModalProvider, useBottomSheetModal,
+  BottomSheetModalProvider,
 } from '../../components/bottomSheet/bottom-sheet';
-import CameraRollPicker from '../../components/cameraRollPicker';
 import chatStore from "./ChatStore";
 import { Log, orderStatus } from "../../utils";
 import appStore from "../AppStore";
 import { observer } from "mobx-react-lite";
-import ParsedText from 'react-native-parsed-text';
-import ImageViewing from "../../components/imageView";
 import { Navigation } from "react-native-navigation";
-
 import { ChatItem } from "./Item";
-import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
-import DocumentPicker, {
-  DirectoryPickerResponse,
-  DocumentPickerResponse,
-  isCancel,
-  isInProgress,
-  types,
-} from '../../components/documentPicker'
 import uuid from 'react-native-uuid';
 import {AttachScreen}  from './Attach';
 import { FlatList, ScrollView } from '../../components/flatlist';
@@ -154,7 +139,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
 
   return <MenuProvider>
-    <SafeAreaProvider  style={{ flex: 1}}>
   <SafeAreaView style={{ flex: 1 }}>
     <BottomSheetModalProvider style={{ flex: 1 }}>
       <KeyboardAvoidingView
@@ -295,7 +279,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
 
   </SafeAreaView>
-    </SafeAreaProvider>
   </MenuProvider>
 })
 

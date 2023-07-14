@@ -1,5 +1,6 @@
 import appStore from "../screens/AppStore";
 import {check, PERMISSIONS, RESULTS, requestMultiple} from 'react-native-permissions';
+import {Dimensions} from "react-native";
 
 export const orderStatus = (status) => {
   switch (status) {
@@ -106,4 +107,15 @@ export async function requestPermission(permissions, callback) {
 
 }
 
+const baseWidth_vtp = 375;
+const baseHeight_vtp = 667;
 
+const { height, width } = Dimensions.get('window');
+
+export const scale = size => {
+  if(appStore.appId==='VTMan'){
+    return width / baseWidth_vtp * size
+  }else{
+    return size
+  }
+};
