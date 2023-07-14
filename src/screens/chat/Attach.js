@@ -319,7 +319,7 @@ const LocationMessage =observer(function LocationMessage ( props) {
     }
   }, [])
 
-  const sendMap = () => {
+  const sendMap = async () => {
     chatStore.showAttachModal = false
     chatStore.tab = 1;
     const message = {
@@ -335,7 +335,7 @@ const LocationMessage =observer(function LocationMessage ( props) {
     }
 
     chatStore.data.unshift(message)
-    chatStore.sendMessage(message)
+    await chatStore.sendMessage(message)
   }
 
 
@@ -374,10 +374,13 @@ const LocationMessage =observer(function LocationMessage ( props) {
       >
         <Marker
           resizeMode={'contain'}
-          style={{width: 24, height: 24}}
           coordinate={{latitude: chatStore.location.latitude, longitude: chatStore.location.longitude}}
-          image={require('../../assets/ic_map_pin.png')}
-        />
+        >
+          <Image source={require('../../assets/ic_map_pin.png')}
+                 style={{width: 30, height: 30, resizeMode: 'contain'}}
+                 resizeMode="contain"
+          />
+        </Marker>
       </MapView>
       <TouchableOpacity
         onPress={sendMap}
@@ -416,7 +419,7 @@ export const AttachScreen = observer(function AttachScreen(props) {
         conversation_id: props.data._id
       }
       chatStore.data.unshift(message)
-      chatStore.sendMessage(message)
+      await chatStore.sendMessage(message)
     } catch (err) {
       console.warn(err);
     }

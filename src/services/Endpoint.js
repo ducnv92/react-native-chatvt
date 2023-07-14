@@ -18,6 +18,8 @@ exports.CONVERSATION_HIDE =  (conversation_id) =>`/conversation/${conversation_i
 exports.CONVERSATION_MUTE =  (conversation_id) =>`/conversation/${conversation_id}/notification-settings`;
 exports.ORDER_VALIDATE =  `/conversation/order-validate`;
 exports.GET_CONVERSATION_PIN =  `/conversation/pin/conversation`;
+exports.VTP_CONVERSATION_WITH_CS =  `/conversation/vtp/find-create-with-cs`;
+exports.VTM_CONVERSATION_WITH_CS =  `/conversation/vtm/find-create-with-cs`;
 exports.CONVERSATION_REACT = (conversation_id, message_id)=> `/conversation/${conversation_id}/${message_id}/reaction`;
 
 //Space

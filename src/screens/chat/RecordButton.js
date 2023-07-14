@@ -97,7 +97,7 @@ export class RecordButton extends React.Component{
       }
 
       chatStore.data.unshift(message)
-      chatStore.sendMessage(message)
+      await chatStore.sendMessage(message)
 
       this.setState({
         isRecording: false,

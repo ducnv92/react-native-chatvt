@@ -42,6 +42,21 @@ class ChatStore {
     makeAutoObservable(this);
   }
 
+  resetData(){
+    this.isLoading = false;
+    this.isLoadingMore = false;
+    this.canLoadMore = true;
+    this.isError = false;
+    this.error = 0;
+    this.page = 0;
+    this.tab = 1;
+    this.conversation_id = '';
+    this.input = '';
+    this.data = [];
+    this.images = [];
+    this.showAttachModal = false;
+  }
+
 
   async getData(params, onSuccess, onError) {
     this.conversation_id = params.conversation_id

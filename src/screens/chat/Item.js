@@ -71,11 +71,13 @@ const MapItem = function (props) {
           }}
         >
           <Marker
-            style={{width: 24, height: 24}}
             coordinate={{latitude: props.item?.location?.latitude, longitude: props.item?.location?.longitude}}
-            image={require('../../assets/ic_map_pin.png')}
-            resizeMode="contain"
-          />
+          >
+            <Image source={require('../../assets/ic_map_pin.png')}
+                   style={{width: 30, height: 30, resizeMode: 'contain'}}
+                   resizeMode="contain"
+            />
+          </Marker>
         </MapView>
       </View>
       </ContainChatItem>
@@ -298,7 +300,7 @@ const MessageItem = function (props) {
                       {
                         item.attachmentLocal.map(File => {
                           const attach = File.uri
-                          if (attach.includes('jpg') || attach.includes('png') || attach.includes('jpeg')|| attach.includes('heic')) {
+                          if (attach.toLowerCase().includes('jpg') || attach.toLowerCase().includes('png') || attach.toLowerCase().includes('jpeg')|| attach.toLowerCase().includes('heic')) {
                             return <Image source={{uri: attach}} style={{
                               backgroundColor: "#F2F2F2",
                               borderRadius: 5,
@@ -307,8 +309,10 @@ const MessageItem = function (props) {
                               height: item.attachmentLocal.length === 1 ? 200 : 120
                             }}/>
                           }
-                          if (attach.includes('.mov') || attach.includes('.mp4')) {
-                            return (<VideoItem source={{uri: attach}}
+                          if (attach.toLowerCase().includes('.mov') || attach.toLowerCase().includes('.mp4')) {
+                            return (<VideoItem
+                              {...props}
+                              source={{uri: attach}}
                                                url={attach}
                                                resizeMode={'contain'}
                                                allowsExternalPlayback
@@ -339,7 +343,7 @@ const MessageItem = function (props) {
                     }}>
                       {
                         item.attachments.map(attach => {
-                          if (attach.url.includes('jpg') || attach.url.includes('png') || attach.url.includes('jpeg')|| attach.url.includes('heic')) {
+                          if (attach.url.toLowerCase().includes('jpg') || attach.url.toLowerCase().includes('png') || attach.url.toLowerCase().includes('jpeg')|| attach.url.toLowerCase().includes('heic')) {
                             return <TouchableOpacity
                               key={attach.url}
                               onPress={() => {
@@ -365,8 +369,10 @@ const MessageItem = function (props) {
                             </TouchableOpacity>
                           }
 
-                          if (attach.url.includes('.mov') || attach.url.includes('.mp4')) {
-                            return <VideoItem url={attach.url}
+                          if (attach.url.toLowerCase().includes('.mov') || attach.url.toLowerCase().includes('.mp4')) {
+                            return <VideoItem
+                              {...props}
+                              url={attach.url}
                                               style={{
                                                 backgroundColor: "#F2F2F2",
                                                 borderRadius: 5,

@@ -50,6 +50,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
   const inputRef = useRef(null);
 
   useEffect(() => {
+    chatStore.resetData()
     const listener = Navigation.events().registerNavigationButtonPressedListener(
       () => {
           chatStore.images = []
@@ -93,7 +94,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
 
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     const message = {
       id: uuid.v4(),
       "type": "MESSAGE",
@@ -104,7 +105,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
       conversation_id: conversation._id
     }
     chatStore.data.unshift(message)
-    chatStore.sendMessage(message)
+    await chatStore.sendMessage(message)
     chatStore.input = ''
   }
 
@@ -127,7 +128,8 @@ export const ChatScreen = observer(function ChatScreen(props) {
           }
         }
       }catch (e) {
-
+        alert(e)
+        console.log(e)
       }
 
       const message = {
@@ -143,7 +145,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
         conversation_id: props.data._id
       }
       chatStore.data.unshift(message)
-      chatStore.sendMessage(message)
+      await chatStore.sendMessage(message)
       chatStore.images = []
     }catch (e) {
 

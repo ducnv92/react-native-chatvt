@@ -43,11 +43,15 @@ class ChatVT {
   AsyncStorage;
 
   interval;
-  /** */
-  init(env, storage, lang, appId,  token, tokenSSO, onSuccess, onError){
+
+  registerScreen(){
     Navigation.registerComponent('ListChatScreen', () => gestureHandlerRootHOC(safeAreaProviderHOC(ListChatScreen)));
     Navigation.registerComponent('ChatScreen', () => gestureHandlerRootHOC(safeAreaProviderHOC(ChatScreen)));
+  }
 
+  /** */
+  init(env, storage, lang, appId,  token, tokenSSO, onSuccess, onError){
+    this.registerScreen()
     this.AsyncStorage = storage
     appStore.appId = appId
     appStore.env = env
@@ -154,8 +158,7 @@ class ChatVT {
 
   loginAdmin(componentId, storage, username, password, onSuccess, onError){
     appStore.componentId = componentId
-    Navigation.registerComponent('ListChatScreen', () => gestureHandlerRootHOC(ListChatScreen));
-    Navigation.registerComponent('ChatScreen', () => gestureHandlerRootHOC(ChatScreen));
+    this.registerScreen()
 
     appStore.loginAdmin({username, password}, async data=>{
       this.AsyncStorage = storage
@@ -203,9 +206,7 @@ class ChatVT {
 
 
   loginVTM(componentId, storage, username, password, onSuccess, onError){
-    Navigation.registerComponent('ListChatScreen', () => gestureHandlerRootHOC(ListChatScreen));
-    Navigation.registerComponent('ChatScreen', () => gestureHandlerRootHOC(ChatScreen));
-
+    this.registerScreen()
     appStore.loginVTM({  "phone": username,
       "ma_buucuc":  password}, async data=>{
       this.init(
@@ -217,6 +218,55 @@ class ChatVT {
         '',
         onSuccess
       );
+    })
+  }
+
+
+  vtpWithCS(componentId, order_number){
+    appStore.vtpWithCS({order_number}, async data=>{
+
+      Navigation.push(componentId, {
+        component: {
+          name: 'ChatScreen',
+          options: {
+            popGesture: false,
+            bottomTabs: {
+              visible: false,
+            },
+            topBar: {
+              visible: false,
+              height: 0,
+            },
+          },
+          passProps: {
+            data: data
+          }
+        }
+      })
+    })
+  }
+
+  vtmWithCS(componentId, order_number){
+    appStore.vtmWithCS({order_number}, async data=>{
+
+      Navigation.push(componentId, {
+        component: {
+          name: 'ChatScreen',
+          options: {
+            popGesture: false,
+            bottomTabs: {
+              visible: false,
+            },
+            topBar: {
+              visible: false,
+              height: 0,
+            },
+          },
+          passProps: {
+            data: data
+          }
+        }
+      })
     })
   }
 

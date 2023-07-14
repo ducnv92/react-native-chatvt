@@ -208,6 +208,38 @@ class AppStore {
       alert(error)
     }
   }
+
+  async vtpWithCS(params, onSuccess, onError) {
+
+    try {
+      const response = await services.create().vtpConversationWithCS(params);
+      Log(response)
+      if(response.status === 200 || response.status === 201){
+        onSuccess(response.data.data)
+      }else{
+        alert(response.data.message)
+      }
+
+    } catch (error) {
+      alert(error)
+    }
+  }
+
+  async vtmWithCS(params, onSuccess, onError) {
+
+    try {
+      const response = await services.create().vtmConversationWithCS(params);
+      Log(response)
+      if(response.status === 200 || response.status === 201){
+        onSuccess(response.data.data)
+      }else{
+        alert(response.data.message)
+      }
+
+    } catch (error) {
+      alert(error)
+    }
+  }
 }
 
 const appStore = new AppStore();

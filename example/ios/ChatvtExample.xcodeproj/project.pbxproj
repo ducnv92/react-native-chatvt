@@ -336,7 +336,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ducnv.chatvtsdk1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ducnv.chatvtsdk2;
 				PRODUCT_NAME = ChatvtExample;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "ChatvtExample-Bridging-Header.h";
