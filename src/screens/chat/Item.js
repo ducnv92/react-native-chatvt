@@ -784,6 +784,7 @@ export class ChatItem extends React.Component {
     }
     if (this.item.type === 'CREATED_QUOTE_ORDER') {
       messageView = (<OrderItem item={this.props.item} />)
+      return messageView
     }
     if (this.item.type === 'LOCATION') {
       messageView = (<MapItem item={this.props.item} />)
