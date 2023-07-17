@@ -136,9 +136,10 @@ mmssss = (milisecs: number): string => {
   const secs = Math.floor(milisecs / 1000);
   const minutes = Math.floor(secs / 60);
   const seconds = secs % 60;
-  const miliseconds = Math.floor((milisecs % 1000) / 10);
+  // const miliseconds = Math.floor((milisecs % 1000) / 10);
 
-  return pad(minutes) + ':' + pad(seconds) + ':' + pad(miliseconds);
+  // return pad(minutes) + ':' + pad(seconds) + ':' + pad(miliseconds);
+  return pad(minutes) + ':' + pad(seconds);
 };
 
 /**
@@ -211,13 +212,13 @@ startRecorder = async (
     this._isRecording = true;
 
     return RNAudioRecorderPlayerChatVT.startRecorder(
-      uri,
+      uri ?? 'DEFAULT',
       meteringEnabled ?? false,
       audioSets,
     );
   }
 
-  return 'Already recording ios';
+  return 'Already recording';
 };
 
 /**

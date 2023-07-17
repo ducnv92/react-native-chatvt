@@ -138,7 +138,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
   }
 
 
-  return <MenuProvider>
+  return <MenuProvider style={{backgroundColor: colors.primary}}>
   <SafeAreaView style={{ flex: 1 }}>
     <BottomSheetModalProvider style={{ flex: 1 }}>
       <KeyboardAvoidingView

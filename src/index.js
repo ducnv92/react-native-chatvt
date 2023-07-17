@@ -122,33 +122,80 @@ class ChatVT {
 
   }
 
-  handleNotification(data){
-    if(appStore.appId==='VTPost'){
-      const dataTest = {
-        "id": "0",
-        "title":"Tên nhóm chat",
-        "content":"chat mesage",
-        "type": 3,
-        "status":0,
-        "time":1666952956000,
-        "ref": "group:<abc>",
-        "owner": "<cus_id>",
-        "app": "vtp"
-    }
+  handleNotification(env, storage, lang, appId,  token, tokenSSO, onSuccess, onError, componentId, conversation_id){
+      // const dataTest = {
+      //   "id": "0",
+      //   "title":"Tên nhóm chat",
+      //   "content":"chat mesage",
+      //   "type": 3,
+      //   "status":0,
+      //   "time":1666952956000,
+      //   "ref": "group:<abc>",
+      //   "owner": "<cus_id>",
+      //   "app": "vtp"
+      // }
+    // const dataTest = {
+    //   "action": "NONE/HEN_NHAN/....",
+    //   "content": "Thủ đô của Việt Nam là Hà Nội",
+    //   "icon": "string",
+    //   "mapExt": {
+    //     "additionalProp1": "string", "additionalProp2": "string", "additionalProp3": "string"
+    //   },
+    //   "receiverID": 528493,
+    //   "senderID": 0,
+    //   "title": "Thông báo"
+    // }
+      if(!appStore.user.token){
+        this.init(env, storage, lang, appId,  token, tokenSSO, ()=>{
+          appStore.conversationDetail({
+            conversation_id: conversation_id
+          }, (conversation)=>{
+            Navigation.push(componentId, {
+              component: {
+                name: 'ChatScreen',
+                options: {
+                  popGesture: false,
+                  bottomTabs: {
+                    visible: false,
+                  },
+                  topBar: {
+                    visible: false,
+                    height: 0,
+                  },
+                },
+                passProps: {
+                  data: conversation
+                }
+              }
+            })
+          })
+        }, onError)
 
-    }else{
-      const dataTest = {
-        "action": "NONE/HEN_NHAN/....",
-        "content": "Thủ đô của Việt Nam là Hà Nội",
-        "icon": "string",
-        "mapExt": {
-          "additionalProp1": "string", "additionalProp2": "string", "additionalProp3": "string"
-        },
-        "receiverID": 528493,
-        "senderID": 0,
-        "title": "Thông báo"
+      }else{
+        appStore.conversationDetail({
+          conversation_id: conversation_id
+        }, (conversation)=>{
+          Navigation.push(componentId, {
+            component: {
+              name: 'ChatScreen',
+              options: {
+                popGesture: false,
+                bottomTabs: {
+                  visible: false,
+                },
+                topBar: {
+                  visible: false,
+                  height: 0,
+                },
+              },
+              passProps: {
+                data: conversation
+              }
+            }
+          })
+        })
+
       }
-    }
   }
 
   /** Lang: 'VN' | 'EN' */

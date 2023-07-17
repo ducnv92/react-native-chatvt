@@ -20,11 +20,15 @@ export class RecordButton extends React.Component{
       fileRecorded: undefined,
       isRecording: false,
       actionRecord: false,
+      isPlay: false,
       recordSecs: 0,
       layout: {x: 0},
       recordTime: "00:00"
     }
-    this.path = `${RNFS.CachesDirectoryPath}/${uuid.v4()+'.mp3'}`
+    this.path =  Platform.select({
+      ios: uuid.v4()+'.m4a',
+      android: `${RNFS.CachesDirectoryPath}/${uuid.v4()+'.mp3'}`,
+    });
     this.audioRecorderPlayer =  new AudioRecorderPlayer();
 
   }
@@ -51,23 +55,17 @@ export class RecordButton extends React.Component{
 
         const result = await this.audioRecorderPlayer.startRecorder(this.path);
         this.audioRecorderPlayer.addRecordBackListener((e) => {
-
+          console.log(e)
           this.setState({
-            isRecording: e.currentPosition!==undefined,
+            isRecording: Platform.OS === 'ios'?e.current_position!==undefined:e.currentPosition!==undefined,
             recordSecs: e.currentPosition,
             recordTime: this.audioRecorderPlayer.mmssss(
-              Math.floor(e.currentPosition),
+              Math.floor(Platform.OS === 'ios'?Number(e.current_position):e.currentPosition),
             ),
           });
           return;
         });
 
-        if(result && result.includes('file://')){
-          this.setState({
-            isRecording: false,
-            fileRecorded: result
-          })
-        }
       })
     }catch (e) {
 
@@ -81,7 +79,7 @@ export class RecordButton extends React.Component{
     try {
       const message = {
         id: uuid.v4(),
-        "type": "VOICE",
+        type: "VOICE",
         attachmentLocal: [
           {
             uri: this.state.fileRecorded,
@@ -113,18 +111,32 @@ export class RecordButton extends React.Component{
   }
 
   onStopRecord = async () => {
-
-    const result = await this.audioRecorderPlayer.stopRecorder();
-    this.audioRecorderPlayer.removeRecordBackListener();
-    this.setState({
-      recordSecs: 0,
-    });
-
+    try{
+      const result = await this.audioRecorderPlayer.stopRecorder();
+      console.log('result', result)
+      this.audioRecorderPlayer.removeRecordBackListener();
+      if(result && result.includes('file://')){
+        this.setState({
+          isRecording: false,
+          fileRecorded: result,
+          recordSecs: 0,
+        })
+      }else{
+        this.setState({
+          isRecording: false,
+          fileRecorded: undefined,
+          recordSecs: 0,
+        })
+      }
+    }catch (e) {
+      console.log(e)
+    }
   };
 
   onStartPlay = async () => {
 
-    const msg = await this.audioRecorderPlayer.startPlayer();
+    const msg = await this.audioRecorderPlayer.startPlayer(this.state.fileRecorded);
+    console.log('play', msg)
 
     this.audioRecorderPlayer.addPlayBackListener((e) => {
 
@@ -173,34 +185,72 @@ export class RecordButton extends React.Component{
         this.state.actionRecord &&
         <View style={{flexDirection: 'row', alignItems: 'center', height: 56, width: '100%', backgroundColor: '#F8F8FA', position: 'absolute', top: this.state.layout?.x}}>
           <TouchableOpacity
-            onPress={()=>{
+            onPress={async ()=>{
+              try{
+                try{
+                  this.onStopRecord()
+
+                }catch (e) {
+                  console.log(e)
+                }
+                try{
+                  await RNFS.unlink(this.state.fileRecorded)
+                    .then(() => {
+                      console.log('FILE DELETED');
+                    })
+                    // `unlink` will throw an error, if the item to unlink does not exist
+                    .catch((err) => {
+                      console.log(err.message);
+                    });
+                }catch (e) {
+                  console.log(e)
+                }
+                this.setState({
+                  fileRecorded: undefined,
+                  isRecording: false,
+                  actionRecord: false,
+                  recordSecs: 0,
+                  recordTime: "00:00"
+                })
+              }catch (e) {
+                console.log(e)
+              }
 
             }}
             style={{width: 56, height: 56, alignItems: 'center', justifyContent: 'center'}}>
-            <Image source={require('../../assets/ic_trash_primary.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
+            {
+              <Image source={require('../../assets/ic_trash_primary.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
+            }
           </TouchableOpacity>
           <TouchableOpacity
             onPress={()=>{
-              this.onStopRecord()
+              if(this.state.isRecording){
+                this.onStopRecord()
+              }else{
+                this.onStartPlay()
+              }
             }}
             style={{width: 56, height: 56, alignItems: 'center', justifyContent: 'center'}}>
             <Image source={require('../../assets/ic_pause.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
           </TouchableOpacity>
           <Image source={require('../../assets/ic_wave.png')} style={{ flex: 1, height: 32, resizeMode:"contain"}}/>
-          {/*<View*/}
-          {/*  style={{width: 56, height: 56, alignItems: 'center', justifyContent: 'center'}}>*/}
-          {/*>*/}
-          {/*  <Text style={{fontWeight: '500', fontSize: 15, color: colors.neutralText}}>{`${this.state.recordTime}`}</Text>*/}
-          {/*</View>*/}
+          <View
+            style={{width: 56, height: 56, alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={{fontWeight: '500', fontSize: 15, color: colors.neutralText}}>{this.state.recordTime}</Text>
+          </View>
           <TouchableOpacity
             onPress={()=>{
-              if(this.state.fileRecorded){
+              if(this.state.fileRecorded && !this.state.isRecording){
                 this.sendRecorded()
+                this.setState({
+                  isRecording: false,
+                  actionRecord: false,
+                })
               }
             }}
             style={{width: 56, height: 56, alignItems: 'center', justifyContent: 'center'}}>
             {
-              this.state.fileRecorded &&
+              this.state.fileRecorded!==undefined && !this.state.isRecording &&
               <Image source={require('../../assets/ic_send.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>
             }
           </TouchableOpacity>

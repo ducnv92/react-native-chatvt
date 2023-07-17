@@ -138,7 +138,7 @@ class ChatStore {
             extension = params.attachmentLocal[i].name.split(".").pop().toLowerCase();
           }
 
-
+        extension = extension?.toLowerCase();
         let fileUri = ''
         if (extension === 'mov' || extension === 'mp4') {
           fileUri = params.attachmentLocal[i].uri
@@ -166,24 +166,21 @@ class ChatStore {
         else if(extension === 'jpg' ||extension ==='png'||extension ==='jpeg'||extension ==='heic'){
 
           let absolutePath = params.attachmentLocal[i].uri
-          if (Platform.OS === 'android'){
+          // if (Platform.OS === 'android'){
 
-            if(params.attachmentLocal[i].width>=1000 || params.attachmentLocal[i].height>=1000 ){
+            if(params.attachmentLocal[i].width>=900 || params.attachmentLocal[i].height>=900 ){
               const result = await ImageResizer.createResizedImage(
                 absolutePath,
-                1000,
-                1000,
+                900,
+                900,
                 'JPEG',
-                40,
+                80,
                 0
               )
-
-
-
               fileUri = result.uri
-            }else{
-              fileUri = params.attachmentLocal[i].uri
-            }
+            // }else{
+            //   fileUri = params.attachmentLocal[i].uri
+            // }
           }else{
             fileUri = absolutePath
           }

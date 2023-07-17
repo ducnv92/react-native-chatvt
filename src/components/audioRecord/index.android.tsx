@@ -169,9 +169,10 @@ class AudioRecorderPlayer {
     const secs = Math.floor(milisecs / 1000);
     const minutes = Math.floor(secs / 60);
     const seconds = secs % 60;
-    const miliseconds = Math.floor((milisecs % 1000) / 10);
+    // const miliseconds = Math.floor((milisecs % 1000) / 10);
 
-    return pad(minutes) + ':' + pad(seconds) + ':' + pad(miliseconds);
+    // return pad(minutes) + ':' + pad(seconds) + ':' + pad(miliseconds);
+    return pad(minutes) + ':' + pad(seconds);
   };
 
   /**
@@ -239,7 +240,7 @@ class AudioRecorderPlayer {
     if (!this._isRecording) {
       this._isRecording = true;
       if (!uri) uri = 'DEFAULT';
-      
+
 
       return RNAudioRecorderPlayerChatVT.startRecorder(
         uri,

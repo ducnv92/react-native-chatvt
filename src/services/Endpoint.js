@@ -14,6 +14,7 @@ exports.CREATE_CONVERSATION_WITH_VTP =  `/conversation/find-create-with-vtp`;
 exports.CONVERSATION_ME = `/conversation/me`;
 exports.CONVERSATION_ADMIN = `/conversation/list`;
 exports.CONVERSATION_PIN =  (conversation_id) =>`/conversation/${conversation_id}/pin`;
+exports.CONVERSATION =  (conversation_id) =>`/conversation/${conversation_id}`;
 exports.CONVERSATION_HIDE =  (conversation_id) =>`/conversation/${conversation_id}/hide`;
 exports.CONVERSATION_MUTE =  (conversation_id) =>`/conversation/${conversation_id}/notification-settings`;
 exports.ORDER_VALIDATE =  `/conversation/order-validate`;

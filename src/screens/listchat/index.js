@@ -148,6 +148,13 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
         <TouchableOpacity
           onPress={()=>{
             navigationChat( {...item, ...{receiver: receiver}})
+            listChatStore.data[index].settings =listChatStore.data[index].settings.map(i=>{
+              if (i.user_id===(appStore.user.type+'_'+appStore.user.user_id)){
+                i.unread_count = 0
+              }
+              return i
+            })
+            listChatStore.data = [...listChatStore.data]
           }}
           style={{flexDirection: 'row', backgroundColor: setting?.is_pin?'#F8F8FA':'white', paddingVertical: 12, paddingHorizontal: 16}}>
           <View style={{height: 48, width: 48, resizeMode: 'center',marginRight: 12  }}>
@@ -211,6 +218,14 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
           <TouchableOpacity
             onPress={()=>{
               navigationChat( {...item, ...{receiver: receiver}})
+              listChatStore.data[index].settings =listChatStore.data[index].settings.map(i=>{
+                if (i.user_id===(appStore.user.type+'_'+appStore.user.user_id)){
+                  i.unread_count = 0
+                }
+                return i
+              })
+              listChatStore.data = [...listChatStore.data]
+
             }}
             style={{flexDirection: 'row', backgroundColor: setting?.is_pin?'#F8F8FA':'white', paddingVertical: 12, paddingHorizontal: 16}}>
             <View style={{height: 48, width: 48, resizeMode: 'center',marginRight: 12  }}>

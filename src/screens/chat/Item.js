@@ -121,49 +121,51 @@ const VoiceItem = function (props) {
         }}>
           <TouchableOpacity
             onPress={()=>{
-              if(isPlay){
-                SoundPlayer.stop()
-                setIsPlay(false)
-              }else{
-                try {
+              try{
+                if(isPlay){
+                  SoundPlayer.stop()
+                  setIsPlay(false)
+                }else{
+                  try {
 
-                  const _onFinishedPlayingSubscription = SoundPlayer.addEventListener('FinishedPlaying', finishedPlaying => {
+                    const _onFinishedPlayingSubscription = SoundPlayer.addEventListener('FinishedPlaying', finishedPlaying => {
 
-                    setIsPlay(false)
-                    _onFinishedPlayingSubscription.remove()
-                    _onFinishedLoadingSubscription.remove()
-                    _onFinishedLoadingFileSubscription.remove()
-                    _onFinishedLoadingURLSubscription.remove()
-                  })
-                  const _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoading', success => {
+                      setIsPlay(false)
+                      _onFinishedPlayingSubscription.remove()
+                      _onFinishedLoadingSubscription.remove()
+                      _onFinishedLoadingFileSubscription.remove()
+                      _onFinishedLoadingURLSubscription.remove()
+                    })
+                    const _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoading', success => {
 
-                    // setIsLoading(false)
-                    // setIsPlay(true)
-                  })
-                  const _onFinishedLoadingFileSubscription = SoundPlayer.addEventListener('FinishedLoadingFile', success => {
-
-                    setIsLoading(false)
-                    setIsPlay(false)
-                  })
-                  const _onFinishedLoadingURLSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', ({success, url}) => {
-
-                    if(success && props.item.attachments[0]?.url===url){
+                      // setIsLoading(false)
+                      // setIsPlay(true)
+                    })
+                    const _onFinishedLoadingFileSubscription = SoundPlayer.addEventListener('FinishedLoadingFile', success => {
                       setIsLoading(false)
-                      setIsPlay(true)
-                    }
-                  })
-                  SoundPlayer.playUrl(props.item.attachments[0]?.url)
+                      setIsPlay(false)
+                    })
+                    const _onFinishedLoadingURLSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', ({success, url}) => {
 
-                } catch (e) {
-
+                      if(success && props.item.attachments[0]?.url===url){
+                        setIsLoading(false)
+                        setIsPlay(true)
+                      }
+                    })
+                    SoundPlayer.playUrl(props.item.attachmentLocal.length>0?props.item.attachmentLocal[0].uri:props.item.attachments[0]?.url)
+                  } catch (e) {
+                    console.log(e)
+                  }
                 }
+              }catch (e) {
+                console.log(e)
               }
             }}
             style={{width: 32, height: 32, alignItems: 'center', justifyContent: 'center'}}>
             <Image source={isPlay?require('../../assets/ic_pause.png'):require('../../assets/ic_play.png')} style={{height: 32, width: 32, resizeMode:"contain", }} />
           </TouchableOpacity>
           <Image source={require('../../assets/ic_wave_white.png')} style={{ flex: 1, height: 32, resizeMode:"contain"}} />
-          <Text style={{fontWeight: '500', fontSize: 15, color: 'white'}}>{`0:05`}</Text>
+          {/*<Text style={{fontWeight: '500', fontSize: 15, color: 'white'}}>{`0:05`}</Text>*/}
 
       </View>
       </ContainChatItem>
@@ -301,16 +303,30 @@ const MessageItem = function (props) {
                         item.attachmentLocal.map(File => {
                           const attach = File.uri
                           if (attach.toLowerCase().includes('jpg') || attach.toLowerCase().includes('png') || attach.toLowerCase().includes('jpeg')|| attach.toLowerCase().includes('heic')) {
-                            return <Image source={{uri: attach}} style={{
+                            return <TouchableOpacity
+                              key={attach}
+                              onPress={() => {
+                                setImages([
+                                  {
+                                    uri: attach
+                                  }
+                                ])
+                                setImageVisible(
+                                  true
+                                )
+                              }}>
+                            <Image source={{uri: attach}} style={{
                               backgroundColor: "#F2F2F2",
                               borderRadius: 5,
                               overflow: 'hidden',
                               width: item.attachmentLocal.length === 1 ? 200 : 120,
                               height: item.attachmentLocal.length === 1 ? 200 : 120
                             }}/>
+                            </TouchableOpacity>
                           }
                           if (attach.toLowerCase().includes('.mov') || attach.toLowerCase().includes('.mp4')) {
                             return (<VideoItem
+                              key={attach}
                               {...props}
                               source={{uri: attach}}
                                                url={attach}
@@ -556,11 +572,11 @@ const DocumentItem = function (props) {
                                 <Image source={require('../../assets/file_pdf.png')}
                                        style={{width: 42, height: 42, resizeMode: 'contain', marginRight: 14}}/>
                               )}
-                              {attach.type.includes('.doc') && (
+                              {(attach.type.includes('.doc') || attach.type.includes('.docx')) && (
                                 <Image source={require('../../assets/file_doc.png')}
                                        style={{width: 42, height: 42, resizeMode: 'contain', marginRight: 14}}/>
                               )}
-                              {attach.type.includes('.xls') && (
+                              {(attach.type.includes('.xlsx') || attach.type.includes('.xls')) && (
                                 <Image source={require('../../assets/file_xls.png')}
                                        style={{width: 42, height: 42, resizeMode: 'contain', marginRight: 14}}/>
                               )}
@@ -613,11 +629,11 @@ const DocumentItem = function (props) {
                                 <Image source={require('../../assets/file_pdf.png')}
                                        style={{width: 42, height: 42, resizeMode: 'contain', marginRight: 14}}/>
                               )}
-                              {attach.url.includes('.doc') && (
+                              {(attach.url.includes('.doc')||attach.url.includes('.docx')) && (
                                 <Image source={require('../../assets/file_doc.png')}
                                        style={{width: 42, height: 42, resizeMode: 'contain', marginRight: 14}}/>
                               )}
-                              {attach.url.includes('.sheet') && (
+                              {(attach.url.includes('.xls')||attach.url.includes('.xlsx')) && (
                                 <Image source={require('../../assets/file_xls.png')}
                                        style={{width: 42, height: 42, resizeMode: 'contain', marginRight: 14}}/>
                               )}
@@ -873,7 +889,10 @@ function ContainChatItem(props) {
 
           }
         }}
-        onLongPress={()=>setShowPopover(true)}
+        onLongPress={()=> {
+          if(props.item.type !== "FILE" && props.item.type !== "LOCATION")
+            setShowPopover(true)
+        }}
       >
         {props.children}
 

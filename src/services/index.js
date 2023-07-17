@@ -50,7 +50,12 @@ const create = (baseURL = Endpoint.API_BASE) => {
   const conversationHide = async (data) => api.post(Endpoint.CONVERSATION_HIDE(data.conversation_id), data, await getHeader() );
   const conversationMessages = async (data) => api.get(Endpoint.CONVERSATION_MESSAGES(data.conversation_id), data, await getHeader() );
   const sendMessage = async (data) => api.post(Endpoint.SEND_MESSAGE(data.conversation_id), data, await getHeader() );
-  const uploadFile = async (data) => apiMultipart.post(Endpoint.UPLOAD_FILE+"?time="+new Date().getTime(), data, await getHeader() );
+  const uploadFile = async (data) => apiMultipart.post(Endpoint.UPLOAD_FILE, data, {...(await getHeader()), ...{
+      validateStatus: function (status) {
+        console.log('update', status)
+        return status >= 200 && status < 300; // default
+      },
+    }} );
   const downloadFile = async (data) => api.get(Endpoint.DOWNLOAD_FILE, data, await getHeader() );
   const createConversationVTM = async (data) => api.post(Endpoint.CREATE_CONVERSATION_WITH_VTM, data, await getHeader() );
   const createConversationVTP = async (data) => api.post(Endpoint.CREATE_CONVERSATION_WITH_VTP, data, await getHeader() );
@@ -70,9 +75,11 @@ const create = (baseURL = Endpoint.API_BASE) => {
   const loginVTP = async data => api.post(Endpoint.VTP_Login, data);
   const loginVTPClient = async data => api.post(Endpoint.VTP_Login_Client, data);
   const loginVTM = async data => api.post(Endpoint.VTM_Login, data);
+  const getConversationDetail = async data => api.get(Endpoint.CONVERSATION(data.conversation_id), null, await getHeader());
 
 
   return {
+    getConversationDetail,
     vtpConversationWithCS,
     vtmConversationWithCS,
     loginVTP,
