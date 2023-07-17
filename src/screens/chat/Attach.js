@@ -32,6 +32,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const QuickMessageModal =observer(function QuickMessageModal ( props) {
 
   const updateQuickMessage = () => {
+    if(!(quickMessageStore.currentMessage.text && quickMessageStore.currentMessage.text.trim()!=='')){
+      return
+    }
     if(quickMessageStore.currentMessage._id){
       quickMessageStore.update({
         ...quickMessageStore.currentMessage,
