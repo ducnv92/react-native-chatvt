@@ -146,10 +146,13 @@ const VoiceItem = function (props) {
                       setIsPlay(false)
                     })
                     const _onFinishedLoadingURLSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', ({success, url}) => {
-
-                      if(success && props.item.attachments[0]?.url===url){
-                        setIsLoading(false)
-                        setIsPlay(true)
+                      try{
+                        if(success && (props.item.attachmentLocal.length>0?props.item.attachmentLocal[0].uri:props.item.attachments[0]?.url)===url){
+                          setIsLoading(false)
+                          setIsPlay(true)
+                        }
+                      }catch (e) {
+                        console.log(e)
                       }
                     })
                     SoundPlayer.playUrl(props.item.attachmentLocal.length>0?props.item.attachmentLocal[0].uri:props.item.attachments[0]?.url)

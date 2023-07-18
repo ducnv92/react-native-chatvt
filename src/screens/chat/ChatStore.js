@@ -169,18 +169,21 @@ class ChatStore {
           // if (Platform.OS === 'android'){
 
             if(params.attachmentLocal[i].width>=900 || params.attachmentLocal[i].height>=900 ){
-              const result = await ImageResizer.createResizedImage(
-                absolutePath,
-                900,
-                900,
-                'JPEG',
-                80,
-                0
-              )
-              fileUri = result.uri
-            // }else{
-            //   fileUri = params.attachmentLocal[i].uri
-            // }
+              try{
+                const result = await ImageResizer.createResizedImage(
+                  absolutePath,
+                  900,
+                  900,
+                  'JPEG',
+                  80,
+                  0
+                )
+                console.log('result', JSON.stringify(result))
+                fileUri = result.uri
+              }catch (e) {
+                fileUri = absolutePath
+                console.log(e)
+              }
           }else{
             fileUri = absolutePath
           }
