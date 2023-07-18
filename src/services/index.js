@@ -1,4 +1,4 @@
-import apisauce from 'apisauce';
+import apisauce, {ApisauceInstance} from 'apisauce';
 import * as Endpoint from './Endpoint';
 import { USER } from '../utils/MyAsyncStorage';
 import * as MyAsyncStorage from '../utils/MyAsyncStorage';
@@ -32,14 +32,21 @@ const create = (baseURL = Endpoint.API_BASE) => {
 
 
   const apiMultipart = apisauce.create({
-    baseURL,
+    baseURL: 'http://9.89723921.129381',
     headers: {
       'Content-Type': 'multipart/form-data',
     },
     timeout: 300000,
   });
 
-  // const interceptorId = rax.attach(apiMultipart.axiosInstance)
+  apiMultipart.addAsyncResponseTransform(response => async () => {
+    const { config, message } = response;
+    console.log('response', response)
+    console.log('config', config)
+    console.log('message', message)
+    return response
+  })
+
 
   const authVTP = (data) => api.post(Endpoint.AUTH_VTP, data );
   const authVTM = (data) => api.post(Endpoint.AUTH_VTM, data );

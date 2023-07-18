@@ -95,7 +95,7 @@ export default function App(props: any) {
           style={{marginTop: 30}}
           mode="contained"
           onPress={ADMIN}>
-          ADMIN
+          ADMIN ---
         </Button>
       </KeyboardAvoidingView>
     </SafeAreaView>

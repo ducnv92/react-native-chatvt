@@ -18,12 +18,12 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 export const Login =  observer(function Login ( props){
 
-  const [username, setUsername] = React.useState(props.data.username);
-  const [password, setPassword] = React.useState(props.data.password);
+  const [username, setUsername] = useState(props.data?.username);
+  const [password, setPassword] = useState(props.data?.password);
   const [showSearch, setShowSearch] = useState(false);
 
   useEffect(()=>{
-    
+
   }, [])
 
   const toListChat = (data) => {
