@@ -32,7 +32,7 @@ const create = (baseURL = Endpoint.API_BASE) => {
 
 
   const apiMultipart = apisauce.create({
-    baseURL: 'http://9.89723921.129381',
+    baseURL,
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -41,9 +41,6 @@ const create = (baseURL = Endpoint.API_BASE) => {
 
   apiMultipart.addAsyncResponseTransform(response => async () => {
     const { config, message, problem } = response;
-    console.log('response', response)
-    console.log('config', config)
-    console.log('message', message)
     if(problem==='NETWORK_ERROR'){
       config.retry -= 1;
       const delayRetryRequest = new Promise((resolve) => {
@@ -53,8 +50,9 @@ const create = (baseURL = Endpoint.API_BASE) => {
         }, config.retryDelay || 1000);
       });
       return delayRetryRequest.then(() => apisauce.create(config));
+    }else{
+      return response
     }
-    return response
   })
 
 
@@ -68,9 +66,7 @@ const create = (baseURL = Endpoint.API_BASE) => {
   const conversationMessages = async (data) => api.get(Endpoint.CONVERSATION_MESSAGES(data.conversation_id), data, await getHeader() );
   const sendMessage = async (data) => api.post(Endpoint.SEND_MESSAGE(data.conversation_id), data, await getHeader() );
   const uploadFile = async (data) => apiMultipart.post(Endpoint.UPLOAD_FILE, data, {...(await getHeader()), ...{
-      validateStatus: function (status) {
-        return status >= 200 && status < 300; // default
-      },
+      retry: 3
     }} );
   const downloadFile = async (data) => api.get(Endpoint.DOWNLOAD_FILE, data, await getHeader() );
   const createConversationVTM = async (data) => api.post(Endpoint.CREATE_CONVERSATION_WITH_VTM, data, await getHeader() );

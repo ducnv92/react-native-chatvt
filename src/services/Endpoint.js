@@ -24,7 +24,7 @@ exports.VTM_CONVERSATION_WITH_CS =  `/conversation/vtm/find-create-with-cs`;
 exports.CONVERSATION_REACT = (conversation_id, message_id)=> `/conversation/${conversation_id}/${message_id}/reaction`;
 
 //Space
-exports.UPLOAD_FILE = `/space/upload`;
+exports.UPLOAD_FILE = `${API_BASE}/space/upload`;
 exports.DOWNLOAD_FILE = `${API_BASE}/space/download`;
 
 //quick-message

@@ -143,6 +143,8 @@ class AppStore {
       const response = await services.create().loginAdmin(params);
       Log(response)
       if(response.data.status === 200){
+        response.data.data.user_id = response.data.data._id
+        this.user = response.data.data
         onSuccess(response.data.data)
       }else{
         alert(response.data.message)
