@@ -147,7 +147,7 @@ const VoiceItem = function (props) {
                     })
                     const _onFinishedLoadingURLSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', ({success, url}) => {
                       try{
-                        if(success && (props.item.attachmentLocal.length>0?props.item.attachmentLocal[0].uri:props.item.attachments[0]?.url)===url){
+                        if(success && (props.item.attachmentLocal?.length>0?props.item.attachmentLocal[0].uri:props.item.attachments[0]?.url)===url){
                           setIsLoading(false)
                           setIsPlay(true)
                         }
@@ -155,7 +155,7 @@ const VoiceItem = function (props) {
                         console.log(e)
                       }
                     })
-                    SoundPlayer.playUrl(props.item.attachmentLocal.length>0?props.item.attachmentLocal[0].uri:props.item.attachments[0]?.url)
+                    SoundPlayer.playUrl(props.item.attachmentLocal?.length>0?props.item.attachmentLocal[0].uri:props.item.attachments[0]?.url)
                   } catch (e) {
                     console.log(e)
                   }

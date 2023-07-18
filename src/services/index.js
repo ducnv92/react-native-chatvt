@@ -52,7 +52,6 @@ const create = (baseURL = Endpoint.API_BASE) => {
   const sendMessage = async (data) => api.post(Endpoint.SEND_MESSAGE(data.conversation_id), data, await getHeader() );
   const uploadFile = async (data) => apiMultipart.post(Endpoint.UPLOAD_FILE, data, {...(await getHeader()), ...{
       validateStatus: function (status) {
-        console.log('update', status)
         return status >= 200 && status < 300; // default
       },
     }} );
