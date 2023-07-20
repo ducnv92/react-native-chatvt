@@ -400,6 +400,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
       }}
       ListHeaderComponent={renderHeader}
       keyExtractor={(item) => item._id}
+      onEndReached={()=>listChatStore.getData({})}
       style={{flex: 1, backgroundColor: 'white'}}
       data={listChatStore.data}
       ItemSeparatorComponent={()=>  (<View style={{backgroundColor: 'white', height: 1,}}><View style={{backgroundColor: '#E5E5E5', height: 1, marginLeft: 76, marginRight: 16}}></View></View>)}

@@ -39,7 +39,7 @@ class AttachsStore {
       if (response.status === 200) {
         if (response.data.status === 200) {
           if (response.data.data) {
-            if(params.page===1){
+            if(this.page===1){
               this.data =  response.data.data.map(m=>{
                 return m.attachments
               }).flat(3);
