@@ -32,7 +32,7 @@ class AttachsStore {
         }
         this.isLoadingMore = true;
       }
-      params = {...params, ...{type: this.currentTab === 0? 'IMG_VIDEO': 'OTHER_FILE'}}
+      params = {...params, ...{page: this.page, type: this.currentTab === 0? 'IMG_VIDEO': 'OTHER_FILE'}}
       let response = await services.create().getConversationAttachments(params);
       Log(response);
 
