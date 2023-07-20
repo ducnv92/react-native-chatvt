@@ -715,6 +715,7 @@ const OrderItem = function (props) {
             name: 'OrderInfomationtScreen',
             passProps: {
               orderId: item.order_info?.order_number,
+              isSender: true,
             },
             options: {
               bottomTabs: {
