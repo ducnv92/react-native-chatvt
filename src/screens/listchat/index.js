@@ -17,7 +17,7 @@ import moment from "moment";
 import { Navigation } from 'react-native-navigation';
 import Image from 'react-native-fast-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {scale} from "../../utils";
+import {formatTimeLastMessage, scale} from "../../utils";
 
 
 export const ListChatScreen =  observer(function ListChatScreen ( props){
@@ -159,7 +159,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
           style={{flexDirection: 'row', backgroundColor: setting?.is_pin?'#F8F8FA':'white', paddingVertical: 12, paddingHorizontal: 16}}>
           <View style={{height: 48, width: 48, resizeMode: 'center',marginRight: 12  }}>
             <Image style={{height: 48, width: 48, resizeMode: 'center' }} source={require('../../assets/avatar_group.png')} />
-            <Image style={{height: 12, width: 12, resizeMode: 'center', position: 'absolute', top: 36, left: 36 }} source={require('../../assets/ic_online.png')} />
+            {/*<Image style={{height: 12, width: 12, resizeMode: 'center', position: 'absolute', top: 36, left: 36 }} source={require('../../assets/ic_online.png')} />*/}
           </View>
           <View style={{flex: 1,}}>
 
@@ -236,7 +236,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
 
               <View style={{flexDirection: 'row'}}>
                 <Text  style={{ flex: 1,  fontSize: 17, fontWeight: '600', color: colors.primaryText}}>{receiver?.first_name+ ' '+receiver?.last_name} {receiver?.type==='VTMAN' && <Text style={{fontSize: 13, fontWeight: '400',  color: colors.neutralText}}>- {appStore.lang.common.postman} </Text>} </Text>
-                <Text style={{textAlign: 'right', color: colors.neutralText}}>{moment(item.message.created_at).format('DD/MM')}</Text>
+                <Text style={{textAlign: 'right', color: colors.neutralText}}>{formatTimeLastMessage(item.message.created_at)}</Text>
               </View>
               <View style={{flexDirection: 'row',  paddingTop: 6, alignItems: 'center'}}>
                 <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}>{item.message.has_attachment ?(<><Image source={require('../../assets/ic_attach_message.png')} style={{width: 16, height: 16,  resizeMode: 'contain'}}/>{isMe?`Bạn đã gửi ${item.message.attachment_ids.length} ảnh`: `Bạn đã nhận ${item.message.attachment_ids.length} ảnh`} </>):(item.message.type==='CREATED_QUOTE_ORDER'? <Text>{appStore.lang.list_chat.message_system}</Text>:<Text>{isMe && (appStore.lang.list_chat.you+':')} {item.message.text}</Text>)}</Text>

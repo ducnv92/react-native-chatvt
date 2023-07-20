@@ -30,6 +30,22 @@ const create = (baseURL = Endpoint.API_BASE) => {
     timeout: 30000,
   });
 
+  api.addAsyncResponseTransform(response => async () => {
+    const { config, message, problem } = response;
+    if(problem==='NETWORK_ERROR'){
+      config.retry -= 1;
+      const delayRetryRequest = new Promise((resolve) => {
+        setTimeout(() => {
+          console.log("retry the request", config.url);
+          resolve();
+        }, config.retryDelay || 1000);
+      });
+      return delayRetryRequest.then(() => apisauce.create(config));
+    }else{
+      return response
+    }
+  })
+
 
   const apiMultipart = apisauce.create({
     baseURL,

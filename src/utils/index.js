@@ -1,6 +1,7 @@
 import appStore from "../screens/AppStore";
 import {check, PERMISSIONS, RESULTS, requestMultiple} from 'react-native-permissions';
 import {Dimensions} from "react-native";
+import moment from "moment";
 
 export const orderStatus = (status) => {
   switch (status) {
@@ -118,4 +119,16 @@ export const scale = size => {
   }else{
     return size
   }
+};
+
+export const formatTimeLastMessage = timeString => {
+  const time = moment(timeString)
+  if(moment().diff(time, 'years')>0){
+    return time.format("DD/MM/YYYY")
+  }
+  console.log(moment().diff(time, 'days'))
+  if(moment().diff(time, 'days')>0){
+    return time.format("DD/MM")
+  }
+  return time.format("HH:mm")
 };
