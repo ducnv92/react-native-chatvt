@@ -27,14 +27,19 @@ import {RecordButton} from "./RecordButton";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CameraRoll from "../../components/cameraRollPicker/CameraRoll";
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import { EmojiKeyboard } from 'rn-emoji-keyboard';
 
 export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
   const [receiver, setReceiver] = useState({})
   const inputRef = useRef(null);
 
+
   useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      if(chatStore.keyboardEmoji)
+        chatStore.keyboardEmoji = false
+    });
     chatStore.resetData()
     const listener = Navigation.events().registerNavigationButtonPressedListener(
       () => {
@@ -50,6 +55,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
       }
     }
     return () => {
+      showSubscription.remove();
       listener.remove()
       chatStore.showAttachModal = false
     };
@@ -138,7 +144,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
   }
 
 
-  return <MenuProvider style={{backgroundColor: colors.primary}}>
+  return <MenuProvider style={{flex: 1, backgroundColor: colors.primary}}>
   <SafeAreaView style={{ flex: 1 }}>
     <BottomSheetModalProvider style={{ flex: 1 }}>
       <KeyboardAvoidingView
@@ -231,11 +237,14 @@ export const ChatScreen = observer(function ChatScreen(props) {
             value={chatStore.input}
             style={{ fontSize: 15, color: colors.primaryText, flex: 1, minHeight: 56, paddingTop: 18, padding: 12,}}
           />
-          {/*<TouchableOpacity*/}
-          {/*  onPress={() => handleDocumentSelection()}*/}
-          {/*  style={{ width: 40, height: 56, alignItems: 'center', justifyContent: 'center' }}>*/}
-          {/*  <Image source={require('../../assets/nav_document.png')} style={{ height: 24, width: 24, resizeMode: "contain" }} />*/}
-          {/*</TouchableOpacity>*/}
+          <TouchableOpacity
+            onPress={() => {
+              chatStore.keyboardEmoji = true
+              Keyboard.dismiss()
+            }}
+            style={{ width: 40, height: 56, alignItems: 'center', justifyContent: 'center' }}>
+            <Image source={require('../../assets/ic_emoj.png')} style={{ height: 24, width: 24, resizeMode: "contain" }} />
+          </TouchableOpacity>
           {/*<TouchableOpacity*/}
           {/*  onPress={() => sendMap()}*/}
           {/*  style={{ width: 40, height: 56, alignItems: 'center', justifyContent: 'center' }}>*/}
@@ -246,6 +255,9 @@ export const ChatScreen = observer(function ChatScreen(props) {
           {/*  style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>*/}
           {/*  <Image source={require('../../assets/nav_document.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>*/}
           {/*</TouchableOpacity>*/}
+
+
+
           {
             chatStore.input.trim() !== '' &&
             <TouchableOpacity
@@ -265,7 +277,14 @@ export const ChatScreen = observer(function ChatScreen(props) {
           }
         </View>
       </KeyboardAvoidingView>
-      {/*<EmojiPicker onEmojiSelected={onClickEmoji} open={showEmoji} onClose={() => setShowEmoji(false)} />*/}
+      {
+        chatStore.keyboardEmoji &&
+        <EmojiKeyboard
+          styles={{container: {borderRadius: 0, backgroundColor: 'white'}}}
+          onEmojiSelected={emoji => {
+            chatStore.input+=emoji.emoji
+          }}/>
+      }
       <AttachScreen {...props}/>
       {
         chatStore.images.length > 0 &&

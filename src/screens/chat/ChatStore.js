@@ -25,6 +25,7 @@ class ChatStore {
   conversation_id = '';
   input = '';
   inputRef = null;
+  keyboardEmoji = false;
   data = [];
   images = [];
   showAttachModal = false;

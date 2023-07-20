@@ -828,7 +828,7 @@ export class ChatItem extends React.Component {
     }
 
     return (
-      <View style={{paddingVertical: 8}}>
+      <View style={{paddingVertical: 2}}>
         {messageView}
       </View>
     )
@@ -938,7 +938,7 @@ function ContainChatItem(props) {
         onRequestClose={() => setShowPopover(false)}
         backgroundStyle={{backgroundColor: 'transparent'}}
       >
-        <View style={{flexDirection: 'row', gap: 10, padding: 10, borderRadius: 24, backgroundColor: '#252526', overflow: 'hidden'}}>
+        <View style={{flexDirection: 'row', gap: 10, padding: 10, borderRadius: 24, backgroundColor: 'white', overflow: 'hidden'}}>
           <TouchableWithoutFeedback
             onPress={()=>reaction('LIKE')}
           >

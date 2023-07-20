@@ -175,7 +175,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
                   <Image style={{height: 16, width: 16, resizeMode: 'center', marginLeft: 10 }} source={require('../../assets/ic_pin.png')} />
                 }
                 {
-                  setting?.is_mute &&
+                  setting?.is_hide_notification &&
                   <Image style={{height: 16, width: 16, resizeMode: 'center', marginLeft: 10}}
                          source={require('../../assets/ic_mute.png')}/>
                 }
@@ -230,7 +230,9 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
             style={{flexDirection: 'row', backgroundColor: setting?.is_pin?'#F8F8FA':'white', paddingVertical: 12, paddingHorizontal: 16}}>
             <View style={{height: 48, width: 48, resizeMode: 'center',marginRight: 12  }}>
               <Image style={{height: 48, width: 48, resizeMode: 'center' }} source={require('../../assets/avatar_default.png')} />
-              <Image style={{height: 12, width: 12, resizeMode: 'center', position: 'absolute', top: 36, left: 36 }} source={require('../../assets/ic_online.png')} />
+              {
+                <Image style={{height: 12, width: 12, resizeMode: 'center', position: 'absolute', top: 36, left: 36 }} source={require('../../assets/ic_online.png')} />
+              }
             </View>
             <View style={{flex: 1,}}>
 
@@ -246,7 +248,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
                     <Image style={{height: 16, width: 16, resizeMode: 'center', marginLeft: 10 }} source={require('../../assets/ic_pin.png')} />
                   }
                   {
-                    setting?.is_mute &&
+                    setting?.is_hide_notification &&
                     <Image style={{height: 16, width: 16, resizeMode: 'center', marginLeft: 10}}
                            source={require('../../assets/ic_mute.png')}/>
                   }
