@@ -8,6 +8,9 @@
   "list_chat": {
     "message": "Message",
     "message_system": "Message system",
+    "message_location": "Send location",
+    "message_voice": "Send voice message",
+    "message_doc": "Send document",
     "placeholder_search": "Input postman name, group",
     "placeholder_search_VTM": "Input name, group",
     "you": "You",

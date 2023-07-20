@@ -178,7 +178,7 @@ const VoiceItem = function (props) {
 }
 
 
-const VideoItem = function (props) {
+export const VideoItem = function (props) {
   const [thumbnail, setThumbnail] = useState('')
   const [isPause, setIsPause] = useState(true)
   useEffect(() => {
@@ -695,6 +695,16 @@ const DocumentItem = function (props) {
 const OrderItem = function (props) {
   const item = props.item
 
+  let productNames = ''
+
+  try{
+    item.order_info?.vtp_order?.LIST_ITEM.map(p=>{
+      productNames += p.PRODUCT_QUANTITY+"x"+p.PRODUCT_NAME
+    })
+  }catch (e) {
+    console.log(e)
+  }
+
   return (
     <TouchableOpacity
     onPress={()=>{
@@ -704,8 +714,7 @@ const OrderItem = function (props) {
             id: 'chat',
             name: 'OrderInfomationtScreen',
             passProps: {
-              orderId: item.order,
-              selectItem: item.order,
+              orderId: item.order_info?.order_number,
             },
             options: {
               bottomTabs: {
@@ -753,7 +762,7 @@ const OrderItem = function (props) {
           fontSize: 15,
           color: colors.neutralText,
           marginTop: 2
-        }}>{item.order_info?.product}</Text>
+        }}>{productNames}</Text>
 
       </View>
       {
@@ -938,32 +947,49 @@ function ContainChatItem(props) {
         onRequestClose={() => setShowPopover(false)}
         backgroundStyle={{backgroundColor: 'transparent'}}
       >
-        <View style={{flexDirection: 'row', gap: 10, padding: 10, borderRadius: 24, backgroundColor: 'white', overflow: 'hidden'}}>
+        <View style={{flexDirection: 'row', padding: 10, borderRadius: 24, backgroundColor: 'white', overflow: 'hidden', shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          margin: 10,
+
+          elevation: 5,}}>
           <TouchableWithoutFeedback
+            style={{marginHorizontal: 10}}
             onPress={()=>reaction('LIKE')}
           >
             <FastImage source={require('../../components/reactions/Images/like.gif')}
                        style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
+            style={{marginHorizontal: 10}}
+
             onPress={()=>reaction('LOVE')}
           >
             <FastImage source={require('../../components/reactions/Images/love.gif')}
                        style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
+            style={{marginHorizontal: 10}}
+
             onPress={()=>reaction('WOW')}
           >
             <FastImage source={require('../../components/reactions/Images/wow.gif')}
                        style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
+            style={{marginHorizontal: 10}}
+
             onPress={()=>reaction('SAD')}
           >
             <FastImage source={require('../../components/reactions/Images/sad.gif')}
                        style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
+            style={{marginHorizontal: 10}}
             onPress={()=>reaction('ANGRY')}
           >
             <FastImage source={require('../../components/reactions/Images/angry.gif')}

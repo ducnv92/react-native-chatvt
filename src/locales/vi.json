@@ -8,6 +8,9 @@
   "list_chat": {
     "message": "Tin nhắn",
     "message_system": "Tin nhắn hệ thống",
+    "message_location": "Gửi vị trí",
+    "message_doc": "Gửi tài liệu",
+    "message_voice": "Tin nhắn thoại",
     "placeholder_search": "Nhập tên bưu tá, nhóm",
     "placeholder_search_VTM": "Nhập tên khách hàng, nhóm",
     "pin": "Ghim",

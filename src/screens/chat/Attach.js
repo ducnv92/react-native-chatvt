@@ -323,22 +323,26 @@ const LocationMessage =observer(function LocationMessage ( props) {
   }, [])
 
   const sendMap = async () => {
-    chatStore.showAttachModal = false
-    chatStore.tab = 1;
-    const message = {
-      id: uuid.v4(),
-      type: "LOCATION",
-      location:  {
-        latitude: chatStore.location.latitude,
-        longitude: chatStore.location.longitude,
-      },
-      status: "sending",
-      sender: appStore.user.type + '_' + appStore.user.user_id,
-      conversation_id: props.data._id
-    }
+    try{
+      chatStore.showAttachModal = false
+      chatStore.tab = 1;
+      const message = {
+        id: uuid.v4(),
+        type: "LOCATION",
+        location:  {
+          latitude: chatStore.location.latitude,
+          longitude: chatStore.location.longitude,
+        },
+        status: "sending",
+        sender: appStore.user.type + '_' + appStore.user.user_id,
+        conversation_id: chatStore.conversation_id
+      }
 
-    chatStore.data.unshift(message)
-    await chatStore.sendMessage(message)
+      chatStore.data.unshift(message)
+      await chatStore.sendMessage(message)
+    }catch (e) {
+      console.log(e)
+    }
   }
 
 

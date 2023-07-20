@@ -7,7 +7,7 @@ import {
   TextInput,
   Platform,
   KeyboardAvoidingView,
-  Keyboard
+  Keyboard, StatusBar
 } from 'react-native';
 import colors from '../../Styles';
 import {
@@ -37,8 +37,11 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-      if(chatStore.keyboardEmoji)
+      if(chatStore.keyboardEmoji){
         chatStore.keyboardEmoji = false
+        chatStore.inputRef?.current?.focus()
+
+      }
     });
     chatStore.resetData()
     const listener = Navigation.events().registerNavigationButtonPressedListener(
@@ -58,6 +61,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
       showSubscription.remove();
       listener.remove()
       chatStore.showAttachModal = false
+      chatStore.keyboardEmoji = false
     };
   }, []);
 
@@ -76,6 +80,31 @@ export const ChatScreen = observer(function ChatScreen(props) {
     })
     Log('_id', conversation)
   }, [])
+
+  const navigateAttachs = () => {
+    if(conversation.type==='PAIR'){
+      Navigation.push(props.componentId, {
+        component: {
+          name: 'AttachsScreen',
+          options: {
+            popGesture: false,
+            bottomTabs: {
+              visible: false,
+            },
+            topBar: {
+              visible: false,
+              height: 0,
+            },
+          },
+          passProps: {
+            data: conversation,
+            receiver
+          }
+        }
+      })
+
+    }
+  }
 
   const handleLoadMore = () => {
     chatStore.getData({
@@ -150,7 +179,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
       <KeyboardAvoidingView
         style={{ flex: 1, }}
         behavior={Platform.OS === 'ios' ? 'padding' : ''}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', height: 50, backgroundColor: colors.primary, }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', height: 64, backgroundColor: colors.primary, }}>
           <TouchableOpacity
             onPress={() => Navigation.pop(props.componentId)}
             style={{ width: 50, height: 50, justifyContent: 'center', alignItems: 'center' }}>
@@ -159,19 +188,28 @@ export const ChatScreen = observer(function ChatScreen(props) {
           </TouchableOpacity>
           <View style={{ flex: 1, alignItems: 'center' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+            <TouchableOpacity
+              onPress={navigateAttachs}
+              style={{ flexDirection: 'row', alignItems: 'center', }}>
 
               <Text style={{ fontWeight: '600', fontSize: 17, color: 'white', gap: 7 }}>{
                 conversation.type==='GROUP'?('Đơn '+conversation.order_numbers[0]) : (receiver.first_name + " " + receiver.last_name)
               }
 
               </Text>
-              {/* <Image style={{ height: 10, width: 10, resizeMode: 'center', }} source={require('../../assets/ic_arrow_down.png')} /> */}
-
+              {
+                conversation.type==='PAIR' &&
+                <Image style={{ height: 14, width: 14, resizeMode: 'contain', }} source={require('../../assets/ic_arrow_down.png')} />
+              }
+            </TouchableOpacity>
             </View>
             {
               conversation.type==='PAIR' &&
               <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center', marginTop: 2 }}>
-                <View style={{ height: 8, width: 8, borderRadius: 4, backgroundColor: '#30F03B' }} />
+                {
+                  receiver.state?.includes('ONLINE') &&
+                  <View style={{ height: 8, width: 8, borderRadius: 4, backgroundColor: '#30F03B' }} />
+                }
 
                 <Text style={{ fontWeight: 'bold', fontSize: 13, color: 'white', textAlign: 'center' }}>{
                   conversation.type==='PAIR' && receiver.type === 'VTMAN' && appStore.lang.common.postman
@@ -239,8 +277,12 @@ export const ChatScreen = observer(function ChatScreen(props) {
           />
           <TouchableOpacity
             onPress={() => {
-              chatStore.keyboardEmoji = true
-              Keyboard.dismiss()
+              if(chatStore.keyboardEmoji){
+                chatStore.keyboardEmoji = false
+              }else{
+                chatStore.keyboardEmoji = true
+                Keyboard.dismiss()
+              }
             }}
             style={{ width: 40, height: 56, alignItems: 'center', justifyContent: 'center' }}>
             <Image source={require('../../assets/ic_emoj.png')} style={{ height: 24, width: 24, resizeMode: "contain" }} />

@@ -104,9 +104,11 @@ const create = (baseURL = Endpoint.API_BASE) => {
   const loginVTPClient = async data => api.post(Endpoint.VTP_Login_Client, data);
   const loginVTM = async data => api.post(Endpoint.VTM_Login, data);
   const getConversationDetail = async data => api.get(Endpoint.CONVERSATION(data.conversation_id), null, await getHeader());
+  const getConversationAttachments = async data => api.get(Endpoint.CONVERSATION_ATTACHMENTS(data.conversation_id), data, await getHeader());
 
 
   return {
+    getConversationAttachments,
     getConversationDetail,
     vtpConversationWithCS,
     vtmConversationWithCS,

@@ -12,6 +12,7 @@ import hoistNonReactStatics from 'hoist-non-react-statics';
 import colors from "./Styles";
 import React from 'react'
 import { StatusBar } from 'react-native';
+import {AttachsScreen} from "./screens/attachs";
 
 function safeAreaProviderHOC(
   Component
@@ -47,6 +48,7 @@ class ChatVT {
   registerScreen(){
     Navigation.registerComponent('ListChatScreen', () => gestureHandlerRootHOC(safeAreaProviderHOC(ListChatScreen)));
     Navigation.registerComponent('ChatScreen', () => gestureHandlerRootHOC(safeAreaProviderHOC(ChatScreen)));
+    Navigation.registerComponent('AttachsScreen', () => gestureHandlerRootHOC(safeAreaProviderHOC(AttachsScreen)));
   }
 
   /** */

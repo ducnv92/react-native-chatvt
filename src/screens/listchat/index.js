@@ -55,24 +55,49 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
       }
     })
   }
+  const getLastMessage = (item, setting, isMe)=> {
+    const prefix  = isMe ? appStore.lang.list_chat.you+": ":""
 
-  const renderItem = ({item, index})=>{
+    try{
+      if(item.message.type==='CREATED_QUOTE_ORDER'){
+        return <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}>{appStore.lang.list_chat.message_system}</Text>
+      }
+
+
+      if(item.message.type==='VOICE'){
+        return <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}><Image source={require('../../assets/ic_attach_message.png')} style={{width: 16, height: 16,  resizeMode: 'contain'}}/><Text>{prefix+appStore.lang.list_chat.message_voice}</Text></Text>
+      }
+      if(item.message.type==='LOCATION'){
+        return <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}><Image source={require('../../assets/ic_attach_message.png')} style={{width: 16, height: 16,  resizeMode: 'contain'}}/><Text>{prefix+appStore.lang.list_chat.message_location}</Text></Text>
+      }
+      if(item.message.type==='FILE'){
+        return <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}><Image source={require('../../assets/ic_attach_message.png')} style={{width: 16, height: 16,  resizeMode: 'contain'}}/><Text>{prefix+appStore.lang.list_chat.message_doc}</Text></Text>
+      }
+      if(item.message.has_attachment){
+        return <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}>{
+          prefix+(isMe?`Bạn đã gửi ${item.message.attachment_ids.length} ảnh`: `Bạn đã nhận ${item.message.attachment_ids.length} ảnh`)
+        }</Text>
+      }
+    }catch (e) {
+      console.log(e)
+    }
+    return <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}>{prefix+item.message.text}</Text>
+  }
+
+    const renderItem = ({item, index})=>{
 
     let setting = {}
     try{
       let mySetting = item.settings.find(i=>i.user_id===(appStore.user.type+'_'+appStore.user.user_id))
       setting = mySetting?mySetting:{}
-      // if(index%2===0)
-      // setting.unread_count = 2
     }catch (e) {
 
     }
     let receiver = {}
     let isMe = false
     try{
-      receiver = item.detail_participants.find(i=>i.user_id!==appStore.user.user_id)
-
       isMe = (appStore.user.type+'_'+appStore.user.user_id)===item.message.sender
+      receiver = item.detail_participants.find(i=>i.user_id!==appStore.user.user_id)
     }catch (e) {
 
     }
@@ -168,7 +193,9 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
               <Text style={{textAlign: 'right', color: colors.neutralText}}>{moment(item.message.created_at).format('DD/MM')}</Text>
             </View>
             <View style={{flexDirection: 'row',  paddingTop: 6, alignItems: 'center'}}>
-              <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}>{item.message.has_attachment ?(<><Image source={require('../../assets/ic_attach_message.png')} style={{width: 16, height: 16,  resizeMode: 'contain'}}/>{isMe?`Bạn đã gửi ${item.message.attachment_ids.length} ảnh`: `Bạn đã nhận ${item.message.attachment_ids.length} ảnh`} </>):(item.message.type==='CREATED_QUOTE_ORDER'? <Text>{appStore.lang.list_chat.message_system}</Text>:<Text>{isMe && (appStore.lang.list_chat.you+':')} {item.message.text}</Text>)}</Text>
+              {
+                getLastMessage(item, setting, isMe)
+              }
               <View style={{flexDirection: 'row',}}>
                 {
                   setting?.is_pin &&
@@ -231,6 +258,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
             <View style={{height: 48, width: 48, resizeMode: 'center',marginRight: 12  }}>
               <Image style={{height: 48, width: 48, resizeMode: 'center' }} source={require('../../assets/avatar_default.png')} />
               {
+                receiver.state?.includes('ONLINE') &&
                 <Image style={{height: 12, width: 12, resizeMode: 'center', position: 'absolute', top: 36, left: 36 }} source={require('../../assets/ic_online.png')} />
               }
             </View>
@@ -241,7 +269,9 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
                 <Text style={{textAlign: 'right', color: colors.neutralText}}>{formatTimeLastMessage(item.message.created_at)}</Text>
               </View>
               <View style={{flexDirection: 'row',  paddingTop: 6, alignItems: 'center'}}>
-                <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}>{item.message.has_attachment ?(<><Image source={require('../../assets/ic_attach_message.png')} style={{width: 16, height: 16,  resizeMode: 'contain'}}/>{isMe?`Bạn đã gửi ${item.message.attachment_ids.length} ảnh`: `Bạn đã nhận ${item.message.attachment_ids.length} ảnh`} </>):(item.message.type==='CREATED_QUOTE_ORDER'? <Text>{appStore.lang.list_chat.message_system}</Text>:<Text>{isMe && (appStore.lang.list_chat.you+':')} {item.message.text}</Text>)}</Text>
+                {
+                  getLastMessage(item, setting, isMe)
+                }
                 <View style={{flexDirection: 'row',}}>
                   {
                     setting?.is_pin &&
@@ -292,10 +322,10 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
     <KeyboardAvoidingView
       style={{flex: 1,}}
       behavior={Platform.OS === 'ios' ? 'padding' : ''}>
-    <View style={{ height: scale(50),  backgroundColor: colors.primary,}}>
+    <View style={{ height: scale(64),  backgroundColor: colors.primary,}}>
       {
         showSearch===true ?
-          <View style={{flexDirection: 'row', alignItems: 'center',}}>
+          <View style={{height: scale(64), flexDirection: 'row', alignItems: 'center',}}>
             <View
               style={{width: 50, height: 50, justifyContent: 'center', alignItems: 'center'}}>
               <Image style={{height: 24, width: 24, resizeMode: 'contain' }} source={require('../../assets/ic_search.png')} />
@@ -337,7 +367,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
             </TouchableOpacity>
           </View>:
 
-          <View style={{flexDirection: 'row', alignItems: 'center',}}>
+          <View style={{height: scale(64), flexDirection: 'row', alignItems: 'center',}}>
             <TouchableOpacity
               onPress={()=>{
                 if(props.buttonBack!==false){
