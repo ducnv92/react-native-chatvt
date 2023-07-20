@@ -68,7 +68,11 @@ target 'ChatvtExample' do
   pod 'Permission-Siri', :path => "#{permissions_path}/Siri/Permission-Siri.podspec"
   pod 'Permission-SpeechRecognition', :path => "#{permissions_path}/SpeechRecognition/Permission-SpeechRecognition.podspec"
   pod 'Permission-StoreKit', :path => "#{permissions_path}/StoreKit/Permission-StoreKit.podspec"
-
+  pod 'react-native-camera', path: '../node_modules/react-native-camera', subspecs: [
+    'TextDetector',
+    'FaceDetectorMLKit',
+    'BarcodeDetectorMLKit'
+  ]
   post_install do |installer|
     react_native_post_install(
       installer,
