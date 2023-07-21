@@ -1,18 +1,8 @@
 import {observable, action, makeAutoObservable} from 'mobx';
 import services, {getHeader} from "../../services";
 import {Log} from "../../utils";
-
-import * as mime from "react-native-mime-types";
-import ImageResizer from '@bam.tech/react-native-image-resizer';
-import * as Endpoint from "../../services/Endpoint";
-import * as MyAsyncStorage from "../../utils/MyAsyncStorage";
-import { USER } from "../../utils/MyAsyncStorage";
-import {Platform} from "react-native";
 import uuid from "react-native-uuid";
-import {useRef} from "react";
-import {lookup} from "react-native-mime-types";
-var RNFS = require('react-native-fs');
-import CameraRoll from "../../components/cameraRollPicker/CameraRoll";
+import ImageResizer from "../../components/resizeImage";
 
 class ChatStore {
   isLoading = false;
