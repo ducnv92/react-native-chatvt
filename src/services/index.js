@@ -97,8 +97,11 @@ const create = (baseURL = Endpoint.API_BASE) => {
   const updateQuickMessage = async data => api.put(Endpoint.QUICK_MESSAGE_UPDATE(data._id), data, await getHeader());
   const deleteQuickMessage = async data => api.delete(Endpoint.QUICK_MESSAGE_UPDATE(data._id), data, await getHeader());
   const listQuickMessage = async data => api.get(Endpoint.QUICK_MESSAGE_LIST, data, await getHeader());
-  const vtpConversationWithCS = async data => api.get(Endpoint.VTP_CONVERSATION_WITH_CS, data, await getHeader());
-  const vtmConversationWithCS = async data => api.get(Endpoint.VTM_CONVERSATION_WITH_CS, data, await getHeader());
+  const vtpConversationWithCS = async data => api.post(Endpoint.VTP_CONVERSATION_WITH_CS, data, await getHeader());
+  const vtmConversationWithCS = async data => api.post(Endpoint.VTM_CONVERSATION_WITH_CS, data, await getHeader());
+  const vtpConversationWithReceiver = async data => api.post(Endpoint.VTP_CREATE_WITH_RECEIVER, data, await getHeader());
+  const vtmConversationWithReceiver = async data => api.post(Endpoint.VTM_CREATE_WITH_RECEIVER, data, await getHeader());
+
   const loginAdmin = async data => api.post(Endpoint.ADMIN_LOGIN, data);
   const loginVTP = async data => api.post(Endpoint.VTP_Login, data);
   const loginVTPClient = async data => api.post(Endpoint.VTP_Login_Client, data);
@@ -108,6 +111,8 @@ const create = (baseURL = Endpoint.API_BASE) => {
 
 
   return {
+    vtpConversationWithReceiver,
+    vtmConversationWithReceiver,
     getConversationAttachments,
     getConversationDetail,
     vtpConversationWithCS,

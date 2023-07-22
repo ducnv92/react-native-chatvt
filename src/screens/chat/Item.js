@@ -694,13 +694,14 @@ const DocumentItem = function (props) {
 
 const OrderItem = function (props) {
   const item = props.item
+  const order = item.order_info?.vtp_order
 
   let productNames = ''
 
   try{
-    item.order_info?.vtp_order?.LIST_ITEM.map(p=>{
-      productNames += p.PRODUCT_QUANTITY+"x"+p.PRODUCT_NAME
-    })
+    productNames= order.LIST_ITEM.map(p=>{
+      return p.PRODUCT_QUANTITY+"x"+p.PRODUCT_NAME
+    }).join(' + ')
   }catch (e) {
     console.log(e)
   }
@@ -714,7 +715,7 @@ const OrderItem = function (props) {
             id: 'chat',
             name: 'OrderInfomationtScreen',
             passProps: {
-              orderId: item.order_info?.order_number,
+              orderId: order?.ORDER_NUMBER,
               isSender: true,
             },
             options: {
@@ -748,7 +749,7 @@ const OrderItem = function (props) {
                 fontWeight: '600',
                 fontSize: 11,
                 color: 'white'
-              }}>{orderStatus(item.order_info?.order_status)}</Text>
+              }}>{orderStatus(order?.ORDER_STATUS)}</Text>
             </View>
           </View>
         </View>
@@ -757,7 +758,7 @@ const OrderItem = function (props) {
           fontSize: 17,
           color: colors.primaryText,
           marginTop: 10
-        }}>{item.order_info?.receiver_full_name} - {item.order_info?.receiver_phone}</Text>
+        }}>{order?.RECEIVER_FULLNAME} - {order?.RECEIVER_PHONE}</Text>
         <Text style={{
           fontWeight: '500',
           fontSize: 15,
@@ -766,15 +767,15 @@ const OrderItem = function (props) {
         }}>{productNames}</Text>
 
       </View>
-      {
-        item.status === 'sending' &&
-        <Text style={{
-          fontWeight: '500',
-          fontSize: 15,
-          color: colors.neutralText,
-          marginTop: 8
-        }}>{appStore.lang.chat.sending + '...'}</Text>
-      }
+      {/*{*/}
+      {/*  item.status === 'sending' &&*/}
+      {/*  <Text style={{*/}
+      {/*    fontWeight: '500',*/}
+      {/*    fontSize: 15,*/}
+      {/*    color: colors.neutralText,*/}
+      {/*    marginTop: 8*/}
+      {/*  }}>{appStore.lang.chat.sending + '...'}</Text>*/}
+      {/*}*/}
     </TouchableOpacity>
   )
 
@@ -849,7 +850,7 @@ export class ChatItem extends React.Component {
 function ContainChatItem(props) {
 
   const [showPopover, setShowPopover] = useState(false)
-  const [reactions, setReactions] = useState(props.item.reactions)
+  const [reactions, setReactions] = useState(props.item?.reactions)
   const [reactObject, setReactObject] = useState(new Map())
 
   useEffect(()=>{
@@ -891,8 +892,8 @@ function ContainChatItem(props) {
               try {
                 Linking.openURL(createMapLink({
                   provider: 'google',
-                  latitude: props.item.location.latitude,
-                  longitude: props.item.location.longitude
+                  latitude: props.item?.location?.latitude,
+                  longitude: props.item?.location?.longitude
                 }))
               } catch (e) {
 

@@ -36,6 +36,23 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
 
   useEffect(() => {
+
+    chatStore.quote = props.order?{
+      _id: uuid.v4(),
+      conversation_id: conversation._id,
+      text: "CREATED_QUOTE_ORDER",
+      type: "CREATED_QUOTE_ORDER",
+      order_number: props.order.ORDER_NUMBER,
+      has_attachment: false,
+      order_info :{
+        vtp_order: props.order
+      }
+    }:undefined
+
+    if(chatStore.quote!==undefined){
+      chatStore.data.unshift(chatStore.quote)
+    }
+
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       if(chatStore.keyboardEmoji){
         chatStore.keyboardEmoji = false
@@ -78,7 +95,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
     chatStore.getData({
       conversation_id: conversation?._id
     })
-    Log('_id', conversation)
   }, [])
 
   const navigateAttachs = () => {
@@ -120,7 +136,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
       "type": "MESSAGE",
       "text": chatStore.input,
       "status": "sending",
-      order_number: conversation.order_info?.order_number,
+      order_number: props.order?props.order.ORDER_NUMBER: conversation.order_info?.order_number,
       sender: appStore.user.type + '_' + appStore.user.user_id,
       conversation_id: conversation._id
     }
@@ -192,23 +208,26 @@ export const ChatScreen = observer(function ChatScreen(props) {
               onPress={navigateAttachs}
               style={{ flexDirection: 'row', alignItems: 'center', }}>
 
-              <Text style={{ fontWeight: '600', fontSize: 17, color: 'white', gap: 7 }}>{
-                conversation.type==='GROUP'?('Đơn '+conversation.order_numbers[0]) : (receiver.first_name + " " + receiver.last_name)
+              <Text style={{ fontWeight: '600', fontSize: 17, color: 'white' }}>{
+                conversation.type==='GROUP'?
+                  ('Đơn '+conversation.order_numbers[0]) :
+                  conversation.type==='PAIR'?(receiver.first_name + " " + receiver.last_name)
+                    :conversation.type==='PAIR_SUPPORT'? 'Chăm sóc khách hàng':'Không tên'
               }
 
               </Text>
               {
                 conversation.type==='PAIR' &&
-                <Image style={{ height: 14, width: 14, resizeMode: 'contain', }} source={require('../../assets/ic_arrow_down.png')} />
+                <Image style={{ height: 14, width: 14, marginLeft: 4, resizeMode: 'contain', }} source={require('../../assets/ic_arrow_down.png')} />
               }
             </TouchableOpacity>
             </View>
             {
               conversation.type==='PAIR' &&
-              <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center', marginTop: 2 }}>
+              <View style={{ flexDirection: 'row',  alignItems: 'center', marginTop: 2 }}>
                 {
-                  receiver.state?.includes('ONLINE') &&
-                  <View style={{ height: 8, width: 8, borderRadius: 4, backgroundColor: '#30F03B' }} />
+                  !receiver.state?.includes('ONLINE') &&
+                  <View style={{ height: 8, width: 8, marginRight: 8, borderRadius: 4, backgroundColor: '#30F03B' }} />
                 }
 
                 <Text style={{ fontWeight: 'bold', fontSize: 13, color: 'white', textAlign: 'center' }}>{
@@ -221,8 +240,9 @@ export const ChatScreen = observer(function ChatScreen(props) {
           </View>
 
           <TouchableOpacity
+            onPress={()=>alert('Tính năng đang phát triển!')}
             style={{ width: 50, height: 50, justifyContent: 'center', alignItems: 'flex-end' }}>
-            {/* <Image style={{ height: 18, width: 18, resizeMode: 'contain', marginRight: 16 }} source={require('../../assets/ic_call_out_white.png')} /> */}
+             <Image style={{ height: 18, width: 18, resizeMode: 'contain', marginRight: 16 }} source={require('../../assets/ic_call_out_white.png')} />
           </TouchableOpacity>
         </View>
         <FlatList

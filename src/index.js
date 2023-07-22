@@ -13,6 +13,7 @@ import colors from "./Styles";
 import React from 'react'
 import { StatusBar } from 'react-native';
 import {AttachsScreen} from "./screens/attachs";
+// import * as Font from "expo-font";
 
 function safeAreaProviderHOC(
   Component
@@ -51,6 +52,8 @@ class ChatVT {
     Navigation.registerComponent('AttachsScreen', () => gestureHandlerRootHOC(safeAreaProviderHOC(AttachsScreen)));
   }
 
+
+
   /** */
   init(env, storage, lang, appId,  token, tokenSSO, onSuccess, onError){
     this.registerScreen()
@@ -74,6 +77,10 @@ class ChatVT {
     }, onError)
 
 
+    // Font.loadAsync({
+    //   'ABeeZee-Italic' : require('../assets/fonts/ABeeZee-Italic.ttf'),
+    //   'ABeeZee-Regular' : require('../assets/fonts/ABeeZee-Regular.ttf'),
+    // });
 
   }
 
@@ -99,7 +106,72 @@ class ChatVT {
   toChat(componentId, orderChat){
     appStore.componentId = componentId
     if(orderChat){
-      appStore.createConversation(orderChat, (conversation)=>{
+      appStore.createConversation({
+        vtm_user_ids: orderChat.vtm_user_ids,
+        order_number: orderChat.order_number,
+      }, (conversation)=>{
+        Navigation.push(componentId, {
+          component: {
+            name: 'ChatScreen',
+            options: {
+              popGesture: false,
+              bottomTabs: {
+                visible: false,
+              },
+              topBar: {
+                visible: false,
+                height: 0,
+              },
+            },
+            passProps: {
+              data: conversation,
+              order: orderChat.order
+            }
+          }
+        })
+
+      }, error=>alert(error) )
+    }
+
+  }
+
+  chatWithReceiver(componentId, order){
+    appStore.componentId = componentId
+    if(order?.ORDER_NUMBER){
+      appStore.createConversationWithReceiver({
+        order_number: order?.ORDER_NUMBER
+      }, (conversation)=>{
+        Navigation.push(componentId, {
+          component: {
+            name: 'ChatScreen',
+            options: {
+              popGesture: false,
+              bottomTabs: {
+                visible: false,
+              },
+              topBar: {
+                visible: false,
+                height: 0,
+              },
+            },
+            passProps: {
+              data: conversation,
+              order: order
+            }
+          }
+        })
+
+      }, error=>alert(error) )
+    }
+
+  }
+
+
+  chatWithCS(componentId, order){
+    appStore.componentId = componentId
+      appStore.createConversationWithCS({
+        order_number: order?.ORDER_NUMBER
+      }, (conversation)=>{
         Navigation.push(componentId, {
           component: {
             name: 'ChatScreen',
@@ -120,33 +192,10 @@ class ChatVT {
         })
 
       }, error=>alert(error) )
-    }
 
   }
 
   handleNotification(env, storage, lang, appId,  token, tokenSSO, onSuccess, onError, componentId, conversation_id){
-      // const dataTest = {
-      //   "id": "0",
-      //   "title":"Tên nhóm chat",
-      //   "content":"chat mesage",
-      //   "type": 3,
-      //   "status":0,
-      //   "time":1666952956000,
-      //   "ref": "group:<abc>",
-      //   "owner": "<cus_id>",
-      //   "app": "vtp"
-      // }
-    // const dataTest = {
-    //   "action": "NONE/HEN_NHAN/....",
-    //   "content": "Thủ đô của Việt Nam là Hà Nội",
-    //   "icon": "string",
-    //   "mapExt": {
-    //     "additionalProp1": "string", "additionalProp2": "string", "additionalProp3": "string"
-    //   },
-    //   "receiverID": 528493,
-    //   "senderID": 0,
-    //   "title": "Thông báo"
-    // }
       if(!appStore.user.token){
         this.init(env, storage, lang, appId,  token, tokenSSO, ()=>{
           appStore.conversationDetail({

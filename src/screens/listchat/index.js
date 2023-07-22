@@ -312,7 +312,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
         keyExtractor={(item) => item._id}
         style={{ backgroundColor: 'white'}}
         data={listChatStore.dataPin}
-        ItemSeparatorComponent={()=>  (<View style={{backgroundColor: 'white', height: 1,}}><View style={{backgroundColor: '#E5E5E5', height: 1, marginLeft: 76, marginRight: 16}}></View></View>)}
+        ItemSeparatorComponent={()=>  (<View style={{backgroundColor: '#F8F8FA', height: 1,}}><View style={{backgroundColor: '#E5E5E5', height: 1, marginLeft: 76, marginRight: 16}}></View></View>)}
         renderItem={renderItem}
       />
     )
@@ -358,7 +358,14 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
               </TouchableOpacity>
             }
             <TouchableOpacity
-              onPress={()=>setShowSearch(false)}
+              onPress={()=>{
+                setShowSearch(false)
+                listChatStore.search = ''
+                listChatStore.page = 0;
+                listChatStore.getData({
+
+                })
+              }}
               style={{width: scale(50), height: scale(50), justifyContent: 'center', alignItems: 'flex-end'}}>
               <Text style={{fontWeight: '400', fontSize: scale(15), color: 'white', marginRight: 16}}>{
                 appStore.lang.common.cancel

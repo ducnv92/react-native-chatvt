@@ -27,6 +27,7 @@ class ChatStore {
   tabImage;
   tabQuickMessage;
   tabLocationMessage;
+  quote;
 
 
   constructor() {
@@ -113,6 +114,10 @@ class ChatStore {
   }
 
   async sendMessage(params) {
+
+    const quoteCopy = {...this.quote}
+    this.quote = undefined;
+    await this.sendMessage(quoteCopy)
 
     Log(params)
     let attachment_ids = []
