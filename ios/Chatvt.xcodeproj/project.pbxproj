@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E163ECC2A6BBDE900D7437E /* RNFileViewerManagerChatVT.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E163ECB2A6BBDE900D7437E /* RNFileViewerManagerChatVT.m */; };
 		5E6116AD2A6A885C0023024A /* ImageResizerChatVT.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E6116AA2A6A885C0023024A /* ImageResizerChatVT.mm */; };
 		5E6116AE2A6A885C0023024A /* ImageHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E6116AC2A6A885C0023024A /* ImageHelpers.m */; };
 		A915E7392A5E6308002925F1 /* RNCCameraRollManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A915E7362A5E6308002925F1 /* RNCCameraRollManager.m */; };
@@ -41,6 +42,8 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libChatvt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libChatvt.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E163ECA2A6BBDE900D7437E /* RNFileViewerManagerChatVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNFileViewerManagerChatVT.h; sourceTree = "<group>"; };
+		5E163ECB2A6BBDE900D7437E /* RNFileViewerManagerChatVT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNFileViewerManagerChatVT.m; sourceTree = "<group>"; };
 		5E6116A92A6A885C0023024A /* ImageResizerChatVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageResizerChatVT.h; sourceTree = "<group>"; };
 		5E6116AA2A6A885C0023024A /* ImageResizerChatVT.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageResizerChatVT.mm; sourceTree = "<group>"; };
 		5E6116AB2A6A885C0023024A /* ImageHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageHelpers.h; sourceTree = "<group>"; };
@@ -141,6 +144,8 @@
 				5E6116AC2A6A885C0023024A /* ImageHelpers.m */,
 				5E6116A92A6A885C0023024A /* ImageResizerChatVT.h */,
 				5E6116AA2A6A885C0023024A /* ImageResizerChatVT.mm */,
+				5E163ECA2A6BBDE900D7437E /* RNFileViewerManagerChatVT.h */,
+				5E163ECB2A6BBDE900D7437E /* RNFileViewerManagerChatVT.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
 				A915E7462A5E6876002925F1 /* Frameworks */,
 			);
@@ -227,6 +232,7 @@
 				A9EE0C262A5BAE3200A0FE7C /* RNCAssetsLibraryRequestHandler.m in Sources */,
 				A915E7392A5E6308002925F1 /* RNCCameraRollManager.m in Sources */,
 				5E6116AE2A6A885C0023024A /* ImageHelpers.m in Sources */,
+				5E163ECC2A6BBDE900D7437E /* RNFileViewerManagerChatVT.m in Sources */,
 				A9B0E0C62A540305000E9B36 /* RCTConvert+RNDocumentPicker.m in Sources */,
 				A9B0E0C42A540305000E9B36 /* RNCPromiseWrapper.m in Sources */,
 				A93AFB3B2A57D6D3000B0D2E /* RCTConvert+ContextMenuAction.m in Sources */,

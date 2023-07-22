@@ -16,6 +16,13 @@ PODS:
     - React-Core (= 0.71.12)
     - React-jsi (= 0.71.12)
     - ReactCommon/turbomodule/core (= 0.71.12)
+  - ffmpeg-kit-ios-https (5.1)
+  - ffmpeg-kit-react-native (5.1.0):
+    - ffmpeg-kit-react-native/https (= 5.1.0)
+    - React-Core
+  - ffmpeg-kit-react-native/https (5.1.0):
+    - ffmpeg-kit-ios-https (= 5.1)
+    - React-Core
   - Flipper (0.125.0):
     - Flipper-Folly (~> 2.6)
     - Flipper-RSocket (~> 1.4)
@@ -617,6 +624,7 @@ DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
+  - ffmpeg-kit-react-native (from `../node_modules/ffmpeg-kit-react-native`)
   - Flipper (= 0.125.0)
   - Flipper-Boost-iOSX (= 1.76.0.1.11)
   - Flipper-DoubleConversion (= 3.2.0.1)
@@ -713,6 +721,7 @@ SPEC REPOS:
   trunk:
     - Base64
     - CocoaAsyncSocket
+    - ffmpeg-kit-ios-https
     - Flipper
     - Flipper-Boost-iOSX
     - Flipper-DoubleConversion
@@ -761,6 +770,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   FBReactNativeSpec:
     :path: "../node_modules/react-native/React/FBReactNativeSpec"
+  ffmpeg-kit-react-native:
+    :path: "../node_modules/ffmpeg-kit-react-native"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   Google-Maps-iOS-Utils:
@@ -904,6 +915,8 @@ SPEC CHECKSUMS:
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   FBLazyVector: 4eb7ee83e8d0ad7e20a829485295ff48823c4e4c
   FBReactNativeSpec: b24809f97ae83c786928d56b732957195b4fa390
+  ffmpeg-kit-ios-https: 8dffbe1623a2f227be98fc314294847a97f818e4
+  ffmpeg-kit-react-native: 56ecfcd21536379dd123eade87c3b6fd55f12030
   Flipper: 26fc4b7382499f1281eb8cb921e5c3ad6de91fe0
   Flipper-Boost-iOSX: fd1e2b8cbef7e662a122412d7ac5f5bea715403c
   Flipper-DoubleConversion: 2dc99b02f658daf147069aad9dbd29d8feb06d30

@@ -109,6 +109,78 @@ class AppStore {
   }
 
 
+  async createConversationWithReceiver(params, onSuccess, onError) {
+    try {
+      let response
+
+      if(appStore.appId==='VTPost'){
+        response = await services.create().vtpConversationWithReceiver(params);
+      }else{
+        response = await services.create().vtmConversationWithReceiver(params);
+      }
+
+      Log(response);
+      if (response.status === 201 || response.status === 200) {
+        if (response.data.status === 200) {
+          if (response.data.data) {
+            if (onSuccess) {
+              onSuccess(response.data.data);
+            }
+          }
+        } else {
+          if (onError) {
+            onError(response.data?.message);
+          }
+        }
+      } else {
+        if (onError) {
+          onError('');
+        }
+      }
+    } catch (error) {
+      if (onError) {
+        onError(error);
+      }
+      Log(error);
+    }
+  }
+  async createConversationWithCS(params, onSuccess, onError) {
+    try {
+      let response
+
+      if(appStore.appId==='VTPost'){
+        response = await services.create().vtpConversationWithCS(params);
+      }else{
+        response = await services.create().vtmConversationWithCS(params);
+      }
+
+      Log(response);
+      if (response.status === 201 || response.status === 200) {
+        if (response.data.status === 200) {
+          if (response.data.data) {
+            if (onSuccess) {
+              onSuccess(response.data.data);
+            }
+          }
+        } else {
+          if (onError) {
+            onError(response.data?.message);
+          }
+        }
+      } else {
+        if (onError) {
+          onError('Có lỗi xảy ra. Vui lòng thử lại');
+        }
+      }
+    } catch (error) {
+      if (onError) {
+        onError(error);
+      }
+      Log(error);
+    }
+  }
+
+
   async onlineState() {
 
     try {
