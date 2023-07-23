@@ -963,7 +963,7 @@ function ContainChatItem(props) {
             style={{marginHorizontal: 10}}
             onPress={()=>reaction('LIKE')}
           >
-            <FastImage source={require('../../components/reactions/Images/like.gif')}
+            <FastImage source={require('../../components/reactions/Images/ic_like.png')}
                        style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
@@ -971,7 +971,7 @@ function ContainChatItem(props) {
 
             onPress={()=>reaction('LOVE')}
           >
-            <FastImage source={require('../../components/reactions/Images/love.gif')}
+            <FastImage source={require('../../components/reactions/Images/love2.png')}
                        style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
@@ -979,7 +979,7 @@ function ContainChatItem(props) {
 
             onPress={()=>reaction('WOW')}
           >
-            <FastImage source={require('../../components/reactions/Images/wow.gif')}
+            <FastImage source={require('../../components/reactions/Images/wow2.png')}
                        style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
@@ -987,14 +987,14 @@ function ContainChatItem(props) {
 
             onPress={()=>reaction('SAD')}
           >
-            <FastImage source={require('../../components/reactions/Images/sad.gif')}
+            <FastImage source={require('../../components/reactions/Images/sad2.png')}
                        style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
             style={{marginHorizontal: 10}}
             onPress={()=>reaction('ANGRY')}
           >
-            <FastImage source={require('../../components/reactions/Images/angry.gif')}
+            <FastImage source={require('../../components/reactions/Images/angry2.png')}
                        style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
         </View>
