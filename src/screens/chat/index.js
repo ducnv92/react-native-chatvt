@@ -79,9 +79,16 @@ export const ChatScreen = observer(function ChatScreen(props) {
     } catch (e) {
 
     }
-    chatStore.page = 0
-
-
+    setTimeout(()=>{
+      chatStore.page = 0
+      chatStore.getData({
+        conversation_id: conversation?._id
+      }, ()=>{
+        if(chatStore.quote!==undefined){
+          chatStore.data.unshift(chatStore.quote)
+        }
+      })
+    }, 250)
     return () => {
       showSubscription.remove();
       listener.remove()
@@ -118,10 +125,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
   const handleLoadMore = () => {
     chatStore.getData({
       conversation_id: conversation._id
-    }, ()=>{
-          if(chatStore.quote!==undefined && chatStore.page===1){
-            chatStore.data.unshift(chatStore.quote)
-          }
     })
   }
 
