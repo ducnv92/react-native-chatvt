@@ -11,11 +11,11 @@ import {
   Modal,
   Platform,
   SafeAreaView,
-  Text,
   TextInput,
   TouchableOpacity,
   View
 } from 'react-native';
+import {MText as Text} from '../../components'
 import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
 import colors from '../../Styles';
 import appStore from '../AppStore';

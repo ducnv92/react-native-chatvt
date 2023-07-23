@@ -3,11 +3,12 @@ import {
   Image,
   StyleSheet,
   Dimensions,
-  TouchableOpacity, View, Text,
+  TouchableOpacity, View,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import colors from "../../Styles";
 import FastImage from 'react-native-fast-image'
+import {MText as Text} from '../../components'
 
 const styles = StyleSheet.create({
   marker: {

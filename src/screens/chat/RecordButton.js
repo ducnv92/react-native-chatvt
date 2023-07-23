@@ -3,7 +3,7 @@ import chatStore from './ChatStore';
 import CameraRollPicker from '../../components/cameraRollPicker';
 import { observer } from 'mobx-react-lite';
 import {Log, requestPermission} from '../../utils';
-import { Dimensions, FlatList, Image, Platform, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Image, Platform, TouchableOpacity, View } from 'react-native';
 import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
 import colors from '../../Styles';
 import appStore from '../AppStore';
@@ -11,6 +11,7 @@ import AudioRecorderPlayer from '../../components/audioRecord/index';
 import RNFS from 'react-native-fs'
 import uuid from "react-native-uuid";
 import DocumentPicker, {types} from "../../components/documentPicker";
+import {MText as Text} from '../../components'
 
 export class RecordButton extends React.Component{
 

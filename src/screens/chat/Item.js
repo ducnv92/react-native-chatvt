@@ -6,7 +6,6 @@ import {
   Linking, Modal,
   Platform,
   StyleSheet,
-  Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View
@@ -30,6 +29,7 @@ import uuid from 'react-native-uuid';
 import { observer } from 'mobx-react-lite';
 import {Navigation} from "react-native-navigation";
 import SoundPlayer from '../../components/playSound';
+import {MText as Text} from '../../components'
 
 const MapItem = function (props) {
   const right = props.item.sender === (appStore.user.type + '_' + appStore.user.user_id);

@@ -2,12 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {
   TouchableOpacity,
   View,
-  Text,
   FlatList,
   TextInput,
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
+import {MText as Text} from '../../components'
 import { observer } from 'mobx-react-lite';
 import colors from '../../Styles';
 import Swipeable from 'react-native-swipeable';

@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   TouchableOpacity,
   View,
-  Text,
   Image,
   TextInput,
   Platform,
@@ -13,6 +12,7 @@ import colors from '../../Styles';
 import {
   BottomSheetModalProvider,
 } from '../../components/bottomSheet/bottom-sheet';
+import {MText as Text} from '../../components'
 import chatStore from "./ChatStore";
 import { Log, orderStatus } from "../../utils";
 import appStore from "../AppStore";

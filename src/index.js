@@ -13,7 +13,6 @@ import colors from "./Styles";
 import React from 'react'
 import { StatusBar } from 'react-native';
 import {AttachsScreen} from "./screens/attachs";
-import * as Font from "expo-font";
 
 function safeAreaProviderHOC(
   Component
@@ -75,15 +74,6 @@ class ChatVT {
       if(onSuccess)
       onSuccess(res)
     }, onError)
-
-
-    Font.loadAsync({
-      'italic' : require('./assets/fonts/SVN-Gilroy Italic.otf'),
-      'medium' : require('./assets/fonts/SVN-Gilroy Medium.otf'),
-      'regular' : require('./assets/fonts/SVN-Gilroy Regular.otf'),
-      'bold' : require('./assets/fonts/SVN-Gilroy Bold.otf'),
-      'semibold' : require('./assets/fonts/SVN-Gilroy SemiBold.otf'),
-    });
 
   }
 

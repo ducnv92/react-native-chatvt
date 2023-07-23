@@ -3,13 +3,13 @@ import {
   Platform,
   StyleSheet,
   View,
-  Text,
   FlatList,
   ActivityIndicator,
 } from 'react-native';
 import CameraRoll from "./CameraRoll";
 import PropTypes from 'prop-types';
 import Row from './Row';
+import {MText as Text} from '../../components'
 
 import ImageItem from './ImageItem';
 import {BottomSheetFlatList} from "../bottomSheet/bottom-sheet";

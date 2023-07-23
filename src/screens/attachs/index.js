@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {
   TouchableOpacity,
   View,
-  Text,
   FlatList,
   TextInput,
   Platform,
@@ -22,6 +21,7 @@ import attachsStore from "./AttachsStore";
 import uuid from "react-native-uuid";
 import {VideoItem} from "../chat/Item";
 import ImageViewing from "../../components/imageView/ImageViewing";
+import {MText as Text} from '../../components'
 
 
 export const AttachsScreen = observer(function AttachsScreen(props) {
