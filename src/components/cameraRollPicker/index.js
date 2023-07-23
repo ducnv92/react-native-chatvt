@@ -274,7 +274,7 @@ class CameraRollPicker extends Component {
         extraData={this.state.selected}
       />
     ) : (
-      <Text style={[{ textAlign: 'center' }, emptyTextStyle]}>{emptyText}</Text>
+      <Text style={[{ textAlign: 'center' }, emptyTextStyle?emptyTextStyle:{}]}>{emptyText}</Text>
     );
 
     return (
@@ -311,7 +311,6 @@ CameraRollPicker.propTypes = {
   selectedMarker: PropTypes.element,
   backgroundColor: PropTypes.string,
   emptyText: PropTypes.string,
-  emptyTextStyle: Text.propTypes.style,
   loader: PropTypes.node,
 };
 
