@@ -812,7 +812,7 @@ export class ChatItem extends React.Component {
     if (this.item.type === 'MESSAGE') {
       messageView = (<MessageItem item={this.props.item} />)
     }
-    if (this.item.type === 'CREATED_QUOTE_ORDER') {
+    if (this.item.type === 'CREATED_QUOTE_ORDER'||this.item.type === 'QUOTE_ORDER') {
       messageView = (<OrderItem item={this.props.item} />)
       return messageView
     }
@@ -912,26 +912,26 @@ function ContainChatItem(props) {
 
         {
           reactions?.length> 0 &&
-          <View style={{flexDirection: 'row', gap: 4,  zIndex: 99, borderWidth: 1, borderColor: 'white', position: 'absolute', bottom: -16, right: -16, borderRadius: 10, padding: 1, backgroundColor: '#F8F8FA',  }}>
+          <View style={{flexDirection: 'row', zIndex: 99, borderWidth: 1, borderColor: 'white', position: 'absolute', bottom: -16, right: -16, borderRadius: 10, padding: 1, backgroundColor: '#F8F8FA',  }}>
             {
               reactObject.get('LIKE') &&
               <FastImage source={require('../../components/reactions/Images/ic_like.png')}
-                         style={{width: 16, height: 16, resizeMode: 'contain'}} resizeMode={'contain'}/>
+                         style={{width: 16, height: 16, resizeMode: 'contain', marginRight: 4}} resizeMode={'contain'}/>
             }
             {
               reactObject.get('LOVE')&&
               <FastImage source={require('../../components/reactions/Images/love2.png')}
-                         style={{width: 16, height: 16, resizeMode: 'contain'}} resizeMode={'contain'}/>
+                         style={{width: 16, height: 16, resizeMode: 'contain', marginRight: 4}} resizeMode={'contain'}/>
             }
             {
               reactObject.get('WOW') &&
               <FastImage source={require('../../components/reactions/Images/wow2.png')}
-                         style={{width: 16, height: 16, resizeMode: 'contain'}} resizeMode={'contain'}/>
+                         style={{width: 16, height: 16, resizeMode: 'contain', marginRight: 4}} resizeMode={'contain'}/>
             }
             {
               reactObject.get('SAD')&&
               <FastImage source={require('../../components/reactions/Images/sad2.png')}
-                         style={{width: 16, height: 16, resizeMode: 'contain'}} resizeMode={'contain'}/>
+                         style={{width: 16, height: 16, resizeMode: 'contain', marginRight: 4}} resizeMode={'contain'}/>
             }
             {
               reactObject.get('ANGRY')&&
@@ -964,7 +964,7 @@ function ContainChatItem(props) {
             onPress={()=>reaction('LIKE')}
           >
             <FastImage source={require('../../components/reactions/Images/ic_like.png')}
-                       style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
+                       style={{width: 64, height: 64, resizeMode: 'contain', marginRight: 8}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
             style={{marginHorizontal: 10}}
@@ -972,7 +972,7 @@ function ContainChatItem(props) {
             onPress={()=>reaction('LOVE')}
           >
             <FastImage source={require('../../components/reactions/Images/love2.png')}
-                       style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
+                       style={{width: 64, height: 64, resizeMode: 'contain', marginRight: 8}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
             style={{marginHorizontal: 10}}
@@ -980,7 +980,7 @@ function ContainChatItem(props) {
             onPress={()=>reaction('WOW')}
           >
             <FastImage source={require('../../components/reactions/Images/wow2.png')}
-                       style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
+                       style={{width: 64, height: 64, resizeMode: 'contain', marginRight: 8}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
             style={{marginHorizontal: 10}}
@@ -988,14 +988,14 @@ function ContainChatItem(props) {
             onPress={()=>reaction('SAD')}
           >
             <FastImage source={require('../../components/reactions/Images/sad2.png')}
-                       style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
+                       style={{width: 64, height: 64, resizeMode: 'contain', marginRight: 8}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
             style={{marginHorizontal: 10}}
             onPress={()=>reaction('ANGRY')}
           >
             <FastImage source={require('../../components/reactions/Images/angry2.png')}
-                       style={{width: 64, height: 64, resizeMode: 'contain'}} resizeMode={'contain'}/>
+                       style={{width: 64, height: 64, resizeMode: 'contain', marginRight: 8}} resizeMode={'contain'}/>
           </TouchableWithoutFeedback>
         </View>
       </Popover>

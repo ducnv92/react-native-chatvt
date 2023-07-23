@@ -83,11 +83,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
       chatStore.page = 0
       chatStore.getData({
         conversation_id: conversation?._id
-      }, ()=>{
-        if(chatStore.quote!==undefined){
-          chatStore.data.unshift(chatStore.quote)
-        }
-      })
+      }, )
     }, 250)
     return () => {
       showSubscription.remove();

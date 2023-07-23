@@ -78,6 +78,10 @@ class ChatStore {
           if (response.data.data) {
             if (this.page === 1) {
               this.data = response.data.data;
+              if(chatStore.quote!==undefined){
+                console.log(chatStore.quote)
+                chatStore.data.unshift(chatStore.quote)
+              }
             } else {
               this.data = [...this.data, ...response.data.data];
             }

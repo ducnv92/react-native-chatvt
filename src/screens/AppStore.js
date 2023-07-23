@@ -6,6 +6,7 @@ import socket from "../socket";
 import vi from "../locales/vi.json";
 import en from "../locales/en.json";
 import {Log} from "../utils";
+import { Alert } from 'react-native';
 
 class AppStore {
   componentId = null;
@@ -128,6 +129,12 @@ class AppStore {
             }
           }
         } else {
+          if(response.data.status === 1006){
+            Alert.alert('Thông báo', 'Số điện thoại của người nhận chưa có tài khoản tại ViettelPost.', [{
+              text: 'Đồng ý'
+            }])
+            return
+          }
           if (onError) {
             onError(response.data?.message);
           }
