@@ -13,7 +13,7 @@ import colors from "./Styles";
 import React from 'react'
 import { StatusBar } from 'react-native';
 import {AttachsScreen} from "./screens/attachs";
-// import * as Font from "expo-font";
+import * as Font from "expo-font";
 
 function safeAreaProviderHOC(
   Component
@@ -77,10 +77,13 @@ class ChatVT {
     }, onError)
 
 
-    // Font.loadAsync({
-    //   'ABeeZee-Italic' : require('../assets/fonts/ABeeZee-Italic.ttf'),
-    //   'ABeeZee-Regular' : require('../assets/fonts/ABeeZee-Regular.ttf'),
-    // });
+    Font.loadAsync({
+      'italic' : requirre('../assets/fonts/SVN-Gilroy Italic.otf'),
+      'medium' : require('../assets/fonts/SVN-Gilroy Medium.otf'),
+      'regular' : require('../assets/fonts/SVN-Gilroy Regular.otf'),
+      'bold' : require('../assets/fonts/SVN-Gilroy Bold.otf'),
+      'semibold' : require('../assets/fonts/SVN-Gilroy SemiBold.otf'),
+    });
 
   }
 

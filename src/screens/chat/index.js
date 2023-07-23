@@ -36,12 +36,11 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
 
   useEffect(() => {
-
     chatStore.quote = props.order?{
       _id: uuid.v4(),
       conversation_id: conversation._id,
-      text: "CREATED_QUOTE_ORDER",
-      type: "CREATED_QUOTE_ORDER",
+      text: "QUOTE_ORDER",
+      type: "QUOTE_ORDER",
       order_number: props.order.ORDER_NUMBER,
       has_attachment: false,
       order_info :{
@@ -49,9 +48,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
       }
     }:undefined
 
-    if(chatStore.quote!==undefined){
-      chatStore.data.unshift(chatStore.quote)
-    }
+
 
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       if(chatStore.keyboardEmoji){
@@ -74,16 +71,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
         Log(e)
       }
     }
-    return () => {
-      showSubscription.remove();
-      listener.remove()
-      chatStore.showAttachModal = false
-      chatStore.keyboardEmoji = false
-    };
-  }, []);
 
-
-  useEffect(() => {
     let receiver = {}
     try {
       receiver = conversation.detail_participants.find(i => i.user_id !== appStore.user.user_id)
@@ -91,11 +79,23 @@ export const ChatScreen = observer(function ChatScreen(props) {
     } catch (e) {
 
     }
-    chatStore.page = 0
-    chatStore.getData({
-      conversation_id: conversation?._id
-    })
-  }, [])
+    setTimeout(()=>{
+      chatStore.page = 0
+      chatStore.getData({
+        conversation_id: conversation?._id
+      }, ()=>{
+        if(chatStore.quote!==undefined){
+          chatStore.data.unshift(chatStore.quote)
+        }
+      })
+    }, 250)
+    return () => {
+      showSubscription.remove();
+      listener.remove()
+      chatStore.showAttachModal = false
+      chatStore.keyboardEmoji = false
+    };
+  }, []);
 
   const navigateAttachs = () => {
     if(conversation.type==='PAIR'){

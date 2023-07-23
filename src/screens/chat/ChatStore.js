@@ -116,8 +116,10 @@ class ChatStore {
   async sendMessage(params) {
 
     const quoteCopy = {...this.quote}
-    this.quote = undefined;
-    await this.sendMessage(quoteCopy)
+    if(this.quote){
+      this.quote = undefined;
+      await this.sendMessage(quoteCopy)
+    }
 
     Log(params)
     let attachment_ids = []

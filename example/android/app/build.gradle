@@ -161,6 +161,7 @@ android {
     admin {
       dimension "version"
       applicationIdSuffix ".admin"
+      minSdkVersion 24
     }
   }
 
