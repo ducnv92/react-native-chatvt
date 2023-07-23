@@ -78,11 +78,11 @@ class ChatVT {
 
 
     Font.loadAsync({
-      'italic' : requirre('../assets/fonts/SVN-Gilroy Italic.otf'),
-      'medium' : require('../assets/fonts/SVN-Gilroy Medium.otf'),
-      'regular' : require('../assets/fonts/SVN-Gilroy Regular.otf'),
-      'bold' : require('../assets/fonts/SVN-Gilroy Bold.otf'),
-      'semibold' : require('../assets/fonts/SVN-Gilroy SemiBold.otf'),
+      'italic' : require('./assets/fonts/SVN-Gilroy Italic.otf'),
+      'medium' : require('./assets/fonts/SVN-Gilroy Medium.otf'),
+      'regular' : require('./assets/fonts/SVN-Gilroy Regular.otf'),
+      'bold' : require('./assets/fonts/SVN-Gilroy Bold.otf'),
+      'semibold' : require('./assets/fonts/SVN-Gilroy SemiBold.otf'),
     });
 
   }
