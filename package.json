@@ -122,6 +122,7 @@
     "emoji-datasource-apple": "^15.0.1",
     "emoji-datasource-google": "^15.0.1",
     "emoji-mart-native": "^0.6.5-beta",
+    "expo": "^49.0.4",
     "expo-asset": "^8.10.1",
     "expo-constants": "^14.4.2",
     "expo-font": "^11.4.0",
