@@ -1,6 +1,6 @@
 {
   "name": "react-native-chatvt",
-  "version": "0.1.74",
+  "version": "0.1.75",
   "description": "test",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -109,7 +109,6 @@
     "react-native-reactions": "*",
     "react-native-reanimated": "*",
     "react-native-safe-area-context": "*",
-    "react-native-svg": "*",
     "react-native-vector-icons": "*",
     "react-native-video": "*"
   },
