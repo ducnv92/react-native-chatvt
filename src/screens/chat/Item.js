@@ -30,6 +30,8 @@ import { observer } from 'mobx-react-lite';
 import {Navigation} from "react-native-navigation";
 import SoundPlayer from '../../components/playSound';
 import {MText as Text} from '../../components'
+import FileViewer from '../../components/viewFile'
+import RNFS from 'react-native-fs'
 
 const MapItem = function (props) {
   const right = props.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
@@ -879,6 +881,10 @@ function ContainChatItem(props) {
       }
     }
   }
+  function getUrlExtension(url) {
+    return url.split(/[#?]/)[0].split(".").pop().trim();
+  }
+
 
   return(
     <>
@@ -886,7 +892,25 @@ function ContainChatItem(props) {
         onPress={()=>{
           try {
             if (props.item.type === "FILE") {
-              Linking.openURL(props.item.attachments[0].url)
+              console.log(props.item.attachments[0].url)
+              const extension = getUrlExtension(props.item.attachments[0].url);
+
+              const localFile = `${RNFS.DocumentDirectoryPath}/${uuid.v4()}.${extension}`;
+
+              const options = {
+                fromUrl: props.item.attachments[0].url,
+                toFile: localFile,
+              };
+              RNFS.downloadFile(options)
+                .promise.then(() => FileViewer.open(localFile))
+                .then(() => {
+                  // success
+                })
+                .catch((error) => {
+                  console.log(error)
+                  // error
+                });
+              // FileViewer.open(props.item.attachments[0].url)
             }
             if (props.item.type === "LOCATION") {
               try {
@@ -896,10 +920,11 @@ function ContainChatItem(props) {
                   longitude: props.item?.location?.longitude
                 }))
               } catch (e) {
-
+                console.log(e)
               }
             }
           } catch (e) {
+            console.log(e)
 
           }
         }}
