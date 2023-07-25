@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   TouchableOpacity,
   View,
@@ -18,13 +18,20 @@ import Image from 'react-native-fast-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {formatTimeLastMessage, scale} from "../../utils";
 import {MTextInput as TextInput} from '../../components'
+import BottomSheetChatOptions from '../../components/bottomSheetChatOptions'
+import { BottomSheetModalProvider } from '../../components/bottomSheet/bottom-sheet';
 
 export const ListChatScreen =  observer(function ListChatScreen ( props){
   const [showSearch, setShowSearch] = useState(false);
+  const bottomSheetModalRef = useRef();
 
   useEffect(()=>{
     listChatStore.search = ''
     intLoad()
+    // bottomSheetModalRef.current?.present();
+    return ()=>{
+      bottomSheetModalRef.current?.dismiss();
+    }
   }, [])
 
   const intLoad = () => {
@@ -59,28 +66,28 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
 
     try{
       if(item.message.type==='CREATED_QUOTE_ORDER'){
-        return <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}>{appStore.lang.list_chat.message_system}</Text>
+        return <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: setting?.unread_count>0?'600':'500', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}>{appStore.lang.list_chat.message_system}</Text>
       }
 
 
       if(item.message.type==='VOICE'){
-        return <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}><Image source={require('../../assets/ic_attach_message.png')} style={{width: 16, height: 16,  resizeMode: 'contain'}}/><Text>{prefix+appStore.lang.list_chat.message_voice}</Text></Text>
+        return <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: setting?.unread_count>0?'600':'500', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}><Image source={require('../../assets/ic_attach_message.png')} style={{width: 16, height: 16,  resizeMode: 'contain'}}/><Text>{prefix+appStore.lang.list_chat.message_voice}</Text></Text>
       }
       if(item.message.type==='LOCATION'){
-        return <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}><Image source={require('../../assets/ic_attach_message.png')} style={{width: 16, height: 16,  resizeMode: 'contain'}}/><Text>{prefix+appStore.lang.list_chat.message_location}</Text></Text>
+        return <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: setting?.unread_count>0?'600':'500', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}><Image source={require('../../assets/ic_attach_message.png')} style={{width: 16, height: 16,  resizeMode: 'contain'}}/><Text>{prefix+appStore.lang.list_chat.message_location}</Text></Text>
       }
       if(item.message.type==='FILE'){
-        return <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}><Image source={require('../../assets/ic_attach_message.png')} style={{width: 16, height: 16,  resizeMode: 'contain'}}/><Text>{prefix+appStore.lang.list_chat.message_doc}</Text></Text>
+        return <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: setting?.unread_count>0?'600':'500', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}><Image source={require('../../assets/ic_attach_message.png')} style={{width: 16, height: 16,  resizeMode: 'contain'}}/><Text>{prefix+appStore.lang.list_chat.message_doc}</Text></Text>
       }
       if(item.message.has_attachment){
-        return <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}>{
+        return <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: setting?.unread_count>0?'600':'500', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}>{
           prefix+(isMe?`Bạn đã gửi ${item.message.attachment_ids.length} ảnh`: `Bạn đã nhận ${item.message.attachment_ids.length} ảnh`)
         }</Text>
       }
     }catch (e) {
       console.log(e)
     }
-    return <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: '400', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}>{prefix+item.message.text}</Text>
+    return <Text numberOfLines={1}  style={{ flex:1, fontSize: 15, fontWeight: setting?.unread_count>0?'600':'500', color: setting?.unread_count>0?colors.primaryText:colors.neutralText,}}>{prefix+item.message.text}</Text>
   }
 
     const renderItem = ({item, index})=>{
@@ -120,6 +127,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
         <Image  resizeMode={'contain'}  source={setting.is_pin?require('../../assets/ic_unpin.png'):require('../../assets/ic_pin_white.png')} style={{width: 20, height: 20, resizeMode: 'contain'}}/>
         <Text style={{  color: 'white',
           fontSize: 13,
+          fontWeight: '500',
           backgroundColor: 'transparent',
           textAlign: 'center',
           paddingTop: 4,}}>{setting.is_pin?appStore.lang.list_chat.unpin:appStore.lang.list_chat.pin}</Text>
@@ -140,6 +148,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
           fontSize: 13,
           backgroundColor: 'transparent',
           textAlign: 'center',
+          fontWeight: '500',
           paddingTop: 4,}}>{setting.is_hide_notification?appStore.lang.list_chat.unmute:appStore.lang.list_chat.mute}</Text>
       </TouchableOpacity>,
       <TouchableOpacity
@@ -157,6 +166,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
         <Text style={{  color: 'white',
           fontSize: 13,
           backgroundColor: 'transparent',
+          fontWeight: '500',
           textAlign: 'center',
           paddingTop: 4,}}>{appStore.lang.list_chat.delete}</Text>
       </TouchableOpacity>,
@@ -341,7 +351,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
                 listChatStore.page = 0;
                 listChatStore.getData({})
               }}
-              style={{fontWeight: '400', fontSize: scale(15), color: 'white',  flex: 1,}}/>
+              style={{fontWeight: '500', fontSize: scale(15), color: 'white',  flex: 1,}}/>
             {
               listChatStore.search !=='' &&
               <TouchableOpacity
@@ -366,7 +376,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
                 })
               }}
               style={{width: scale(50), height: scale(50), justifyContent: 'center', alignItems: 'flex-end'}}>
-              <Text style={{fontWeight: '400', fontSize: scale(15), color: 'white', marginRight: 16}}>{
+              <Text style={{fontWeight: '600', fontSize: scale(15), color: 'white', marginRight: 16}}>{
                 appStore.lang.common.cancel
               }
               </Text>
@@ -418,8 +428,8 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
         </View>
 
       }
-
     </KeyboardAvoidingView>
+      <BottomSheetChatOptions ref={bottomSheetModalRef}/>
   </SafeAreaView>;
 })
 

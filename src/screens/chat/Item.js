@@ -449,7 +449,9 @@ const MessageItem = function (props) {
                 backgroundColor: appStore.appId === 'VTPost' ? (right ? colors.primary : "#F2F2F2") : (right ? colors.bgVTM : "#F2F2F2"),
                 padding: 12,
                 borderRadius: 10,
-                maxWidth: '75%'
+                maxWidth: '75%',
+                borderWidth: right?0:1,
+                borderColor: '#DCE6F0'
               }}>
                 <ContainChatItem {...props}>
                 <ParsedText
@@ -649,7 +651,7 @@ const DocumentItem = function (props) {
                                 flex: 1,
                                 color: "#44494D",
                                 fontFamily: 'SVN-Gilroy',
-                                fontWeight: 500
+                                fontWeight: '500'
                               }}>
                                 {attach.key.replace("conversation/", "")}
                               </Text>
@@ -745,15 +747,18 @@ const OrderItem = function (props) {
             }}>{item.order_info?.order_number}</Text>
             <View style={{
               paddingVertical: 5,
-              paddingHorizontal: 8,
               borderRadius: 28,
               backgroundColor: '#EB960A',
-              marginHorizontal: 8
+              marginHorizontal: 8,
+              paddingHorizontal: 8,
+              alignItems: 'center',
+              justifyContent: 'center',
             }}>
               <Text style={{
                 fontWeight: '600',
                 fontSize: 11,
-                color: 'white'
+                color: 'white',
+                textAlign: 'center'
               }}>{orderStatus(order?.ORDER_STATUS)}</Text>
             </View>
           </View>
