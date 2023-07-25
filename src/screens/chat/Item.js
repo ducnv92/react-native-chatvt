@@ -32,6 +32,8 @@ import SoundPlayer from '../../components/playSound';
 import {MText as Text} from '../../components'
 import FileViewer from '../../components/viewFile'
 import RNFS from 'react-native-fs'
+import AnimatedProgressWheel from 'react-native-progress-wheel';
+import uploadProgress from './uploadProgress';
 
 const MapItem = function (props) {
   const right = props.item.sender === (appStore.user.type + '_' + appStore.user.user_id);
@@ -223,8 +225,11 @@ export const VideoItem = function (props) {
                   style={props.style}
                   source={thumbnail ? {uri: thumbnail} : {}}
                 />
-                <FastImage source={require('../../assets/ic_play.png')}
-                           style={{width: 56, height: 56, position: 'absolute',}}/>
+                {
+                  !props.url.includes('file://') &&
+                  <FastImage source={require('../../assets/ic_play.png')}
+                             style={{width: 56, height: 56, position: 'absolute',}}/>
+                }
               </TouchableOpacity>
             )}
           </View>
@@ -327,10 +332,36 @@ const MessageItem = function (props) {
                               width: item.attachmentLocal.length === 1 ? 200 : 120,
                               height: item.attachmentLocal.length === 1 ? 200 : 120
                             }}/>
+                              <TouchableOpacity style={{
+                                position: 'absolute',
+                                alignSelf: 'center',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                padding: 16,
+                                top: item.attachmentLocal.length === 1 ? 65 : 35
+                              }}>
+                                <AnimatedProgressWheel
+                                  size={30}
+                                  animateFromValue={0}
+                                  progress={uploadProgress.progress[item.id]?uploadProgress.progress[item.id]:0}
+                                  width={3}
+                                  color={colors.primary}
+                                  backgroundColor={'#FFFFFFA3'}
+                                  fullColor={colors.primary}
+                                >
+                                </AnimatedProgressWheel>
+                                <Image source={require('../../assets/ic_cancel_upload.png')} style={{width: 16, height: 16,  position: 'absolute',
+                                  alignSelf: 'center',
+                                  justifySelf: 'center'
+                                }} />
+                              </TouchableOpacity>
+
                             </TouchableOpacity>
                           }
                           if (attach.toLowerCase().includes('.mov') || attach.toLowerCase().includes('.mp4')) {
-                            return (<VideoItem
+                            return (
+                              <View>
+                              <VideoItem
                               key={attach}
                               {...props}
                               source={{uri: attach}}
@@ -346,7 +377,33 @@ const MessageItem = function (props) {
                                                }}
                             >
 
-                            </VideoItem>)
+                            </VideoItem>
+                                <TouchableOpacity style={{
+                                  position: 'absolute',
+                                  alignSelf: 'center',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  padding: 16,
+                                  top: item.attachmentLocal.length === 1 ? 84 : 84
+                                }}>
+                                  <AnimatedProgressWheel
+                                    size={30}
+                                    animateFromValue={0}
+                                    progress={uploadProgress.progress[item.id]?uploadProgress.progress[item.id]:0}
+                                    width={3}
+                                    color={colors.primary}
+                                    backgroundColor={'#FFFFFFA3'}
+                                    fullColor={colors.primary}
+                                  >
+                                  </AnimatedProgressWheel>
+                                  <Image source={require('../../assets/ic_cancel_upload.png')} style={{width: 16, height: 16,  position: 'absolute',
+                                    alignSelf: 'center',
+                                    justifySelf: 'center'
+                                  }} />
+                                </TouchableOpacity>
+
+                              </View>
+                          )
                           }
                           return <View/>
                         })
@@ -366,6 +423,10 @@ const MessageItem = function (props) {
                         item.attachments.map(attach => {
                           if (attach.url.toLowerCase().includes('jpg') || attach.url.toLowerCase().includes('png') || attach.url.toLowerCase().includes('jpeg')|| attach.url.toLowerCase().includes('heic')) {
                             return <TouchableOpacity
+                              style={{
+                                width: item.attachments.length === 1 ? 200 : 120,
+                                height: item.attachments.length === 1 ? 200 : 120
+                              }}
                               key={attach.url}
                               onPress={() => {
                                 setImages([
@@ -475,8 +536,8 @@ const MessageItem = function (props) {
                   //   }
                   // }}
                   style={{
-                    fontFamily: 'SVN-Gilroy',
-                    fontWeight: '400',
+                    fontFamily: 'SVN-GilroyMedium',
+                    fontWeight: '500',
                     fontSize: 15,
                     color: appStore.appId === 'VTPost' ? (right ? 'white' : colors.primaryText) : colors.primaryText
                   }}
@@ -650,7 +711,7 @@ const DocumentItem = function (props) {
                                 fontSize: 15,
                                 flex: 1,
                                 color: "#44494D",
-                                fontFamily: 'SVN-Gilroy',
+                                fontFamily: 'SVN-GilroyMedium',
                                 fontWeight: '500'
                               }}>
                                 {attach.key.replace("conversation/", "")}

@@ -123,11 +123,10 @@ export const scale = size => {
 
 export const formatTimeLastMessage = timeString => {
   const time = moment(timeString)
-  if(moment().diff(time, 'years')>0){
+  if(moment().endOf('day').diff(time, 'years')>0){
     return time.format("DD/MM/YYYY")
   }
-  console.log(moment().diff(time, 'days'))
-  if(moment().diff(time, 'days')>0){
+  if(moment().endOf('day').diff(time, 'days')>0){
     return time.format("DD/MM")
   }
   return time.format("HH:mm")

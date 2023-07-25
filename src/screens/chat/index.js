@@ -149,36 +149,38 @@ export const ChatScreen = observer(function ChatScreen(props) {
   const sendImages = async () => {
     try{
       chatStore.showAttachModal = false
-
-      try {
-        if(Platform.OS === 'ios'){
-          for (let i = 0; i < chatStore.images.length; i++) {
-            const regex = /:\/\/(.{36})\//i;
-            const result = chatStore.images[i].uri.match(regex);
-            const photoDetail = await CameraRoll.getPhotoByInternalID(result[1], {})
-            chatStore.images[i].uri = photoDetail.node.image.filepath
+      setTimeout(async ()=>{
+        try {
+          if(Platform.OS === 'ios'){
+            for (let i = 0; i < chatStore.images.length; i++) {
+              const regex = /:\/\/(.{36})\//i;
+              const result = chatStore.images[i].uri.match(regex);
+              const photoDetail = await CameraRoll.getPhotoByInternalID(result[1], {})
+              chatStore.images[i].uri = photoDetail.node.image.filepath
+            }
           }
+        }catch (e) {
+          alert(e)
+          console.log(e)
         }
-      }catch (e) {
-        alert(e)
-        console.log(e)
-      }
 
-      const message = {
-        id: uuid.v4(),
-        "type": "MESSAGE",
-        attachmentLocal: chatStore.images,
-        has_attachment: true,
-        "attachment_ids": [],
-        "text": '',
-        "status": "sending",
-        order_number: props.data.order_info?.order_number,
-        sender: appStore.user.type + '_' + appStore.user.user_id,
-        conversation_id: props.data._id
-      }
-      chatStore.data.unshift(message)
-      await chatStore.sendMessage(message)
-      chatStore.images = []
+        const message = {
+          id: uuid.v4(),
+          "type": "MESSAGE",
+          attachmentLocal: chatStore.images,
+          has_attachment: true,
+          "attachment_ids": [],
+          "text": '',
+          "status": "sending",
+          order_number: props.data.order_info?.order_number,
+          sender: appStore.user.type + '_' + appStore.user.user_id,
+          conversation_id: props.data._id
+        }
+        chatStore.data.unshift(message)
+        await chatStore.sendMessage(message)
+        chatStore.images = []
+      }, 100)
+
     }catch (e) {
 
     }
@@ -222,7 +224,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
               conversation.type==='PAIR' &&
               <View style={{ flexDirection: 'row',  alignItems: 'center', marginTop: 2 }}>
                 {
-                  !receiver.state?.includes('ONLINE') &&
+                  receiver.state?.includes('ONLINE') &&
                   <View style={{ height: 8, width: 8, marginRight: 8, borderRadius: 4, backgroundColor: '#30F03B' }} />
                 }
 

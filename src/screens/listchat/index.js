@@ -199,7 +199,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
 
             <View style={{flexDirection: 'row'}}>
               <Text  style={{ flex: 1,  fontSize: 17, fontWeight: '600', color: colors.primaryText}}>Đơn {item.order_numbers[0]} </Text>
-              <Text style={{textAlign: 'right', color: colors.neutralText}}>{moment(item.message.created_at).format('DD/MM')}</Text>
+              <Text style={{textAlign: 'right', color: colors.neutralText}}>{formatTimeLastMessage(item.message.created_at)}</Text>
             </View>
             <View style={{flexDirection: 'row',  paddingTop: 6, alignItems: 'center'}}>
               {

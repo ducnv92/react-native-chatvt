@@ -159,10 +159,10 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
       <View style={{alignItems: 'center', backgroundColor: 'white',  }}>
         <Text style={{fontWeight: '600', fontSize: 20, marginTop: insets.top+118-scale(64),color: colors.primaryText,}}>{(receiver?.first_name + " " + receiver?.last_name)}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
-          {
-            receiver?.state?.includes('ONLINE') &&
-            <View style={{ height: 8, width: 8, borderRadius: 4, marginRight: 8, backgroundColor: '#30F03B' }} />
-          }
+          {/*{*/}
+          {/*  receiver?.state?.includes('ONLINE') &&*/}
+          {/*  <View style={{ height: 8, width: 8, borderRadius: 4, marginRight: 8, backgroundColor: '#30F03B' }} />*/}
+          {/*}*/}
 
           <Text style={{ fontWeight: '500', fontSize: 13, color: colors.neutralText, textAlign: 'center' }}>{
             conversation?.type==='PAIR' && receiver?.type === 'VTMAN' && appStore.lang.common.postman
@@ -206,8 +206,15 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
           data={attachsStore.data}
           renderItem={renderItem}
         />
-      <Image style={{height: 94, width: 94, top:insets.top+20,  resizeMode: 'contain', position: 'absolute', alignSelf: 'center'}}
-             source={require('../../assets/avatar_default.png')}/>
+      <View style={{height: 94, width: 94, top:insets.top+20,  resizeMode: 'contain', position: 'absolute', alignSelf: 'center'}}>
+        <Image style={{height: 94, width: 94,resizeMode: 'contain'}}
+               source={require('../../assets/avatar_default.png')}/>
+        {
+          receiver.state?.includes('ONLINE') &&
+          <Image style={{height: 12, width: 12, resizeMode: 'center', position: 'absolute', top: 70, left: 60 }} source={require('../../assets/ic_online.png')} />
+        }
+      </View>
+
       <ImageViewing
         images={images}
         swipeToCloseEnabled={true}

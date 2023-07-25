@@ -3,6 +3,7 @@ import services, {getHeader} from "../../services";
 import {Log} from "../../utils";
 import uuid from "react-native-uuid";
 import ImageResizer from "../../components/resizeImage";
+import uploadProgress from './uploadProgress';
 
 class ChatStore {
   isLoading = false;
@@ -18,6 +19,7 @@ class ChatStore {
   keyboardEmoji = false;
   data = [];
   images = [];
+  queue = [];
   showAttachModal = false;
   location = {
     latitude: 0,
@@ -220,7 +222,10 @@ class ChatStore {
         }
       }
 
-      const response = await services.create().uploadFile(formData);
+      const response = await services.create().uploadFile(formData, progress=>{
+        console.log('progress', Math.round((progress.loaded/ progress.total)*100))
+        uploadProgress.progress[params.id] = Math.round((progress.loaded/ progress.total)*100)
+      });
       Log(response)
       try {
         if (response.data.data) {
@@ -248,6 +253,8 @@ class ChatStore {
       this.data = [...this.data.map((item) => {
         if (item.id === params.id) {
           item.status = 'sent'
+          item.attachmentLocal = []
+          item.attachments = response.data.data?.message?.attachments? response.data.data?.message?.attachments:[]
         }
         return item
       })]

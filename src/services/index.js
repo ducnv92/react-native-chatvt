@@ -81,8 +81,9 @@ const create = (baseURL = Endpoint.API_BASE) => {
   const conversationHide = async (data) => api.post(Endpoint.CONVERSATION_HIDE(data.conversation_id), data, await getHeader() );
   const conversationMessages = async (data) => api.get(Endpoint.CONVERSATION_MESSAGES(data.conversation_id), data, await getHeader() );
   const sendMessage = async (data) => api.post(Endpoint.SEND_MESSAGE(data.conversation_id), data, await getHeader() );
-  const uploadFile = async (data) => apiMultipart.post(Endpoint.UPLOAD_FILE, data, {...(await getHeader()), ...{
-      retry: 3
+  const uploadFile = async (data, onUploadProgress) => apiMultipart.post(Endpoint.UPLOAD_FILE, data, {...(await getHeader()), ...{
+      retry: 3,
+      onUploadProgress,
     }} );
   const downloadFile = async (data) => api.get(Endpoint.DOWNLOAD_FILE, data, await getHeader() );
   const createConversationVTM = async (data) => api.post(Endpoint.CREATE_CONVERSATION_WITH_VTM, data, await getHeader() );
