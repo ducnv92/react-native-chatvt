@@ -473,6 +473,7 @@ const MessageItem = function (props) {
                   //   }
                   // }}
                   style={{
+                    fontFamily: 'SVN-Gilroy',
                     fontWeight: '400',
                     fontSize: 15,
                     color: appStore.appId === 'VTPost' ? (right ? 'white' : colors.primaryText) : colors.primaryText
@@ -646,7 +647,9 @@ const DocumentItem = function (props) {
                               <Text numberOfLines={1} style={{
                                 fontSize: 15,
                                 flex: 1,
-                                color: "#44494D"
+                                color: "#44494D",
+                                fontFamily: 'SVN-Gilroy',
+                                fontWeight: 500
                               }}>
                                 {attach.key.replace("conversation/", "")}
                               </Text>

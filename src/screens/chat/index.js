@@ -3,7 +3,6 @@ import {
   TouchableOpacity,
   View,
   Image,
-  TextInput,
   Platform,
   KeyboardAvoidingView,
   Keyboard, StatusBar
@@ -28,6 +27,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CameraRoll from "../../components/cameraRollPicker/CameraRoll";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmojiKeyboard } from 'rn-emoji-keyboard';
+import {MTextInput as TextInput} from '../../components'
 
 export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
@@ -226,7 +226,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                   <View style={{ height: 8, width: 8, marginRight: 8, borderRadius: 4, backgroundColor: '#30F03B' }} />
                 }
 
-                <Text style={{ fontWeight: 'bold', fontSize: 13, color: 'white', textAlign: 'center' }}>{
+                <Text style={{ fontWeight: '500', fontSize: 13, color: 'white', textAlign: 'center' }}>{
                   conversation.type==='PAIR' && receiver.type === 'VTMAN' && appStore.lang.common.postman
                 }
                 </Text>

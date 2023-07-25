@@ -3,7 +3,6 @@ import {
   TouchableOpacity,
   View,
   FlatList,
-  TextInput,
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
@@ -18,7 +17,7 @@ import { Navigation } from 'react-native-navigation';
 import Image from 'react-native-fast-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {formatTimeLastMessage, scale} from "../../utils";
-
+import {MTextInput as TextInput} from '../../components'
 
 export const ListChatScreen =  observer(function ListChatScreen ( props){
   const [showSearch, setShowSearch] = useState(false);

@@ -1,0 +1,21 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/SVN-Gilroy.ttf",
+      "sha1": "c5db9fc17896ccc76f39501d1f1135970c8f1faf"
+    },
+    {
+      "path": "assets/fonts/SVN-GilroyBold.ttf",
+      "sha1": "455dc4f3c1fcdb04c7ee85dd118b70d01d34a580"
+    },
+    {
+      "path": "assets/fonts/SVN-GilroyMedium.ttf",
+      "sha1": "9435e57fa11b8a53c83286bdada7ce83a20626fd"
+    },
+    {
+      "path": "assets/fonts/SVN-GilroySemiBold.ttf",
+      "sha1": "f470bf91fe3597147eca88fca41d400fe2c26df1"
+    }
+  ]
+}
