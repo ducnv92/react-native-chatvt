@@ -43,6 +43,8 @@ class AppStore {
               onSuccess(response.data.data);
             }
           }
+        }else{
+          alert(response.data.message)
         }
       } else {
         this.isLoading = false;
@@ -89,6 +91,8 @@ class AppStore {
         } else {
           if (onError) {
             onError(response.data?.message);
+          }else{
+            alert(response.data.message)
           }
         }
       } else {
@@ -137,6 +141,8 @@ class AppStore {
           }
           if (onError) {
             onError(response.data?.message);
+          }else{
+            alert(response.data.message)
           }
         }
       } else {
@@ -168,10 +174,14 @@ class AppStore {
             if (onSuccess) {
               onSuccess(response.data.data);
             }
+          }else{
+            alert(response.data.message)
           }
         } else {
           if (onError) {
             onError(response.data?.message);
+          }else{
+            alert(response.data.message)
           }
         }
       } else {

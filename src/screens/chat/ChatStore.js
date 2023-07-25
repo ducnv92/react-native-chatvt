@@ -93,6 +93,8 @@ class ChatStore {
               onSuccess(this.data);
             }
           }
+        }else{
+          alert(response.data.message)
         }
       } else {
         this.isLoading = false;

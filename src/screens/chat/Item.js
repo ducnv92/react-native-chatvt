@@ -577,11 +577,11 @@ const DocumentItem = function (props) {
                                 <Image source={require('../../assets/file_pdf.png')}
                                        style={{width: 42, height: 42, resizeMode: 'contain', marginRight: 14}}/>
                               )}
-                              {(attach.type.includes('.doc') || attach.type.includes('.docx')) && (
+                              {(attach.type.includes('doc') || attach.type.includes('docx')) && (
                                 <Image source={require('../../assets/file_doc.png')}
                                        style={{width: 42, height: 42, resizeMode: 'contain', marginRight: 14}}/>
                               )}
-                              {(attach.type.includes('.xlsx') || attach.type.includes('.xls')) && (
+                              {(attach.type.includes('xlsx') || attach.type.includes('xls')) && (
                                 <Image source={require('../../assets/file_xls.png')}
                                        style={{width: 42, height: 42, resizeMode: 'contain', marginRight: 14}}/>
                               )}
