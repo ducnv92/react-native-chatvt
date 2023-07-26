@@ -13,6 +13,7 @@ import colors from "./Styles";
 import React from 'react'
 import { StatusBar } from 'react-native';
 import {AttachsScreen} from "./screens/attachs";
+import BottomSheetChatOptions from './components/bottomSheetChatOptions';
 
 function safeAreaProviderHOC(
   Component
@@ -364,3 +365,4 @@ class ChatVT {
 }
 export const chatVT = new ChatVT()
 export const ListChat = ListChatScreen
+export const BottomSheetChat = BottomSheetChatOptions

@@ -767,9 +767,13 @@ const OrderItem = function (props) {
   let productNames = ''
 
   try{
-    productNames= order.LIST_ITEM.map(p=>{
-      return p.PRODUCT_QUANTITY+"x"+p.PRODUCT_NAME
-    }).join(' + ')
+    if(order.PRODUCT_NAME){
+      productNames = order.PRODUCT_NAME;
+    }else{
+      productNames= order.LIST_ITEM.map(p=>{
+        return p.PRODUCT_QUANTITY+"x"+p.PRODUCT_NAME
+      }).join(' + ')
+    }
   }catch (e) {
     console.log(e)
   }
@@ -961,25 +965,25 @@ function ContainChatItem(props) {
         onPress={()=>{
           try {
             if (props.item.type === "FILE") {
-              console.log(props.item.attachments[0].url)
-              const extension = getUrlExtension(props.item.attachments[0].url);
-
-              const localFile = `${RNFS.DocumentDirectoryPath}/${uuid.v4()}.${extension}`;
-
-              const options = {
-                fromUrl: props.item.attachments[0].url,
-                toFile: localFile,
-              };
-              RNFS.downloadFile(options)
-                .promise.then(() => FileViewer.open(localFile))
-                .then(() => {
-                  // success
-                })
-                .catch((error) => {
-                  console.log(error)
-                  // error
-                });
-              // FileViewer.open(props.item.attachments[0].url)
+              // console.log(props.item.attachments[0].url)
+              // const extension = getUrlExtension(props.item.attachments[0].url);
+              //
+              // const localFile = `${RNFS.DocumentDirectoryPath}/${uuid.v4()}.${extension}`;
+              //
+              // const options = {
+              //   fromUrl: props.item.attachments[0].url,
+              //   toFile: localFile,
+              // };
+              // RNFS.downloadFile(options)
+              //   .promise.then(() => FileViewer.open(localFile))
+              //   .then(() => {
+              //     // success
+              //   })
+              //   .catch((error) => {
+              //     console.log(error)
+              //     // error
+              //   });
+              FileViewer.open(props.item.attachments[0].url)
             }
             if (props.item.type === "LOCATION") {
               try {
