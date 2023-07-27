@@ -28,7 +28,7 @@
   ],
   "scripts": {
     "test": "jest",
-    "android": "yarn example android --variant=adminDebug",
+    "android": "yarn example android",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "prepack": "bob build",
@@ -141,6 +141,7 @@
     "react-native-progress-wheel": "^1.0.5",
     "react-native-redash": "^14.2.4",
     "react-native-swipeable": "^0.6.0",
+    "react-native-toast-message": "^2.1.6",
     "react-native-uuid": "^2.0.1",
     "rn-emoji-keyboard": "^1.4.0",
     "socket.io-client": "^4.6.2",
