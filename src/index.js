@@ -56,7 +56,7 @@ class ChatVT {
         ({ componentId, componentName, passProps }) => {
           console.log('componentName', componentName);
           if (
-            componentName === 'ListChatScreen' &&
+            componentName === 'navigation.VTMan.MessengerScreen.TK' &&
             listChatStore.data?.length === 0
           ) {
             listChatStore.page = 0;
