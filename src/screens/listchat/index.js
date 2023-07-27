@@ -16,7 +16,7 @@ import moment from "moment";
 import { Navigation } from 'react-native-navigation';
 import Image from 'react-native-fast-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {formatTimeLastMessage, scale} from "../../utils";
+import { formatTimeLastMessage, orderStatus, scale } from '../../utils';
 import {MTextInput as TextInput} from '../../components'
 import BottomSheetChatOptions from '../../components/bottomSheetChatOptions'
 import { BottomSheetModalProvider } from '../../components/bottomSheet/bottom-sheet';
@@ -198,7 +198,7 @@ export const ListChatScreen =  observer(function ListChatScreen ( props){
           <View style={{flex: 1,}}>
 
             <View style={{flexDirection: 'row'}}>
-              <Text  style={{ flex: 1,  fontSize: 17, fontWeight: '600', color: colors.primaryText}}>Đơn {item.order_numbers[0]} </Text>
+              <Text numberOfLines={1}  style={{ flex: 1,  fontSize: 17, fontWeight: '600', color: colors.primaryText}}>Đơn {item.order_numbers[0]} <Text style={{fontSize: 13, fontWeight: '400',  color: colors.neutralText}}>- {orderStatus(item.orders[0].order_status)} </Text></Text>
               <Text style={{textAlign: 'right', color: colors.neutralText}}>{formatTimeLastMessage(item.message.created_at)}</Text>
             </View>
             <View style={{flexDirection: 'row',  paddingTop: 6, alignItems: 'center'}}>
