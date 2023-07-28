@@ -87,6 +87,11 @@ class ChatVT {
         // this.interval = setInterval(()=>{
         //   appStore.onlineState()
         // }, 30000)
+        if(listChatStore.data?.length===0){
+          listChatStore.page = 0
+          listChatStore.getData({})
+        }
+
         if (onSuccess) onSuccess(res);
       },
       onError
