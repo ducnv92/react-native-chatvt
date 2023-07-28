@@ -15,6 +15,16 @@ export async function getHeader() {
     };
   }
 }
+export async function getHeaderVTM() {
+  const user = await MyAsyncStorage.load(USER)
+  if (user) {
+    return {
+      headers: {
+        'x-access-token': `${user.client_token}`,
+      },
+    };
+  }
+}
 
 const create = (baseURL = Endpoint.API_BASE) => {
 
@@ -111,7 +121,11 @@ const create = (baseURL = Endpoint.API_BASE) => {
   const getConversationAttachments = async data => api.get(Endpoint.CONVERSATION_ATTACHMENTS(data.conversation_id), data, await getHeader());
 
 
+  const getVTMCustomerByPhone = async data => api.get(Endpoint.VTM_CUSTOMER_BY_PHONE, data, await getHeaderVTM());
+
+
   return {
+    getVTMCustomerByPhone,
     vtpConversationWithReceiver,
     vtmConversationWithReceiver,
     getConversationAttachments,

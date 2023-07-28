@@ -27,6 +27,7 @@ class ListChatStore {
       }
       this.page+=1;
       if(this.page === 1){
+        this.data = []
         this.isLoading = true;
         this.canLoadMore = true;
         if(appStore.appId!=='Admin')
