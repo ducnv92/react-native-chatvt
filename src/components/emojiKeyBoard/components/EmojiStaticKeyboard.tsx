@@ -66,11 +66,16 @@ export const EmojiStaticKeyboard = React.memo(
     );
 
     React.useEffect(() => {
-      flatListRef.current?.scrollToIndex({
-        index: activeCategoryIndex,
-        animated: shouldAnimateScroll && enableCategoryChangeAnimation,
-      });
-      setKeyboardScrollOffsetY(0);
+      try{
+        flatListRef.current?.scrollToIndex({
+          index: activeCategoryIndex,
+          animated: shouldAnimateScroll && enableCategoryChangeAnimation,
+        });
+        setKeyboardScrollOffsetY(0);
+      }catch (e) {
+
+      }
+
     }, [
       activeCategoryIndex,
       enableCategoryChangeAnimation,
