@@ -31,7 +31,7 @@ import { RecordButton } from './RecordButton';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CameraRoll from '../../components/cameraRollPicker/CameraRoll';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { EmojiKeyboard } from 'rn-emoji-keyboard';
+import { EmojiKeyboard } from '../../components/emojiKeyBoard';
 import { MTextInput as TextInput } from '../../components';
 import Image from 'react-native-fast-image';
 import Toast, { BaseToast } from 'react-native-toast-message';
