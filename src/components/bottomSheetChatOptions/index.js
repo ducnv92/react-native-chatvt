@@ -91,17 +91,14 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
     } catch (e) {}
   };
 
-  const getUserIdFromPhone = async (phone) => {
+  const getUserIdFromOrder = async (order_code) => {
     try {
-      const response = await services.create().getVTMCustomerByPhone({
-        phone,
+      const response = await services.create().getVTMCustomerByOrder({
+        order_code,
       });
       console.log(response);
-      if (response.data?.data?.existed) {
-        if (response.data?.data?.cus_info?.cus_cus_id) {
-          return response.data?.data?.cus_info?.cus_cus_id;
-        } else {
-        }
+      if (response.data?.data) {
+        return response.data?.data?.cus_id;
       } else {
         return 0;
       }
@@ -111,13 +108,13 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
     }
   };
 
-  const toChatPhone = async (phone) => {
+  const toChatWithSender = async (order_code) => {
     try {
       ref?.current?.dismiss();
     } catch (e) {}
     appStore.createConversation(
       {
-        vtp_user_ids: [await getUserIdFromPhone(phone)],
+        vtp_user_ids: [await getUserIdFromOrder(order_code)],
         order_number: order.ma_phieugui,
       },
       (conversation) => {
@@ -345,7 +342,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
           <View style={{backgroundColor: 'white', height: 1,}}><View style={{backgroundColor: '#E5E5E5', height: 1, marginLeft: 76, marginRight: 16}}></View></View> */}
             <TouchableOpacity
               onPress={() => {
-                toChatPhone(order.tel_khgui);
+                toChatWithSender(order.ma_phieugui);
               }}
               style={{
                 flexDirection: 'row',
