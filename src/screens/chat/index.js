@@ -407,7 +407,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                   minHeight: 56,
                   paddingTop: 18,
                   padding: 12,
-                  fontWeight: '500',
+                  fontFamily: 'SVN-GilroyMedium',
                 }}
               />
               <TouchableOpacity
