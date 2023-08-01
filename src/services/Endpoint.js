@@ -1,6 +1,5 @@
 export const API_BASE = 'https://dev-apichat.viettelpost.vn';
 export const API_BASE_ADMIN = 'https://dev-apichat.viettelpost.vn/admin';
-
 //Auth
 exports.AUTH_VTP = `/auth/vtp`;
 exports.AUTH_VTM = `/auth/vtman`;
@@ -45,3 +44,4 @@ exports.VTP_Login_Client = `https://apivtp-dev.viettelpost.vn/api/user/ssoUpdate
 
 //VTM
 exports.VTM_Login = `https://devapp.viettelpost.vn/api/user/loginWithPhone`;
+exports.VTM_CUSTOMER_BY_PHONE = `https://devapp.viettelpost.vn/api/khaithacdi/search_KH_by_phone`;
