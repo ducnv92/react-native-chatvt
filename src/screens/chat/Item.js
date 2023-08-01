@@ -668,6 +668,7 @@ const MessageItem = function (props) {
                     fontFamily: 'SVN-GilroyMedium',
                     fontWeight: '500',
                     fontSize: 15,
+                    lineHeight: 21,
                     color:
                       appStore.appId === 'VTPost'
                         ? right
@@ -1181,27 +1182,28 @@ export class ChatItem extends React.Component {
       return (
         <View style={{ paddingVertical: 2 }}>
           {messageView}
-          {this.item.read_by?.length > 0 && this.props.conversation.type==='GROUP' && (
-            <View
-              style={{
-                marginRight: 16,
-                flexDirection: 'row',
-                alignSelf: 'flex-end',
-              }}
-            >
-              {this.item.read_by?.map(() => (
-                <Image
-                  style={{
-                    height: 16,
-                    width: 16,
-                    resizeMode: 'center',
-                    marginLeft: 10,
-                  }}
-                  source={require('../../assets/avatar_default.png')}
-                />
-              ))}
-            </View>
-          )}
+          {this.item.read_by?.length > 0 &&
+            this.props.conversation.type === 'GROUP' && (
+              <View
+                style={{
+                  marginRight: 16,
+                  flexDirection: 'row',
+                  alignSelf: 'flex-end',
+                }}
+              >
+                {this.item.read_by?.map(() => (
+                  <Image
+                    style={{
+                      height: 16,
+                      width: 16,
+                      resizeMode: 'center',
+                      marginLeft: 10,
+                    }}
+                    source={require('../../assets/avatar_default.png')}
+                  />
+                ))}
+              </View>
+            )}
         </View>
       );
     } else {

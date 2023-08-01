@@ -536,7 +536,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
                 contentContainerStyle={{
                   backgroundColor: colors.primaryText,
                   borderRadius: 8,
-                  width: '100%',
                   marginHorizontal: 16,
                 }}
                 text1Style={{

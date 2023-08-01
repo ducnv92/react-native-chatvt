@@ -155,6 +155,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
             style={{
               flex: 1,
               fontSize: 15,
+              lineHeight: 21,
               fontWeight: setting?.unread_count > 0 ? '600' : '500',
               color:
                 setting?.unread_count > 0
@@ -164,8 +165,8 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           >
             {prefix +
               (isMe
-                ? `Bạn đã gửi ${item.message.attachment_ids.length} ảnh`
-                : `Bạn đã nhận ${item.message.attachment_ids.length} ảnh`)}
+                ? `Bạn đã gửi ${item.message.attachment_ids.length} ảnh/Video`
+                : `Bạn đã nhận ${item.message.attachment_ids.length} ảnh/Video`)}
           </Text>
         );
       }
