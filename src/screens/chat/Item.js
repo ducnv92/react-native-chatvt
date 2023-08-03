@@ -1182,8 +1182,7 @@ export class ChatItem extends React.Component {
       return (
         <View style={{ paddingVertical: 2 }}>
           {messageView}
-          {this.item.read_by?.length > 0 &&
-            this.props.conversation.type === 'GROUP' && (
+          {this.item.read_by?.length > 0  && (
               <View
                 style={{
                   marginRight: 16,
@@ -1329,7 +1328,7 @@ function ContainChatItem(props) {
           >
             {reactObject.get('LIKE') && (
               <FastImage
-                source={require('../../components/reactions/Images/ic_like.png')}
+                source={require('../../assets/emoji_1.png')}
                 style={{
                   width: 16,
                   height: 16,
@@ -1341,7 +1340,7 @@ function ContainChatItem(props) {
             )}
             {reactObject.get('LOVE') && (
               <FastImage
-                source={require('../../components/reactions/Images/love2.png')}
+                source={require('../../assets/emoji_2.png')}
                 style={{
                   width: 16,
                   height: 16,
@@ -1353,7 +1352,7 @@ function ContainChatItem(props) {
             )}
             {reactObject.get('WOW') && (
               <FastImage
-                source={require('../../components/reactions/Images/wow2.png')}
+                source={require('../../assets/emoji_4.png')}
                 style={{
                   width: 16,
                   height: 16,
@@ -1365,7 +1364,7 @@ function ContainChatItem(props) {
             )}
             {reactObject.get('SAD') && (
               <FastImage
-                source={require('../../components/reactions/Images/sad2.png')}
+                source={require('../../assets/emoji_5.png')}
                 style={{
                   width: 16,
                   height: 16,
@@ -1377,7 +1376,7 @@ function ContainChatItem(props) {
             )}
             {reactObject.get('ANGRY') && (
               <FastImage
-                source={require('../../components/reactions/Images/angry2.png')}
+                source={require('../../assets/emoji_7.png')}
                 style={{ width: 16, height: 16, resizeMode: 'contain' }}
                 resizeMode={'contain'}
               />
@@ -1394,8 +1393,9 @@ function ContainChatItem(props) {
         <View
           style={{
             flexDirection: 'row',
-            padding: 10,
-            borderRadius: 24,
+            paddingVertical: 12,
+            paddingHorizontal: 16,
+            borderRadius: 34,
             backgroundColor: 'white',
             overflow: 'hidden',
             shadowColor: '#000',
@@ -1406,81 +1406,81 @@ function ContainChatItem(props) {
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
             margin: 10,
-
             elevation: 5,
           }}
         >
           <TouchableWithoutFeedback
-            style={{ marginHorizontal: 10 }}
             onPress={() => reaction('LIKE')}
           >
             <FastImage
-              source={require('../../components/reactions/Images/ic_like.png')}
+              source={require('../../assets/emoji_1.png')}
               style={{
-                width: 64,
-                height: 64,
+                width: 30,
+                height: 30,
+                marginRight: 16,
                 resizeMode: 'contain',
-                marginRight: 8,
               }}
               resizeMode={'contain'}
             />
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
-            style={{ marginHorizontal: 10 }}
+            style={{ marginHorizontal: 8 }}
             onPress={() => reaction('LOVE')}
           >
             <FastImage
-              source={require('../../components/reactions/Images/love2.png')}
+              source={require('../../assets/emoji_2.png')}
               style={{
-                width: 64,
-                height: 64,
+                width: 30,
+                height: 30,
                 resizeMode: 'contain',
-                marginRight: 8,
+                marginRight: 16,
+
               }}
               resizeMode={'contain'}
             />
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
-            style={{ marginHorizontal: 10 }}
+            style={{ marginHorizontal: 8 }}
             onPress={() => reaction('WOW')}
           >
             <FastImage
-              source={require('../../components/reactions/Images/wow2.png')}
+              source={require('../../assets/emoji_4.png')}
               style={{
-                width: 64,
-                height: 64,
+                width: 30,
+                height: 30,
                 resizeMode: 'contain',
-                marginRight: 8,
+                marginRight: 16,
+
               }}
               resizeMode={'contain'}
             />
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
-            style={{ marginHorizontal: 10 }}
+            style={{ marginHorizontal: 8 }}
             onPress={() => reaction('SAD')}
           >
             <FastImage
-              source={require('../../components/reactions/Images/sad2.png')}
+              source={require('../../assets/emoji_5.png')}
               style={{
-                width: 64,
-                height: 64,
+                width: 30,
+                height: 30,
                 resizeMode: 'contain',
-                marginRight: 8,
+                marginRight: 16,
+
               }}
               resizeMode={'contain'}
             />
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
-            style={{ marginHorizontal: 10 }}
+            style={{ marginHorizontal: 8 }}
             onPress={() => reaction('ANGRY')}
           >
             <FastImage
-              source={require('../../components/reactions/Images/angry2.png')}
+              source={require('../../assets/emoji_7.png')}
               style={{
-                width: 64,
-                height: 64,
+                width: 30,
+                height: 30,
                 resizeMode: 'contain',
-                marginRight: 8,
               }}
               resizeMode={'contain'}
             />
