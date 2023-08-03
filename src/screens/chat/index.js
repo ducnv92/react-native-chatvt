@@ -36,7 +36,6 @@ import { EmojiKeyboard } from '../../components/emojiKeyBoard';
 // import { MTextInput as TextInput } from '../../components';
 import Image from 'react-native-fast-image';
 import Toast, { BaseToast } from 'react-native-toast-message';
-import EmojiModal from 'react-native-emoji-modal';
 import EmojiPicker from 'react-native-emoji-picker-staltz';
 import { runInAction } from 'mobx';
 import inputStore from './InputStore';
