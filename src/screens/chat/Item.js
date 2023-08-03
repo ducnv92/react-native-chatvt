@@ -1007,7 +1007,7 @@ const OrderItem = function (props) {
               id: 'chat',
               name: 'OrderInfomationtScreen',
               passProps: {
-                orderId: order?.ORDER_NUMBER,
+                orderId: item.order_info?.order_number?item.order_info?.order_number:order?.ORDER_NUMBER,
                 isSender: true,
               },
               options: {
@@ -1038,7 +1038,7 @@ const OrderItem = function (props) {
                 color: colors.primaryText,
               }}
             >
-              {item.order_info?.order_number}
+              {item.order_info?.order_number?item.order_info?.order_number:order?.ORDER_NUMBER}
             </Text>
             <View
               style={{
