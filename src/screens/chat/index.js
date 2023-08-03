@@ -532,13 +532,19 @@ export const ChatScreen = observer(function ChatScreen(props) {
             info: (props) => (
               <BaseToast
                 {...props}
-                style={{ borderLeftColor: 'transparent' }}
-                contentContainerStyle={{
-                  backgroundColor: colors.primaryText,
+                style={{
+                  borderLeftColor: 'transparent',
                   borderRadius: 8,
-                  marginHorizontal: 16,
+                  backgroundColor: colors.primaryText,
+                  flexWrap: 'wrap',
                 }}
+                // contentContainerStyle={{
+                //   backgroundColor: colors.primaryText,
+                //   borderRadius: 8,
+                //   marginHorizontal: 16,
+                // }}
                 text1Style={{
+                  flexWrap: 'wrap',
                   color: 'white',
                   fontSize: 13,
                   fontWeight: '500',

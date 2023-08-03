@@ -211,7 +211,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
               color: colors.primaryText,
             }}
           >{`Chat với bưu tá ${
-            item.RECEIVER_POSTMAN === 1 ? 'nhận' : 'gửi'
+            item.RECEIVER_POSTMAN === 1 ? 'lấy' : 'giao'
           }`}</Text>
           <Text
             style={{
@@ -327,19 +327,58 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
 
         {appStore.appId === 'VTMan' && (
           <SafeAreaView style={{ flex: 1 }}>
-            {/* <TouchableOpacity
-            onPress={toChatGroup}
-            style={{flexDirection: 'row', backgroundColor:'white', paddingVertical: 12, paddingHorizontal: 16}}>
-            <View style={{height: 48, width: 48, resizeMode: 'center',marginRight: 12  }}>
-              <Image style={{height: 48, width: 48, resizeMode: 'center' }} source={require('../../assets/avatar_create_group.png')} />
+            <TouchableOpacity
+              onPress={toChatGroup}
+              style={{
+                flexDirection: 'row',
+                backgroundColor: 'white',
+                paddingVertical: 12,
+                paddingHorizontal: 16,
+              }}
+            >
+              <View
+                style={{
+                  height: 48,
+                  width: 48,
+                  resizeMode: 'center',
+                  marginRight: 12,
+                }}
+              >
+                <Image
+                  style={{ height: 48, width: 48, resizeMode: 'center' }}
+                  source={require('../../assets/avatar_create_group.png')}
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text
+                  style={{
+                    fontSize: 17,
+                    fontWeight: '600',
+                    color: colors.primaryText,
+                  }}
+                >{`Chat nhóm`}</Text>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: '500',
+                    color: colors.neutralText,
+                    paddingTop: 4,
+                  }}
+                >
+                  {'Tham gia của nhiều người'}
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <View style={{ backgroundColor: 'white', height: 1 }}>
+              <View
+                style={{
+                  backgroundColor: '#E5E5E5',
+                  height: 1,
+                  marginLeft: 76,
+                  marginRight: 16,
+                }}
+              ></View>
             </View>
-            <View style={{flex: 1,}}>
-              <Text  style={{ fontSize: 17, fontWeight: '600', color: colors.primaryText}}>{`Chat nhóm`}</Text>
-              <Text  style={{ fontSize: 15, fontWeight: '500', color: colors.neutralText, paddingTop: 4}}>{'Tham gia của nhiều người'}</Text>
-
-            </View>
-          </TouchableOpacity>
-          <View style={{backgroundColor: 'white', height: 1,}}><View style={{backgroundColor: '#E5E5E5', height: 1, marginLeft: 76, marginRight: 16}}></View></View> */}
             <TouchableOpacity
               onPress={() => {
                 toChatWithSender(order.ma_phieugui);
@@ -384,22 +423,63 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
                 </Text>
               </View>
             </TouchableOpacity>
-            {/* <View style={{backgroundColor: 'white', height: 1,}}><View style={{backgroundColor: '#E5E5E5', height: 1, marginLeft: 76, marginRight: 16}}></View></View>
-          <TouchableOpacity
-            onPress={()=>{
-              toChatPhone(order.tel_khnhan)
-            }}
-            style={{flexDirection: 'row', backgroundColor:'white', paddingVertical: 12, paddingHorizontal: 16}}>
-            <View style={{height: 48, width: 48, resizeMode: 'center',marginRight: 12  }}>
-              <Image style={{height: 48, width: 48, resizeMode: 'center' }} source={require('../../assets/avatar_default.png')} />
+            <View style={{ backgroundColor: 'white', height: 1 }}>
+              <View
+                style={{
+                  backgroundColor: '#E5E5E5',
+                  height: 1,
+                  marginLeft: 76,
+                  marginRight: 16,
+                }}
+              ></View>
             </View>
-            <View style={{flex: 1,}}>
-              <Text  style={{ fontSize: 17, fontWeight: '600', color: colors.primaryText}}>{`Chat với khách hàng nhận`}</Text>
-              <Text  style={{ fontSize: 15, fontWeight: '500', color: colors.neutralText, paddingTop: 4}}>{order.ten_khnhan}</Text>
-
-            </View>
-          </TouchableOpacity>
-   */}
+            <TouchableOpacity
+              onPress={() => {
+                try {
+                  ref?.current?.dismiss();
+                } catch (e) {}
+                // toChatWithSender(order.tel_khnhan)
+              }}
+              style={{
+                flexDirection: 'row',
+                backgroundColor: 'white',
+                paddingVertical: 12,
+                paddingHorizontal: 16,
+              }}
+            >
+              <View
+                style={{
+                  height: 48,
+                  width: 48,
+                  resizeMode: 'center',
+                  marginRight: 12,
+                }}
+              >
+                <Image
+                  style={{ height: 48, width: 48, resizeMode: 'center' }}
+                  source={require('../../assets/avatar_default.png')}
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text
+                  style={{
+                    fontSize: 17,
+                    fontWeight: '600',
+                    color: colors.primaryText,
+                  }}
+                >{`Chat với khách hàng nhận`}</Text>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: '500',
+                    color: colors.neutralText,
+                    paddingTop: 4,
+                  }}
+                >
+                  {order.ten_khnhan}
+                </Text>
+              </View>
+            </TouchableOpacity>
           </SafeAreaView>
         )}
       </BottomSheetModal>
