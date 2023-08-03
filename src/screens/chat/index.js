@@ -503,7 +503,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
             />
           )}
           <AttachScreen {...props} />
-          {chatStore.images.length > 0 && (
+          {chatStore.images.length > 0 && chatStore.showAttachModal && (
             <TouchableOpacity
               onPress={sendImages}
               style={{

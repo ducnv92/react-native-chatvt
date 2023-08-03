@@ -165,8 +165,8 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           >
             {prefix +
               (isMe
-                ? `Bạn đã gửi ${item.message.attachment_ids.length} ảnh/Video`
-                : `Bạn đã nhận ${item.message.attachment_ids.length} ảnh/Video`)}
+                ? `Bạn đã gửi ${item.message.attachment_ids.length} ảnh/video`
+                : `Bạn đã nhận ${item.message.attachment_ids.length} ảnh/video`)}
           </Text>
         );
       }
