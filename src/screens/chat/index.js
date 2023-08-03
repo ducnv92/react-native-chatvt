@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   StatusBar,
+  TextInput,
   TouchableOpacityBase,
 } from 'react-native';
 import colors from '../../Styles';
@@ -24,7 +25,7 @@ import { observer } from 'mobx-react-lite';
 import { Navigation } from 'react-native-navigation';
 import { ChatItem } from './Item';
 import uuid from 'react-native-uuid';
-import { AttachScreen } from './Attach';
+import { AttachScreen, Input } from './Attach';
 import { FlatList, ScrollView } from '../../components/flatlist';
 import { MenuProvider } from 'react-native-popup-menu';
 import { RecordButton } from './RecordButton';
@@ -32,9 +33,15 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CameraRoll from '../../components/cameraRollPicker/CameraRoll';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmojiKeyboard } from '../../components/emojiKeyBoard';
-import { MTextInput as TextInput } from '../../components';
+// import { MTextInput as TextInput } from '../../components';
 import Image from 'react-native-fast-image';
 import Toast, { BaseToast } from 'react-native-toast-message';
+import EmojiModal from 'react-native-emoji-modal';
+import EmojiPicker from 'react-native-emoji-picker-staltz';
+import { runInAction } from 'mobx';
+import inputStore from './InputStore';
+import InputStore from './InputStore';
+
 
 export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
@@ -64,7 +71,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       if (chatStore.keyboardEmoji) {
         chatStore.keyboardEmoji = false;
-        chatStore.inputRef?.current?.focus();
+        InputStore.inputRef?.current?.focus();
       }
     });
     chatStore.resetData();
@@ -73,13 +80,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
         chatStore.images = [];
       });
 
-    chatStore.inputRef = () => {
-      try {
-        inputRef.current?.focus();
-      } catch (e) {
-        Log(e);
-      }
-    };
+
 
     let receiver = {};
     try {
@@ -132,27 +133,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
     });
   };
 
-  const sendMessage = async () => {
-    const message = {
-      id: uuid.v4(),
-      type: 'MESSAGE',
-      text: chatStore.input,
-      status: 'sending',
-      order_number: props.order
-        ? props.order.ORDER_NUMBER
-        : conversation.order_info?.order_number,
-      sender: appStore.user.type + '_' + appStore.user.user_id,
-      conversation_id: conversation._id,
-    };
-    chatStore.input = '';
-    chatStore.data.unshift(message);
-    chatStore.sendMessage(message);
-  };
 
-  const handlePresentModalPress = () => {
-    Keyboard.dismiss();
-    chatStore.showAttachModal = true;
-  };
 
   const sendImages = async () => {
     try {
@@ -187,7 +168,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
         };
         chatStore.images = [];
         chatStore.data.unshift(message);
-        await chatStore.sendMessage(message);
+         chatStore.sendMessage(message);
     } catch (e) {}
   };
 
@@ -337,167 +318,9 @@ export const ChatScreen = observer(function ChatScreen(props) {
                 });
               }}
             />
-            <TouchableOpacity
-              disabled={!isOrderSuccess()}
-              onPress={() => {
-                Toast.show({
-                  type: 'info',
-                  position: 'bottom',
-                  text1: 'Chat với bưu tá lấy không khả dụng do đơn đã',
-                });
-              }}
-              style={{
-                minHeight: 56,
-                backgroundColor: '#F8F8FA',
-                flexDirection: 'row',
-                alignItems: 'flex-end',
-                borderTopWidth: 1,
-                borderColor: '#DCE6F0',
-              }}
-            >
-              <TouchableOpacity
-                disabled={isOrderSuccess()}
-                onPress={handlePresentModalPress}
-                style={{
-                  width: 56,
-                  height: 56,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Image
-                  source={require('../../assets/ic_attach.png')}
-                  tintColor={isOrderSuccess() ? '#B5B4B8' : colors.primary}
-                  style={{
-                    height: 24,
-                    width: 24,
-                    resizeMode: 'contain',
-                    tintColor: isOrderSuccess() ? '#B5B4B8' : colors.primary,
-                  }}
-                />
-              </TouchableOpacity>
-              <View style={{ width: 1, height: '100%' }}>
-                <View
-                  style={{
-                    width: 1,
-                    backgroundColor: '#DCE6F0',
-                    marginVertical: 14,
-                    flex: 1,
-                  }}
-                />
-              </View>
-              <TextInput
-                editable={!isOrderSuccess()}
-                ref={inputRef}
-                placeholder={appStore.lang.chat.input_message}
-                placeholderTextColor={'#B5B4B8'}
-                multiline={true}
-                onChangeText={(text) => {
-                  chatStore.input = text;
-                }}
-                value={chatStore.input}
-                style={{
-                  fontSize: 15,
-                  color: colors.primaryText,
-                  flex: 1,
-                  minHeight: 56,
-                  paddingTop: 18,
-                  padding: 12,
-                  fontFamily: 'SVN-GilroyMedium',
-                }}
-              />
-              <TouchableOpacity
-                disabled={isOrderSuccess()}
-                onPress={() => {
-                  if (chatStore.keyboardEmoji) {
-                    chatStore.keyboardEmoji = false;
-                  } else {
-                    chatStore.keyboardEmoji = true;
-                    Keyboard.dismiss();
-                  }
-                }}
-                style={{
-                  width: 40,
-                  height: 56,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Image
-                  source={
-                    isOrderSuccess()
-                      ? require('../../assets/ic_emoji_disabled.png')
-                      : require('../../assets/ic_emoj.png')
-                  }
-                  style={{
-                    height: 24,
-                    width: 24,
-                    resizeMode: 'contain',
-                  }}
-                />
-              </TouchableOpacity>
-              {/*<TouchableOpacity*/}
-              {/*  onPress={() => sendMap()}*/}
-              {/*  style={{ width: 40, height: 56, alignItems: 'center', justifyContent: 'center' }}>*/}
-              {/*  <Image source={require('../../assets/nav_location_active.png')} style={{ height: 24, width: 24, resizeMode: "contain" }} />*/}
-              {/*</TouchableOpacity>*/}
-              {/*<TouchableOpacity*/}
-              {/*  onPress={()=>pickDocument()}*/}
-              {/*  style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>*/}
-              {/*  <Image source={require('../../assets/nav_document.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>*/}
-              {/*</TouchableOpacity>*/}
-
-              {chatStore.input.trim() !== '' && !isOrderSuccess() && (
-                <TouchableOpacity
-                  onPress={sendMessage}
-                  style={{
-                    width: 40,
-                    height: 56,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Image
-                    source={require('../../assets/ic_send.png')}
-                    style={{ height: 24, width: 24, resizeMode: 'contain' }}
-                  />
-                </TouchableOpacity>
-              )}
-              {chatStore.input.trim() === '' && (
-                <RecordButton
-                  disabled={isOrderSuccess()}
-                  {...props}
-                  style={{
-                    width: 40,
-                    height: 56,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Image
-                    source={require('../../assets/ic_microphone.png')}
-                    style={{
-                      height: 24,
-                      width: 24,
-                      resizeMode: 'contain',
-                      tintColor: isOrderSuccess() ? '#B5B4B8' : colors.primary,
-                    }}
-                    tintColor={isOrderSuccess() ? '#B5B4B8' : colors.primary}
-                  />
-                </RecordButton>
-              )}
-            </TouchableOpacity>
+            <BottomChat {...props}/>
           </KeyboardAvoidingView>
-          {chatStore.keyboardEmoji && (
-            <EmojiKeyboard
-              styles={{
-                container: { borderRadius: 0, backgroundColor: 'white' },
-              }}
-              onEmojiSelected={(emoji) => {
-                chatStore.input += emoji.emoji;
-              }}
-            />
-          )}
+
           <AttachScreen {...props} />
           {chatStore.images.length > 0 && chatStore.showAttachModal && (
             <TouchableOpacity
@@ -554,3 +377,199 @@ export const ChatScreen = observer(function ChatScreen(props) {
     </MenuProvider>
   );
 });
+
+
+const BottomChat = observer(function BottomChat(props) {
+  const conversation = props.data;
+
+  const sendMessage = async () => {
+    const message = {
+      id: uuid.v4(),
+      type: 'MESSAGE',
+      text: InputStore.input,
+      status: 'sending',
+      order_number: props.order
+        ? props.order.ORDER_NUMBER
+        : conversation.order_info?.order_number,
+      sender: appStore.user.type + '_' + appStore.user.user_id,
+      conversation_id: conversation._id,
+    };
+    InputStore.input = '';
+    chatStore.data.unshift(message);
+    chatStore.sendMessage(message);
+  };
+
+
+  const handlePresentModalPress = () => {
+    Keyboard.dismiss();
+    chatStore.showAttachModal = true;
+  };
+  const isOrderSuccess = () => {
+    return false
+  }
+  return(
+    <>
+    <TouchableOpacity
+      disabled={!isOrderSuccess()}
+      onPress={() => {
+        Toast.show({
+          type: 'info',
+          position: 'bottom',
+          text1: 'Chat với bưu tá lấy không khả dụng do đơn đã',
+        });
+      }}
+      style={{
+        minHeight: 56,
+        backgroundColor: '#F8F8FA',
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        borderTopWidth: 1,
+        borderColor: '#DCE6F0',
+      }}
+    >
+      <TouchableOpacity
+        disabled={isOrderSuccess()}
+        onPress={handlePresentModalPress}
+        style={{
+          width: 56,
+          height: 56,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Image
+          source={require('../../assets/ic_attach.png')}
+          tintColor={isOrderSuccess() ? '#B5B4B8' : colors.primary}
+          style={{
+            height: 24,
+            width: 24,
+            resizeMode: 'contain',
+            tintColor: isOrderSuccess() ? '#B5B4B8' : colors.primary,
+          }}
+        />
+      </TouchableOpacity>
+      <View style={{ width: 1, height: '100%' }}>
+        <View
+          style={{
+            width: 1,
+            backgroundColor: '#DCE6F0',
+            marginVertical: 14,
+            flex: 1,
+          }}
+        />
+      </View>
+      <Input/>
+      <TouchableOpacity
+        disabled={isOrderSuccess()}
+        onPress={() => {
+          if (chatStore.keyboardEmoji) {
+            chatStore.keyboardEmoji = false;
+          } else {
+            chatStore.keyboardEmoji = true;
+            Keyboard.dismiss();
+          }
+        }}
+        style={{
+          width: 40,
+          height: 56,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Image
+          source={
+            isOrderSuccess()
+              ? require('../../assets/ic_emoji_disabled.png')
+              : require('../../assets/ic_emoj.png')
+          }
+          style={{
+            height: 24,
+            width: 24,
+            resizeMode: 'contain',
+          }}
+        />
+      </TouchableOpacity>
+      {/*<TouchableOpacity*/}
+      {/*  onPress={() => sendMap()}*/}
+      {/*  style={{ width: 40, height: 56, alignItems: 'center', justifyContent: 'center' }}>*/}
+      {/*  <Image source={require('../../assets/nav_location_active.png')} style={{ height: 24, width: 24, resizeMode: "contain" }} />*/}
+      {/*</TouchableOpacity>*/}
+      {/*<TouchableOpacity*/}
+      {/*  onPress={()=>pickDocument()}*/}
+      {/*  style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>*/}
+      {/*  <Image source={require('../../assets/nav_document.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>*/}
+      {/*</TouchableOpacity>*/}
+
+      {inputStore.input.trim() !== '' && !isOrderSuccess() && (
+        <TouchableOpacity
+          onPress={sendMessage}
+          style={{
+            width: 40,
+            height: 56,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Image
+            source={require('../../assets/ic_send.png')}
+            style={{ height: 24, width: 24, resizeMode: 'contain' }}
+          />
+        </TouchableOpacity>
+      )}
+      {inputStore.input.trim() === '' && (
+        <RecordButton
+          disabled={isOrderSuccess()}
+          {...props}
+          style={{
+            width: 40,
+            height: 56,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Image
+            source={require('../../assets/ic_microphone.png')}
+            style={{
+              height: 24,
+              width: 24,
+              resizeMode: 'contain',
+              tintColor: isOrderSuccess() ? '#B5B4B8' : colors.primary,
+            }}
+            tintColor={isOrderSuccess() ? '#B5B4B8' : colors.primary}
+          />
+        </RecordButton>
+      )}
+
+    </TouchableOpacity>
+      {chatStore.keyboardEmoji && (
+        // <EmojiKeyboard
+        //   styles={{
+        //     container: { borderRadius: 0, backgroundColor: 'white' },
+        //   }}
+        //   onEmojiSelected={(emoji) => {
+        //     chatStore.input += emoji.emoji;
+        //   }}
+        // />
+
+        <EmojiPicker
+          onEmojiSelected={(emoji) => {
+            if(emoji!==null) {
+              inputStore.input += emoji
+            }
+          }}
+          rows={7}
+          localizedCategories={[ // Always in this order:
+            'Smileys and emotion',
+            'People and body',
+            'Animals and nature',
+            'Food and drink',
+            'Activities',
+            'Travel and places',
+            'Objects',
+            'Symbols',
+          ]}
+        />
+      )}
+      </>
+  )
+})

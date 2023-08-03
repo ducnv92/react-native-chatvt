@@ -132,6 +132,8 @@
     "nanoid": "^3.1.20",
     "react-native-builder-bob": "0.17.0",
     "react-native-clipboard-toast": "^1.0.0",
+    "react-native-emoji-modal": "^0.2.4",
+    "react-native-emoji-picker-staltz": "^1.0.0",
     "react-native-file-viewer": "^2.1.5",
     "react-native-mime-types": "^2.4.0",
     "react-native-open-maps": "^0.4.2",

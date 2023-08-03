@@ -6,6 +6,7 @@ import { NimblePicker, NimbleEmoji, Picker } from 'emoji-mart-native'
 import data from 'emoji-mart-native/data/google.json'
 import chatStore from './ChatStore';
 import EmojiPicker, { EmojiKeyboard } from 'rn-emoji-keyboard';
+import EmojiModal from 'react-native-emoji-modal';
 
 export default function EmojiButton() {
   const insets = useSafeAreaInsets();

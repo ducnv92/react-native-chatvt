@@ -15,7 +15,6 @@ class ChatStore {
   tab = 1;
   conversation_id = '';
   input = '';
-  inputRef = null;
   keyboardEmoji = false;
   data = [];
   images = [];
@@ -34,6 +33,10 @@ class ChatStore {
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  onChangeTextChat(emoji){
+    this.input +=emoji
   }
 
   resetData(){

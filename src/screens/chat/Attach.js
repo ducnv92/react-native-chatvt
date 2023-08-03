@@ -8,11 +8,11 @@ import {
   Dimensions,
   FlatList,
   Image, KeyboardAvoidingView,
-  Modal,
+  Modal, PermissionsAndroid,
   Platform,
   SafeAreaView,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 import {MTextInput as TextInput} from '../../components'
 import {MText as Text} from '../../components'
@@ -25,6 +25,8 @@ import uuid from "react-native-uuid";
 import Geolocation from 'react-native-geolocation-service';
 import quickMessageStore from "./QuickMessageStore";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import inputStore from './InputStore';
+import InputStore from './InputStore';
 
 
 
@@ -127,11 +129,11 @@ const QuickMessage =observer(function QuickMessage ( props) {
   }
 
   const sendMessage = (msg) => {
-    chatStore.input = msg.text
+    InputStore.input = msg.text
     chatStore.showAttachModal = false;
     chatStore.tab = 1;
     try{
-      chatStore.inputRef()
+      inputStore.inputRef()
     }catch (e) {
       Log(e)
     }
@@ -436,7 +438,21 @@ export const AttachScreen = observer(function AttachScreen(props) {
     try {
       let permission = ''
       if(Platform.OS === 'android'){
-        permission = Platform.Version >= 33 ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
+        if(Platform.Version>=33){
+          const res = PermissionsAndroid.requestMultiple([
+            PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
+            PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO,
+          ]).then(
+            (statuses) =>
+              statuses[PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES] ===
+              PermissionsAndroid.RESULTS.GRANTED &&
+              statuses[PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO] ===
+              PermissionsAndroid.RESULTS.GRANTED,
+          );
+          res.then(res=>console.log('permission', res))
+          return;
+        }
+        permission = PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
       }else{
         permission = PERMISSIONS.IOS.PHOTO_LIBRARY;
       }
@@ -561,4 +577,39 @@ export const AttachScreen = observer(function AttachScreen(props) {
     }
 
   </>)
+})
+
+
+export const Input = observer(function Input() {
+  const inputRef= useRef(null)
+  useEffect(()=>{
+    inputStore.inputRef = () => {
+      try {
+        inputRef.current?.focus();
+      } catch (e) {
+        Log(e);
+      }
+    };
+  }, [])
+  return (
+    <TextInput
+      ref={inputRef}
+      placeholder={appStore.lang.chat.input_message}
+      placeholderTextColor={'#B5B4B8'}
+      multiline={true}
+      onChangeText={(text) => {
+        inputStore.input = text;
+      }}
+      value={inputStore.input}
+      style={{
+        fontSize: 15,
+        color: colors.primaryText,
+        flex: 1,
+        minHeight: 56,
+        paddingTop: 18,
+        padding: 12,
+        fontFamily: 'SVN-GilroyMedium',
+      }}
+    />
+  )
 })
