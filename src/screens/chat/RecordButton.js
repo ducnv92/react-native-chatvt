@@ -72,7 +72,6 @@ export class RecordButton extends React.Component {
             this.path
           );
           this.audioRecorderPlayer.addRecordBackListener((e) => {
-            console.log(e);
             this.setState({
               isRecording:
                 Platform.OS === 'ios'
@@ -132,7 +131,6 @@ export class RecordButton extends React.Component {
   onStopRecord = async () => {
     try {
       const result = await this.audioRecorderPlayer.stopRecorder();
-      console.log('result', result);
       this.audioRecorderPlayer.removeRecordBackListener();
       if (result && result.includes('file://')) {
         this.setState({
@@ -148,7 +146,6 @@ export class RecordButton extends React.Component {
         });
       }
     } catch (e) {
-      console.log(e);
     }
   };
 
@@ -156,7 +153,6 @@ export class RecordButton extends React.Component {
     const msg = await this.audioRecorderPlayer.startPlayer(
       this.state.fileRecorded
     );
-    console.log('play', msg);
 
     this.audioRecorderPlayer.addPlayBackListener((e) => {
       this.setState({
@@ -235,7 +231,6 @@ export class RecordButton extends React.Component {
                       })
                       // `unlink` will throw an error, if the item to unlink does not exist
                       .catch((err) => {
-                        console.log(err.message);
                       });
                   } catch (e) {
                     console.log(e);

@@ -339,7 +339,7 @@ const LocationMessage =observer(function LocationMessage ( props) {
       }
 
       chatStore.data.unshift(message)
-      await chatStore.sendMessage(message)
+      chatStore.sendMessage(message)
     }catch (e) {
       console.log(e)
     }
@@ -426,7 +426,7 @@ export const AttachScreen = observer(function AttachScreen(props) {
         conversation_id: props.data._id
       }
       chatStore.data.unshift(message)
-      await chatStore.sendMessage(message)
+      chatStore.sendMessage(message)
     } catch (err) {
       console.warn(err);
     }
@@ -483,7 +483,6 @@ export const AttachScreen = observer(function AttachScreen(props) {
   const getQuickMessage = () => {
     if(chatStore.tab === 1 ){
       if(!chatStore.tabQuickMessage){
-        console.log('create tab quick message')
         chatStore.tabQuickMessage =  <QuickMessage {...props}/>
       }
       return chatStore.tabQuickMessage

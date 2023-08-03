@@ -26,19 +26,20 @@ class ListChatStore {
         return
       }
       this.page+=1;
+      params = {...params, ...{search: this.search, page: this.page}}
+
       if(this.page === 1){
         this.data = []
         this.isLoading = true;
         this.canLoadMore = true;
         if(appStore.appId!=='Admin')
-          this.getConversationPin()
+          this.getConversationPin(params)
       }else{
         if(!this.canLoadMore){
           return
         }
         this.isLoadingMore = true;
       }
-      params = {...params, ...{search: this.search, page: this.page}}
       let response
       if(appStore.appId==='Admin'){
         response = await services.create().getConversationsAdmin(params);
@@ -142,9 +143,9 @@ class ListChatStore {
   }
 
 
-  async getConversationPin() {
+  async getConversationPin(params) {
 
-    const response = await services.create().getConversationPin({});
+    const response = await services.create().getConversationPin(params);
     Log(response);
     if (response.status === 200||response.status === 201) {
       if (response.data.status === 200) {

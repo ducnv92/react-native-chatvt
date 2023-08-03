@@ -1182,7 +1182,7 @@ export class ChatItem extends React.Component {
       return (
         <View style={{ paddingVertical: 2 }}>
           {messageView}
-          {this.item.read_by?.length > 0  && (
+          {this.item.read_by?.length > 0 && this.props.index===0  && (
               <View
                 style={{
                   marginRight: 16,
@@ -1301,7 +1301,6 @@ function ContainChatItem(props) {
               }
             }
           } catch (e) {
-            console.log(e);
           }
         }}
         onLongPress={() => {

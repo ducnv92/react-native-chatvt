@@ -81,7 +81,6 @@ class ChatStore {
             if (this.page === 1) {
               this.data = response.data.data;
               if(chatStore.quote!==undefined){
-                console.log(chatStore.quote)
                 chatStore.data.unshift(chatStore.quote)
               }
             } else {
@@ -184,7 +183,6 @@ class ChatStore {
                   80,
                   0
                 )
-                console.log('result', JSON.stringify(result))
                 fileUri = result.uri
               }catch (e) {
                 fileUri = absolutePath
@@ -223,10 +221,8 @@ class ChatStore {
       }
 
       const response = await services.create().uploadFile(formData, progress=>{
-        console.log('progress', Math.round((progress.loaded/ progress.total)*100))
         uploadProgress.progress[params.id] = Math.round((progress.loaded/ progress.total)*100)
       });
-      Log(response)
       try {
         if (response.data.data) {
           attachment_ids = response.data.data.map(a => a._id)

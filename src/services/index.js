@@ -45,7 +45,6 @@ const create = (baseURL = Endpoint.API_BASE) => {
       config.retry -= 1;
       const delayRetryRequest = new Promise((resolve) => {
         setTimeout(() => {
-          console.log('retry the request', config.url);
           resolve();
         }, config.retryDelay || 1000);
       });
@@ -69,7 +68,6 @@ const create = (baseURL = Endpoint.API_BASE) => {
       config.retry -= 1;
       const delayRetryRequest = new Promise((resolve) => {
         setTimeout(() => {
-          console.log('retry the request', config.url);
           resolve();
         }, config.retryDelay || 1000);
       });

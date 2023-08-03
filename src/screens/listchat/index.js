@@ -171,7 +171,6 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
         );
       }
     } catch (e) {
-      console.log(e);
     }
     return (
       <Text
@@ -212,9 +211,15 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
       <TouchableOpacity
         onPress={() => {
           if (setting.is_pin) {
-            listChatStore.unPin({ conversation_id: item._id }, () => intLoad());
+            listChatStore.unPin({ conversation_id: item._id }, () => {
+              listChatStore.data.unshift(item)
+              listChatStore.dataPin.splice(index)
+            });
           } else {
-            listChatStore.pin({ conversation_id: item._id }, () => intLoad());
+            listChatStore.pin({ conversation_id: item._id }, () => {
+              listChatStore.dataPin.unshift(item)
+              listChatStore.data.splice(index)
+            });
           }
         }}
         style={{

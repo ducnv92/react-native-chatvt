@@ -41,7 +41,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
   const order = props.data?.orders?.length > 0 ? props.data?.orders[0] : {};
   const [receiver, setReceiver] = useState({});
   const inputRef = useRef(null);
-  console.log('order', order);
 
   const isOrderSuccess = () => {
     return order?.order_status === 501;
@@ -145,9 +144,9 @@ export const ChatScreen = observer(function ChatScreen(props) {
       sender: appStore.user.type + '_' + appStore.user.user_id,
       conversation_id: conversation._id,
     };
-    chatStore.data.unshift(message);
-    await chatStore.sendMessage(message);
     chatStore.input = '';
+    chatStore.data.unshift(message);
+    chatStore.sendMessage(message);
   };
 
   const handlePresentModalPress = () => {
@@ -158,7 +157,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
   const sendImages = async () => {
     try {
       chatStore.showAttachModal = false;
-      setTimeout(async () => {
         try {
           if (Platform.OS === 'ios') {
             for (let i = 0; i < chatStore.images.length; i++) {
@@ -173,7 +171,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
           }
         } catch (e) {
           alert(e);
-          console.log(e);
         }
 
         const message = {
@@ -188,10 +185,9 @@ export const ChatScreen = observer(function ChatScreen(props) {
           sender: appStore.user.type + '_' + appStore.user.user_id,
           conversation_id: props.data._id,
         };
+        chatStore.images = [];
         chatStore.data.unshift(message);
         await chatStore.sendMessage(message);
-        chatStore.images = [];
-      }, 100);
     } catch (e) {}
   };
 
@@ -323,8 +319,8 @@ export const ChatScreen = observer(function ChatScreen(props) {
               style={{ flex: 1, backgroundColor: 'white' }}
               data={chatStore.data}
               inverted={true}
-              renderItem={({ item }) => (
-                <ChatItem item={item} conversation={conversation} />
+              renderItem={({ item, index }) => (
+                <ChatItem item={item} index={index} conversation={conversation} />
               )}
               onEndReached={() => handleLoadMore()}
               onEndReachedThreshold={0.5}

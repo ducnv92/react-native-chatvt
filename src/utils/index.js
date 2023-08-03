@@ -46,7 +46,7 @@ export const orderStatus = (status) => {
 
 export const Log = (data, data2) => {
   if (appStore.env === "DEV") {
-      console.log(data, data2)
+      // console.log(data, data2)
   }
 }
 export function groupBy(list, keyGetter) {

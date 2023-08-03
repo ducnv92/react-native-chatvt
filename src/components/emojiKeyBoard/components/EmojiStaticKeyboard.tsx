@@ -20,7 +20,7 @@ import { useKeyboardStore } from '../store/useKeyboardStore';
 import { ConditionalContainer } from './ConditionalContainer';
 import { SkinTones } from './SkinTones';
 
-const CATEGORY_ELEMENT_WIDTH = 37;
+const CATEGORY_ELEMENT_WIDTH = 18;
 const isAndroid = Platform.OS === 'android';
 
 export const EmojiStaticKeyboard = React.memo(

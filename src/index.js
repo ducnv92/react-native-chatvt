@@ -54,7 +54,6 @@ class ChatVT {
     const screenEventListener =
       Navigation.events().registerComponentDidAppearListener(
         ({ componentId, componentName, passProps }) => {
-          console.log('componentName', componentName);
           if (
             componentName === 'navigation.VTMan.MessengerScreen.TK' &&
             listChatStore.data?.length === 0
