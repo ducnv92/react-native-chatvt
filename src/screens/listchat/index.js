@@ -211,15 +211,9 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
       <TouchableOpacity
         onPress={() => {
           if (setting.is_pin) {
-            listChatStore.unPin({ conversation_id: item._id }, () => {
-              listChatStore.data.unshift(item)
-              listChatStore.dataPin.splice(index)
-            });
+            listChatStore.unPin({ conversation_id: item._id }, () => intLoad());
           } else {
-            listChatStore.pin({ conversation_id: item._id }, () => {
-              listChatStore.dataPin.unshift(item)
-              listChatStore.data.splice(index)
-            });
+            listChatStore.pin({ conversation_id: item._id }, () =>intLoad());
           }
         }}
         style={{
