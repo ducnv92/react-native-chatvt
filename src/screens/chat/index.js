@@ -552,6 +552,7 @@ const BottomChat = observer(function BottomChat(props) {
         // />
 
         <EmojiPicker
+          hideClearButton={true}
           onEmojiSelected={(emoji) => {
             if(emoji!==null) {
               inputStore.input += emoji

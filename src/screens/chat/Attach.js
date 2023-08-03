@@ -449,7 +449,11 @@ export const AttachScreen = observer(function AttachScreen(props) {
               statuses[PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO] ===
               PermissionsAndroid.RESULTS.GRANTED,
           );
-          res.then(res=>console.log('permission', res))
+          res.then(res=>{
+            if(res){
+              callback()
+            }
+          })
           return;
         }
         permission = PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
