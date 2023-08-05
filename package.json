@@ -113,16 +113,12 @@
         "react-native-video": "*"
     },
     "dependencies": {
-        "emoji-datasource": "~5.0.1",
-        "lodash.groupby": "~4.6.0",
-        "lodash.mapvalues": "~4.6.0",
-        "lodash.orderby": "~4.6.0",
-        "string.fromcodepoint": "~0.2.1",
         "@bam.tech/react-native-image-resizer": "3.0.0",
         "@charkour/react-reactions": "^0.11.0",
         "@react-native-community/cameraroll": "^4.1.2",
         "apisauce": "1.1.1",
         "deprecated-react-native-prop-types": "^4.1.0",
+        "emoji-datasource": "~5.0.1",
         "emoji-datasource-apple": "^15.0.1",
         "emoji-datasource-google": "^15.0.1",
         "emoji-mart-native": "^0.6.5-beta",
@@ -130,7 +126,10 @@
         "ffmpeg-kit-react-native": "^5.1.0",
         "hoist-non-react-statics": "^3.3.2",
         "invariant": "^2.2.4",
+        "lodash.groupby": "~4.6.0",
         "lodash.isequal": "^4.5.0",
+        "lodash.mapvalues": "~4.6.0",
+        "lodash.orderby": "~4.6.0",
         "mobx": "^6.9.0",
         "mobx-react-lite": "^3.4.3",
         "moment": "^2.29.4",
@@ -149,8 +148,10 @@
         "react-native-swipeable": "^0.6.0",
         "react-native-toast-message": "^2.1.6",
         "react-native-uuid": "^2.0.1",
+        "recyclerlistview": "^4.2.0",
         "rn-emoji-keyboard": "^1.5.0",
         "socket.io-client": "^4.6.2",
+        "string.fromcodepoint": "~0.2.1",
         "yarn": "^1.22.19"
     },
     "engines": {
@@ -221,7 +222,8 @@
         "output": "lib",
         "targets": [
             "commonjs",
-            "module", [
+            "module",
+            [
                 "typescript",
                 {
                     "project": "tsconfig.build.json"

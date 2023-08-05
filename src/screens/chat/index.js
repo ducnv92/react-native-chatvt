@@ -13,7 +13,7 @@ import {
   Keyboard,
   StatusBar,
   TextInput,
-  TouchableOpacityBase,
+  TouchableOpacityBase, Dimensions,
 } from 'react-native';
 import colors from '../../Styles';
 import { BottomSheetModalProvider } from '../../components/bottomSheet/bottom-sheet';
@@ -37,11 +37,10 @@ import { EmojiKeyboard } from '../../components/emojiKeyBoard';
 import Image from 'react-native-fast-image';
 import Toast, { BaseToast } from 'react-native-toast-message';
 import EmojiPicker from 'react-native-emoji-picker-staltz';
-import { runInAction } from 'mobx';
 import inputStore from './InputStore';
 import InputStore from './InputStore';
-
-
+let {height, width} = Dimensions.get('window');
+import { FlashList } from "../../components/flashlist";
 export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
   const order = props.data?.orders?.length > 0 ? props.data?.orders[0] : {};
@@ -291,32 +290,37 @@ export const ChatScreen = observer(function ChatScreen(props) {
                 />
               </TouchableOpacity>
             </View>
-            <FlatList
-              maintainVisibleContentPosition={{
-                autoscrollToTopThreshold: 10,
-                minIndexForVisible: 1,
-              }}
-              style={{ flex: 1, backgroundColor: 'white' }}
-              data={chatStore.data}
-              inverted={true}
-              renderItem={({ item, index }) => (
-                <ChatItem item={item} index={index} conversation={conversation} />
-              )}
-              onEndReached={() => handleLoadMore()}
-              onEndReachedThreshold={0.5}
-              ListHeaderComponent={() => <View style={{ height: 8 }} />}
-              removeClippedSubviews={true}
-              keyExtractor={(item) =>
-                item._id !== undefined ? item._id : item.id
-              }
-              refreshing={chatStore.isLoading}
-              onRefresh={() => {
-                chatStore.page = 0;
-                chatStore.getData({
-                  conversation_id: conversation._id,
-                });
-              }}
-            />
+            <View style={{flex: 1, backgroundColor: 'white'}}>
+
+                <FlashList
+                  estimatedItemSize={200}
+                  forceNonDeterministicRendering={true}
+                  maintainVisibleContentPosition={{
+                    autoscrollToTopThreshold: 10,
+                    minIndexForVisible: 1,
+                  }}
+                  style={{ flex: 1, backgroundColor: 'white',}}
+                  data={chatStore.data}
+                  inverted={true}
+                  renderItem={({ item, index }) => (
+                    <ChatItem  item={item} index={index} conversation={conversation} />
+                  )}
+                  onEndReached={() => handleLoadMore()}
+                  onEndReachedThreshold={0.5}
+                  ListHeaderComponent={() => <View style={{ height: 8 }} />}
+                  removeClippedSubviews={true}
+                  keyExtractor={(item) =>
+                    item._id !== undefined ? item._id : item.id
+                  }
+                  refreshing={chatStore.isLoading}
+                  onRefresh={() => {
+                    chatStore.page = 0;
+                    chatStore.getData({
+                      conversation_id: conversation._id,
+                    });
+                  }}
+                />
+            </View>
             <BottomChat {...props}/>
           </KeyboardAvoidingView>
 

@@ -32,6 +32,9 @@ public class ChatvtPackage implements ReactPackage {
   @NonNull
   @Override
   public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
-    return Collections.emptyList();
+    List<ViewManager> viewManagerList = new ArrayList<>();
+    viewManagerList.add(new AutoLayoutViewManager());
+    viewManagerList.add(new CellContainerManager());
+    return viewManagerList;
   }
 }
