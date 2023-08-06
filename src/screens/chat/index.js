@@ -294,17 +294,22 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
                 <FlashList
                   estimatedItemSize={200}
-                  forceNonDeterministicRendering={true}
-                  maintainVisibleContentPosition={{
-                    autoscrollToTopThreshold: 10,
-                    minIndexForVisible: 1,
-                  }}
-                  style={{ flex: 1, backgroundColor: 'white',}}
+                  // forceNonDeterministicRendering={true}
+                  // maintainVisibleContentPosition={{
+                  //   autoscrollToTopThreshold: 10,
+                  //   minIndexForVisible: 1,
+                  // }}
+                  // style={{ flex: 1, backgroundColor: 'white',}}
                   data={chatStore.data}
+                  extraData={chatStore.data}
                   inverted={true}
                   renderItem={({ item, index }) => (
                     <ChatItem  item={item} index={index} conversation={conversation} />
                   )}
+                  getItemType={item => {
+                    console.log(item?.type)
+                    return item?.type;
+                  }}
                   onEndReached={() => handleLoadMore()}
                   onEndReachedThreshold={0.5}
                   ListHeaderComponent={() => <View style={{ height: 8 }} />}

@@ -1,14 +1,15 @@
-import type React from "react";
-import {
+import type React from 'react';
+import type {
   StyleProp,
   ScrollViewProps,
   ViewabilityConfig,
   ViewabilityConfigCallbackPairs,
   ViewStyle,
-} from "react-native";
+  ColorValue,
+} from 'react-native';
 
-import { BlankAreaEventHandler } from "./native/auto-layout/AutoLayoutView";
-import ViewToken from "./viewability/ViewToken";
+import type { BlankAreaEventHandler } from './native/auto-layout/AutoLayoutView';
+import type ViewToken from './viewability/ViewToken';
 
 export interface ListRenderItemInfo<TItem> {
   item: TItem;
@@ -23,29 +24,28 @@ export interface ListRenderItemInfo<TItem> {
   extraData?: any;
 }
 
-export type RenderTarget = "Cell" | "StickyHeader" | "Measurement";
+export type RenderTarget = 'Cell' | 'StickyHeader' | 'Measurement';
 
 export const RenderTargetOptions: Record<string, RenderTarget> = {
-  Cell: "Cell",
-  StickyHeader: "StickyHeader",
-  Measurement: "Measurement",
+  Cell: 'Cell',
+  StickyHeader: 'StickyHeader',
+  Measurement: 'Measurement',
 };
 
 export type ListRenderItem<TItem> = (
   info: ListRenderItemInfo<TItem>
 ) => React.ReactElement | null;
 
-export type ContentStyle = Pick<
-  ViewStyle,
-  | "backgroundColor"
-  | "paddingTop"
-  | "paddingLeft"
-  | "paddingRight"
-  | "paddingBottom"
-  | "padding"
-  | "paddingVertical"
-  | "paddingHorizontal"
->;
+export interface ContentStyle {
+  backgroundColor?: ColorValue;
+  paddingTop?: string | number;
+  paddingLeft?: string | number;
+  paddingRight?: string | number;
+  paddingBottom?: string | number;
+  padding?: string | number;
+  paddingVertical?: string | number;
+  paddingHorizontal?: string | number;
+}
 
 export interface FlashListProps<TItem> extends ScrollViewProps {
   /**
