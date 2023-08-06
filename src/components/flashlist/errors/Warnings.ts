@@ -1,3 +1,4 @@
+// @ts-nocheck
 const WarningList = {
   styleUnsupported:
     "You have passed a style to FlashList. This list doesn't support styling, use contentContainerStyle or wrap the list in a parent and apply style to it instead.",

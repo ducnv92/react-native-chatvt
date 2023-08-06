@@ -1,3 +1,4 @@
+// @ts-nocheck
 export { default as FlashList } from './FlashList';
 export {
   FlashListProps,

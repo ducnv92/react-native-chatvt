@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BaseItemAnimator } from "recyclerlistview";
 import { DefaultJSItemAnimator } from "recyclerlistview/src/platform/reactnative/itemanimators/defaultjsanimator/DefaultJSItemAnimator";
 

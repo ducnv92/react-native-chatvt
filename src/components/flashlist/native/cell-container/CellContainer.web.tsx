@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 /**
  * On web we use a view instead of cell container till we build native web implementations

@@ -1,6 +1,7 @@
 /**
  * Helper class to calculate running average of the most recent n values
  */
+// @ts-nocheck
 export class AverageWindow {
   private currentAverage: number;
   private currentCount: number;

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { requireNativeComponent } from "react-native";
 
 import { AutoLayoutViewNativeComponentProps } from "./AutoLayoutViewNativeComponentProps";

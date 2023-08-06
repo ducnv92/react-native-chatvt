@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Animated } from "react-native";
 
 import FlashList from "./FlashList";

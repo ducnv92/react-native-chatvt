@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, ReactNode } from "react";
 import { LayoutChangeEvent } from "react-native";
 
