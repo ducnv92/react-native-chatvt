@@ -349,7 +349,7 @@ const MessageItem = function (props) {
             <View
               style={{ borderRadius: 10, overflow: 'hidden', maxWidth: '75%' }}
             >
-              {item.attachmentLocal && (
+              {item.attachmentLocal && item.attachmentLocal.length>0 && (
                 <View
                   style={{
                     flexDirection: 'row',
@@ -1190,16 +1190,21 @@ export class ChatItem extends React.Component {
                   alignSelf: 'flex-end',
                 }}
               >
-                {this.item.read_by?.map(() => (
-                  <Image
-                    style={{
-                      height: 16,
-                      width: 16,
-                      resizeMode: 'center',
-                      marginLeft: 10,
-                    }}
-                    source={require('../../assets/avatar_default.png')}
-                  />
+                {this.item.read_by?.map((item) => (
+                  <>
+                    {
+                      item !== (appStore.user.type + '_' + appStore.user.user_id) &&
+                      <Image
+                        style={{
+                          height: 16,
+                          width: 16,
+                          resizeMode: 'center',
+                          marginLeft: 10,
+                        }}
+                        source={require('../../assets/avatar_default.png')}
+                      />
+                    }
+                  </>
                 ))}
               </View>
             )}

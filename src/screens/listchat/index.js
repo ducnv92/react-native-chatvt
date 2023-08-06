@@ -420,16 +420,21 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                       source={require('../../assets/ic_mute.png')}
                     />
                   )}
-                  {item.message?.read_by?.map(() => (
-                    <Image
-                      style={{
-                        height: 16,
-                        width: 16,
-                        resizeMode: 'center',
-                        marginLeft: 10,
-                      }}
-                      source={require('../../assets/avatar_default.png')}
-                    />
+                  {item.message?.read_by?.map((item) => (
+                    <>
+                      {
+                        item!==(appStore.user.type + '_' + appStore.user.user_id) &&
+                        <Image
+                          style={{
+                            height: 16,
+                            width: 16,
+                            resizeMode: 'center',
+                            marginLeft: 10,
+                          }}
+                          source={require('../../assets/avatar_default.png')}
+                        />
+                      }
+                    </>
                   ))}
                   {setting?.unread_count > 0 && (
                     <View
@@ -562,16 +567,21 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                 }}
               >
                 {getLastMessage(item, setting, isMe)}
-                {item.message?.read_by?.map(() => (
-                  <Image
-                    style={{
-                      height: 16,
-                      width: 16,
-                      resizeMode: 'center',
-                      marginLeft: 10,
-                    }}
-                    source={require('../../assets/avatar_default.png')}
-                  />
+                {item.message?.read_by?.map((item) => (
+                  <>
+                    {
+                      item!==(appStore.user.type + '_' + appStore.user.user_id) &&
+                      <Image
+                        style={{
+                          height: 16,
+                          width: 16,
+                          resizeMode: 'center',
+                          marginLeft: 10,
+                        }}
+                        source={require('../../assets/avatar_default.png')}
+                      />
+                    }
+                  </>
                 ))}
                 <View style={{ flexDirection: 'row' }}>
                   {setting?.is_pin && (
