@@ -23,7 +23,7 @@ jobs:
       - name: NPM Publish
         uses: JS-DevTools/npm-publish@v2.2.1
         with:
-          token: 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
+          token: ${{ secrets.NPM_TOKEN }}
 
 
 
