@@ -19,9 +19,11 @@ jobs:
 
       - name: Build package
         run: yarn prepack
-        
+
       - name: NPM Publish
         uses: JS-DevTools/npm-publish@v2.2.1
+        with:
+          token: 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
 
 
-  
+
