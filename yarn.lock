@@ -8745,6 +8745,51 @@ react-native-builder-bob@0.17.0:
   optionalDependencies:
     jetifier "^1.6.6"
 
+"react-native-chatvt@https://github.com/ducnv92/react-native-chatvt":
+  version "0.1.99"
+  resolved "https://github.com/ducnv92/react-native-chatvt#72fe68aade32bd74db264a36085ad6f224520b6c"
+  dependencies:
+    "@bam.tech/react-native-image-resizer" "3.0.0"
+    "@charkour/react-reactions" "^0.11.0"
+    "@react-native-community/cameraroll" "^4.1.2"
+    apisauce "1.1.1"
+    deprecated-react-native-prop-types "^4.1.0"
+    emoji-datasource "~5.0.1"
+    emoji-datasource-apple "^15.0.1"
+    emoji-datasource-google "^15.0.1"
+    emoji-mart-native "^0.6.5-beta"
+    fbjs "^3.0.5"
+    ffmpeg-kit-react-native "^5.1.0"
+    hoist-non-react-statics "^3.3.2"
+    invariant "^2.2.4"
+    lodash.groupby "~4.6.0"
+    lodash.isequal "^4.5.0"
+    lodash.mapvalues "~4.6.0"
+    lodash.orderby "~4.6.0"
+    mobx "^6.9.0"
+    mobx-react-lite "^3.4.3"
+    moment "^2.29.4"
+    nanoid "^3.1.20"
+    react-native-builder-bob "0.17.0"
+    react-native-clipboard-toast "^1.0.0"
+    react-native-emoji-picker-staltz "^1.0.0"
+    react-native-file-viewer "^2.1.5"
+    react-native-mime-types "^2.4.0"
+    react-native-open-maps "^0.4.2"
+    react-native-parsed-text "^0.0.22"
+    react-native-popover-view "^5.1.7"
+    react-native-popup-menu "^0.16.1"
+    react-native-progress-wheel "^1.0.5"
+    react-native-redash "^14.2.4"
+    react-native-swipeable "^0.6.0"
+    react-native-toast-message "^2.1.6"
+    react-native-uuid "^2.0.1"
+    recyclerlistview "https://github.com/ducnv92/recyclerlistview/"
+    rn-emoji-keyboard "^1.5.0"
+    socket.io-client "^4.6.2"
+    string.fromcodepoint "~0.2.1"
+    yarn "^1.22.19"
+
 react-native-clipboard-toast@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-clipboard-toast/-/react-native-clipboard-toast-1.0.0.tgz#b8733a2c12af8acbf46b0ced32d29748ebb47af3"
@@ -9021,6 +9066,14 @@ rechoir@^0.6.2:
   integrity sha512-HFM8rkZ+i3zrV+4LQjwQ0W+ez98pApMGM3HUrN04j3CqzPOzl9nmP15Y8YXNm8QHGv/eacOVEjqhmWpkRV0NAw==
   dependencies:
     resolve "^1.1.6"
+
+"recyclerlistview@https://github.com/ducnv92/recyclerlistview.git#50ed78a":
+  version "4.3.0"
+  resolved "https://github.com/ducnv92/recyclerlistview.git#50ed78a3c457241a499d8ae0f050702d44496f0a"
+  dependencies:
+    lodash.debounce "4.0.8"
+    prop-types "15.8.1"
+    ts-object-utils "0.0.5"
 
 "recyclerlistview@https://github.com/ducnv92/recyclerlistview/":
   version "4.2.0"
