@@ -16,6 +16,7 @@
 		5E7F6ADA2A80CEFF00A25E7E /* CellContainerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F6AD42A80CEFF00A25E7E /* CellContainerManager.m */; };
 		5E7F6ADB2A80CEFF00A25E7E /* CellContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F6AD52A80CEFF00A25E7E /* CellContainer.swift */; };
 		5E7F6ADC2A80CEFF00A25E7E /* AutoLayoutViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F6AD62A80CEFF00A25E7E /* AutoLayoutViewManager.m */; };
+		5E8ADCDE2A810835007D8159 /* FileTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8ADCDD2A810835007D8159 /* FileTest.swift */; };
 		A915E7392A5E6308002925F1 /* RNCCameraRollManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A915E7362A5E6308002925F1 /* RNCCameraRollManager.m */; };
 		A915E7612A5E99B8002925F1 /* CreateThumbnailChatVT.m in Sources */ = {isa = PBXBuildFile; fileRef = A915E7602A5E99B8002925F1 /* CreateThumbnailChatVT.m */; };
 		A915E76A2A5E9B96002925F1 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915E7692A5E9B96002925F1 /* File.swift */; };
@@ -60,6 +61,7 @@
 		5E7F6AD42A80CEFF00A25E7E /* CellContainerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellContainerManager.m; sourceTree = "<group>"; };
 		5E7F6AD52A80CEFF00A25E7E /* CellContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellContainer.swift; sourceTree = "<group>"; };
 		5E7F6AD62A80CEFF00A25E7E /* AutoLayoutViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoLayoutViewManager.m; sourceTree = "<group>"; };
+		5E8ADCDD2A810835007D8159 /* FileTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTest.swift; sourceTree = "<group>"; };
 		A915E7352A5E6307002925F1 /* RNCCameraRollManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCCameraRollManager.h; sourceTree = "<group>"; };
 		A915E7362A5E6308002925F1 /* RNCCameraRollManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCCameraRollManager.m; sourceTree = "<group>"; };
 		A915E7472A5E6876002925F1 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/System/Library/Frameworks/CoreAudio.framework; sourceTree = DEVELOPER_DIR; };
@@ -119,6 +121,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				5E8ADCDD2A810835007D8159 /* FileTest.swift */,
 				B3E7B5881CC2AC0600A0062D /* Chatvt.h */,
 				A915E75F2A5E99B8002925F1 /* CreateThumbnailChatVT.h */,
 				A915E7602A5E99B8002925F1 /* CreateThumbnailChatVT.m */,
@@ -259,6 +262,7 @@
 				5E7F6AD82A80CEFF00A25E7E /* CellContainerManager.swift in Sources */,
 				A9B0E0C42A540305000E9B36 /* RNCPromiseWrapper.m in Sources */,
 				5E7F6AD72A80CEFF00A25E7E /* AutoLayoutView.swift in Sources */,
+				5E8ADCDE2A810835007D8159 /* FileTest.swift in Sources */,
 				A93AFB3B2A57D6D3000B0D2E /* RCTConvert+ContextMenuAction.m in Sources */,
 				5E6116AD2A6A885C0023024A /* ImageResizerChatVT.mm in Sources */,
 			);
@@ -367,7 +371,11 @@
 		58B511F01A9E6C8500147676 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
+				DOCC_EXTRACT_OBJC_INFO_FOR_SWIFT_SYMBOLS = YES;
+				DOCC_EXTRACT_SWIFT_INFO_FOR_OBJC_SYMBOLS = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -378,6 +386,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Chatvt;
 				SKIP_INSTALL = YES;
+				SWIFT_DISABLE_SAFETY_CHECKS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Chatvt-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -387,7 +396,11 @@
 		58B511F11A9E6C8500147676 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
+				DOCC_EXTRACT_OBJC_INFO_FOR_SWIFT_SYMBOLS = YES;
+				DOCC_EXTRACT_SWIFT_INFO_FOR_OBJC_SYMBOLS = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -398,6 +411,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Chatvt;
 				SKIP_INSTALL = YES;
+				SWIFT_DISABLE_SAFETY_CHECKS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Chatvt-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
