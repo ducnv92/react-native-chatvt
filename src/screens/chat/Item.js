@@ -101,9 +101,15 @@ const VoiceItem = function (props) {
     props.item.sender === appStore.user.type + '_' + appStore.user.user_id;
   const [isPlay, setIsPlay] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentTime, setCurrentTime] = useState('00:00');
+  let intervalTime = null;
 
   useEffect(() => {
-    return () => {};
+    return () => {
+      if(intervalTime){
+        clearInterval(intervalTime)
+      }
+    };
   }, []);
 
   return (
@@ -142,6 +148,7 @@ const VoiceItem = function (props) {
                         'FinishedPlaying',
                         (finishedPlaying) => {
                           setIsPlay(false);
+                          clearInterval(intervalTime)
                           _onFinishedPlayingSubscription.remove();
                           _onFinishedLoadingSubscription.remove();
                           _onFinishedLoadingFileSubscription.remove();
@@ -188,6 +195,15 @@ const VoiceItem = function (props) {
                         ? props.item.attachmentLocal[0].uri
                         : props.item.attachments[0]?.url
                     );
+                    intervalTime = setInterval(async ()=>{
+                      const info = await SoundPlayer.getInfo() // Also, you need to await this because it is async
+                      console.log('getInfo', info)
+                      const secs = Math.floor(info.currentTime)
+                      const minutes = Math.floor(secs / 60);
+                      const seconds = secs % 60;
+
+                      setCurrentTime(('0' + minutes).slice(-2)+':'+('0' + seconds).slice(-2))
+                    }, 1000)
                   } catch (e) {
                     console.log(e);
                   }
@@ -213,10 +229,11 @@ const VoiceItem = function (props) {
             />
           </TouchableOpacity>
           <Image
-            source={require('../../assets/ic_wave_white.png')}
-            style={{ flex: 1, height: 32, resizeMode: 'contain' }}
+            source={require('../../assets/ic_wave.png')}
+            style={{ flex: 1, marginHorizontal: 16,  height: 16, resizeMode: 'contain', tintColor: right?'white': '#B5B4B8' }}
+            tintColor={right?'white': '#B5B4B8'}
           />
-          {/*<Text style={{fontWeight: '500', fontSize: 15, color: 'white'}}>{`0:05`}</Text>*/}
+          <Text style={{textAlign: 'right', fontWeight: '500', fontSize: 15, color: 'white', width: 45}}>{currentTime}</Text>
         </View>
       </ContainChatItem>
     </View>
@@ -389,6 +406,7 @@ const MessageItem = function (props) {
                               height:
                                 item.attachmentLocal.length === 1 ? 200 : 120,
                             }}
+                            LoadingIndicatorComponent={ActivityIndicator}
                           />
                           <TouchableOpacity
                             style={{

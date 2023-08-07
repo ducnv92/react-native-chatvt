@@ -431,7 +431,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                             resizeMode: 'center',
                             marginLeft: 10,
                           }}
-                          source={require('../../assets/avatar_default.png')}
+                          source={item.includes('VTM')? require('../../assets/avatar_default.png'): require('../../assets/avatar_default_customer.png')}
                         />
                       }
                     </>
@@ -516,7 +516,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
             >
               <Image
                 style={{ height: 48, width: 48, resizeMode: 'center' }}
-                source={require('../../assets/avatar_default.png')}
+                source={appStore.appId !=='VTMan'? require('../../assets/avatar_default.png'): require('../../assets/avatar_default_customer.png')}
               />
               {receiver.state?.includes('ONLINE') && (
                 <Image
@@ -578,7 +578,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                           resizeMode: 'center',
                           marginLeft: 10,
                         }}
-                        source={require('../../assets/avatar_default.png')}
+                        source={item.includes('VTM')? require('../../assets/avatar_default.png'): require('../../assets/avatar_default_customer.png')}
                       />
                     }
                   </>

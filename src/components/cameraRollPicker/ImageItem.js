@@ -61,17 +61,26 @@ class ImageItem extends Component {
 
   }
 
+  arrayObjectIndexOf = (array, property, value) => array.map(o => o[property]).indexOf(value);
 
   render() {
     const {
-      item, selected, selectedMarker, imageMargin,
+      item, selected, selectedMarker, imageMargin, selectedList,
     } = this.props;
+    const { image } = item.node;
+
+    const indexSelected = this.arrayObjectIndexOf(selectedList?selectedList:[], 'uri', image.uri);
+
 
     const marker =  <View
       style={[styles.marker, { width: 20, height: 20, backgroundColor: selected?colors.primary: 'transparent'  }]}
-    />;
+    >
+      {
+        selected &&
+        <Text style={{fontWeight: '600', fontSize: 15, color: 'white', marginTop: -4, textAlign: 'center'}}>{indexSelected+1}</Text>
+      }
+    </View>;
 
-    const { image } = item.node;
 
     return (
       <TouchableOpacity
