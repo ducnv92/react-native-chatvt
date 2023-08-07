@@ -39,7 +39,7 @@ import Toast, { BaseToast } from 'react-native-toast-message';
 import EmojiPicker from 'react-native-emoji-picker-staltz';
 import inputStore from './InputStore';
 import InputStore from './InputStore';
-let {height, width} = Dimensions.get('window');
+let { height, width } = Dimensions.get('window');
 import { FlashList } from "../../components/flashlist";
 export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
@@ -54,16 +54,16 @@ export const ChatScreen = observer(function ChatScreen(props) {
   useEffect(() => {
     chatStore.quote = props.order
       ? {
-          _id: uuid.v4(),
-          conversation_id: conversation._id,
-          text: 'QUOTE_ORDER',
-          type: 'QUOTE_ORDER',
-          order_number: props.order.ORDER_NUMBER,
-          has_attachment: false,
-          order_info: {
-            vtp_order: props.order,
-          },
-        }
+        _id: uuid.v4(),
+        conversation_id: conversation._id,
+        text: 'QUOTE_ORDER',
+        type: 'QUOTE_ORDER',
+        order_number: props.order.ORDER_NUMBER,
+        has_attachment: false,
+        order_info: {
+          vtp_order: props.order,
+        },
+      }
       : undefined;
 
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -86,7 +86,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
         (i) => i.user_id !== appStore.user.user_id
       );
       setReceiver(receiver ? receiver : {});
-    } catch (e) {}
+    } catch (e) { }
     setTimeout(() => {
       chatStore.page = 0;
       chatStore.getData({
@@ -136,38 +136,38 @@ export const ChatScreen = observer(function ChatScreen(props) {
   const sendImages = async () => {
     try {
       chatStore.showAttachModal = false;
-        try {
-          if (Platform.OS === 'ios') {
-            for (let i = 0; i < chatStore.images.length; i++) {
-              const regex = /:\/\/(.{36})\//i;
-              const result = chatStore.images[i].uri.match(regex);
-              const photoDetail = await CameraRoll.getPhotoByInternalID(
-                result[1],
-                {}
-              );
-              chatStore.images[i].uri = photoDetail.node.image.filepath;
-            }
+      try {
+        if (Platform.OS === 'ios') {
+          for (let i = 0; i < chatStore.images.length; i++) {
+            const regex = /:\/\/(.{36})\//i;
+            const result = chatStore.images[i].uri.match(regex);
+            const photoDetail = await CameraRoll.getPhotoByInternalID(
+              result[1],
+              {}
+            );
+            chatStore.images[i].uri = photoDetail.node.image.filepath;
           }
-        } catch (e) {
-          alert(e);
         }
+      } catch (e) {
+        alert(e);
+      }
 
-        const message = {
-          id: uuid.v4(),
-          type: 'MESSAGE',
-          attachmentLocal: chatStore.images,
-          has_attachment: true,
-          attachment_ids: [],
-          text: '',
-          status: 'sending',
-          order_number: props.data.order_info?.order_number,
-          sender: appStore.user.type + '_' + appStore.user.user_id,
-          conversation_id: props.data._id,
-        };
-        chatStore.images = [];
-        chatStore.data.unshift(message);
-         chatStore.sendMessage(message);
-    } catch (e) {}
+      const message = {
+        id: uuid.v4(),
+        type: 'MESSAGE',
+        attachmentLocal: chatStore.images,
+        has_attachment: true,
+        attachment_ids: [],
+        text: '',
+        status: 'sending',
+        order_number: props.data.order_info?.order_number,
+        sender: appStore.user.type + '_' + appStore.user.user_id,
+        conversation_id: props.data._id,
+      };
+      chatStore.images = [];
+      chatStore.data.unshift(message);
+      chatStore.sendMessage(message);
+    } catch (e) { }
   };
 
   return (
@@ -213,15 +213,15 @@ export const ChatScreen = observer(function ChatScreen(props) {
                         color: 'white',
                       }}
                     >
-                      {conversation.type === 'GROUP'
-                        ? 'Đơn ' + conversation.order_numbers[0]
-                        : conversation.type === 'PAIR'
-                        ? receiver.first_name + ' ' + receiver.last_name
-                        : conversation.type === 'PAIR_SUPPORT'
-                        ? 'Chăm sóc khách hàng'
-                        : 'Không tên'}
+                      {conversation?.type === 'GROUP'
+                        ? 'Đơn ' + conversation?.order_numbers[0]
+                        : conversation?.type === 'PAIR'
+                          ? receiver?.first_name + ' ' + receiver?.last_name
+                          : conversation?.type === 'PAIR_SUPPORT'
+                            ? 'Chăm sóc khách hàng'
+                            : 'Không tên'}
                     </Text>
-                    {conversation.type === 'PAIR' && (
+                    {conversation?.type === 'PAIR' && (
                       <Image
                         style={{
                           height: 14,
@@ -234,7 +234,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                     )}
                   </TouchableOpacity>
                 </View>
-                {conversation.type === 'PAIR' && (
+                {conversation?.type === 'PAIR' && (
                   <View
                     style={{
                       flexDirection: 'row',
@@ -243,15 +243,22 @@ export const ChatScreen = observer(function ChatScreen(props) {
                     }}
                   >
                     {receiver.state?.includes('ONLINE') && (
-                      <View
-                        style={{
-                          height: 8,
-                          width: 8,
-                          marginRight: 8,
-                          borderRadius: 4,
-                          backgroundColor: '#30F03B',
-                        }}
-                      />
+                      <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center'
+                      }}>
+                        <View
+                          style={{
+                            height: 8,
+                            width: 8,
+                            marginRight: 8,
+                            borderRadius: 4,
+                            backgroundColor: '#30F03B',
+                          }}
+                        />
+                        {/* <Text style={{ fontSize: 13, color: "white" }}>{
+                          'Đang hoạt động'}</Text> */}
+                      </View>
                     )}
 
                     <Text
@@ -290,45 +297,45 @@ export const ChatScreen = observer(function ChatScreen(props) {
                 />
               </TouchableOpacity>
             </View>
-            <View style={{flex: 1, backgroundColor: 'white'}}>
+            <View style={{ flex: 1, backgroundColor: 'white' }}>
 
-                <FlashList
-                  estimatedItemSize={200}
-                  forceNonDeterministicRendering={true}
-                  maintainVisibleContentPosition={{
-                    autoscrollToTopThreshold: 10,
-                    minIndexForVisible: 1,
-                  }}
-                  style={{ flex: 1, backgroundColor: 'white',}}
-                  data={chatStore.data}
-                  extraData={chatStore.data}
-                  inverted={true}
-                  renderItem={({ item, index }) => (
-                    <ChatItem  item={item} index={index} conversation={conversation} />
-                  )}
-                  getItemType={(item, index) => {
-                    if(index=== 0) {
-                      return 0
-                    }
-                    return item?.type;
-                  }}
-                  onEndReached={() => handleLoadMore()}
-                  onEndReachedThreshold={0.5}
-                  ListHeaderComponent={() => <View style={{ height: 8 }} />}
-                  removeClippedSubviews={true}
-                  keyExtractor={(item) =>
-                    item._id !== undefined ? item._id : item.id
+              <FlashList
+                estimatedItemSize={200}
+                forceNonDeterministicRendering={true}
+                maintainVisibleContentPosition={{
+                  autoscrollToTopThreshold: 10,
+                  minIndexForVisible: 1,
+                }}
+                style={{ flex: 1, backgroundColor: 'white', }}
+                data={chatStore.data}
+                extraData={chatStore.data}
+                inverted={true}
+                renderItem={({ item, index }) => (
+                  <ChatItem item={item} index={index} conversation={conversation} />
+                )}
+                getItemType={(item, index) => {
+                  if (index === 0) {
+                    return 0
                   }
-                  refreshing={chatStore.isLoading}
-                  onRefresh={() => {
-                    chatStore.page = 0;
-                    chatStore.getData({
-                      conversation_id: conversation._id,
-                    });
-                  }}
-                />
+                  return item?.type;
+                }}
+                onEndReached={() => handleLoadMore()}
+                onEndReachedThreshold={0.5}
+                ListHeaderComponent={() => <View style={{ height: 8 }} />}
+                removeClippedSubviews={true}
+                keyExtractor={(item) =>
+                  item._id !== undefined ? item._id : item.id
+                }
+                refreshing={chatStore.isLoading}
+                onRefresh={() => {
+                  chatStore.page = 0;
+                  chatStore.getData({
+                    conversation_id: conversation._id,
+                  });
+                }}
+              />
             </View>
-            <BottomChat {...props}/>
+            <BottomChat {...props} />
           </KeyboardAvoidingView>
 
           <AttachScreen {...props} />
@@ -417,140 +424,140 @@ const BottomChat = observer(function BottomChat(props) {
   const isOrderSuccess = () => {
     return false
   }
-  return(
+  return (
     <>
-    <TouchableOpacity
-      disabled={!isOrderSuccess()}
-      onPress={() => {
-        Toast.show({
-          type: 'info',
-          position: 'bottom',
-          text1: 'Chat với bưu tá lấy không khả dụng do đơn đã',
-        });
-      }}
-      style={{
-        minHeight: 56,
-        backgroundColor: '#F8F8FA',
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-        borderTopWidth: 1,
-        borderColor: '#DCE6F0',
-      }}
-    >
       <TouchableOpacity
-        disabled={isOrderSuccess()}
-        onPress={handlePresentModalPress}
-        style={{
-          width: 56,
-          height: 56,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Image
-          source={require('../../assets/ic_attach.png')}
-          tintColor={isOrderSuccess() ? '#B5B4B8' : colors.primary}
-          style={{
-            height: 24,
-            width: 24,
-            resizeMode: 'contain',
-            tintColor: isOrderSuccess() ? '#B5B4B8' : colors.primary,
-          }}
-        />
-      </TouchableOpacity>
-      <View style={{ width: 1, height: '100%' }}>
-        <View
-          style={{
-            width: 1,
-            backgroundColor: '#DCE6F0',
-            marginVertical: 14,
-            flex: 1,
-          }}
-        />
-      </View>
-      <Input/>
-      <TouchableOpacity
-        disabled={isOrderSuccess()}
+        disabled={!isOrderSuccess()}
         onPress={() => {
-          if (chatStore.keyboardEmoji) {
-            chatStore.keyboardEmoji = false;
-          } else {
-            chatStore.keyboardEmoji = true;
-            Keyboard.dismiss();
-          }
+          Toast.show({
+            type: 'info',
+            position: 'bottom',
+            text1: 'Chat với bưu tá lấy không khả dụng do đơn đã',
+          });
         }}
         style={{
-          width: 40,
-          height: 56,
-          alignItems: 'center',
-          justifyContent: 'center',
+          minHeight: 56,
+          backgroundColor: '#F8F8FA',
+          flexDirection: 'row',
+          alignItems: 'flex-end',
+          borderTopWidth: 1,
+          borderColor: '#DCE6F0',
         }}
       >
-        <Image
-          source={
-            isOrderSuccess()
-              ? require('../../assets/ic_emoji_disabled.png')
-              : require('../../assets/ic_emoj.png')
-          }
-          style={{
-            height: 24,
-            width: 24,
-            resizeMode: 'contain',
-          }}
-        />
-      </TouchableOpacity>
-      {/*<TouchableOpacity*/}
-      {/*  onPress={() => sendMap()}*/}
-      {/*  style={{ width: 40, height: 56, alignItems: 'center', justifyContent: 'center' }}>*/}
-      {/*  <Image source={require('../../assets/nav_location_active.png')} style={{ height: 24, width: 24, resizeMode: "contain" }} />*/}
-      {/*</TouchableOpacity>*/}
-      {/*<TouchableOpacity*/}
-      {/*  onPress={()=>pickDocument()}*/}
-      {/*  style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>*/}
-      {/*  <Image source={require('../../assets/nav_document.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>*/}
-      {/*</TouchableOpacity>*/}
-
-      {inputStore.input.trim() !== '' && !isOrderSuccess() && (
         <TouchableOpacity
-          onPress={sendMessage}
-          style={{
-            width: 40,
-            height: 56,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Image
-            source={require('../../assets/ic_send.png')}
-            style={{ height: 24, width: 24, resizeMode: 'contain' }}
-          />
-        </TouchableOpacity>
-      )}
-      {inputStore.input.trim() === '' && (
-        <RecordButton
           disabled={isOrderSuccess()}
-          {...props}
+          onPress={handlePresentModalPress}
           style={{
-            width: 40,
+            width: 56,
             height: 56,
             alignItems: 'center',
             justifyContent: 'center',
           }}
         >
           <Image
-            source={require('../../assets/ic_microphone.png')}
+            source={require('../../assets/ic_attach.png')}
+            tintColor={isOrderSuccess() ? '#B5B4B8' : colors.primary}
             style={{
               height: 24,
               width: 24,
               resizeMode: 'contain',
               tintColor: isOrderSuccess() ? '#B5B4B8' : colors.primary,
             }}
-            tintColor={isOrderSuccess() ? '#B5B4B8' : colors.primary}
           />
-        </RecordButton>
-      )}
+        </TouchableOpacity>
+        <View style={{ width: 1, height: '100%' }}>
+          <View
+            style={{
+              width: 1,
+              backgroundColor: '#DCE6F0',
+              marginVertical: 14,
+              flex: 1,
+            }}
+          />
+        </View>
+        <Input />
+        <TouchableOpacity
+          disabled={isOrderSuccess()}
+          onPress={() => {
+            if (chatStore.keyboardEmoji) {
+              chatStore.keyboardEmoji = false;
+            } else {
+              chatStore.keyboardEmoji = true;
+              Keyboard.dismiss();
+            }
+          }}
+          style={{
+            width: 40,
+            height: 56,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Image
+            source={
+              isOrderSuccess()
+                ? require('../../assets/ic_emoji_disabled.png')
+                : require('../../assets/ic_emoj.png')
+            }
+            style={{
+              height: 24,
+              width: 24,
+              resizeMode: 'contain',
+            }}
+          />
+        </TouchableOpacity>
+        {/*<TouchableOpacity*/}
+        {/*  onPress={() => sendMap()}*/}
+        {/*  style={{ width: 40, height: 56, alignItems: 'center', justifyContent: 'center' }}>*/}
+        {/*  <Image source={require('../../assets/nav_location_active.png')} style={{ height: 24, width: 24, resizeMode: "contain" }} />*/}
+        {/*</TouchableOpacity>*/}
+        {/*<TouchableOpacity*/}
+        {/*  onPress={()=>pickDocument()}*/}
+        {/*  style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>*/}
+        {/*  <Image source={require('../../assets/nav_document.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>*/}
+        {/*</TouchableOpacity>*/}
 
-    </TouchableOpacity>
+        {inputStore.input.trim() !== '' && !isOrderSuccess() && (
+          <TouchableOpacity
+            onPress={sendMessage}
+            style={{
+              width: 40,
+              height: 56,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Image
+              source={require('../../assets/ic_send.png')}
+              style={{ height: 24, width: 24, resizeMode: 'contain' }}
+            />
+          </TouchableOpacity>
+        )}
+        {inputStore.input.trim() === '' && (
+          <RecordButton
+            disabled={isOrderSuccess()}
+            {...props}
+            style={{
+              width: 40,
+              height: 56,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Image
+              source={require('../../assets/ic_microphone.png')}
+              style={{
+                height: 24,
+                width: 24,
+                resizeMode: 'contain',
+                tintColor: isOrderSuccess() ? '#B5B4B8' : colors.primary,
+              }}
+              tintColor={isOrderSuccess() ? '#B5B4B8' : colors.primary}
+            />
+          </RecordButton>
+        )}
+
+      </TouchableOpacity>
       {chatStore.keyboardEmoji && (
         // <EmojiKeyboard
         //   styles={{
@@ -564,7 +571,7 @@ const BottomChat = observer(function BottomChat(props) {
         <EmojiPicker
           hideClearButton={true}
           onEmojiSelected={(emoji) => {
-            if(emoji!==null) {
+            if (emoji !== null) {
               inputStore.input += emoji
             }
           }}
@@ -581,6 +588,6 @@ const BottomChat = observer(function BottomChat(props) {
           ]}
         />
       )}
-      </>
+    </>
   )
 })

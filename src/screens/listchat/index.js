@@ -195,7 +195,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
         (i) => i.user_id === appStore.user.type + '_' + appStore.user.user_id
       );
       setting = mySetting ? mySetting : {};
-    } catch (e) {}
+    } catch (e) { }
     let receiver = {};
     let isMe = false;
     try {
@@ -205,7 +205,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
       receiver = item.detail_participants.find(
         (i) => i.user_id !== appStore.user.user_id
       );
-    } catch (e) {}
+    } catch (e) { }
 
     const rightButtons = [
       <TouchableOpacity
@@ -213,7 +213,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           if (setting.is_pin) {
             listChatStore.unPin({ conversation_id: item._id }, () => intLoad());
           } else {
-            listChatStore.pin({ conversation_id: item._id }, () =>intLoad());
+            listChatStore.pin({ conversation_id: item._id }, () => intLoad());
           }
         }}
         style={{
@@ -423,7 +423,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   {item.message?.read_by?.map((item) => (
                     <>
                       {
-                        item!==(appStore.user.type + '_' + appStore.user.user_id) &&
+                        item !== (appStore.user.type + '_' + appStore.user.user_id) &&
                         <Image
                           style={{
                             height: 16,
@@ -431,7 +431,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                             resizeMode: 'center',
                             marginLeft: 10,
                           }}
-                          source={item.includes('VTM')? require('../../assets/avatar_default.png'): require('../../assets/avatar_default_customer.png')}
+                          source={item.includes('VTM') ? require('../../assets/avatar_default.png') : require('../../assets/avatar_default_customer.png')}
                         />
                       }
                     </>
@@ -516,7 +516,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
             >
               <Image
                 style={{ height: 48, width: 48, resizeMode: 'center' }}
-                source={appStore.appId !=='VTMan'? require('../../assets/avatar_default.png'): require('../../assets/avatar_default_customer.png')}
+                source={receiver?.type === 'VTMAN' ? require('../../assets/avatar_default.png') : require('../../assets/avatar_default_customer.png')}
               />
               {receiver.state?.includes('ONLINE') && (
                 <Image
@@ -570,7 +570,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                 {item.message?.read_by?.map((item) => (
                   <>
                     {
-                      item!==(appStore.user.type + '_' + appStore.user.user_id) &&
+                      item !== (appStore.user.type + '_' + appStore.user.user_id) &&
                       <Image
                         style={{
                           height: 16,
@@ -578,7 +578,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                           resizeMode: 'center',
                           marginLeft: 10,
                         }}
-                        source={item.includes('VTM')? require('../../assets/avatar_default.png'): require('../../assets/avatar_default_customer.png')}
+                        source={item.includes('VTM') ? require('../../assets/avatar_default.png') : require('../../assets/avatar_default_customer.png')}
                       />
                     }
                   </>

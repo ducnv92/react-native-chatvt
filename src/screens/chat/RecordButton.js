@@ -50,7 +50,7 @@ export class RecordButton extends React.Component {
     try {
       this.audioRecorderPlayer.stopRecorder();
       this.audioRecorderPlayer.removeRecordBackListener();
-    } catch (e) {}
+    } catch (e) { }
   }
 
   startRecord = async () => {
@@ -58,10 +58,10 @@ export class RecordButton extends React.Component {
       requestPermission(
         Platform.OS === 'android'
           ? [
-              PERMISSIONS.ANDROID.RECORD_AUDIO,
-              PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-              PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-            ]
+            PERMISSIONS.ANDROID.RECORD_AUDIO,
+            PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+            PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+          ]
           : [PERMISSIONS.IOS.MICROPHONE],
         async () => {
           this.setState({
@@ -90,7 +90,7 @@ export class RecordButton extends React.Component {
           });
         }
       );
-    } catch (e) {}
+    } catch (e) { }
   };
 
   sendRecorded = async () => {
@@ -260,7 +260,7 @@ export class RecordButton extends React.Component {
                 />
               }
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {
                 if (this.state.isRecording) {
                   this.onStopRecord();
@@ -279,7 +279,7 @@ export class RecordButton extends React.Component {
                 source={require('../../assets/ic_pause.png')}
                 style={{ height: 24, width: 24, resizeMode: 'contain' }}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <Image
               source={require('../../assets/ic_wave.png')}
               style={{ flex: 1, height: 32, resizeMode: 'contain' }}
@@ -303,7 +303,8 @@ export class RecordButton extends React.Component {
               </Text>
             </View>
             <TouchableOpacity
-              onPress={() => {
+              onPress={async () => {
+                await this.onStopRecord()
                 if (this.state.fileRecorded && !this.state.isRecording) {
                   this.sendRecorded();
                   this.setState({
@@ -319,13 +320,12 @@ export class RecordButton extends React.Component {
                 justifyContent: 'center',
               }}
             >
-              {this.state.fileRecorded !== undefined &&
-                !this.state.isRecording && (
-                  <Image
-                    source={require('../../assets/ic_send.png')}
-                    style={{ height: 24, width: 24, resizeMode: 'contain' }}
-                  />
-                )}
+              {this.state.isRecording && (
+                <Image
+                  source={require('../../assets/ic_send.png')}
+                  style={{ height: 24, width: 24, resizeMode: 'contain' }}
+                />
+              )}
             </TouchableOpacity>
           </View>
         )}
