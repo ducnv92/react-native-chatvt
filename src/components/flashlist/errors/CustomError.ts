@@ -1,3 +1,4 @@
+// @ts-nocheck
 export default class CustomError extends Error {
   constructor(exception: Exception) {
     super(`${exception.type}: ${exception.message}`);

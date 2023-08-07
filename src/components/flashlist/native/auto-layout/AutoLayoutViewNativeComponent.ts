@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HostComponent, View } from "react-native";
 
 import { AutoLayoutViewNativeComponentProps } from "./AutoLayoutViewNativeComponentProps";

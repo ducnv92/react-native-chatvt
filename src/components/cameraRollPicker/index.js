@@ -205,12 +205,14 @@ class CameraRollPicker extends Component {
 
     const { uri } = item.node.image;
     const isSelected = (arrayObjectIndexOf(selected, 'uri', uri) >= 0);
+    console.log('isSelected', isSelected)
 
     return (
       <ImageItem
         key={uri}
         item={item}
         selected={isSelected}
+        selectedList={selected}
         imageMargin={imageMargin}
         selectedMarker={selectedMarker}
         imagesPerRow={imagesPerRow}
@@ -229,6 +231,7 @@ class CameraRollPicker extends Component {
     return (<Row
       rowData={item}
       isSelected={isSelected}
+      selected={this.state.selected}
       selectImage={this.selectImage}
       imagesPerRow={this.props.imagesPerRow}
       containerWidth={this.props.containerWidth}

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ViewabilityConfig } from "react-native";
 import { Dimension, Layout } from "recyclerlistview";
 

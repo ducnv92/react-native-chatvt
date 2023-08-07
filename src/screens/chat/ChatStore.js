@@ -254,6 +254,9 @@ class ChatStore {
           item.status = 'sent'
           item.attachmentLocal = []
           item.attachments = response.data.data?.message?.attachments? response.data.data?.message?.attachments:[]
+          item.id = undefined
+          item._id = response.data.data?.message?._id
+
         }
         return item
       })]

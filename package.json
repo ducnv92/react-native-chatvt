@@ -1,6 +1,6 @@
 {
     "name": "react-native-chatvt",
-    "version": "0.1.97",
+    "version": "0.1.99",
     "description": "test",
     "main": "lib/commonjs/index",
     "module": "lib/module/index",
@@ -148,7 +148,7 @@
         "react-native-swipeable": "^0.6.0",
         "react-native-toast-message": "^2.1.6",
         "react-native-uuid": "^2.0.1",
-        "recyclerlistview": "^4.2.0",
+        "recyclerlistview": "https://github.com/ducnv92/recyclerlistview/",
         "rn-emoji-keyboard": "^1.5.0",
         "socket.io-client": "^4.6.2",
         "string.fromcodepoint": "~0.2.1",

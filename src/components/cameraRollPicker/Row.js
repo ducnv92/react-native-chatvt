@@ -26,6 +26,7 @@ class Row extends PureComponent {
       selectedMarker,
       imagesPerRow,
       containerWidth,
+      selected,
     } = this.props;
 
     const { uri } = item.node.image;
@@ -34,6 +35,7 @@ class Row extends PureComponent {
       <ImageItem
         key={uri}
         item={item}
+        selectedList={selected}
         selected={isSelected}
         imageMargin={imageMargin}
         selectedMarker={selectedMarker}

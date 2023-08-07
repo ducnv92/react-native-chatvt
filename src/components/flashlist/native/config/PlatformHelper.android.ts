@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BaseItemAnimator } from "recyclerlistview";
 
 const PlatformConfig = {

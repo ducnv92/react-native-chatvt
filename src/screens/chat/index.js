@@ -301,10 +301,17 @@ export const ChatScreen = observer(function ChatScreen(props) {
                   }}
                   style={{ flex: 1, backgroundColor: 'white',}}
                   data={chatStore.data}
+                  extraData={chatStore.data}
                   inverted={true}
                   renderItem={({ item, index }) => (
                     <ChatItem  item={item} index={index} conversation={conversation} />
                   )}
+                  getItemType={(item, index) => {
+                    if(index=== 0) {
+                      return 0
+                    }
+                    return item?.type;
+                  }}
                   onEndReached={() => handleLoadMore()}
                   onEndReachedThreshold={0.5}
                   ListHeaderComponent={() => <View style={{ height: 8 }} />}

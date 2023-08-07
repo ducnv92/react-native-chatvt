@@ -9022,10 +9022,9 @@ rechoir@^0.6.2:
   dependencies:
     resolve "^1.1.6"
 
-recyclerlistview@^4.2.0:
+"recyclerlistview@https://github.com/ducnv92/recyclerlistview/":
   version "4.2.0"
-  resolved "https://registry.yarnpkg.com/recyclerlistview/-/recyclerlistview-4.2.0.tgz#a140149aaa470c9787a1426452651934240d69ef"
-  integrity sha512-uuBCi0c+ggqHKwrzPX4Z/mJOzsBbjZEAwGGmlwpD/sD7raXixdAbdJ6BTcAmuWG50Cg4ru9p12M94Njwhr/27A==
+  resolved "https://github.com/ducnv92/recyclerlistview/#ae5bf1d40361eca7fde8b9b85297a760551bc179"
   dependencies:
     lodash.debounce "4.0.8"
     prop-types "15.8.1"

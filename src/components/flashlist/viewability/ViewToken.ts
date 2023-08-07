@@ -1,3 +1,4 @@
+// @ts-nocheck
 export default interface ViewToken {
   item: any;
   key: string;
