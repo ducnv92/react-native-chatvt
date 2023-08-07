@@ -1,6 +1,6 @@
 {
     "name": "react-native-chatvt",
-    "version": "0.1.104",
+    "version": "0.1.103",
     "description": "test",
     "main": "lib/commonjs/index",
     "module": "lib/module/index",
@@ -135,7 +135,6 @@
         "moment": "^2.29.4",
         "nanoid": "^3.1.20",
         "react-native-builder-bob": "0.17.0",
-        "react-native-chatvt": "https://github.com/ducnv92/react-native-chatvt",
         "react-native-clipboard-toast": "^1.0.0",
         "react-native-emoji-picker-staltz": "^1.0.0",
         "react-native-file-viewer": "^2.1.5",
