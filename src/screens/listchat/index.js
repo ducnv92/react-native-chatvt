@@ -24,6 +24,7 @@ import { BottomSheetModalProvider } from '../../components/bottomSheet/bottom-sh
 export const ListChatScreen = observer(function ListChatScreen(props) {
   const [showSearch, setShowSearch] = useState(false);
   const bottomSheetModalRef = useRef();
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     listChatStore.search = '';
@@ -211,9 +212,25 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
       <TouchableOpacity
         onPress={() => {
           if (setting.is_pin) {
-            listChatStore.unPin({ conversation_id: item._id }, () => intLoad());
+            listChatStore.unPin({ conversation_id: item._id }, () => {
+              item.settings = item.settings.map(i=>{
+                i.is_pin = false;
+                return i
+              })
+              listChatStore.data.unshift(item)
+              listChatStore.dataPin.splice(index, 1)
+            });
+            listChatStore.data = [...listChatStore.data]
           } else {
-            listChatStore.pin({ conversation_id: item._id }, () => intLoad());
+            listChatStore.pin({ conversation_id: item._id }, () => {
+              item.settings = item.settings.map(i=>{
+                i.is_pin = true;
+                return i
+              })
+              listChatStore.dataPin.unshift(item)
+              listChatStore.data.splice(index, 1)
+            });
+            listChatStore.data = [...listChatStore.data]
           }
         }}
         style={{
@@ -255,7 +272,18 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
               conversation_id: item._id,
               is_show: !setting.is_hide_notification,
             },
-            () => intLoad()
+            () => {
+              item.settings = item.settings.map(i=>{
+                i.is_hide_notification = !i.is_hide_notification
+                return i
+              })
+              listChatStore.data = [...listChatStore.data]
+              //   item.settings = item.settings.map(i=>{
+              //     i.is_pin = true;
+              //     return i
+              //   })
+              // listChatStore.data = [...listChatStore.data]
+            }
           );
         }}
         style={{
@@ -667,6 +695,17 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
     );
   }
 
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      listChatStore.search = query;
+      listChatStore.page = 0;
+      listChatStore.getData({});
+    }, 1000);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [query]);
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.primary }}>
       <KeyboardAvoidingView
@@ -703,13 +742,9 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     : appStore.lang.list_chat.placeholder_search_VTM
                 }
                 placeholderTextColor={'white'}
-                value={listChatStore.search}
+                value={query}
                 autoFocus={true}
-                onChangeText={(text) => {
-                  listChatStore.search = text;
-                  listChatStore.page = 0;
-                  listChatStore.getData({});
-                }}
+                onChangeText={setQuery}
                 style={{
                   fontWeight: '500',
                   fontSize: scale(15),
@@ -720,6 +755,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
               {listChatStore.search !== '' && (
                 <TouchableOpacity
                   onPress={() => {
+                    setQuery('')
                     listChatStore.search = '';
                     listChatStore.page = 0;
                     listChatStore.getData({});
@@ -740,6 +776,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
               <TouchableOpacity
                 onPress={() => {
                   setShowSearch(false);
+                  setQuery('')
                   listChatStore.search = '';
                   listChatStore.page = 0;
                   listChatStore.getData({});
@@ -800,7 +837,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   textAlign: 'center',
                 }}
               >
-                {appStore.lang.list_chat.message}
+                {appStore.appId==='VTPost'?appStore.lang.list_chat.message:'Trò chuyện'}
               </Text>
               <TouchableOpacity
                 onPress={() => setShowSearch(true)}
@@ -827,7 +864,9 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           }}
           ListHeaderComponent={renderHeader}
           keyExtractor={(item) => item._id}
-          onEndReached={() => listChatStore.getData({})}
+          onEndReached={() => setTimeout(()=>{
+            listChatStore.getData({})
+          }, 150)}
           style={{ flex: 1, backgroundColor: 'white' }}
           data={listChatStore.data}
           ItemSeparatorComponent={() => (

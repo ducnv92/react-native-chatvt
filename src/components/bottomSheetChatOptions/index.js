@@ -29,7 +29,7 @@ import { Navigation } from 'react-native-navigation';
 import services from '../../services';
 
 const BottomSheetChatOptions = React.forwardRef((props, ref) => {
-  const snapPoints = useMemo(() => ['30%'], []);
+  const snapPoints = useMemo(() => ['40%'], []);
   const bottomSheetRef = useRef();
   const [data, setData] = useState([]);
   const [order, setOrder] = useState({});
@@ -88,6 +88,35 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
   const toChatGroup = () => {
     try {
       ref?.current?.dismiss();
+      appStore.createConversation(
+        {
+          order_number: order.ORDER_NUMBER,
+          chat_type: 'GROUP',
+        },
+        (conversation) => {
+          Navigation.push(props.componentId, {
+            component: {
+              name: 'ChatScreen',
+              options: {
+                popGesture: false,
+                bottomTabs: {
+                  visible: false,
+                },
+                topBar: {
+                  visible: false,
+                  height: 0,
+                },
+              },
+              passProps: {
+                data: conversation,
+                order: order,
+              },
+            },
+          });
+        },
+        (error) => alert(error)
+      );
+
     } catch (e) {}
   };
 
@@ -108,14 +137,14 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
     }
   };
 
-  const toChatWithSender = async (order_code) => {
+  const toChatWithCustomer = async (order_code, type) => {
     try {
       ref?.current?.dismiss();
     } catch (e) {}
     appStore.createConversation(
       {
-        vtp_user_ids: [await getUserIdFromOrder(order_code)],
-        order_number: order.ma_phieugui,
+        order_number: order_code,
+        chat_type: type
       },
       (conversation) => {
         Navigation.push(props.componentId, {
@@ -381,7 +410,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
             </View>
             <TouchableOpacity
               onPress={() => {
-                toChatWithSender(order.ma_phieugui);
+                toChatWithCustomer(order.ma_phieugui, 'SENDER')
               }}
               style={{
                 flexDirection: 'row',
@@ -438,7 +467,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
                 try {
                   ref?.current?.dismiss();
                 } catch (e) {}
-                // toChatWithSender(order.tel_khnhan)
+                toChatWithCustomer(order.ma_phieugui, 'RECEIVER')
               }}
               style={{
                 flexDirection: 'row',

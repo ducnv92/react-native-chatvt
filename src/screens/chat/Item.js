@@ -133,7 +133,7 @@ const VoiceItem = function (props) {
             flexDirection: 'row',
             alignItems: 'center',
             overflow: 'hidden',
-            backgroundColor: colors.primary,
+            backgroundColor: right?colors.primary:'#F2F2F2',
           }}
         >
           <TouchableOpacity
@@ -224,7 +224,7 @@ const VoiceItem = function (props) {
               source={
                 isPlay
                   ? require('../../assets/ic_pause.png')
-                  : require('../../assets/ic_play.png')
+                  : (right?require('../../assets/ic_play.png'):require('../../assets/ic_play_left.png'))
               }
               style={{ height: 32, width: 32, resizeMode: 'contain' }}
             />
@@ -234,7 +234,7 @@ const VoiceItem = function (props) {
             style={{ flex: 1, marginHorizontal: 16,  height: 16, resizeMode: 'contain', tintColor: right?'white': '#B5B4B8' }}
             tintColor={right?'white': '#B5B4B8'}
           />
-          <Text style={{textAlign: 'right', fontWeight: '500', fontSize: 15, color: 'white'}}>{currentTime}</Text>
+          <Text style={{textAlign: 'right', fontWeight: '500', fontSize: 15, color: right?'white':colors.neutralText}}>{currentTime}</Text>
         </View>
       </ContainChatItem>
     </View>
@@ -409,7 +409,7 @@ const MessageItem = function (props) {
                             setImageVisible(true);
                           }}
                         >
-                          <Image
+                          <FastImage
                             source={{ uri: attach }}
                             style={{
                               backgroundColor: '#F2F2F2',
@@ -553,7 +553,7 @@ const MessageItem = function (props) {
                             setImageVisible(true);
                           }}
                         >
-                          <Image
+                          <FastImage
                             source={{ uri: attach.url }}
                             style={{
                               borderWidth: 0.5,
@@ -564,6 +564,7 @@ const MessageItem = function (props) {
                               width: item.attachments.length === 1 ? 200 : 120,
                               height: item.attachments.length === 1 ? 200 : 120,
                             }}
+                            LoadingIndicatorComponent={ActivityIndicator}
                           />
                         </TouchableOpacity>
                       );
@@ -1036,7 +1037,7 @@ const OrderItem = function (props) {
         try {
           Navigation.push(appStore.componentId, {
             component: {
-              id: 'chat',
+              id: 'OrderInfomationtScreenID',
               name: 'OrderInfomationtScreen',
               passProps: {
                 orderId: item.order_info?.order_number?item.order_info?.order_number:order?.ORDER_NUMBER,

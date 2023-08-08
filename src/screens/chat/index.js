@@ -433,7 +433,7 @@ const BottomChat = observer(function BottomChat(props) {
           Toast.show({
             type: 'info',
             position: 'bottom',
-            text1: 'Chat với bưu tá lấy không khả dụng do đơn đã',
+            text1: 'Chat với bưu tá lấy không khả dụng do\ntrạng thái đơn không cho phép. ',
           });
         }}
         style={{

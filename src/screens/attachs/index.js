@@ -171,19 +171,19 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
           <TouchableOpacity onPress={() => {
             alert('Tính năng đang phát triển')
           }}>
-            <Image style={{ height: 48, width: 48 }}
+            <Image style={{ height: 48, width: 48, resizeMode: 'contain' }}
               source={require('../../assets/ic_call.png')} />
           </TouchableOpacity>
           <TouchableOpacity style={{ marginLeft: 16 }} onPress={() => {
             Navigation.pop(props.componentId)
           }}>
-            <Image style={{ height: 48, width: 48 }}
+            <Image style={{ height: 48, width: 48, resizeMode: 'contain' }}
               source={require('../../assets/ic_message.png')} />
           </TouchableOpacity>
           <TouchableOpacity style={{ marginLeft: 16 }} onPress={() => {
             alert('Tính năng đang phát triển')
           }}>
-            <Image style={{ height: 48, width: 48 }}
+            <Image style={{ height: 48, width: 48, resizeMode: 'contain' }}
               source={require('../../assets/ic_star.png')} />
           </TouchableOpacity>
         </View>

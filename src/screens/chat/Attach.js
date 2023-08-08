@@ -349,11 +349,12 @@ const LocationMessage =observer(function LocationMessage ( props) {
 
 
   return(
+    <>
     <BottomSheetModal
       ref={bottomSheetModalRef}
       index={0}
       bottomInset={77+insets.bottom}
-      snapPoints={['40%']}
+      snapPoints={['40%', '80%']}
       onDismiss={() => {
         if(chatStore.tab===3){
           chatStore.showAttachModal = false
@@ -382,8 +383,12 @@ const LocationMessage =observer(function LocationMessage ( props) {
         }}
       >
         <Marker
+          draggable
           resizeMode={'contain'}
           coordinate={{latitude: chatStore.location.latitude, longitude: chatStore.location.longitude}}
+          onDragEnd={e => {
+            chatStore.location = e.nativeEvent.coordinate
+          }}
         >
           <Image source={require('../../assets/ic_map_pin.png')}
                  style={{width: 30, height: 30, resizeMode: 'contain'}}
@@ -391,13 +396,16 @@ const LocationMessage =observer(function LocationMessage ( props) {
           />
         </Marker>
       </MapView>
-      <TouchableOpacity
-        onPress={sendMap}
-        style={{ position: 'absolute', zIndex: 99999, bottom: 16, left: 16, right: 16, alignItems: 'center', justifyContent: 'center', padding: 16,  backgroundColor: colors.primary, borderRadius: 10 }}>
-        <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>Chia sẻ vị trí hiện tại</Text>
-      </TouchableOpacity>
+
     </View>
+
     </BottomSheetModal>
+  <TouchableOpacity
+    onPress={sendMap}
+    style={{ position: 'absolute', zIndex: 99999, bottom: 96+insets.bottom, left: 16, right: 16, alignItems: 'center', justifyContent: 'center', padding: 16,  backgroundColor: colors.primary, borderRadius: 10 }}>
+    <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>Chia sẻ vị trí</Text>
+  </TouchableOpacity>
+   </>
 
   )
 })
@@ -440,13 +448,13 @@ export const AttachScreen = observer(function AttachScreen(props) {
       if(Platform.OS === 'android'){
         if(Platform.Version>=33){
           const res = PermissionsAndroid.requestMultiple([
-            PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
-            PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO,
+            'android.permission.READ_MEDIA_IMAGES',
+            'android.permission.READ_MEDIA_VIDEO',
           ]).then(
             (statuses) =>
-              statuses[PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES] ===
+              statuses['android.permission.READ_MEDIA_IMAGES'] ===
               PermissionsAndroid.RESULTS.GRANTED &&
-              statuses[PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO] ===
+              statuses['android.permission.READ_MEDIA_VIDEO'] ===
               PermissionsAndroid.RESULTS.GRANTED,
           );
           res.then(res=>{
