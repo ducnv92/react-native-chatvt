@@ -14,6 +14,9 @@ module.exports = {
         },
       },
     ],
+    {
+      globals: ['__scanCodes'],
+    },
   ],
   env: {
     production: {
