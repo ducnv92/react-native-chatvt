@@ -300,6 +300,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
             <View style={{ flex: 1, backgroundColor: 'white' }}>
 
               <FlashList
+                keyboardShouldPersistTaps={'always'}
                 estimatedItemSize={200}
                 forceNonDeterministicRendering={true}
                 maintainVisibleContentPosition={{

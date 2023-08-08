@@ -148,6 +148,7 @@
         "react-native-swipeable": "^0.6.0",
         "react-native-toast-message": "^2.1.6",
         "react-native-uuid": "^2.0.1",
+        "react-native-video-controls": "^2.8.1",
         "recyclerlistview": "https://github.com/ducnv92/recyclerlistview.git#50ed78a",
         "rn-emoji-keyboard": "^1.5.0",
         "socket.io-client": "^4.6.2",

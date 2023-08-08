@@ -152,6 +152,41 @@ class ChatVT {
     }
   }
 
+  toGroupChat(componentId, orderChat) {
+    appStore.componentId = componentId;
+    if (orderChat) {
+      appStore.createConversation(
+        {
+          order_number: orderChat.order_number,
+          receiver_phone: orderChat.receiver_phone,
+          sender_phone: orderChat.sender_phone,
+        },
+        (conversation) => {
+          Navigation.push(componentId, {
+            component: {
+              name: 'ChatScreen',
+              options: {
+                popGesture: false,
+                bottomTabs: {
+                  visible: false,
+                },
+                topBar: {
+                  visible: false,
+                  height: 0,
+                },
+              },
+              passProps: {
+                data: conversation,
+                order: orderChat.order,
+              },
+            },
+          });
+        },
+        (error) => alert(error)
+      );
+    }
+  }
+
   chatWithReceiver(componentId, order) {
     appStore.componentId = componentId;
     if (order?.ORDER_NUMBER) {

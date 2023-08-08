@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, {memo, useEffect, useRef, useState} from 'react';
 import appStore from '../AppStore';
 import {
   ActivityIndicator,
@@ -35,6 +35,7 @@ import RNFS from 'react-native-fs';
 import AnimatedProgressWheel from 'react-native-progress-wheel';
 import uploadProgress from './uploadProgress';
 import Image from 'react-native-fast-image';
+import VideoViewing from "../../components/videoView/ImageViewing";
 
 const MapItem = function (props) {
   const right =
@@ -229,11 +230,11 @@ const VoiceItem = function (props) {
             />
           </TouchableOpacity>
           <Image
-            source={require('../../assets/ic_wave.png')}
+            source={require('../../assets/ic_wave_white.png')}
             style={{ flex: 1, marginHorizontal: 16,  height: 16, resizeMode: 'contain', tintColor: right?'white': '#B5B4B8' }}
             tintColor={right?'white': '#B5B4B8'}
           />
-          <Text style={{textAlign: 'right', fontWeight: '500', fontSize: 15, color: 'white', width: 45}}>{currentTime}</Text>
+          <Text style={{textAlign: 'right', fontWeight: '500', fontSize: 15, color: 'white'}}>{currentTime}</Text>
         </View>
       </ContainChatItem>
     </View>
@@ -294,7 +295,13 @@ export const VideoItem = function (props) {
         </View>
       ) : (
         <ContainChatItem {...props}>
-          <TouchableOpacity onPress={() => setIsPause(true)}>
+          <TouchableOpacity onPress={() => {
+            if(!isPause){
+              videoRef.current.presentFullscreenPlayer()
+            }else {
+              setIsPause(true)
+            }
+          }}>
             <Video
               source={{ uri: props.url }}
               resizeMode={'contain'}
@@ -306,6 +313,13 @@ export const VideoItem = function (props) {
           </TouchableOpacity>
         </ContainChatItem>
       )}
+      <VideoViewing
+        source={{ uri: props.url }}
+        swipeToCloseEnabled={true}
+        doubleTapToZoomEnabled={true}
+        visible={!isPause}
+        onRequestClose={() => setIsPause(true)}
+      />
     </View>
   );
 };

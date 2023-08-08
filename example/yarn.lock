@@ -4885,11 +4885,6 @@ react-native-video@^5.2.1:
     prop-types "^15.7.2"
     shaka-player "^2.5.9"
 
-react-native-vision-camera@^2.15.5:
-  version "2.15.5"
-  resolved "https://registry.yarnpkg.com/react-native-vision-camera/-/react-native-vision-camera-2.15.5.tgz#03aa75fa04e3ec9c619aaf17d77c792f730cf78f"
-  integrity sha512-EtC3mlAOBgPTYa0AeTrp2wJCe6bnUlIMJe7rx9N2VxWQA7prOq+xb7Qdx7GPTep+YTgqnN6HoGobdDSJo0Dt5A==
-
 react-native@^0.71.8:
   version "0.71.12"
   resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.71.12.tgz#a4a37de71931b5f483a15b8ab9114b9c01e1317d"
@@ -5918,11 +5913,6 @@ vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
-
-vision-camera-code-scanner@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/vision-camera-code-scanner/-/vision-camera-code-scanner-0.2.0.tgz#8adc0694319a17f6a95f6dfacc02ab7ac29b4742"
-  integrity sha512-H5hVkXfbIcGdg9YlhuS8Y/xDX5e32Vo6eK5FyDQsE9AGVjlqEHMmSLHZg7BX8UUm4ADmiAZc8wzc4n8TUqGr0g==
 
 vlq@^1.0.0:
   version "1.0.1"

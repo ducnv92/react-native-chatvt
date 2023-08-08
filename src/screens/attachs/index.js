@@ -23,7 +23,6 @@ import { VideoItem } from "../chat/Item";
 import ImageViewing from "../../components/imageView/ImageViewing";
 import { MText as Text } from '../../components'
 
-
 export const AttachsScreen = observer(function AttachsScreen(props) {
   const conversation = props.data;
   const receiver = props.receiver;
@@ -98,15 +97,14 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
             }
           }}
           style={{
-            borderRadius: 8,
-            borderWidth: 1,
-            borderColor: "#DCE6F0",
-            backgroundColor: '#F8F8FA',
-            paddingHorizontal: 8,
-            paddingVertical: 8,
+            // borderRadius: 8,
+            // borderWidth: 1,
+            // borderColor: "#DCE6F0",
+            // backgroundColor: '#F8F8FA',
+            paddingHorizontal: 12,
+            paddingVertical: 12,
             flexDirection: 'row',
             alignItems: 'center',
-            width: '100%'
           }}>
           {attach.type.includes('pdf') && (
             <Image source={require('../../assets/file_pdf.png')}
@@ -120,22 +118,24 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
             <Image source={require('../../assets/file_xls.png')}
               style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
           )}
-          {/*<View>*/}
+          <View style={{
+            flex: 1,
+          }}>
           <Text numberOfLines={1} style={{
             fontSize: 15,
-            flex: 1,
             color: "#44494D"
           }}>
             {attach.key.replace("conversation/", "")}
           </Text>
-          {/*<Text style={{*/}
-          {/*  fontSize: 13,*/}
-          {/*  color: "#828282",*/}
-          {/*  marginTop: 5*/}
-          {/*}}>*/}
-          {/*  {(attach?.size / (1024 * 1024)).toFixed(2)} Mb*/}
-          {/*</Text>*/}
-          {/*</View>*/}
+          <Text style={{
+            fontSize: 13,
+            color: "#828282",
+            marginTop: 8
+          }}>
+            {moment(attach.created_at).format('HH:mm DD/MM/YYYY')}
+          </Text>
+          </View>
+
         </TouchableOpacity>
 
       )
@@ -223,6 +223,18 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
         style={{ flex: 1, backgroundColor: 'white' }}
         data={attachsStore.data}
         renderItem={renderItem}
+        ItemSeparatorComponent={() => (
+          <View style={{ backgroundColor: 'white', height: 1 }}>
+            <View
+              style={{
+                backgroundColor: '#E5E5E5',
+                height: 1,
+                marginLeft: 66,
+                marginRight: 16,
+              }}
+            ></View>
+          </View>
+        )}
         ListEmptyComponent={() => {
           return (
             <View style={{ alignItems: 'center', marginTop: 50 }}>
