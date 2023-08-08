@@ -90,7 +90,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
       ref?.current?.dismiss();
       appStore.createConversation(
         {
-          order_number: order.ORDER_NUMBER,
+          order_number: order.ma_phieugui,
           chat_type: 'GROUP',
         },
         (conversation) => {
@@ -116,7 +116,6 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
         },
         (error) => alert(error)
       );
-
     } catch (e) {}
   };
 
@@ -144,7 +143,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
     appStore.createConversation(
       {
         order_number: order_code,
-        chat_type: type
+        chat_type: type,
       },
       (conversation) => {
         Navigation.push(props.componentId, {
@@ -410,7 +409,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
             </View>
             <TouchableOpacity
               onPress={() => {
-                toChatWithCustomer(order.ma_phieugui, 'SENDER')
+                toChatWithCustomer(order.ma_phieugui, 'SENDER');
               }}
               style={{
                 flexDirection: 'row',
@@ -467,7 +466,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
                 try {
                   ref?.current?.dismiss();
                 } catch (e) {}
-                toChatWithCustomer(order.ma_phieugui, 'RECEIVER')
+                toChatWithCustomer(order.ma_phieugui, 'RECEIVER');
               }}
               style={{
                 flexDirection: 'row',

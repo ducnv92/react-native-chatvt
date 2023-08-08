@@ -1,5 +1,3 @@
-
-
 import { Navigation } from 'react-native-navigation';
 import appStore from './screens/AppStore';
 // import {ChatStack} from './App.js'
@@ -88,9 +86,9 @@ class ChatVT {
         // this.interval = setInterval(()=>{
         //   appStore.onlineState()
         // }, 30000)
-        if(listChatStore.data?.length===0){
-          listChatStore.page = 0
-          listChatStore.getData({})
+        if (listChatStore.data?.length === 0) {
+          listChatStore.page = 0;
+          listChatStore.getData({});
         }
 
         if (onSuccess) onSuccess(res);
@@ -404,6 +402,37 @@ class ChatVT {
       });
     });
   }
+
+  toChatWithCustomer = async (componentId, order_code, type) => {
+    appStore.createConversation(
+      {
+        order_number: order_code,
+        chat_type: type,
+      },
+      (conversation) => {
+        Navigation.push(componentId, {
+          component: {
+            name: 'ChatScreen',
+            options: {
+              popGesture: false,
+              bottomTabs: {
+                visible: false,
+              },
+              topBar: {
+                visible: false,
+                height: 0,
+              },
+            },
+            passProps: {
+              data: conversation,
+              order: order,
+            },
+          },
+        });
+      },
+      (error) => alert(error)
+    );
+  };
 }
 export const chatVT = new ChatVT();
 export const ListChat = ListChatScreen;
