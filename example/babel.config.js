@@ -4,7 +4,7 @@ const pak = require('../package.json');
 module.exports = {
   presets: ['module:metro-react-native-babel-preset'],
   plugins: [
-    ["@babel/plugin-proposal-decorators", {"legacy": true}],
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
     [
       'module-resolver',
       {
@@ -14,9 +14,12 @@ module.exports = {
         },
       },
     ],
-    {
-      globals: ['__scanCodes'],
-    },
+    [
+      'react-native-reanimated/plugin',
+      {
+        globals: ['__scanCodes'],
+      },
+    ]
   ],
   env: {
     production: {

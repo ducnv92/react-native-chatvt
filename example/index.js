@@ -1,8 +1,9 @@
-import {AppRegistry, LogBox} from 'react-native';
+import { AppRegistry, LogBox } from 'react-native';
 import App from './src/App';
 import { name as appName } from './app.json';
 import { Navigation } from "react-native-navigation";
 import CodePush from 'react-native-code-push'
+import 'react-native-reanimated'
 import { NativeModules } from 'react-native';
 
 
@@ -14,9 +15,9 @@ import { NativeModules } from 'react-native';
 
 import { Login } from './src/login';
 
-Navigation.registerComponent("Login",  ()=>Login)
+Navigation.registerComponent("Login", () => Login)
 
-Navigation.registerComponent("App",  ()=>CodePush({
+Navigation.registerComponent("App", () => CodePush({
   checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
   updateDialog: false,
   installMode: CodePush.InstallMode.IMMEDIATE,
