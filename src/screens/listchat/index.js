@@ -20,6 +20,7 @@ import { formatTimeLastMessage, orderStatus, scale } from '../../utils';
 import { MTextInput as TextInput } from '../../components';
 import BottomSheetChatOptions from '../../components/bottomSheetChatOptions';
 import { BottomSheetModalProvider } from '../../components/bottomSheet/bottom-sheet';
+import { toJS } from 'mobx';
 
 export const ListChatScreen = observer(function ListChatScreen(props) {
   const [showSearch, setShowSearch] = useState(false);
@@ -60,6 +61,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
       },
     });
   };
+
   const getLastMessage = (item, setting, isMe) => {
     const prefix = isMe ? appStore.lang.list_chat.you + ': ' : '';
 
@@ -189,6 +191,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
     );
   };
 
+
   const renderItem = ({ item, index }) => {
     let setting = {};
     try {
@@ -213,7 +216,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
         onPress={() => {
           if (setting.is_pin) {
             listChatStore.unPin({ conversation_id: item._id }, () => {
-              item.settings = item.settings.map(i=>{
+              item.settings = item.settings.map(i => {
                 i.is_pin = false;
                 return i
               })
@@ -223,7 +226,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
             listChatStore.data = [...listChatStore.data]
           } else {
             listChatStore.pin({ conversation_id: item._id }, () => {
-              item.settings = item.settings.map(i=>{
+              item.settings = item.settings.map(i => {
                 i.is_pin = true;
                 return i
               })
@@ -273,7 +276,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
               is_show: !setting.is_hide_notification,
             },
             () => {
-              item.settings = item.settings.map(i=>{
+              item.settings = item.settings.map(i => {
                 i.is_hide_notification = !i.is_hide_notification
                 return i
               })
@@ -595,10 +598,10 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                 }}
               >
                 {getLastMessage(item, setting, isMe)}
-                {item.message?.read_by?.map((item) => (
+                {item.message?.read_by?.map((reader) => (
                   <>
                     {
-                      item !== (appStore.user.type + '_' + appStore.user.user_id) &&
+                      reader !== (appStore.user.type + '_' + appStore.user.user_id) && reader !== item?.sender &&
                       <Image
                         style={{
                           height: 16,
@@ -606,7 +609,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                           resizeMode: 'center',
                           marginLeft: 10,
                         }}
-                        source={item.includes('VTM') ? require('../../assets/avatar_default.png') : require('../../assets/avatar_default_customer.png')}
+                        source={reader.includes('VTM') ? require('../../assets/avatar_default.png') : require('../../assets/avatar_default_customer.png')}
                       />
                     }
                   </>
@@ -837,7 +840,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   textAlign: 'center',
                 }}
               >
-                {appStore.appId==='VTPost'?appStore.lang.list_chat.message:'Trò chuyện'}
+                {appStore.appId === 'VTPost' ? appStore.lang.list_chat.message : 'Trò chuyện'}
               </Text>
               <TouchableOpacity
                 onPress={() => setShowSearch(true)}
@@ -864,7 +867,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           }}
           ListHeaderComponent={renderHeader}
           keyExtractor={(item) => item._id}
-          onEndReached={() => setTimeout(()=>{
+          onEndReached={() => setTimeout(() => {
             listChatStore.getData({})
           }, 150)}
           style={{ flex: 1, backgroundColor: 'white' }}

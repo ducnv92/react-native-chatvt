@@ -13,7 +13,7 @@ import {
   Keyboard,
   StatusBar,
   TextInput,
-  TouchableOpacityBase, Dimensions,
+  TouchableOpacityBase, Dimensions, Linking
 } from 'react-native';
 import colors from '../../Styles';
 import { BottomSheetModalProvider } from '../../components/bottomSheet/bottom-sheet';
@@ -41,6 +41,7 @@ import inputStore from './InputStore';
 import InputStore from './InputStore';
 let { height, width } = Dimensions.get('window');
 import { FlashList } from "../../components/flashlist";
+import { toJS } from 'mobx';
 export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
   const order = props.data?.orders?.length > 0 ? props.data?.orders[0] : {};
@@ -256,8 +257,9 @@ export const ChatScreen = observer(function ChatScreen(props) {
                             backgroundColor: '#30F03B',
                           }}
                         />
-                        {/* <Text style={{ fontSize: 13, color: "white" }}>{
-                          'Đang hoạt động'}</Text> */}
+                        <Text style={{ fontSize: 13, color: "white" }}>{
+                          receiver.type === 'VTMAN' ?
+                            '' : 'Đang hoạt động'}</Text>
                       </View>
                     )}
 
@@ -278,7 +280,13 @@ export const ChatScreen = observer(function ChatScreen(props) {
               </View>
 
               <TouchableOpacity
-                onPress={() => alert('Tính năng đang phát triển!')}
+                onPress={() => {
+                  try {
+                    Linking.openURL(`tel:${receiver?.phone}`)
+                  } catch (e) {
+                    console.log(e)
+                  }
+                }}
                 style={{
                   width: 50,
                   height: 50,
