@@ -17,6 +17,7 @@
     "postinstall-postinstall": "^2.1.0",
     "react": "18.2.0",
     "react-native": "^0.71.8",
+    "react-native-camera": "^4.2.1",
     "react-native-code-push": "^8.0.2",
     "react-native-device-info": "^10.7.0",
     "react-native-fast-image": "^8.6.3",

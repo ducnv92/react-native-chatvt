@@ -8,10 +8,10 @@ export async function getHeader() {
   const user = await MyAsyncStorage.load(USER);
   if (user) {
     return {
-      headers: {
+      headers: {...{
         Authorization: `Bearer ${user.token}`,
-        vtp_token: user.vtp_token,
-      },
+
+      }, ...(appStore.appId==='VTPost'?{vtp_token: user.token}: {vtm_token: user.token})},
     };
   }
 }

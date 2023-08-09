@@ -36,7 +36,7 @@ class AppStore {
         if (response.data.status === 200) {
           if (response.data.data) {
             this.user = response.data.data;
-            await MyAsyncStorage.save(USER, {...response.data.data, ...{vtp_token: params.token}})
+            await MyAsyncStorage.save(USER, {...response.data.data, ...{token: params.token}})
             await socket.init()
             this.isError = false;
             if (onSuccess) {
