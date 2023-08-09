@@ -121,19 +121,19 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
           <View style={{
             flex: 1,
           }}>
-          <Text numberOfLines={1} style={{
-            fontSize: 15,
-            color: "#44494D"
-          }}>
-            {attach.key.replace("conversation/", "")}
-          </Text>
-          <Text style={{
-            fontSize: 13,
-            color: "#828282",
-            marginTop: 8
-          }}>
-            {moment(attach.created_at).format('HH:mm DD/MM/YYYY')}
-          </Text>
+            <Text numberOfLines={1} style={{
+              fontSize: 15,
+              color: "#44494D"
+            }}>
+              {attach.key.replace("conversation/", "")}
+            </Text>
+            <Text style={{
+              fontSize: 13,
+              color: "#828282",
+              marginTop: 8
+            }}>
+              {moment(attach.created_at).format('HH:mm DD/MM/YYYY')}
+            </Text>
           </View>
 
         </TouchableOpacity>
@@ -169,7 +169,11 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 16 }}>
           <TouchableOpacity onPress={() => {
-            alert('Tính năng đang phát triển')
+            try {
+              Linking.openURL(`tel:${receiver?.phone}`)
+            } catch (e) {
+              console.log(e)
+            }
           }}>
             <Image style={{ height: 48, width: 48, resizeMode: 'contain' }}
               source={require('../../assets/ic_call.png')} />
@@ -196,7 +200,7 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
             loadData()
           }}
           style={{ flex: 1, height: 50, justifyContent: 'center', borderBottomWidth: 2, borderColor: attachsStore.currentTab === 0 ? colors.primary : '#DCE6F0' }}>
-          <Text style={{ fontWeight: '600', fontSize: 17, color: attachsStore.currentTab === 0 ? colors.primary : colors.primaryText, textAlign: 'center' }}>Ảnh/Video</Text>
+          <Text style={{ fontWeight: '600', fontSize: 17, color: attachsStore.currentTab === 0 ? colors.primary : colors.primaryText, textAlign: 'center' }}>Ảnh, video</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
