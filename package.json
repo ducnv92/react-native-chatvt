@@ -123,7 +123,6 @@
         "emoji-datasource-google": "^15.0.1",
         "emoji-mart-native": "^0.6.5-beta",
         "fbjs": "^3.0.5",
-        "ffmpeg-kit-react-native": "^5.1.0",
         "hoist-non-react-statics": "^3.3.2",
         "invariant": "^2.2.4",
         "lodash.groupby": "~4.6.0",
