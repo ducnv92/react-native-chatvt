@@ -1,6 +1,6 @@
 {
     "name": "react-native-chatvt",
-    "version": "0.1.107",
+    "version": "0.1.108",
     "description": "test",
     "main": "lib/commonjs/index",
     "module": "lib/module/index",
@@ -113,9 +113,7 @@
         "react-native-video": "*"
     },
     "dependencies": {
-        "@bam.tech/react-native-image-resizer": "3.0.0",
         "@charkour/react-reactions": "^0.11.0",
-        "@react-native-community/cameraroll": "^4.1.2",
         "apisauce": "1.1.1",
         "deprecated-react-native-prop-types": "^4.1.0",
         "emoji-datasource": "~5.0.1",
@@ -136,7 +134,6 @@
         "react-native-builder-bob": "0.17.0",
         "react-native-clipboard-toast": "^1.0.0",
         "react-native-emoji-picker-staltz": "^1.0.0",
-        "react-native-file-viewer": "^2.1.5",
         "react-native-mime-types": "^2.4.0",
         "react-native-open-maps": "^0.4.2",
         "react-native-parsed-text": "^0.0.22",

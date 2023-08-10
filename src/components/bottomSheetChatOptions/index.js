@@ -33,15 +33,17 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
   const bottomSheetRef = useRef();
   const [data, setData] = useState([]);
   const [order, setOrder] = useState({});
+  const [isSender, setIsSender] = useState(true);
 
   useImperativeHandle(
     ref, // forwarded ref
     () => {
       return {
-        updateData(data, order) {
+        updateData(data, order, orderType) {
           setData(data);
           setOrder(order);
-          console.log('update data', data, order);
+          setIsSender(orderType===4)
+          console.log('update data', data, order, orderType);
         },
         present() {
           bottomSheetRef.current?.present();
@@ -59,6 +61,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
       {
         vtm_user_ids: listUserId,
         order_number: order.ORDER_NUMBER,
+        is_receiver:!isSender
       },
       (conversation) => {
         Navigation.push(props.componentId, {
@@ -176,6 +179,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
     appStore.createConversationWithReceiver(
       {
         order_number: order.ORDER_NUMBER,
+        is_receiver:!isSender
       },
       (conversation) => {
         Navigation.push(props.componentId, {
@@ -239,7 +243,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
               color: colors.primaryText,
             }}
           >{`Chat với bưu tá ${
-            item.RECEIVER_POSTMAN === 1 ? 'lấy' : 'giao'
+            item.RECEIVER_POSTMAN === 1 ? 'giao' : 'lấy'
           }`}</Text>
           <Text
             style={{

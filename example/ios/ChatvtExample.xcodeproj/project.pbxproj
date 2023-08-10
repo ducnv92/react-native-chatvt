@@ -328,7 +328,9 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MF396VKW87;
 				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = NO;
 				EXCLUDED_ARCHS = "";
+				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = ChatvtExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Chat VT";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -341,7 +343,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
-					"-ObjC",
 					"-lc++",
 					"-ld64",
 				);
@@ -367,7 +368,9 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MF396VKW87;
+				ENABLE_TESTABILITY = NO;
 				EXCLUDED_ARCHS = "";
+				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = ChatvtExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Chat VT";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -380,7 +383,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
-					"-ObjC",
 					"-lc++",
 					"-ld64",
 				);
