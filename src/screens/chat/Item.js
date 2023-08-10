@@ -1,7 +1,8 @@
-import React, {memo, useEffect, useRef, useState} from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import appStore from '../AppStore';
 import {
   ActivityIndicator,
+  Dimensions,
   Linking,
   Modal,
   Platform,
@@ -107,7 +108,7 @@ const VoiceItem = function (props) {
 
   useEffect(() => {
     return () => {
-      if(intervalTime){
+      if (intervalTime) {
         clearInterval(intervalTime)
       }
     };
@@ -133,7 +134,7 @@ const VoiceItem = function (props) {
             flexDirection: 'row',
             alignItems: 'center',
             overflow: 'hidden',
-            backgroundColor: right?colors.primary:'#F2F2F2',
+            backgroundColor: right ? colors.primary : '#F2F2F2',
           }}
         >
           <TouchableOpacity
@@ -196,14 +197,14 @@ const VoiceItem = function (props) {
                         ? props.item.attachmentLocal[0].uri
                         : props.item.attachments[0]?.url
                     );
-                    intervalTime = setInterval(async ()=>{
+                    intervalTime = setInterval(async () => {
                       const info = await SoundPlayer.getInfo() // Also, you need to await this because it is async
                       console.log('getInfo', info)
                       const secs = Math.floor(info.currentTime)
                       const minutes = Math.floor(secs / 60);
                       const seconds = secs % 60;
 
-                      setCurrentTime(('0' + minutes).slice(-2)+':'+('0' + seconds).slice(-2))
+                      setCurrentTime(('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2))
                     }, 1000)
                   } catch (e) {
                     console.log(e);
@@ -224,17 +225,17 @@ const VoiceItem = function (props) {
               source={
                 isPlay
                   ? require('../../assets/ic_pause.png')
-                  : (right?require('../../assets/ic_play.png'):require('../../assets/ic_play_left.png'))
+                  : (right ? require('../../assets/ic_play.png') : require('../../assets/ic_play_left.png'))
               }
               style={{ height: 32, width: 32, resizeMode: 'contain' }}
             />
           </TouchableOpacity>
           <Image
             source={require('../../assets/ic_wave_white.png')}
-            style={{ flex: 1, marginHorizontal: 16,  height: 16, resizeMode: 'contain', tintColor: right?'white': '#B5B4B8' }}
-            tintColor={right?'white': '#B5B4B8'}
+            style={{ flex: 1, marginHorizontal: 16, height: 16, resizeMode: 'contain', tintColor: right ? 'white' : '#B5B4B8' }}
+            tintColor={right ? 'white' : '#B5B4B8'}
           />
-          <Text style={{textAlign: 'right', fontWeight: '500', fontSize: 15, color: right?'white':colors.neutralText}}>{currentTime}</Text>
+          <Text style={{ textAlign: 'right', fontWeight: '500', fontSize: 15, color: right ? 'white' : colors.neutralText }}>{currentTime}</Text>
         </View>
       </ContainChatItem>
     </View>
@@ -260,7 +261,7 @@ export const VideoItem = function (props) {
         });
 
         setThumbnail(response.path);
-      } catch (e) {}
+      } catch (e) { }
     };
 
     createThumb();
@@ -296,9 +297,9 @@ export const VideoItem = function (props) {
       ) : (
         <ContainChatItem {...props}>
           <TouchableOpacity onPress={() => {
-            if(!isPause){
+            if (!isPause) {
               videoRef.current.presentFullscreenPlayer()
-            }else {
+            } else {
               setIsPause(true)
             }
           }}>
@@ -380,7 +381,7 @@ const MessageItem = function (props) {
             <View
               style={{ borderRadius: 10, overflow: 'hidden', maxWidth: '75%' }}
             >
-              {item.attachmentLocal && item.attachmentLocal.length>0 && (
+              {item.attachmentLocal && item.attachmentLocal.length > 0 && (
                 <View
                   style={{
                     flexDirection: 'row',
@@ -611,13 +612,13 @@ const MessageItem = function (props) {
                 }}
               >
                 {new Date(item.created_at).getFullYear() <
-                new Date().getFullYear()
+                  new Date().getFullYear()
                   ? moment(item.created_at).format('DD/MM/YYYY')
                   : moment(item.created_at).fromNow().includes('days')
-                  ? `${moment(item.created_at).format('DD/MM')}`
-                  : moment(item.created_at).fromNow().includes('day')
-                  ? `${moment(item.created_at).format('DD/MM')}`
-                  : moment(item.created_at).format('HH:mm')}
+                    ? `${moment(item.created_at).format('DD/MM')}`
+                    : moment(item.created_at).fromNow().includes('day')
+                      ? `${moment(item.created_at).format('DD/MM')}`
+                      : moment(item.created_at).format('HH:mm')}
               </Text>
             </View>
             {/*{*/}
@@ -667,8 +668,8 @@ const MessageItem = function (props) {
                       ? colors.primary
                       : '#F2F2F2'
                     : right
-                    ? colors.bgVTM
-                    : '#F2F2F2',
+                      ? colors.bgVTM
+                      : '#F2F2F2',
                 padding: 12,
                 borderRadius: 10,
                 maxWidth: '75%',
@@ -833,28 +834,28 @@ const DocumentItem = function (props) {
                           )}
                           {(attach.type.includes('doc') ||
                             attach.type.includes('docx')) && (
-                            <Image
-                              source={require('../../assets/file_doc.png')}
-                              style={{
-                                width: 42,
-                                height: 42,
-                                resizeMode: 'contain',
-                                marginRight: 14,
-                              }}
-                            />
-                          )}
+                              <Image
+                                source={require('../../assets/file_doc.png')}
+                                style={{
+                                  width: 42,
+                                  height: 42,
+                                  resizeMode: 'contain',
+                                  marginRight: 14,
+                                }}
+                              />
+                            )}
                           {(attach.type.includes('xlsx') ||
                             attach.type.includes('xls')) && (
-                            <Image
-                              source={require('../../assets/file_xls.png')}
-                              style={{
-                                width: 42,
-                                height: 42,
-                                resizeMode: 'contain',
-                                marginRight: 14,
-                              }}
-                            />
-                          )}
+                              <Image
+                                source={require('../../assets/file_xls.png')}
+                                style={{
+                                  width: 42,
+                                  height: 42,
+                                  resizeMode: 'contain',
+                                  marginRight: 14,
+                                }}
+                              />
+                            )}
                           <View>
                             <Text
                               numberOfLines={1}
@@ -917,28 +918,28 @@ const DocumentItem = function (props) {
                           )}
                           {(attach.url.includes('.doc') ||
                             attach.url.includes('.docx')) && (
-                            <Image
-                              source={require('../../assets/file_doc.png')}
-                              style={{
-                                width: 42,
-                                height: 42,
-                                resizeMode: 'contain',
-                                marginRight: 14,
-                              }}
-                            />
-                          )}
+                              <Image
+                                source={require('../../assets/file_doc.png')}
+                                style={{
+                                  width: 42,
+                                  height: 42,
+                                  resizeMode: 'contain',
+                                  marginRight: 14,
+                                }}
+                              />
+                            )}
                           {(attach.url.includes('.xls') ||
                             attach.url.includes('.xlsx')) && (
-                            <Image
-                              source={require('../../assets/file_xls.png')}
-                              style={{
-                                width: 42,
-                                height: 42,
-                                resizeMode: 'contain',
-                                marginRight: 14,
-                              }}
-                            />
-                          )}
+                              <Image
+                                source={require('../../assets/file_xls.png')}
+                                style={{
+                                  width: 42,
+                                  height: 42,
+                                  resizeMode: 'contain',
+                                  marginRight: 14,
+                                }}
+                              />
+                            )}
                           {/*<View>*/}
                           <Text
                             numberOfLines={1}
@@ -985,13 +986,13 @@ const DocumentItem = function (props) {
               }}
             >
               {new Date(item.created_at).getFullYear() <
-              new Date().getFullYear()
+                new Date().getFullYear()
                 ? moment(item.created_at).format('DD/MM/YYYY')
                 : moment(item.created_at).fromNow().includes('days')
-                ? `${moment(item.created_at).format('DD/MM')}`
-                : moment(item.created_at).fromNow().includes('day')
-                ? `${moment(item.created_at).format('DD/MM')}`
-                : moment(item.created_at).format('HH:mm')}
+                  ? `${moment(item.created_at).format('DD/MM')}`
+                  : moment(item.created_at).fromNow().includes('day')
+                    ? `${moment(item.created_at).format('DD/MM')}`
+                    : moment(item.created_at).format('HH:mm')}
             </Text>
           </View>
           {item.status === 'error' && (
@@ -1040,7 +1041,7 @@ const OrderItem = function (props) {
               id: 'OrderInfomationtScreenID',
               name: 'OrderInfomationtScreen',
               passProps: {
-                orderId: item.order_info?.order_number?item.order_info?.order_number:order?.ORDER_NUMBER,
+                orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
                 isSender: true,
               },
               options: {
@@ -1063,7 +1064,7 @@ const OrderItem = function (props) {
         }}
       >
         <View style={{ flexDirection: 'row' }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
             <Text
               style={{
                 fontWeight: '600',
@@ -1071,7 +1072,7 @@ const OrderItem = function (props) {
                 color: colors.primaryText,
               }}
             >
-              {item.order_info?.order_number?item.order_info?.order_number:order?.ORDER_NUMBER}
+              {item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER}
             </Text>
             <View
               style={{
@@ -1082,6 +1083,7 @@ const OrderItem = function (props) {
                 paddingHorizontal: 8,
                 alignItems: 'center',
                 justifyContent: 'center',
+                maxWidth: Dimensions.get('screen').width / 2
               }}
             >
               <Text
@@ -1091,6 +1093,7 @@ const OrderItem = function (props) {
                   color: 'white',
                   textAlign: 'center',
                 }}
+                numberOfLines={1}
               >
                 {orderStatus(order?.ORDER_STATUS)}
               </Text>
@@ -1215,32 +1218,32 @@ export class ChatItem extends React.Component {
       return (
         <View style={{ paddingVertical: 2 }}>
           {messageView}
-          {this.item.read_by?.length > 0 && this.props.index===0  && (
-              <View
-                style={{
-                  marginRight: 16,
-                  flexDirection: 'row',
-                  alignSelf: 'flex-end',
-                }}
-              >
-                {this.item.read_by?.map((item) => (
-                  <>
-                    {
-                      item !== (appStore.user.type + '_' + appStore.user.user_id) &&
-                      <Image
-                        style={{
-                          height: 16,
-                          width: 16,
-                          resizeMode: 'center',
-                          marginLeft: 10,
-                        }}
-                        source={require('../../assets/avatar_default.png')}
-                      />
-                    }
-                  </>
-                ))}
-              </View>
-            )}
+          {this.item.read_by?.length > 0 && this.props.index === 0 && (
+            <View
+              style={{
+                marginRight: 16,
+                flexDirection: 'row',
+                alignSelf: 'flex-end',
+              }}
+            >
+              {this.item.read_by?.map((item) => (
+                <>
+                  {
+                    item !== (appStore.user.type + '_' + appStore.user.user_id) &&
+                    <Image
+                      style={{
+                        height: 16,
+                        width: 16,
+                        resizeMode: 'center',
+                        marginLeft: 10,
+                      }}
+                      source={require('../../assets/avatar_default.png')}
+                    />
+                  }
+                </>
+              ))}
+            </View>
+          )}
         </View>
       );
     } else {
