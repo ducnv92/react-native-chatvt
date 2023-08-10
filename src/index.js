@@ -151,12 +151,13 @@ class ChatVT {
     }
   }
 
-  chatWithReceiver(componentId, order) {
+  chatWithReceiver(componentId, order, is_receiver) {
     appStore.componentId = componentId;
     if (order?.ORDER_NUMBER) {
       appStore.createConversationWithReceiver(
         {
           order_number: order?.ORDER_NUMBER,
+          is_receiver
         },
         (conversation) => {
           Navigation.push(componentId, {
