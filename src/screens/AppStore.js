@@ -1,11 +1,11 @@
-import {observable, action, runInAction} from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import services from "../services";
 import * as MyAsyncStorage from "../utils/MyAsyncStorage";
-import {USER} from "../utils/MyAsyncStorage";
+import { USER } from "../utils/MyAsyncStorage";
 import socket from "../socket";
 import vi from "../locales/vi.json";
 import en from "../locales/en.json";
-import {Log} from "../utils";
+import { Log } from "../utils";
 import { Alert } from 'react-native';
 
 class AppStore {
@@ -36,14 +36,14 @@ class AppStore {
         if (response.data.status === 200) {
           if (response.data.data) {
             this.user = response.data.data;
-            await MyAsyncStorage.save(USER, {...response.data.data, ...{token: params.token}})
+            await MyAsyncStorage.save(USER, { ...response.data.data, ...{ client_token: params.token } })
             await socket.init()
             this.isError = false;
             if (onSuccess) {
               onSuccess(response.data.data);
             }
           }
-        }else{
+        } else {
           alert(response.data.message)
         }
       } else {
@@ -73,9 +73,9 @@ class AppStore {
     try {
       let response
 
-      if(appStore.appId==='VTPost'){
+      if (appStore.appId === 'VTPost') {
         response = await services.create().createConversationVTM(params);
-      }else{
+      } else {
         response = await services.create().createConversationVTP(params);
       }
 
@@ -91,7 +91,7 @@ class AppStore {
         } else {
           if (onError) {
             onError(response.data?.message);
-          }else{
+          } else {
             alert(response.data.message)
           }
         }
@@ -118,9 +118,9 @@ class AppStore {
     try {
       let response
 
-      if(appStore.appId==='VTPost'){
+      if (appStore.appId === 'VTPost') {
         response = await services.create().vtpConversationWithReceiver(params);
-      }else{
+      } else {
         response = await services.create().vtmConversationWithReceiver(params);
       }
 
@@ -133,7 +133,7 @@ class AppStore {
             }
           }
         } else {
-          if(response.data.status === 1006){
+          if (response.data.status === 1006) {
             Alert.alert('Thông báo', 'Số điện thoại của người nhận chưa có tài khoản tại ViettelPost.', [{
               text: 'Đồng ý'
             }])
@@ -141,7 +141,7 @@ class AppStore {
           }
           if (onError) {
             onError(response.data?.message);
-          }else{
+          } else {
             alert(response.data.message)
           }
         }
@@ -161,9 +161,9 @@ class AppStore {
     try {
       let response
 
-      if(appStore.appId==='VTPost'){
+      if (appStore.appId === 'VTPost') {
         response = await services.create().vtpConversationWithCS(params);
-      }else{
+      } else {
         response = await services.create().vtmConversationWithCS(params);
       }
 
@@ -174,13 +174,13 @@ class AppStore {
             if (onSuccess) {
               onSuccess(response.data.data);
             }
-          }else{
+          } else {
             alert(response.data.message)
           }
         } else {
           if (onError) {
             onError(response.data?.message);
-          }else{
+          } else {
             alert(response.data.message)
           }
         }
@@ -215,9 +215,9 @@ class AppStore {
     try {
       const response = await services.create().orderValidate(params);
       Log(response)
-      if(response.data.status === 200){
+      if (response.data.status === 200) {
         onSuccess()
-      }else{
+      } else {
         onError(response.data.message)
       }
 
@@ -231,11 +231,11 @@ class AppStore {
     try {
       const response = await services.create().loginAdmin(params);
       Log(response)
-      if(response.data.status === 200){
+      if (response.data.status === 200) {
         response.data.data.user_id = response.data.data._id
         this.user = response.data.data
         onSuccess(response.data.data)
-      }else{
+      } else {
         alert(response.data.message)
       }
 
@@ -248,10 +248,14 @@ class AppStore {
   async loginVTP(params, onSuccess, onError) {
 
     try {
-      const response = await services.create().loginVTP({...params, ...{"clientId": "appvtp",
-          "clientSecret": "vtp-appvtp"}});
+      const response = await services.create().loginVTP({
+        ...params, ...{
+          "clientId": "appvtp",
+          "clientSecret": "vtp-appvtp"
+        }
+      });
       Log(response)
-      if(response.status === 200){
+      if (response.status === 200) {
 
         const responseClient = await services.create().loginVTPClient({
           "Source": 2,
@@ -262,13 +266,13 @@ class AppStore {
           "Type": "VTP"
         });
         Log(responseClient)
-        if(responseClient.status === 200) {
+        if (responseClient.status === 200) {
           responseClient.data.data.TokenSSO = response.data.accessToken
           onSuccess(responseClient.data.data)
-        }else{
+        } else {
           alert(responseClient.data.errorMessage)
         }
-      }else{
+      } else {
         alert(response.data.message)
       }
 
@@ -281,17 +285,19 @@ class AppStore {
   async loginVTM(params, onSuccess, onError) {
 
     try {
-      const response = await services.create().loginVTM({...params, ...{
+      const response = await services.create().loginVTM({
+        ...params, ...{
           "source": -10,
           "latitude": 0,
           "longtitude": 0,
           "DeviceID": "string",
           "uniqueID": "string"
-        }});
+        }
+      });
       Log(response)
-      if(response.status === 200){
-          onSuccess(response.data.data)
-      }else{
+      if (response.status === 200) {
+        onSuccess(response.data.data)
+      } else {
         alert(response.data.message)
       }
 
@@ -305,9 +311,9 @@ class AppStore {
     try {
       const response = await services.create().getConversationDetail(params);
       Log(response)
-      if(response.status === 200){
+      if (response.status === 200) {
         onSuccess(response.data.data)
-      }else{
+      } else {
         alert(response.data.message)
       }
 
@@ -321,9 +327,9 @@ class AppStore {
     try {
       const response = await services.create().vtpConversationWithCS(params);
       Log(response)
-      if(response.status === 200 || response.status === 201){
+      if (response.status === 200 || response.status === 201) {
         onSuccess(response.data.data)
-      }else{
+      } else {
         alert(response.data.message)
       }
 
@@ -337,9 +343,9 @@ class AppStore {
     try {
       const response = await services.create().vtmConversationWithCS(params);
       Log(response)
-      if(response.status === 200 || response.status === 201){
+      if (response.status === 200 || response.status === 201) {
         onSuccess(response.data.data)
-      }else{
+      } else {
         alert(response.data.message)
       }
 

@@ -1203,11 +1203,6 @@
     "@babel/helper-validator-identifier" "^7.22.5"
     to-fast-properties "^2.0.0"
 
-"@bam.tech/react-native-image-resizer@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@bam.tech/react-native-image-resizer/-/react-native-image-resizer-3.0.0.tgz#b75c76bc0c8b364db3076b864aa80ee6fc076cf6"
-  integrity sha512-O2uEc1LMHWBcfjxaUineAF7qljyZ/1HVDl2q32I037/SN//iUfDJX0cfQSjUg65RR4Q3FqOennkujIHbqdDPAA==
-
 "@bcoe/v8-coverage@^0.2.3":
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
@@ -1961,7 +1956,7 @@
     "@pnpm/network.ca-file" "^1.0.1"
     config-chain "^1.1.11"
 
-"@react-native-community/cameraroll@^4.1.2":
+"@react-native-community/cameraroll@*":
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/@react-native-community/cameraroll/-/cameraroll-4.1.2.tgz#489c6bb6137571540d93c543d5fcf8c652b548ec"
   integrity sha512-jkdhMByMKD2CZ/5MPeBieYn8vkCfC4MOTouPpBpps3I8N6HUYJk+1JnDdktVYl2WINnqXpQptDA2YptVyifYAg==
@@ -4921,11 +4916,6 @@ fetch-blob@^3.1.2, fetch-blob@^3.1.4:
   dependencies:
     node-domexception "^1.0.0"
     web-streams-polyfill "^3.0.3"
-
-ffmpeg-kit-react-native@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/ffmpeg-kit-react-native/-/ffmpeg-kit-react-native-5.1.0.tgz#7aea05ee642b0b204777ba36994f41ed192ec4ca"
-  integrity sha512-WGuF7wm18vvhr1oCMLRfHIDCwKrmBezWgVtzim6Z3cbDiHeYvDjpm7KJwrvBMwOgekQtP4R4zI9W0ZByoXjMnQ==
 
 figures@^5.0.0:
   version "5.0.0"
@@ -8775,11 +8765,6 @@ react-native-emoji-picker-staltz@^1.0.0:
     lodash.mapvalues "~4.6.0"
     lodash.orderby "~4.6.0"
     string.fromcodepoint "~0.2.1"
-
-react-native-file-viewer@^2.1.5:
-  version "2.1.5"
-  resolved "https://registry.yarnpkg.com/react-native-file-viewer/-/react-native-file-viewer-2.1.5.tgz#cd4544f573108e79002b5c7e1ebfce4371885250"
-  integrity sha512-MGC6sx9jsqHdefhVQ6o0akdsPGpkXgiIbpygb2Sg4g4bh7v6K1cardLV1NwGB9A6u1yICOSDT/MOC//9Ez6EUg==
 
 react-native-gradle-plugin@^0.71.19:
   version "0.71.19"
