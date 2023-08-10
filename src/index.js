@@ -123,6 +123,7 @@ class ChatVT {
         {
           vtm_user_ids: orderChat.vtm_user_ids,
           order_number: orderChat.order_number,
+          is_receiver: orderChat.is_receiver,
         },
         (conversation) => {
           Navigation.push(componentId, {

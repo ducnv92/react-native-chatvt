@@ -42,8 +42,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
         updateData(data, order, orderType) {
           setData(data);
           setOrder(order);
-          setIsSender(orderType===4)
-          console.log('update data', data, order, orderType);
+          setIsSender(orderType!==4)
         },
         present() {
           bottomSheetRef.current?.present();
