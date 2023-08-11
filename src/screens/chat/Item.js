@@ -17,7 +17,6 @@ import ParsedText from 'react-native-parsed-text';
 import { groupBy, orderStatus } from '../../utils';
 import { createThumbnail } from '../../components/createThumbnail';
 import ImageViewing from '../../components/imageView/ImageViewing';
-import Video from 'react-native-video';
 import FastImage from 'react-native-fast-image';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
@@ -1022,7 +1021,7 @@ const DocumentItem = function (props) {
 
 const OrderItem = function (props) {
   const item = props.item;
-  const order = item.order_info?.vtp_order;
+  const order = item.order_info?.vtp_order?item.order_info?.vtp_order:item.order_info?.vtm_bill;
 
   let productNames = '';
 
@@ -1035,7 +1034,7 @@ const OrderItem = function (props) {
           return p.PRODUCT_QUANTITY + 'x' + p.PRODUCT_NAME;
         }).join(' + ');
       }
-    } else {
+    }else{
       productNames = order.ten_hang
     }
 
@@ -1209,7 +1208,7 @@ const OrderItem = function (props) {
                   }}
                   numberOfLines={1}
                 >
-                  {order?.trang_thai}
+                  {order?.status_name?order?.status_name:order?.trang_thai}
                 </Text>
               </View>
             </View>
@@ -1222,7 +1221,7 @@ const OrderItem = function (props) {
               marginTop: 10,
             }}
           >
-            {order?.ten_khnhan} - {order?.tel_khnhan}
+            {order?.ten_khnhan?order?.ten_khnhan:order?.receiver_fullname} - {order?.tel_khnhan?order?.tel_khnhan:order?.receiver_phone}
           </Text>
           <Text
             style={{
@@ -1369,7 +1368,6 @@ export class ChatItem extends React.Component {
 }
 
 function ContainChatItem(props) {
-  const right = props?.item?.sender === appStore.user.type + '_' + appStore.user.user_id;
   const [showPopover, setShowPopover] = useState(false);
   const [reactions, setReactions] = useState(props.item?.reactions);
   const [reactObject, setReactObject] = useState(new Map());
@@ -1420,205 +1418,132 @@ function ContainChatItem(props) {
 
   return (
     <>
+      <TouchableOpacity
+        onPress={() => {
+          try {
+            if (props.item.type === 'FILE') {
+              // console.log(props.item.attachments[0].url)
+              // const extension = getUrlExtension(props.item.attachments[0].url);
+              //
+              // const localFile = `${RNFS.DocumentDirectoryPath}/${uuid.v4()}.${extension}`;
+              //
+              // const options = {
+              //   fromUrl: props.item.attachments[0].url,
+              //   toFile: localFile,
+              // };
+              // RNFS.downloadFile(options)
+              //   .promise.then(() => FileViewer.open(localFile))
+              //   .then(() => {
+              //     // success
+              //   })
+              //   .catch((error) => {
+              //     console.log(error)
+              //     // error
+              //   });
+              // FileViewer.open(props.item.attachments[0].url);
+              Linking.openURL(props.item.attachments[0].url);
+            }
+            if (props.item.type === 'LOCATION') {
+              try {
+                Linking.openURL(
+                  createMapLink({
+                    provider: 'google',
+                    latitude: props.item?.location?.latitude,
+                    longitude: props.item?.location?.longitude,
+                  })
+                );
+              } catch (e) {
+                console.log(e);
+              }
+            }
+          } catch (e) {
+          }
+        }}
+        onLongPress={() => {
+          if (props.item.type !== 'FILE' && props.item.type !== 'LOCATION')
+            setShowPopover(true);
+        }}
+      >
+        {props.children}
+
+        {reactions?.length > 0 && (
+          <View
+            style={{
+              flexDirection: 'row',
+              zIndex: 99,
+              borderWidth: 1,
+              borderColor: 'white',
+              position: 'absolute',
+              bottom: -16,
+              right: -16,
+              borderRadius: 10,
+              padding: 1,
+              backgroundColor: '#F8F8FA',
+            }}
+          >
+            {reactObject.get('LIKE') && (
+              <FastImage
+                source={require('../../assets/emoji_1.png')}
+                style={{
+                  width: 16,
+                  height: 16,
+                  resizeMode: 'contain',
+                  marginRight: 4,
+                }}
+                resizeMode={'contain'}
+              />
+            )}
+            {reactObject.get('LOVE') && (
+              <FastImage
+                source={require('../../assets/emoji_2.png')}
+                style={{
+                  width: 16,
+                  height: 16,
+                  resizeMode: 'contain',
+                  marginRight: 4,
+                }}
+                resizeMode={'contain'}
+              />
+            )}
+            {reactObject.get('WOW') && (
+              <FastImage
+                source={require('../../assets/emoji_4.png')}
+                style={{
+                  width: 16,
+                  height: 16,
+                  resizeMode: 'contain',
+                  marginRight: 4,
+                }}
+                resizeMode={'contain'}
+              />
+            )}
+            {reactObject.get('SAD') && (
+              <FastImage
+                source={require('../../assets/emoji_5.png')}
+                style={{
+                  width: 16,
+                  height: 16,
+                  resizeMode: 'contain',
+                  marginRight: 4,
+                }}
+                resizeMode={'contain'}
+              />
+            )}
+            {reactObject.get('ANGRY') && (
+              <FastImage
+                source={require('../../assets/emoji_7.png')}
+                style={{ width: 16, height: 16, resizeMode: 'contain' }}
+                resizeMode={'contain'}
+              />
+            )}
+          </View>
+        )}
+      </TouchableOpacity>
       <Popover
         reactions={reactions}
         isVisible={showPopover}
-        placement={PopoverPlacement.TOP}
         onRequestClose={() => setShowPopover(false)}
-        backgroundStyle={{ backgroundColor: 'transparent', }}
-        popoverStyle={{ borderRadius: 34, }}
-        from={(
-          <TouchableOpacity
-            onPress={() => {
-              try {
-                if (props.item.type === 'FILE') {
-                  // console.log(props.item.attachments[0].url)
-                  // const extension = getUrlExtension(props.item.attachments[0].url);
-                  //
-                  // const localFile = `${RNFS.DocumentDirectoryPath}/${uuid.v4()}.${extension}`;
-                  //
-                  // const options = {
-                  //   fromUrl: props.item.attachments[0].url,
-                  //   toFile: localFile,
-                  // };
-                  // RNFS.downloadFile(options)
-                  //   .promise.then(() => FileViewer.open(localFile))
-                  //   .then(() => {
-                  //     // success
-                  //   })
-                  //   .catch((error) => {
-                  //     console.log(error)
-                  //     // error
-                  //   });
-                  // FileViewer.open(props.item.attachments[0].url);
-                  Linking.openURL(props.item.attachments[0].url);
-                }
-                if (props.item.type === 'LOCATION') {
-                  try {
-                    Linking.openURL(
-                      createMapLink({
-                        provider: 'google',
-                        latitude: props.item?.location?.latitude,
-                        longitude: props.item?.location?.longitude,
-                      })
-                    );
-                  } catch (e) {
-                    console.log(e);
-                  }
-                }
-              } catch (e) {
-              }
-            }}
-            onLongPress={() => {
-              if (props.item.type !== 'FILE' && props.item.type !== 'LOCATION')
-                setShowPopover(true);
-            }}
-          >
-            {right ? (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {reactions?.length > 0 && (
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      zIndex: 99,
-                      marginRight: 5
-                    }}
-                  >
-                    {reactObject.get('LIKE') && (
-                      <FastImage
-                        source={require('../../assets/emoji_1.png')}
-                        style={{
-                          width: 20,
-                          height: 20,
-                          resizeMode: 'contain',
-                          marginRight: 4,
-                        }}
-                        resizeMode={'contain'}
-                      />
-                    )}
-                    {reactObject.get('LOVE') && (
-                      <FastImage
-                        source={require('../../assets/emoji_2.png')}
-                        style={{
-                          width: 20,
-                          height: 20,
-                          resizeMode: 'contain',
-                          marginRight: 4,
-                        }}
-                        resizeMode={'contain'}
-                      />
-                    )}
-                    {reactObject.get('WOW') && (
-                      <FastImage
-                        source={require('../../assets/emoji_4.png')}
-                        style={{
-                          width: 20,
-                          height: 20,
-                          resizeMode: 'contain',
-                          marginRight: 4,
-                        }}
-                        resizeMode={'contain'}
-                      />
-                    )}
-                    {reactObject.get('SAD') && (
-                      <FastImage
-                        source={require('../../assets/emoji_5.png')}
-                        style={{
-                          width: 20,
-                          height: 20,
-                          resizeMode: 'contain',
-                          marginRight: 4,
-                        }}
-                        resizeMode={'contain'}
-                      />
-                    )}
-                    {reactObject.get('ANGRY') && (
-                      <FastImage
-                        source={require('../../assets/emoji_7.png')}
-                        style={{ width: 20, height: 20, resizeMode: 'contain' }}
-                        resizeMode={'contain'}
-                      />
-                    )}
-                  </View>
-                )}
-                <View>
-                  {props.children}
-                </View>
-              </View>
-            ) : (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View>{props.children}</View>
-                {reactions?.length > 0 && (
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      zIndex: 99,
-                      marginLeft: 5
-                    }}
-                  >
-                    {reactObject.get('LIKE') && (
-                      <FastImage
-                        source={require('../../assets/emoji_1.png')}
-                        style={{
-                          width: 20,
-                          height: 20,
-                          resizeMode: 'contain',
-                          marginRight: 4,
-                        }}
-                        resizeMode={'contain'}
-                      />
-                    )}
-                    {reactObject.get('LOVE') && (
-                      <FastImage
-                        source={require('../../assets/emoji_2.png')}
-                        style={{
-                          width: 20,
-                          height: 20,
-                          resizeMode: 'contain',
-                          marginRight: 4,
-                        }}
-                        resizeMode={'contain'}
-                      />
-                    )}
-                    {reactObject.get('WOW') && (
-                      <FastImage
-                        source={require('../../assets/emoji_4.png')}
-                        style={{
-                          width: 20,
-                          height: 20,
-                          resizeMode: 'contain',
-                          marginRight: 4,
-                        }}
-                        resizeMode={'contain'}
-                      />
-                    )}
-                    {reactObject.get('SAD') && (
-                      <FastImage
-                        source={require('../../assets/emoji_5.png')}
-                        style={{
-                          width: 20,
-                          height: 20,
-                          resizeMode: 'contain',
-                          marginRight: 4,
-                        }}
-                        resizeMode={'contain'}
-                      />
-                    )}
-                    {reactObject.get('ANGRY') && (
-                      <FastImage
-                        source={require('../../assets/emoji_7.png')}
-                        style={{ width: 20, height: 20, resizeMode: 'contain' }}
-                        resizeMode={'contain'}
-                      />
-                    )}
-                  </View>
-                )}
-              </View>
-            )}
-
-
-          </TouchableOpacity>
-        )}
+        backgroundStyle={{ backgroundColor: 'transparent' }}
       >
         <View
           style={{
@@ -1635,7 +1560,7 @@ function ContainChatItem(props) {
             },
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
-            margin: 1,
+            margin: 10,
             elevation: 5,
           }}
         >

@@ -55,8 +55,7 @@ class ChatVT {
       Navigation.events().registerComponentDidAppearListener(
         ({ componentId, componentName, passProps }) => {
           if (
-            componentName === 'navigation.VTMan.MessengerScreen.TK' &&
-            listChatStore.data?.length === 0
+            componentName === 'navigation.VTMan.MessengerScreen.TK'
           ) {
             listChatStore.page = 0;
             listChatStore.getData({});

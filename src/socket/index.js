@@ -46,10 +46,8 @@ class Socket{
           const right =  event?.message.sender === (appStore.user.type + '_' + appStore.user.user_id);
           runInAction(()=>{
             if(!right){
-              chatStore.data.unshift(event.message)
-              chatStore.data = [...chatStore.data]
+              chatStore.data = [event.message, ...chatStore.data]
             }
-
           })
 
         }

@@ -59,7 +59,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
         conversation_id: conversation._id,
         text: 'QUOTE_ORDER',
         type: 'QUOTE_ORDER',
-        order_number: props.order.ORDER_NUMBER ? props.order.ORDER_NUMBER : props.order.ma_phieugui,
+        order_number: props.order.ORDER_NUMBER?props.order.ORDER_NUMBER:props.order.ma_phieugui,
         has_attachment: false,
         order_info: {
           vtp_order: props.order,
@@ -74,11 +74,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
       }
     });
     chatStore.resetData();
-    const listener =
-      Navigation.events().registerNavigationButtonPressedListener(() => {
-        chatStore.images = [];
-      });
-
 
 
     let receiver = {};
@@ -88,17 +83,18 @@ export const ChatScreen = observer(function ChatScreen(props) {
       );
       setReceiver(receiver ? receiver : {});
     } catch (e) { }
-    // setTimeout(() => {
-    //   chatStore.page = 0;
-    //   chatStore.getData({
-    //     conversation_id: conversation?._id,
-    //   });
-    // }, 250);
+    setTimeout(() => {
+      chatStore.page = 0;
+      chatStore.getData({
+        conversation_id: conversation?._id,
+      });
+    }, 250);
     return () => {
-      showSubscription.remove();
-      listener.remove();
       chatStore.showAttachModal = false;
       chatStore.keyboardEmoji = false;
+      chatStore.images = [];
+      InputStore.input = ''
+      showSubscription.remove();
     };
   }, []);
 
@@ -307,29 +303,32 @@ export const ChatScreen = observer(function ChatScreen(props) {
             </View>
             <View style={{ flex: 1, backgroundColor: 'white' }}>
 
-              <FlashList
+              <FlatList
                 keyboardShouldPersistTaps={'always'}
-                estimatedItemSize={200}
-                forceNonDeterministicRendering={true}
-                maintainVisibleContentPosition={{
-                  autoscrollToTopThreshold: 10,
-                  minIndexForVisible: 1,
+                estimatedItemSize={100}
+                viewabilityConfig={{
+                  waitForInteraction: true,
+                  itemVisiblePercentThreshold: 50,
+                  minimumViewTime: 1000,
                 }}
-                style={{ flex: 1, backgroundColor: 'white', }}
+                overrideItemLayout={(layout, item) => {
+                  layout.size = 200;
+                }}
+                // forceNonDeterministicRendering={true}
+                style={{ flex: 1, backgroundColor: 'white', transform: [{scaleY: -1}] }}
                 data={chatStore.data}
                 extraData={chatStore.data}
-                inverted={true}
+                // inverted
                 renderItem={({ item, index }) => (
-                  <ChatItem item={item} index={index} conversation={conversation} />
+                  <View style={{transform: [{scaleY: -1}]}}>
+                    <ChatItem item={item} index={index} conversation={conversation} />
+                  </View>
                 )}
                 getItemType={(item, index) => {
-                  if (index === 0) {
-                    return 0
-                  }
                   return item?.type;
                 }}
                 onEndReached={() => handleLoadMore()}
-                onEndReachedThreshold={0.5}
+                onEndReachedThreshold={10}
                 ListHeaderComponent={() => <View style={{ height: 8 }} />}
                 removeClippedSubviews={true}
                 keyExtractor={(item) =>
@@ -406,6 +405,14 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
 
 const BottomChat = observer(function BottomChat(props) {
+
+  useEffect(()=>{
+
+    return ()=>{
+      InputStore.input = ''
+    }
+  }, [])
+
   const conversation = props.data;
 
   const sendMessage = async () => {
@@ -413,7 +420,7 @@ const BottomChat = observer(function BottomChat(props) {
       id: uuid.v4(),
       type: 'MESSAGE',
       text: InputStore.input,
-      status: 'sending',
+      status: 'sent',
       order_number: props.order
         ? props.order.ORDER_NUMBER
         : conversation.order_info?.order_number,

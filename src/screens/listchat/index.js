@@ -195,7 +195,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
   const renderItem = ({ item, index }) => {
     let setting = {};
     try {
-      let mySetting = item.settings.find(
+      let mySetting = item.settings?.find(
         (i) => i.user_id === appStore.user.type + '_' + appStore.user.user_id
       );
       setting = mySetting ? mySetting : {};
@@ -214,23 +214,31 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
     const rightButtons = [
       <TouchableOpacity
         onPress={() => {
-          console.log('pin', setting)
           if (setting.is_pin) {
             listChatStore.unPin({ conversation_id: item._id }, () => {
-              item.settings = item.settings.map(i => {
-                i.is_pin = false;
-                return i
-              })
+              try {
+                item.settings = item.settings.map(i => {
+                  i.is_pin = false;
+                  return i
+                })
+              }catch (e) {
+
+              }
+
               listChatStore.data.unshift(item)
               listChatStore.dataPin = [...listChatStore.dataPin.filter(i=>i._id !== item._id)]
               listChatStore.data = [...listChatStore.data]
             });
           } else {
             listChatStore.pin({ conversation_id: item._id }, () => {
-              item.settings = item.settings.map(i => {
-                i.is_pin = true;
-                return i
-              })
+              try{
+                item.settings = item.settings.map(i => {
+                  i.is_pin = true;
+                  return i
+                })
+              }catch (e) {
+
+              }
               listChatStore.dataPin.unshift(item)
               listChatStore.data = [...listChatStore.data.filter(i=>i._id !== item._id)]
               listChatStore.dataPin = [...listChatStore.dataPin]
@@ -271,24 +279,29 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
       </TouchableOpacity>,
       <TouchableOpacity
         onPress={() => {
-          listChatStore.mute(
-            {
-              conversation_id: item._id,
-              is_show: !setting.is_hide_notification,
-            },
-            () => {
-              item.settings = item.settings.map(i => {
-                i.is_hide_notification = !i.is_hide_notification
-                return i
-              })
-              listChatStore.data = [...listChatStore.data]
-              //   item.settings = item.settings.map(i=>{
-              //     i.is_pin = true;
-              //     return i
-              //   })
-              // listChatStore.data = [...listChatStore.data]
-            }
-          );
+          try{
+            listChatStore.mute(
+              {
+                conversation_id: item._id,
+                is_show: !setting.is_hide_notification,
+              },
+              () => {
+                item.settings = item.settings?.map(i => {
+                  i.is_hide_notification = !i.is_hide_notification
+                  return i
+                })
+                listChatStore.data = [...listChatStore.data]
+                //   item.settings = item.settings.map(i=>{
+                //     i.is_pin = true;
+                //     return i
+                //   })
+                // listChatStore.data = [...listChatStore.data]
+              }
+            );
+
+          }catch (e) {
+
+          }
         }}
         style={{
           width: 66,
@@ -361,9 +374,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           <TouchableOpacity
             onPress={() => {
               navigationChat({ ...item, ...{ receiver: receiver } });
-              listChatStore.data[index].settings = listChatStore.data[
-                index
-                ].settings.map((i) => {
+              item.settings = item.settings.map((i) => {
                 if (
                   i.user_id ===
                   appStore.user.type + '_' + appStore.user.user_id
