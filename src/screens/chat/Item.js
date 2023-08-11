@@ -612,7 +612,7 @@ const MessageItem = function (props) {
                 }}
               >
                 {new Date(item.created_at).getFullYear() <
-                  new Date().getFullYear()
+                new Date().getFullYear()
                   ? moment(item.created_at).format('DD/MM/YYYY')
                   : moment(item.created_at).fromNow().includes('days')
                     ? `${moment(item.created_at).format('DD/MM')}`
@@ -834,28 +834,28 @@ const DocumentItem = function (props) {
                           )}
                           {(attach.type.includes('doc') ||
                             attach.type.includes('docx')) && (
-                              <Image
-                                source={require('../../assets/file_doc.png')}
-                                style={{
-                                  width: 42,
-                                  height: 42,
-                                  resizeMode: 'contain',
-                                  marginRight: 14,
-                                }}
-                              />
-                            )}
+                            <Image
+                              source={require('../../assets/file_doc.png')}
+                              style={{
+                                width: 42,
+                                height: 42,
+                                resizeMode: 'contain',
+                                marginRight: 14,
+                              }}
+                            />
+                          )}
                           {(attach.type.includes('xlsx') ||
                             attach.type.includes('xls')) && (
-                              <Image
-                                source={require('../../assets/file_xls.png')}
-                                style={{
-                                  width: 42,
-                                  height: 42,
-                                  resizeMode: 'contain',
-                                  marginRight: 14,
-                                }}
-                              />
-                            )}
+                            <Image
+                              source={require('../../assets/file_xls.png')}
+                              style={{
+                                width: 42,
+                                height: 42,
+                                resizeMode: 'contain',
+                                marginRight: 14,
+                              }}
+                            />
+                          )}
                           <View>
                             <Text
                               numberOfLines={1}
@@ -918,28 +918,28 @@ const DocumentItem = function (props) {
                           )}
                           {(attach.url.includes('.doc') ||
                             attach.url.includes('.docx')) && (
-                              <Image
-                                source={require('../../assets/file_doc.png')}
-                                style={{
-                                  width: 42,
-                                  height: 42,
-                                  resizeMode: 'contain',
-                                  marginRight: 14,
-                                }}
-                              />
-                            )}
+                            <Image
+                              source={require('../../assets/file_doc.png')}
+                              style={{
+                                width: 42,
+                                height: 42,
+                                resizeMode: 'contain',
+                                marginRight: 14,
+                              }}
+                            />
+                          )}
                           {(attach.url.includes('.xls') ||
                             attach.url.includes('.xlsx')) && (
-                              <Image
-                                source={require('../../assets/file_xls.png')}
-                                style={{
-                                  width: 42,
-                                  height: 42,
-                                  resizeMode: 'contain',
-                                  marginRight: 14,
-                                }}
-                              />
-                            )}
+                            <Image
+                              source={require('../../assets/file_xls.png')}
+                              style={{
+                                width: 42,
+                                height: 42,
+                                resizeMode: 'contain',
+                                marginRight: 14,
+                              }}
+                            />
+                          )}
                           {/*<View>*/}
                           <Text
                             numberOfLines={1}
@@ -986,7 +986,7 @@ const DocumentItem = function (props) {
               }}
             >
               {new Date(item.created_at).getFullYear() <
-                new Date().getFullYear()
+              new Date().getFullYear()
                 ? moment(item.created_at).format('DD/MM/YYYY')
                 : moment(item.created_at).fromNow().includes('days')
                   ? `${moment(item.created_at).format('DD/MM')}`
@@ -1021,117 +1021,227 @@ const OrderItem = function (props) {
   let productNames = '';
 
   try {
-    if (order.PRODUCT_NAME) {
-      productNames = order.PRODUCT_NAME;
-    } else {
-      productNames = order.LIST_ITEM.map((p) => {
-        return p.PRODUCT_QUANTITY + 'x' + p.PRODUCT_NAME;
-      }).join(' + ');
+    if(order?.ORDER_NUMBER){
+      if (order.PRODUCT_NAME) {
+        productNames = order.PRODUCT_NAME;
+      } else {
+        productNames = order.LIST_ITEM.map((p) => {
+          return p.PRODUCT_QUANTITY + 'x' + p.PRODUCT_NAME;
+        }).join(' + ');
+      }
+    }else{
+      productNames = order.ten_hang
     }
+
   } catch (e) {
     console.log(e);
   }
+  if(order?.ORDER_NUMBER) {
 
-  return (
-    <TouchableOpacity
-      onPress={() => {
-        try {
-          Navigation.push(appStore.componentId, {
-            component: {
-              id: 'OrderInfomationtScreenID',
-              name: 'OrderInfomationtScreen',
-              passProps: {
-                orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
-                isSender: true,
-              },
-              options: {
-                bottomTabs: {
-                  visible: false,
+
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          try {
+            Navigation.push(appStore.componentId, {
+              component: {
+                id: 'OrderInfomationtScreenID',
+                name: 'OrderInfomationtScreen',
+                passProps: {
+                  orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
+                  isSender: true,
+                },
+                options: {
+                  bottomTabs: {
+                    visible: false,
+                  },
                 },
               },
-            },
-          });
-        } catch (e) {
-          alert(e);
-        }
-      }}
-    >
-      <View
-        style={{
-          backgroundColor: colors.blueBG,
-          padding: 12,
-          marginVertical: 8,
+            });
+          } catch (e) {
+            alert(e);
+          }
         }}
       >
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-            <Text
-              style={{
-                fontWeight: '600',
-                fontSize: 16,
-                color: colors.primaryText,
-              }}
-            >
-              {item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER}
-            </Text>
-            <View
-              style={{
-                paddingVertical: 5,
-                borderRadius: 28,
-                backgroundColor: '#EB960A',
-                marginHorizontal: 8,
-                paddingHorizontal: 8,
-                alignItems: 'center',
-                justifyContent: 'center',
-                maxWidth: Dimensions.get('screen').width / 2
-              }}
-            >
+        <View
+          style={{
+            backgroundColor: colors.blueBG,
+            padding: 12,
+            marginVertical: 8,
+          }}
+        >
+          <View style={{flexDirection: 'row'}}>
+            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontWeight: '600',
-                  fontSize: 11,
-                  color: 'white',
-                  textAlign: 'center',
+                  fontSize: 16,
+                  color: colors.primaryText,
                 }}
-                numberOfLines={1}
               >
-                {orderStatus(order?.ORDER_STATUS)}
+                {item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER}
               </Text>
+              <View
+                style={{
+                  paddingVertical: 5,
+                  borderRadius: 28,
+                  backgroundColor: '#EB960A',
+                  marginHorizontal: 8,
+                  paddingHorizontal: 8,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  maxWidth: Dimensions.get('screen').width / 2
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: '600',
+                    fontSize: 11,
+                    color: 'white',
+                    textAlign: 'center',
+                  }}
+                  numberOfLines={1}
+                >
+                  {orderStatus(order?.ORDER_STATUS)}
+                </Text>
+              </View>
             </View>
           </View>
+          <Text
+            style={{
+              fontWeight: '600',
+              fontSize: 17,
+              color: colors.primaryText,
+              marginTop: 10,
+            }}
+          >
+            {order?.RECEIVER_FULLNAME} - {order?.RECEIVER_PHONE}
+          </Text>
+          <Text
+            style={{
+              fontWeight: '500',
+              fontSize: 15,
+              color: colors.neutralText,
+              marginTop: 2,
+            }}
+          >
+            {productNames}
+          </Text>
         </View>
-        <Text
+        {/*{*/}
+        {/*  item.status === 'sending' &&*/}
+        {/*  <Text style={{*/}
+        {/*    fontWeight: '500',*/}
+        {/*    fontSize: 15,*/}
+        {/*    color: colors.neutralText,*/}
+        {/*    marginTop: 8*/}
+        {/*  }}>{appStore.lang.chat.sending + '...'}</Text>*/}
+        {/*}*/}
+      </TouchableOpacity>
+    );
+  }else{
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          try {
+            Navigation.push(appStore.componentId, {
+              component: {
+                id: 'OrderInfomationtScreenID',
+                name: 'OrderInfomationtScreen',
+                passProps: {
+                  orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
+                  isSender: true,
+                },
+                options: {
+                  bottomTabs: {
+                    visible: false,
+                  },
+                },
+              },
+            });
+          } catch (e) {
+            alert(e);
+          }
+        }}
+      >
+        <View
           style={{
-            fontWeight: '600',
-            fontSize: 17,
-            color: colors.primaryText,
-            marginTop: 10,
+            backgroundColor: colors.blueBG,
+            padding: 12,
+            marginVertical: 8,
           }}
         >
-          {order?.RECEIVER_FULLNAME} - {order?.RECEIVER_PHONE}
-        </Text>
-        <Text
-          style={{
-            fontWeight: '500',
-            fontSize: 15,
-            color: colors.neutralText,
-            marginTop: 2,
-          }}
-        >
-          {productNames}
-        </Text>
-      </View>
-      {/*{*/}
-      {/*  item.status === 'sending' &&*/}
-      {/*  <Text style={{*/}
-      {/*    fontWeight: '500',*/}
-      {/*    fontSize: 15,*/}
-      {/*    color: colors.neutralText,*/}
-      {/*    marginTop: 8*/}
-      {/*  }}>{appStore.lang.chat.sending + '...'}</Text>*/}
-      {/*}*/}
-    </TouchableOpacity>
-  );
+          <View style={{flexDirection: 'row'}}>
+            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+              <Text
+                style={{
+                  fontWeight: '600',
+                  fontSize: 16,
+                  color: colors.primaryText,
+                }}
+              >
+                {order?.ma_phieugui}
+              </Text>
+              <View
+                style={{
+                  paddingVertical: 5,
+                  borderRadius: 28,
+                  backgroundColor: '#EB960A',
+                  marginHorizontal: 8,
+                  paddingHorizontal: 8,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  maxWidth: Dimensions.get('screen').width / 2
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: '600',
+                    fontSize: 11,
+                    color: 'white',
+                    textAlign: 'center',
+                  }}
+                  numberOfLines={1}
+                >
+                  {order?.trang_thai}
+                </Text>
+              </View>
+            </View>
+          </View>
+          <Text
+            style={{
+              fontWeight: '600',
+              fontSize: 17,
+              color: colors.primaryText,
+              marginTop: 10,
+            }}
+          >
+            {order?.ten_khnhan} - {order?.tel_khnhan}
+          </Text>
+          <Text
+            style={{
+              fontWeight: '500',
+              fontSize: 15,
+              color: colors.neutralText,
+              marginTop: 2,
+            }}
+          >
+            {productNames}
+          </Text>
+        </View>
+        {/*{*/}
+        {/*  item.status === 'sending' &&*/}
+        {/*  <Text style={{*/}
+        {/*    fontWeight: '500',*/}
+        {/*    fontSize: 15,*/}
+        {/*    color: colors.neutralText,*/}
+        {/*    marginTop: 8*/}
+        {/*  }}>{appStore.lang.chat.sending + '...'}</Text>*/}
+        {/*}*/}
+      </TouchableOpacity>
+    );
+
+  }
 };
 
 export class ChatItem extends React.Component {
