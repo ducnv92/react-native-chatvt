@@ -59,7 +59,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
         conversation_id: conversation._id,
         text: 'QUOTE_ORDER',
         type: 'QUOTE_ORDER',
-        order_number: props.order.ORDER_NUMBER?props.order.ORDER_NUMBER:props.order.ma_phieugui,
+        order_number: props.order.ORDER_NUMBER ? props.order.ORDER_NUMBER : props.order.ma_phieugui,
         has_attachment: false,
         order_info: {
           vtp_order: props.order,
@@ -88,12 +88,12 @@ export const ChatScreen = observer(function ChatScreen(props) {
       );
       setReceiver(receiver ? receiver : {});
     } catch (e) { }
-    setTimeout(() => {
-      chatStore.page = 0;
-      chatStore.getData({
-        conversation_id: conversation?._id,
-      });
-    }, 250);
+    // setTimeout(() => {
+    //   chatStore.page = 0;
+    //   chatStore.getData({
+    //     conversation_id: conversation?._id,
+    //   });
+    // }, 250);
     return () => {
       showSubscription.remove();
       listener.remove();

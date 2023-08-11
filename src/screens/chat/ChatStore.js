@@ -1,6 +1,6 @@
-import {observable, action, makeAutoObservable} from 'mobx';
-import services, {getHeader} from "../../services";
-import {Log} from "../../utils";
+import { observable, action, makeAutoObservable } from 'mobx';
+import services, { getHeader } from "../../services";
+import { Log } from "../../utils";
 import uuid from "react-native-uuid";
 import ImageResizer from "../../components/resizeImage";
 import uploadProgress from './uploadProgress';
@@ -35,11 +35,11 @@ class ChatStore {
     makeAutoObservable(this);
   }
 
-  onChangeTextChat(emoji){
-    this.input +=emoji
+  onChangeTextChat(emoji) {
+    this.input += emoji
   }
 
-  resetData(){
+  resetData() {
     this.isLoading = false;
     this.isLoadingMore = false;
     this.canLoadMore = true;
@@ -83,7 +83,7 @@ class ChatStore {
           if (response.data.data) {
             if (this.page === 1) {
               this.data = response.data.data;
-              if(chatStore.quote!==undefined){
+              if (chatStore.quote !== undefined) {
                 chatStore.data.unshift(chatStore.quote)
               }
             } else {
@@ -97,7 +97,7 @@ class ChatStore {
               onSuccess(this.data);
             }
           }
-        }else{
+        } else {
           alert(response.data.message)
         }
       } else {
@@ -125,8 +125,8 @@ class ChatStore {
 
   async sendMessage(params) {
 
-    const quoteCopy = {...this.quote}
-    if(this.quote){
+    const quoteCopy = { ...this.quote }
+    if (this.quote) {
       this.quote = undefined;
       await this.sendMessage(quoteCopy)
     }
@@ -140,11 +140,11 @@ class ChatStore {
         let extension = params.attachmentLocal[i].extension
 
 
-          if(params.attachmentLocal[i].name==null){
-            extension = params.attachmentLocal[i].uri.split(".").pop().toLowerCase();
-          }else{
-            extension = params.attachmentLocal[i].name.split(".").pop().toLowerCase();
-          }
+        if (params.attachmentLocal[i].name == null) {
+          extension = params.attachmentLocal[i].uri.split(".").pop().toLowerCase();
+        } else {
+          extension = params.attachmentLocal[i].name.split(".").pop().toLowerCase();
+        }
 
         extension = extension?.toLowerCase();
         let fileUri = ''
@@ -152,79 +152,79 @@ class ChatStore {
           fileUri = params.attachmentLocal[i].uri
 
           formData.append("files", {
-            name: uuid.v4()+'.'+extension,
+            name: uuid.v4() + '.' + extension,
             uri: fileUri,
-            type: 'video/'+extension,
+            type: 'video/' + extension,
           })
 
-        }else if(extension === 'doc' || extension === 'pdf'|| extension==='xls'){
-          try{
+        } else if (extension === 'doc' || extension === 'pdf' || extension === 'xls') {
+          try {
             fileUri = params.attachmentLocal[i].uri
 
             formData.append("files", {
-              name: uuid.v4()+'.'+extension,
+              name: uuid.v4() + '.' + extension,
               uri: fileUri,
               type: params.attachmentLocal[i].type,
             })
-          }catch (e) {
+          } catch (e) {
 
           }
 
         }
-        else if(extension === 'jpg' ||extension ==='png'||extension ==='jpeg'||extension ==='heic'){
+        else if (extension === 'jpg' || extension === 'png' || extension === 'jpeg' || extension === 'heic') {
 
           let absolutePath = params.attachmentLocal[i].uri
           // if (Platform.OS === 'android'){
 
-            if(params.attachmentLocal[i].width>=900 || params.attachmentLocal[i].height>=900 ){
-              try{
-                const result = await ImageResizer.createResizedImage(
-                  absolutePath,
-                  900,
-                  900,
-                  'JPEG',
-                  80,
-                  0
-                )
-                fileUri = result.uri
-              }catch (e) {
-                fileUri = absolutePath
-                console.log(e)
-              }
-          }else{
+          if (params.attachmentLocal[i].width >= 900 || params.attachmentLocal[i].height >= 900) {
+            try {
+              const result = await ImageResizer.createResizedImage(
+                absolutePath,
+                900,
+                900,
+                'JPEG',
+                80,
+                0
+              )
+              fileUri = result.uri
+            } catch (e) {
+              fileUri = absolutePath
+              console.log(e)
+            }
+          } else {
             fileUri = absolutePath
           }
 
 
-          try{
+          try {
             formData.append("files", {
-              name: uuid.v4()+'.'+extension,
+              name: uuid.v4() + '.' + extension,
               uri: fileUri,
-              type: 'image/'+extension,
+              type: 'image/' + extension,
             })
-          }catch (e) {
+          } catch (e) {
 
           }
 
         }
-        else{
+        else {
 
-          try{
+          try {
             formData.append("files", {
               name: params.attachmentLocal[i].name,
               uri: params.attachmentLocal[i].uri,
-              type: 'image/'+extension,
+              type: 'image/' + extension,
             })
 
 
-          }catch (e) {
+          } catch (e) {
 
           }
         }
       }
 
-      const response = await services.create().uploadFile(formData, progress=>{
-        uploadProgress.progress[params.id] = Math.round((progress.loaded/ progress.total)*100)
+      const response = await services.create().uploadFile(formData, progress => {
+        uploadProgress.progress[params.id] = Math.round((progress.loaded / progress.total) * 100)
       });
       try {
         if (response.data.data) {
@@ -253,10 +253,9 @@ class ChatStore {
         if (item.id === params.id) {
           item.status = 'sent'
           item.attachmentLocal = []
-          item.attachments = response.data.data?.message?.attachments? response.data.data?.message?.attachments:[]
+          item.attachments = response.data.data?.message?.attachments ? response.data.data?.message?.attachments : []
           item.id = undefined
           item._id = response.data.data?.message?._id
-
         }
         return item
       })]
