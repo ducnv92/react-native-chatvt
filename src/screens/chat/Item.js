@@ -23,7 +23,7 @@ import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { toJS } from 'mobx';
 import { createMapLink, createOpenLink } from 'react-native-open-maps';
-import Popover from 'react-native-popover-view';
+import Popover, { PopoverPlacement } from 'react-native-popover-view';
 import services from '../../services';
 import { utils } from 'prettier/doc';
 import uuid from 'react-native-uuid';
@@ -612,7 +612,7 @@ const MessageItem = function (props) {
                 }}
               >
                 {new Date(item.created_at).getFullYear() <
-                new Date().getFullYear()
+                  new Date().getFullYear()
                   ? moment(item.created_at).format('DD/MM/YYYY')
                   : moment(item.created_at).fromNow().includes('days')
                     ? `${moment(item.created_at).format('DD/MM')}`
@@ -660,69 +660,74 @@ const MessageItem = function (props) {
                 }}
               />
             )}
+
             <View
               style={{
-                backgroundColor:
-                  appStore.appId === 'VTPost'
-                    ? right
-                      ? colors.primary
-                      : '#F2F2F2'
-                    : right
-                      ? colors.bgVTM
-                      : '#F2F2F2',
-                padding: 12,
-                borderRadius: 10,
                 maxWidth: '75%',
-                borderWidth: right ? 0 : 1,
-                borderColor: '#DCE6F0',
               }}
             >
               <ContainChatItem {...props}>
-                <ParsedText
-                  accessible={true}
-                  // accessibilityActions={[
-                  //   {name: 'cut', label: 'cut'},
-                  //   {name: 'copy', label: 'copy'},
-                  //   {name: 'paste', label: 'paste'},
-                  // ]}
-                  // onAccessibilityAction={event => {
-                  //   switch (event.nativeEvent.actionName) {
-                  //     case 'cut':
-                  //       Alert.alert('Alert', 'cut action success');
-                  //       break;
-                  //     case 'copy':
-                  //       Alert.alert('Alert', 'copy action success');
-                  //       break;
-                  //     case 'paste':
-                  //       Alert.alert('Alert', 'paste action success');
-                  //       break;
-                  //   }
-                  // }}
-                  style={{
-                    fontFamily: 'SVN-GilroyMedium',
-                    fontWeight: '500',
-                    fontSize: 15,
-                    lineHeight: 21,
-                    color:
-                      appStore.appId === 'VTPost'
-                        ? right
-                          ? 'white'
-                          : colors.primaryText
-                        : colors.primaryText,
-                  }}
-                  parse={[
-                    { type: 'url', style: styles.url, onPress: handleUrlPress },
-                    // {type: 'phone', style: styles.phone, onPress: handlePhonePress},
-                    // {type: 'email', style: styles.email, onPress: handleEmailPress},
-                    // {pattern: /Bob|David/,              style: styles.name, onPress: handleNamePress},
-                    // {pattern: /\[(@[^:]+):([^\]]+)\]/i, style: styles.username, onPress: handleNamePress, renderText: renderText},
-                    // {pattern: /42/,                     style: styles.magicNumber},
-                    // {pattern: /#(\w+)/, style: styles.hashTag},
-                  ]}
-                  childrenProps={{ allowFontScaling: false }}
-                >
-                  {item.text}
-                </ParsedText>
+                <View style={{
+                  backgroundColor:
+                    appStore.appId === 'VTPost'
+                      ? right
+                        ? colors.primary
+                        : '#F2F2F2'
+                      : right
+                        ? colors.bgVTM
+                        : '#F2F2F2',
+                  padding: 12,
+                  borderRadius: 10,
+                  borderWidth: right ? 0 : 1,
+                  borderColor: '#DCE6F0',
+                }}>
+
+                  <ParsedText
+                    accessible={true}
+                    // accessibilityActions={[
+                    //   {name: 'cut', label: 'cut'},
+                    //   {name: 'copy', label: 'copy'},
+                    //   {name: 'paste', label: 'paste'},
+                    // ]}
+                    // onAccessibilityAction={event => {
+                    //   switch (event.nativeEvent.actionName) {
+                    //     case 'cut':
+                    //       Alert.alert('Alert', 'cut action success');
+                    //       break;
+                    //     case 'copy':
+                    //       Alert.alert('Alert', 'copy action success');
+                    //       break;
+                    //     case 'paste':
+                    //       Alert.alert('Alert', 'paste action success');
+                    //       break;
+                    //   }
+                    // }}
+                    style={{
+                      fontFamily: 'SVN-GilroyMedium',
+                      fontWeight: '500',
+                      fontSize: 15,
+                      lineHeight: 21,
+                      color:
+                        appStore.appId === 'VTPost'
+                          ? right
+                            ? 'white'
+                            : colors.primaryText
+                          : colors.primaryText,
+                    }}
+                    parse={[
+                      { type: 'url', style: styles.url, onPress: handleUrlPress },
+                      // {type: 'phone', style: styles.phone, onPress: handlePhonePress},
+                      // {type: 'email', style: styles.email, onPress: handleEmailPress},
+                      // {pattern: /Bob|David/,              style: styles.name, onPress: handleNamePress},
+                      // {pattern: /\[(@[^:]+):([^\]]+)\]/i, style: styles.username, onPress: handleNamePress, renderText: renderText},
+                      // {pattern: /42/,                     style: styles.magicNumber},
+                      // {pattern: /#(\w+)/, style: styles.hashTag},
+                    ]}
+                    childrenProps={{ allowFontScaling: false }}
+                  >
+                    {item.text}
+                  </ParsedText>
+                </View>
               </ContainChatItem>
             </View>
           </View>
@@ -755,8 +760,9 @@ const MessageItem = function (props) {
             </Text>
           )}
         </View>
-      )}
-      <ImageViewing
+      )
+      }
+      < ImageViewing
         images={images}
         swipeToCloseEnabled={true}
         doubleTapToZoomEnabled={true}
@@ -834,28 +840,28 @@ const DocumentItem = function (props) {
                           )}
                           {(attach.type.includes('doc') ||
                             attach.type.includes('docx')) && (
-                            <Image
-                              source={require('../../assets/file_doc.png')}
-                              style={{
-                                width: 42,
-                                height: 42,
-                                resizeMode: 'contain',
-                                marginRight: 14,
-                              }}
-                            />
-                          )}
+                              <Image
+                                source={require('../../assets/file_doc.png')}
+                                style={{
+                                  width: 42,
+                                  height: 42,
+                                  resizeMode: 'contain',
+                                  marginRight: 14,
+                                }}
+                              />
+                            )}
                           {(attach.type.includes('xlsx') ||
                             attach.type.includes('xls')) && (
-                            <Image
-                              source={require('../../assets/file_xls.png')}
-                              style={{
-                                width: 42,
-                                height: 42,
-                                resizeMode: 'contain',
-                                marginRight: 14,
-                              }}
-                            />
-                          )}
+                              <Image
+                                source={require('../../assets/file_xls.png')}
+                                style={{
+                                  width: 42,
+                                  height: 42,
+                                  resizeMode: 'contain',
+                                  marginRight: 14,
+                                }}
+                              />
+                            )}
                           <View>
                             <Text
                               numberOfLines={1}
@@ -918,28 +924,28 @@ const DocumentItem = function (props) {
                           )}
                           {(attach.url.includes('.doc') ||
                             attach.url.includes('.docx')) && (
-                            <Image
-                              source={require('../../assets/file_doc.png')}
-                              style={{
-                                width: 42,
-                                height: 42,
-                                resizeMode: 'contain',
-                                marginRight: 14,
-                              }}
-                            />
-                          )}
+                              <Image
+                                source={require('../../assets/file_doc.png')}
+                                style={{
+                                  width: 42,
+                                  height: 42,
+                                  resizeMode: 'contain',
+                                  marginRight: 14,
+                                }}
+                              />
+                            )}
                           {(attach.url.includes('.xls') ||
                             attach.url.includes('.xlsx')) && (
-                            <Image
-                              source={require('../../assets/file_xls.png')}
-                              style={{
-                                width: 42,
-                                height: 42,
-                                resizeMode: 'contain',
-                                marginRight: 14,
-                              }}
-                            />
-                          )}
+                              <Image
+                                source={require('../../assets/file_xls.png')}
+                                style={{
+                                  width: 42,
+                                  height: 42,
+                                  resizeMode: 'contain',
+                                  marginRight: 14,
+                                }}
+                              />
+                            )}
                           {/*<View>*/}
                           <Text
                             numberOfLines={1}
@@ -986,7 +992,7 @@ const DocumentItem = function (props) {
               }}
             >
               {new Date(item.created_at).getFullYear() <
-              new Date().getFullYear()
+                new Date().getFullYear()
                 ? moment(item.created_at).format('DD/MM/YYYY')
                 : moment(item.created_at).fromNow().includes('days')
                   ? `${moment(item.created_at).format('DD/MM')}`
@@ -1021,7 +1027,7 @@ const OrderItem = function (props) {
   let productNames = '';
 
   try {
-    if(order?.ORDER_NUMBER){
+    if (order?.ORDER_NUMBER) {
       if (order.PRODUCT_NAME) {
         productNames = order.PRODUCT_NAME;
       } else {
@@ -1029,14 +1035,14 @@ const OrderItem = function (props) {
           return p.PRODUCT_QUANTITY + 'x' + p.PRODUCT_NAME;
         }).join(' + ');
       }
-    }else{
+    } else {
       productNames = order.ten_hang
     }
 
   } catch (e) {
     console.log(e);
   }
-  if(order?.ORDER_NUMBER) {
+  if (order?.ORDER_NUMBER) {
 
 
     return (
@@ -1070,8 +1076,8 @@ const OrderItem = function (props) {
             marginVertical: 8,
           }}
         >
-          <View style={{flexDirection: 'row'}}>
-            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
               <Text
                 style={{
                   fontWeight: '600',
@@ -1139,7 +1145,7 @@ const OrderItem = function (props) {
         {/*}*/}
       </TouchableOpacity>
     );
-  }else{
+  } else {
     return (
       <TouchableOpacity
         onPress={() => {
@@ -1171,8 +1177,8 @@ const OrderItem = function (props) {
             marginVertical: 8,
           }}
         >
-          <View style={{flexDirection: 'row'}}>
-            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
               <Text
                 style={{
                   fontWeight: '600',
@@ -1363,6 +1369,7 @@ export class ChatItem extends React.Component {
 }
 
 function ContainChatItem(props) {
+  const right = props?.item?.sender === appStore.user.type + '_' + appStore.user.user_id;
   const [showPopover, setShowPopover] = useState(false);
   const [reactions, setReactions] = useState(props.item?.reactions);
   const [reactObject, setReactObject] = useState(new Map());
@@ -1413,132 +1420,205 @@ function ContainChatItem(props) {
 
   return (
     <>
-      <TouchableOpacity
-        onPress={() => {
-          try {
-            if (props.item.type === 'FILE') {
-              // console.log(props.item.attachments[0].url)
-              // const extension = getUrlExtension(props.item.attachments[0].url);
-              //
-              // const localFile = `${RNFS.DocumentDirectoryPath}/${uuid.v4()}.${extension}`;
-              //
-              // const options = {
-              //   fromUrl: props.item.attachments[0].url,
-              //   toFile: localFile,
-              // };
-              // RNFS.downloadFile(options)
-              //   .promise.then(() => FileViewer.open(localFile))
-              //   .then(() => {
-              //     // success
-              //   })
-              //   .catch((error) => {
-              //     console.log(error)
-              //     // error
-              //   });
-              // FileViewer.open(props.item.attachments[0].url);
-              Linking.openURL(props.item.attachments[0].url);
-            }
-            if (props.item.type === 'LOCATION') {
-              try {
-                Linking.openURL(
-                  createMapLink({
-                    provider: 'google',
-                    latitude: props.item?.location?.latitude,
-                    longitude: props.item?.location?.longitude,
-                  })
-                );
-              } catch (e) {
-                console.log(e);
-              }
-            }
-          } catch (e) {
-          }
-        }}
-        onLongPress={() => {
-          if (props.item.type !== 'FILE' && props.item.type !== 'LOCATION')
-            setShowPopover(true);
-        }}
-      >
-        {props.children}
-
-        {reactions?.length > 0 && (
-          <View
-            style={{
-              flexDirection: 'row',
-              zIndex: 99,
-              borderWidth: 1,
-              borderColor: 'white',
-              position: 'absolute',
-              bottom: -16,
-              right: -16,
-              borderRadius: 10,
-              padding: 1,
-              backgroundColor: '#F8F8FA',
-            }}
-          >
-            {reactObject.get('LIKE') && (
-              <FastImage
-                source={require('../../assets/emoji_1.png')}
-                style={{
-                  width: 16,
-                  height: 16,
-                  resizeMode: 'contain',
-                  marginRight: 4,
-                }}
-                resizeMode={'contain'}
-              />
-            )}
-            {reactObject.get('LOVE') && (
-              <FastImage
-                source={require('../../assets/emoji_2.png')}
-                style={{
-                  width: 16,
-                  height: 16,
-                  resizeMode: 'contain',
-                  marginRight: 4,
-                }}
-                resizeMode={'contain'}
-              />
-            )}
-            {reactObject.get('WOW') && (
-              <FastImage
-                source={require('../../assets/emoji_4.png')}
-                style={{
-                  width: 16,
-                  height: 16,
-                  resizeMode: 'contain',
-                  marginRight: 4,
-                }}
-                resizeMode={'contain'}
-              />
-            )}
-            {reactObject.get('SAD') && (
-              <FastImage
-                source={require('../../assets/emoji_5.png')}
-                style={{
-                  width: 16,
-                  height: 16,
-                  resizeMode: 'contain',
-                  marginRight: 4,
-                }}
-                resizeMode={'contain'}
-              />
-            )}
-            {reactObject.get('ANGRY') && (
-              <FastImage
-                source={require('../../assets/emoji_7.png')}
-                style={{ width: 16, height: 16, resizeMode: 'contain' }}
-                resizeMode={'contain'}
-              />
-            )}
-          </View>
-        )}
-      </TouchableOpacity>
       <Popover
         reactions={reactions}
         isVisible={showPopover}
+        placement={PopoverPlacement.TOP}
         onRequestClose={() => setShowPopover(false)}
-        backgroundStyle={{ backgroundColor: 'transparent' }}
+        backgroundStyle={{ backgroundColor: 'transparent', }}
+        popoverStyle={{ borderRadius: 34, }}
+        from={(
+          <TouchableOpacity
+            onPress={() => {
+              try {
+                if (props.item.type === 'FILE') {
+                  // console.log(props.item.attachments[0].url)
+                  // const extension = getUrlExtension(props.item.attachments[0].url);
+                  //
+                  // const localFile = `${RNFS.DocumentDirectoryPath}/${uuid.v4()}.${extension}`;
+                  //
+                  // const options = {
+                  //   fromUrl: props.item.attachments[0].url,
+                  //   toFile: localFile,
+                  // };
+                  // RNFS.downloadFile(options)
+                  //   .promise.then(() => FileViewer.open(localFile))
+                  //   .then(() => {
+                  //     // success
+                  //   })
+                  //   .catch((error) => {
+                  //     console.log(error)
+                  //     // error
+                  //   });
+                  // FileViewer.open(props.item.attachments[0].url);
+                  Linking.openURL(props.item.attachments[0].url);
+                }
+                if (props.item.type === 'LOCATION') {
+                  try {
+                    Linking.openURL(
+                      createMapLink({
+                        provider: 'google',
+                        latitude: props.item?.location?.latitude,
+                        longitude: props.item?.location?.longitude,
+                      })
+                    );
+                  } catch (e) {
+                    console.log(e);
+                  }
+                }
+              } catch (e) {
+              }
+            }}
+            onLongPress={() => {
+              if (props.item.type !== 'FILE' && props.item.type !== 'LOCATION')
+                setShowPopover(true);
+            }}
+          >
+            {right ? (
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {reactions?.length > 0 && (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      zIndex: 99,
+                      marginRight: 5
+                    }}
+                  >
+                    {reactObject.get('LIKE') && (
+                      <FastImage
+                        source={require('../../assets/emoji_1.png')}
+                        style={{
+                          width: 20,
+                          height: 20,
+                          resizeMode: 'contain',
+                          marginRight: 4,
+                        }}
+                        resizeMode={'contain'}
+                      />
+                    )}
+                    {reactObject.get('LOVE') && (
+                      <FastImage
+                        source={require('../../assets/emoji_2.png')}
+                        style={{
+                          width: 20,
+                          height: 20,
+                          resizeMode: 'contain',
+                          marginRight: 4,
+                        }}
+                        resizeMode={'contain'}
+                      />
+                    )}
+                    {reactObject.get('WOW') && (
+                      <FastImage
+                        source={require('../../assets/emoji_4.png')}
+                        style={{
+                          width: 20,
+                          height: 20,
+                          resizeMode: 'contain',
+                          marginRight: 4,
+                        }}
+                        resizeMode={'contain'}
+                      />
+                    )}
+                    {reactObject.get('SAD') && (
+                      <FastImage
+                        source={require('../../assets/emoji_5.png')}
+                        style={{
+                          width: 20,
+                          height: 20,
+                          resizeMode: 'contain',
+                          marginRight: 4,
+                        }}
+                        resizeMode={'contain'}
+                      />
+                    )}
+                    {reactObject.get('ANGRY') && (
+                      <FastImage
+                        source={require('../../assets/emoji_7.png')}
+                        style={{ width: 20, height: 20, resizeMode: 'contain' }}
+                        resizeMode={'contain'}
+                      />
+                    )}
+                  </View>
+                )}
+                <View>
+                  {props.children}
+                </View>
+              </View>
+            ) : (
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View>{props.children}</View>
+                {reactions?.length > 0 && (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      zIndex: 99,
+                      marginLeft: 5
+                    }}
+                  >
+                    {reactObject.get('LIKE') && (
+                      <FastImage
+                        source={require('../../assets/emoji_1.png')}
+                        style={{
+                          width: 20,
+                          height: 20,
+                          resizeMode: 'contain',
+                          marginRight: 4,
+                        }}
+                        resizeMode={'contain'}
+                      />
+                    )}
+                    {reactObject.get('LOVE') && (
+                      <FastImage
+                        source={require('../../assets/emoji_2.png')}
+                        style={{
+                          width: 20,
+                          height: 20,
+                          resizeMode: 'contain',
+                          marginRight: 4,
+                        }}
+                        resizeMode={'contain'}
+                      />
+                    )}
+                    {reactObject.get('WOW') && (
+                      <FastImage
+                        source={require('../../assets/emoji_4.png')}
+                        style={{
+                          width: 20,
+                          height: 20,
+                          resizeMode: 'contain',
+                          marginRight: 4,
+                        }}
+                        resizeMode={'contain'}
+                      />
+                    )}
+                    {reactObject.get('SAD') && (
+                      <FastImage
+                        source={require('../../assets/emoji_5.png')}
+                        style={{
+                          width: 20,
+                          height: 20,
+                          resizeMode: 'contain',
+                          marginRight: 4,
+                        }}
+                        resizeMode={'contain'}
+                      />
+                    )}
+                    {reactObject.get('ANGRY') && (
+                      <FastImage
+                        source={require('../../assets/emoji_7.png')}
+                        style={{ width: 20, height: 20, resizeMode: 'contain' }}
+                        resizeMode={'contain'}
+                      />
+                    )}
+                  </View>
+                )}
+              </View>
+            )}
+
+
+          </TouchableOpacity>
+        )}
       >
         <View
           style={{
@@ -1555,7 +1635,7 @@ function ContainChatItem(props) {
             },
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
-            margin: 10,
+            margin: 1,
             elevation: 5,
           }}
         >
