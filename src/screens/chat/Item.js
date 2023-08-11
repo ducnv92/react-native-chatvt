@@ -17,7 +17,6 @@ import ParsedText from 'react-native-parsed-text';
 import { groupBy, orderStatus } from '../../utils';
 import { createThumbnail } from '../../components/createThumbnail';
 import ImageViewing from '../../components/imageView/ImageViewing';
-import Video from 'react-native-video';
 import FastImage from 'react-native-fast-image';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
@@ -272,7 +271,7 @@ export const VideoItem = function (props) {
 
   return (
     <View>
-      {isPause ? (
+      {(
         <View style={props.style}>
           {!thumbnail ? (
             <ActivityIndicator size="large" />
@@ -294,26 +293,7 @@ export const VideoItem = function (props) {
             </TouchableOpacity>
           )}
         </View>
-      ) : (
-        <ContainChatItem {...props}>
-          <TouchableOpacity onPress={() => {
-            if (!isPause) {
-              videoRef.current.presentFullscreenPlayer()
-            } else {
-              setIsPause(true)
-            }
-          }}>
-            <Video
-              source={{ uri: props.url }}
-              resizeMode={'contain'}
-              paused={isPause}
-              allowsExternalPlayback
-              poster={thumbnail}
-              style={props.style}
-            ></Video>
-          </TouchableOpacity>
-        </ContainChatItem>
-      )}
+      ) }
       <VideoViewing
         source={{ uri: props.url }}
         swipeToCloseEnabled={true}
@@ -1016,7 +996,8 @@ const DocumentItem = function (props) {
 
 const OrderItem = function (props) {
   const item = props.item;
-  const order = item.order_info?.vtp_order;
+  const order = item.order_info?.vtp_order?item.order_info?.vtp_order:item.order_info?.vtm_bill;
+  console.log(order)
 
   let productNames = '';
 
@@ -1030,7 +1011,7 @@ const OrderItem = function (props) {
         }).join(' + ');
       }
     }else{
-      productNames = order.ten_hang
+      productNames = order?.ten_hang
     }
 
   } catch (e) {
@@ -1180,7 +1161,7 @@ const OrderItem = function (props) {
                   color: colors.primaryText,
                 }}
               >
-                {order?.ma_phieugui}
+                {order?.order_number?order?.order_number:order?.ma_phieugui}
               </Text>
               <View
                 style={{
@@ -1203,7 +1184,7 @@ const OrderItem = function (props) {
                   }}
                   numberOfLines={1}
                 >
-                  {order?.trang_thai}
+                  {order?.status_name?order?.status_name:order?.trang_thai}
                 </Text>
               </View>
             </View>
@@ -1216,7 +1197,7 @@ const OrderItem = function (props) {
               marginTop: 10,
             }}
           >
-            {order?.ten_khnhan} - {order?.tel_khnhan}
+            {order?.ten_khnhan?order?.ten_khnhan:order?.receiver_fullname} - {order?.tel_khnhan?order?.tel_khnhan:order?.receiver_phone}
           </Text>
           <Text
             style={{
@@ -1226,7 +1207,7 @@ const OrderItem = function (props) {
               marginTop: 2,
             }}
           >
-            {productNames}
+            {order?.product_name?order?.product_name:productNames}
           </Text>
         </View>
         {/*{*/}

@@ -53,19 +53,19 @@ export const ChatScreen = observer(function ChatScreen(props) {
   };
 
   useEffect(() => {
-    chatStore.quote = props.order
-      ? {
-        _id: uuid.v4(),
-        conversation_id: conversation._id,
-        text: 'QUOTE_ORDER',
-        type: 'QUOTE_ORDER',
-        order_number: props.order.ORDER_NUMBER?props.order.ORDER_NUMBER:props.order.ma_phieugui,
-        has_attachment: false,
-        order_info: {
-          vtp_order: props.order,
-        },
-      }
-      : undefined;
+    // chatStore.quote = props.order
+    //   ? {
+    //     _id: uuid.v4(),
+    //     conversation_id: conversation._id,
+    //     text: 'QUOTE_ORDER',
+    //     type: 'QUOTE_ORDER',
+    //     order_number: props.order.ORDER_NUMBER?props.order.ORDER_NUMBER:props.order.ma_phieugui,
+    //     has_attachment: false,
+    //     order_info: {
+    //       vtp_order: props.order,
+    //     },
+    //   }
+    //   : undefined;
 
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       if (chatStore.keyboardEmoji) {
@@ -310,11 +310,11 @@ export const ChatScreen = observer(function ChatScreen(props) {
               <FlashList
                 keyboardShouldPersistTaps={'always'}
                 estimatedItemSize={200}
-                forceNonDeterministicRendering={true}
-                maintainVisibleContentPosition={{
-                  autoscrollToTopThreshold: 10,
-                  minIndexForVisible: 1,
-                }}
+                // forceNonDeterministicRendering={true}
+                // maintainVisibleContentPosition={{
+                //   autoscrollToTopThreshold: 10,
+                //   minIndexForVisible: 1,
+                // }}
                 style={{ flex: 1, backgroundColor: 'white', }}
                 data={chatStore.data}
                 extraData={chatStore.data}

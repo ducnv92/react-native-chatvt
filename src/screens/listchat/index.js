@@ -214,6 +214,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
     const rightButtons = [
       <TouchableOpacity
         onPress={() => {
+          console.log('pin', setting)
           if (setting.is_pin) {
             listChatStore.unPin({ conversation_id: item._id }, () => {
               item.settings = item.settings.map(i => {
@@ -221,9 +222,9 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                 return i
               })
               listChatStore.data.unshift(item)
-              listChatStore.dataPin.splice(index, 1)
+              listChatStore.dataPin = [...listChatStore.dataPin.filter(i=>i._id !== item._id)]
+              listChatStore.data = [...listChatStore.data]
             });
-            listChatStore.data = [...listChatStore.data]
           } else {
             listChatStore.pin({ conversation_id: item._id }, () => {
               item.settings = item.settings.map(i => {
@@ -231,9 +232,9 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                 return i
               })
               listChatStore.dataPin.unshift(item)
-              listChatStore.data.splice(index, 1)
+              listChatStore.data = [...listChatStore.data.filter(i=>i._id !== item._id)]
+              listChatStore.dataPin = [...listChatStore.dataPin]
             });
-            listChatStore.data = [...listChatStore.data]
           }
         }}
         style={{
@@ -362,7 +363,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
               navigationChat({ ...item, ...{ receiver: receiver } });
               listChatStore.data[index].settings = listChatStore.data[
                 index
-              ].settings.map((i) => {
+                ].settings.map((i) => {
                 if (
                   i.user_id ===
                   appStore.user.type + '_' + appStore.user.user_id
@@ -519,7 +520,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
               navigationChat({ ...item, ...{ receiver: receiver } });
               listChatStore.data[index].settings = listChatStore.data[
                 index
-              ].settings.map((i) => {
+                ].settings.map((i) => {
                 if (
                   i.user_id ===
                   appStore.user.type + '_' + appStore.user.user_id
@@ -573,7 +574,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     color: colors.primaryText,
                   }}
                 >
-                  {receiver?.first_name + ' ' + receiver?.last_name}{' '}
+                  {receiver?.first_name?receiver?.first_name:'' + ' ' + receiver?.last_name?receiver?.last_name:''}{' '}
                   {receiver?.type === 'VTMAN' && (
                     <Text
                       style={{
