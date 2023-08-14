@@ -29,7 +29,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
 
   useEffect(() => {
     listChatStore.search = '';
-    intLoad();
+    // intLoad();
     // bottomSheetModalRef.current?.present();
     return () => {
       bottomSheetModalRef.current?.dismiss();

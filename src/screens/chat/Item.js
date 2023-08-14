@@ -38,9 +38,7 @@ import Image from 'react-native-fast-image';
 import VideoViewing from "../../components/videoView/ImageViewing";
 
 const MapItem = function (props) {
-  const right =
-    props.item.sender === appStore.user.type + '_' + appStore.user.user_id;
-
+  const right = props.right;
   return (
     <View
       style={{
@@ -98,8 +96,7 @@ const MapItem = function (props) {
   );
 };
 const VoiceItem = function (props) {
-  const right =
-    props.item.sender === appStore.user.type + '_' + appStore.user.user_id;
+  const right = props.right;
   const [isPlay, setIsPlay] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentTime, setCurrentTime] = useState('00:00');
@@ -271,7 +268,7 @@ export const VideoItem = function (props) {
 
   return (
     <View>
-      {isPause ? (
+
         <View style={props.style}>
           {!thumbnail ? (
             <ActivityIndicator size="large" />
@@ -293,26 +290,6 @@ export const VideoItem = function (props) {
             </TouchableOpacity>
           )}
         </View>
-      ) : (
-        <ContainChatItem {...props}>
-          <TouchableOpacity onPress={() => {
-            if (!isPause) {
-              videoRef.current.presentFullscreenPlayer()
-            } else {
-              setIsPause(true)
-            }
-          }}>
-            <Video
-              source={{ uri: props.url }}
-              resizeMode={'contain'}
-              paused={isPause}
-              allowsExternalPlayback
-              poster={thumbnail}
-              style={props.style}
-            ></Video>
-          </TouchableOpacity>
-        </ContainChatItem>
-      )}
       <VideoViewing
         source={{ uri: props.url }}
         swipeToCloseEnabled={true}
@@ -326,8 +303,7 @@ export const VideoItem = function (props) {
 
 const MessageItem = function (props) {
   const item = props.item;
-  const right =
-    item.sender === appStore.user.type + '_' + appStore.user.user_id;
+  const right = props.right;
   const [images, setImages] = useState([]);
   const [imageVisible, setImageVisible] = useState(false);
 
@@ -369,8 +345,8 @@ const MessageItem = function (props) {
               <Image
                 source={require('../../assets/ic_send_error.png')}
                 style={{
-                  width: 16,
-                  height: 16,
+                  width: 24,
+                  height: 24,
                   resizeMode: 'contain',
                   marginRight: 14,
                 }}
@@ -652,8 +628,8 @@ const MessageItem = function (props) {
               <Image
                 source={require('../../assets/ic_send_error.png')}
                 style={{
-                  width: 16,
-                  height: 16,
+                  width: 24,
+                  height: 24,
                   resizeMode: 'contain',
                   marginRight: 14,
                 }}
@@ -775,8 +751,7 @@ const MessageItem = function (props) {
 
 const DocumentItem = function (props) {
   const item = props.item;
-  const right =
-    item.sender === appStore.user.type + '_' + appStore.user.user_id;
+  const right = props.right;
   return (
     <>
       {item.has_attachment && (
@@ -792,8 +767,8 @@ const DocumentItem = function (props) {
               <Image
                 source={require('../../assets/ic_send_error.png')}
                 style={{
-                  width: 16,
-                  height: 16,
+                  width: 24,
+                  height: 24,
                   resizeMode: 'contain',
                   marginRight: 14,
                 }}
@@ -1280,23 +1255,23 @@ export class ChatItem extends React.Component {
 
     let messageView;
     if (this.item.type === 'MESSAGE') {
-      messageView = <MessageItem item={this.props.item} />;
+      messageView = <MessageItem item={this.props.item} right={right} />;
     }
     if (
       this.item.type === 'CREATED_QUOTE_ORDER' ||
       this.item.type === 'QUOTE_ORDER'
     ) {
-      messageView = <OrderItem item={this.props.item} />;
+      messageView = <OrderItem item={this.props.item} right={right}/>;
       return messageView;
     }
     if (this.item.type === 'LOCATION') {
-      messageView = <MapItem item={this.props.item} />;
+      messageView = <MapItem item={this.props.item} right={right}/>;
     }
     if (this.item.type === 'FILE') {
-      messageView = <DocumentItem item={this.props.item} />;
+      messageView = <DocumentItem item={this.props.item} right={right}/>;
     }
     if (this.item.type === 'VOICE') {
-      messageView = <VoiceItem item={this.props.item} />;
+      messageView = <VoiceItem item={this.props.item} right={right}  />;
     }
 
     if (!right && this.props.conversation.type === 'GROUP') {
@@ -1368,9 +1343,11 @@ export class ChatItem extends React.Component {
 }
 
 function ContainChatItem(props) {
+  const containerRef  = useRef()
   const [showPopover, setShowPopover] = useState(false);
   const [reactions, setReactions] = useState(props.item?.reactions);
   const [reactObject, setReactObject] = useState(new Map());
+  const [position, setPosition] = useState({width: 0, height: 0, x: 0, y: 0});
 
   useEffect(() => {
     setReactObject(
@@ -1419,6 +1396,7 @@ function ContainChatItem(props) {
   return (
     <>
       <TouchableOpacity
+        ref={containerRef}
         onPress={() => {
           try {
             if (props.item.type === 'FILE') {
@@ -1460,35 +1438,35 @@ function ContainChatItem(props) {
           }
         }}
         onLongPress={() => {
-          if (props.item.type !== 'FILE' && props.item.type !== 'LOCATION')
-            setShowPopover(true);
+          if (props.item.type !== 'FILE' && props.item.type !== 'LOCATION'){
+            containerRef.current.measure((fx, fy, width, height, px, py) => {
+              setPosition({
+                width: width,
+                height: height,
+                x: px,
+                y: py,
+              })
+              setShowPopover(true);
+            })
+          }
         }}
+        style={{flexDirection: 'row', alignItems: 'center'}}
       >
-        {props.children}
-
-        {reactions?.length > 0 && (
+        {reactions?.length > 0 && props.right && (
           <View
             style={{
               flexDirection: 'row',
-              zIndex: 99,
-              borderWidth: 1,
               borderColor: 'white',
-              position: 'absolute',
-              bottom: -16,
-              right: -16,
-              borderRadius: 10,
-              padding: 1,
-              backgroundColor: '#F8F8FA',
             }}
           >
             {reactObject.get('LIKE') && (
               <FastImage
                 source={require('../../assets/emoji_1.png')}
                 style={{
-                  width: 16,
-                  height: 16,
+                  width: 24,
+                  height: 24,
                   resizeMode: 'contain',
-                  marginRight: 4,
+                  marginRight: 8,
                 }}
                 resizeMode={'contain'}
               />
@@ -1497,10 +1475,10 @@ function ContainChatItem(props) {
               <FastImage
                 source={require('../../assets/emoji_2.png')}
                 style={{
-                  width: 16,
-                  height: 16,
+                  width: 24,
+                  height: 24,
                   resizeMode: 'contain',
-                  marginRight: 4,
+                  marginRight: 8,
                 }}
                 resizeMode={'contain'}
               />
@@ -1509,10 +1487,10 @@ function ContainChatItem(props) {
               <FastImage
                 source={require('../../assets/emoji_4.png')}
                 style={{
-                  width: 16,
-                  height: 16,
+                  width: 24,
+                  height: 24,
                   resizeMode: 'contain',
-                  marginRight: 4,
+                  marginRight: 8,
                 }}
                 resizeMode={'contain'}
               />
@@ -1521,10 +1499,10 @@ function ContainChatItem(props) {
               <FastImage
                 source={require('../../assets/emoji_5.png')}
                 style={{
-                  width: 16,
-                  height: 16,
+                  width: 24,
+                  height: 24,
                   resizeMode: 'contain',
-                  marginRight: 4,
+                  marginRight: 8,
                 }}
                 resizeMode={'contain'}
               />
@@ -1532,116 +1510,197 @@ function ContainChatItem(props) {
             {reactObject.get('ANGRY') && (
               <FastImage
                 source={require('../../assets/emoji_7.png')}
-                style={{ width: 16, height: 16, resizeMode: 'contain' }}
+                style={{
+                  marginRight: 8,
+                  width: 24, height: 24, resizeMode: 'contain' }}
+                resizeMode={'contain'}
+              />
+            )}
+          </View>
+        )}
+
+        {props.children}
+
+        {reactions?.length > 0 && !props.right && (
+          <View
+            style={{
+              flexDirection: 'row',
+              borderColor: 'white',
+            }}
+          >
+            {reactObject.get('LIKE') && (
+              <FastImage
+                source={require('../../assets/emoji_1.png')}
+                style={{
+                  width: 24,
+                  height: 24,
+                  resizeMode: 'contain',
+                  marginLeft: 8,
+                }}
+                resizeMode={'contain'}
+              />
+            )}
+            {reactObject.get('LOVE') && (
+              <FastImage
+                source={require('../../assets/emoji_2.png')}
+                style={{
+                  width: 24,
+                  height: 24,
+                  resizeMode: 'contain',
+                  marginLeft: 8,
+                }}
+                resizeMode={'contain'}
+              />
+            )}
+            {reactObject.get('WOW') && (
+              <FastImage
+                source={require('../../assets/emoji_4.png')}
+                style={{
+                  width: 24,
+                  height: 24,
+                  resizeMode: 'contain',
+                  marginLeft: 8,
+                }}
+                resizeMode={'contain'}
+              />
+            )}
+            {reactObject.get('SAD') && (
+              <FastImage
+                source={require('../../assets/emoji_5.png')}
+                style={{
+                  width: 24,
+                  height: 24,
+                  resizeMode: 'contain',
+                  marginLeft: 8,
+                }}
+                resizeMode={'contain'}
+              />
+            )}
+            {reactObject.get('ANGRY') && (
+              <FastImage
+                source={require('../../assets/emoji_7.png')}
+                style={{ width: 24,
+                  height: 24,
+                  marginLeft: 8,
+                  resizeMode: 'contain' }}
                 resizeMode={'contain'}
               />
             )}
           </View>
         )}
       </TouchableOpacity>
-      <Popover
+      <Modal
         reactions={reactions}
-        isVisible={showPopover}
+        visible={showPopover}
+        transparent={true}
         onRequestClose={() => setShowPopover(false)}
         backgroundStyle={{ backgroundColor: 'transparent' }}
       >
-        <View
-          style={{
-            flexDirection: 'row',
-            paddingVertical: 12,
-            paddingHorizontal: 16,
-            borderRadius: 34,
-            backgroundColor: 'white',
-            overflow: 'hidden',
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            margin: 10,
-            elevation: 5,
-          }}
-        >
-          <TouchableWithoutFeedback
-            onPress={() => reaction('LIKE')}
+        <TouchableOpacity
+          activeOpacity={0}
+          onPress={()=>setShowPopover(false)}
+          style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height,}}>
+          <View
+            style={{
+              position: 'absolute',
+              flexDirection: 'row',
+              paddingVertical: 12,
+              top: position.y-60,
+              paddingHorizontal: 16,
+              borderRadius: 34,
+              backgroundColor: 'white',
+              overflow: 'hidden',
+              alignSelf: 'center',
+              shadowColor: '#0000004c',
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              margin: 10,
+              elevation: 1,
+            }}
           >
-            <FastImage
-              source={require('../../assets/emoji_1.png')}
-              style={{
-                width: 30,
-                height: 30,
-                marginRight: 16,
-                resizeMode: 'contain',
-              }}
-              resizeMode={'contain'}
-            />
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback
-            style={{ marginHorizontal: 8 }}
-            onPress={() => reaction('LOVE')}
-          >
-            <FastImage
-              source={require('../../assets/emoji_2.png')}
-              style={{
-                width: 30,
-                height: 30,
-                resizeMode: 'contain',
-                marginRight: 16,
+            <TouchableWithoutFeedback
+              onPress={() => reaction('LIKE')}
+            >
+              <FastImage
+                source={require('../../assets/emoji_1.png')}
+                style={{
+                  width: 30,
+                  height: 30,
+                  marginRight: 16,
+                  resizeMode: 'contain',
+                }}
+                resizeMode={'contain'}
+              />
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback
+              style={{ marginHorizontal: 8 }}
+              onPress={() => reaction('LOVE')}
+            >
+              <FastImage
+                source={require('../../assets/emoji_2.png')}
+                style={{
+                  width: 30,
+                  height: 30,
+                  resizeMode: 'contain',
+                  marginRight: 16,
 
-              }}
-              resizeMode={'contain'}
-            />
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback
-            style={{ marginHorizontal: 8 }}
-            onPress={() => reaction('WOW')}
-          >
-            <FastImage
-              source={require('../../assets/emoji_4.png')}
-              style={{
-                width: 30,
-                height: 30,
-                resizeMode: 'contain',
-                marginRight: 16,
+                }}
+                resizeMode={'contain'}
+              />
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback
+              style={{ marginHorizontal: 8 }}
+              onPress={() => reaction('WOW')}
+            >
+              <FastImage
+                source={require('../../assets/emoji_4.png')}
+                style={{
+                  width: 30,
+                  height: 30,
+                  resizeMode: 'contain',
+                  marginRight: 16,
 
-              }}
-              resizeMode={'contain'}
-            />
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback
-            style={{ marginHorizontal: 8 }}
-            onPress={() => reaction('SAD')}
-          >
-            <FastImage
-              source={require('../../assets/emoji_5.png')}
-              style={{
-                width: 30,
-                height: 30,
-                resizeMode: 'contain',
-                marginRight: 16,
+                }}
+                resizeMode={'contain'}
+              />
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback
+              style={{ marginHorizontal: 8 }}
+              onPress={() => reaction('SAD')}
+            >
+              <FastImage
+                source={require('../../assets/emoji_5.png')}
+                style={{
+                  width: 30,
+                  height: 30,
+                  resizeMode: 'contain',
+                  marginRight: 16,
 
-              }}
-              resizeMode={'contain'}
-            />
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback
-            style={{ marginHorizontal: 8 }}
-            onPress={() => reaction('ANGRY')}
-          >
-            <FastImage
-              source={require('../../assets/emoji_7.png')}
-              style={{
-                width: 30,
-                height: 30,
-                resizeMode: 'contain',
-              }}
-              resizeMode={'contain'}
-            />
-          </TouchableWithoutFeedback>
-        </View>
-      </Popover>
+                }}
+                resizeMode={'contain'}
+              />
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback
+              style={{ marginHorizontal: 8 }}
+              onPress={() => reaction('ANGRY')}
+            >
+              <FastImage
+                source={require('../../assets/emoji_7.png')}
+                style={{
+                  width: 30,
+                  height: 30,
+                  resizeMode: 'contain',
+                }}
+                resizeMode={'contain'}
+              />
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </>
   );
 }
