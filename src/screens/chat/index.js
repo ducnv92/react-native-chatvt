@@ -83,12 +83,10 @@ export const ChatScreen = observer(function ChatScreen(props) {
       );
       setReceiver(receiver ? receiver : {});
     } catch (e) { }
-    setTimeout(() => {
-      chatStore.page = 0;
-      chatStore.getData({
-        conversation_id: conversation?._id,
-      });
-    }, 250);
+    chatStore.page = 0;
+    chatStore.getData({
+      conversation_id: conversation?._id,
+    });
     return () => {
       chatStore.showAttachModal = false;
       chatStore.keyboardEmoji = false;
@@ -213,7 +211,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                       {conversation?.type === 'GROUP'
                         ? 'Đơn ' + conversation?.order_numbers[0]
                         : conversation?.type === 'PAIR'
-                          ? receiver?.first_name + ' ' + receiver?.last_name
+                          ? (receiver?.first_name?receiver?.first_name: '') + ' ' + (receiver?.last_name?receiver?.last_name:'')
                           : conversation?.type === 'PAIR_SUPPORT'
                             ? 'Chăm sóc khách hàng'
                             : 'Không tên'}

@@ -585,7 +585,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     color: colors.primaryText,
                   }}
                 >
-                  {receiver?.first_name?receiver?.first_name:'' + ' ' + receiver?.last_name?receiver?.last_name:''}{' '}
+                  {(receiver?.first_name?receiver?.first_name:'') + ' ' + (receiver?.last_name?receiver?.last_name:'')}{' '}
                   {receiver?.type === 'VTMAN' && (
                     <Text
                       style={{

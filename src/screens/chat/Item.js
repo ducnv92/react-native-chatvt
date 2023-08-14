@@ -1327,7 +1327,7 @@ export class ChatItem extends React.Component {
                         resizeMode: 'center',
                         marginLeft: 10,
                       }}
-                      source={require('../../assets/avatar_default.png')}
+                      source={item.includes('VTM') ? require('../../assets/avatar_default.png') : require('../../assets/avatar_default_customer.png')}
                     />
                   }
                 </>
