@@ -236,7 +236,7 @@ class ChatStore {
 
         }
         this.data = this.data.map(item => {
-          if (item.id === params.id) {
+          if (item.id === params.id && item.id) {
             item.status = 'error'
           }
           return item
@@ -250,7 +250,7 @@ class ChatStore {
 
     if (response.status === 201 && response.data.status === 200) {
       this.data = [...this.data.map((item) => {
-        if (item.id === params.id) {
+        if (item.id === params.id && item.id) {
           item.status = 'sent'
           item.attachmentLocal = []
           item.attachments = response.data.data?.message?.attachments ? response.data.data?.message?.attachments : []
@@ -261,7 +261,7 @@ class ChatStore {
       })]
     } else {
       this.data = this.data.map(item => {
-        if (item.id === params.id) {
+        if (item.id === params.id && item.id) {
           item.status = 'error'
         }
         return item

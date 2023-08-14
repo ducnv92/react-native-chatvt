@@ -418,7 +418,7 @@ const BottomChat = observer(function BottomChat(props) {
       id: uuid.v4(),
       type: 'MESSAGE',
       text: InputStore.input,
-      status: 'sent',
+      status: 'sending',
       order_number: props.order
         ? props.order.ORDER_NUMBER
         : conversation.order_info?.order_number,
