@@ -47,7 +47,7 @@ export const Categories = (p: Props) => {
     Animated.spring(scrollNav, {
       toValue: activeCategoryIndex * CATEGORY_ELEMENT_WIDTH,
       useNativeDriver: true,
-    }).start();
+    },{useNativeDriver: false}).start();
   }, [activeCategoryIndex, scrollNav]);
 
   const activeIndicator = React.useCallback(

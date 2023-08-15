@@ -23,7 +23,7 @@ const useAnimatedComponents = () => {
       Animated.parallel([
         Animated.timing(headerTranslate.y, { ...ANIMATION_CONFIG, toValue: 0 }),
         Animated.timing(footerTranslate.y, { ...ANIMATION_CONFIG, toValue: 0 }),
-      ]).start();
+      ], {useNativeDriver: false}).start();
     } else {
       Animated.parallel([
         Animated.timing(headerTranslate.y, {
@@ -34,7 +34,7 @@ const useAnimatedComponents = () => {
           ...ANIMATION_CONFIG,
           toValue: 300,
         }),
-      ]).start();
+      ], {useNativeDriver: false}).start();
     }
   };
 

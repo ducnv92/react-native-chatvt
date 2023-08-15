@@ -47,13 +47,13 @@ export const Knob = ({
         Animated.spring(offsetY, {
           useNativeDriver: false,
           toValue: 0,
-        }).start();
+        },{useNativeDriver: false}).start();
         if (gestureState.dy < -50) {
           setIsExpanded(true);
           Animated.spring(height, {
             useNativeDriver: false,
             toValue: getHeight(expandedHeight, screenHeight),
-          }).start();
+          },{useNativeDriver: false}).start();
         } else if (gestureState.dy > 150) {
           setIsExpanded(false);
           height.setValue(getHeight(defaultHeight, screenHeight));
@@ -64,7 +64,7 @@ export const Knob = ({
           Animated.spring(height, {
             useNativeDriver: false,
             toValue: getHeight(defaultHeight, screenHeight),
-          }).start();
+          },{useNativeDriver: false}).start();
         }
       },
       onShouldBlockNativeResponder: () => true,

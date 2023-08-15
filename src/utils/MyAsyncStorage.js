@@ -1,8 +1,8 @@
 import {chatVT} from "../index";
 
-export const TOKEN = 'TOKEN';
-export const USER = 'USER';
-export const LANG = 'LANG';
+export const TOKEN = 'CHATVT_TOKEN';
+export const USER = 'CHATVT_USER';
+export const LANG = 'CHATVT_LANG';
 
 export async function load(key) {
   let user = await chatVT.AsyncStorage.getItem(key);

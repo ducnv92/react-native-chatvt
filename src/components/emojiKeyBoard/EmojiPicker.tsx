@@ -37,7 +37,7 @@ export const EmojiPicker = ({
       toValue: newAdditionalHeightValue,
       useNativeDriver: false,
       duration: 200,
-    }).start();
+    },{useNativeDriver: false}).start();
   }, [additionalHeight, isExpanded, keyboardHeight, keyboardVisible]);
 
   const close = () => {

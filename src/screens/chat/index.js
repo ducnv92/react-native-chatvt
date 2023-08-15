@@ -32,16 +32,12 @@ import { RecordButton } from './RecordButton';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CameraRoll from '../../components/cameraRollPicker/CameraRoll';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { EmojiKeyboard } from '../../components/emojiKeyBoard';
-// import { MTextInput as TextInput } from '../../components';
 import Image from 'react-native-fast-image';
 import Toast, { BaseToast } from 'react-native-toast-message';
 import EmojiPicker from 'react-native-emoji-picker-staltz';
 import inputStore from './InputStore';
 import InputStore from './InputStore';
-let { height, width } = Dimensions.get('window');
-import { FlashList } from "../../components/flashlist";
-import { toJS } from 'mobx';
+
 export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
   const order = props.data?.orders?.length > 0 ? props.data?.orders[0] : {};
@@ -166,7 +162,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
   };
 
   return (
-    <MenuProvider style={{ flex: 1, backgroundColor: colors.primary }}>
       <SafeAreaView style={{ flex: 1 }}>
         <BottomSheetModalProvider style={{ flex: 1 }}>
           <KeyboardAvoidingView
@@ -397,7 +392,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
           }}
         />
       </SafeAreaView>
-    </MenuProvider>
   );
 });
 

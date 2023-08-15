@@ -4,12 +4,12 @@ import {
   View,
   FlatList,
   Platform,
-  KeyboardAvoidingView,
+  KeyboardAvoidingView, Dimensions,
 } from 'react-native';
 import { MText as Text } from '../../components';
 import { observer } from 'mobx-react-lite';
 import colors from '../../Styles';
-import Swipeable from 'react-native-swipeable';
+import Swipeable from '../../components/swipeable';
 import listChatStore from './ListChatStore';
 import appStore from '../AppStore';
 import moment from 'moment';
@@ -373,17 +373,23 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
         <Swipeable rightButtonWidth={66} rightButtons={rightButtons}>
           <TouchableOpacity
             onPress={() => {
-              navigationChat({ ...item, ...{ receiver: receiver } });
-              item.settings = item.settings.map((i) => {
-                if (
-                  i.user_id ===
-                  appStore.user.type + '_' + appStore.user.user_id
-                ) {
-                  i.unread_count = 0;
-                }
-                return i;
-              });
-              listChatStore.data = [...listChatStore.data];
+              try {
+                navigationChat({ ...item, ...{ receiver: receiver } });
+                item.settings = item.settings.map((i) => {
+                  if (
+                    i.user_id ===
+                    appStore.user.type + '_' + appStore.user.user_id
+                  ) {
+                    i.unread_count = 0;
+                  }
+                  return i;
+                });
+                listChatStore.data = [...listChatStore.data];
+                listChatStore.dataPin = [...listChatStore.dataPin];
+              }catch (e) {
+
+              }
+
             }}
             style={{
               flexDirection: 'row',
@@ -463,8 +469,8 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                       source={require('../../assets/ic_mute.png')}
                     />
                   )}
-                  {item.message?.read_by?.map((item) => (
-                    <>
+                  {item.message?.read_by?.map((item, index) => (
+                    <View key={index+''}>
                       {
                         item !== (appStore.user.type + '_' + appStore.user.user_id) &&
                         <Image
@@ -477,7 +483,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                           source={item.includes('VTM') ? require('../../assets/avatar_default.png') : require('../../assets/avatar_default_customer.png')}
                         />
                       }
-                    </>
+                    </View>
                   ))}
                   {setting?.unread_count > 0 && (
                     <View
@@ -528,19 +534,24 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
         <Swipeable rightButtonWidth={66} rightButtons={rightButtons}>
           <TouchableOpacity
             onPress={() => {
-              navigationChat({ ...item, ...{ receiver: receiver } });
-              listChatStore.data[index].settings = listChatStore.data[
-                index
-                ].settings.map((i) => {
-                if (
-                  i.user_id ===
-                  appStore.user.type + '_' + appStore.user.user_id
-                ) {
-                  i.unread_count = 0;
-                }
-                return i;
-              });
-              listChatStore.data = [...listChatStore.data];
+              try{
+                navigationChat({ ...item, ...{ receiver: receiver } });
+                listChatStore.data[index].settings = listChatStore.data[
+                  index
+                  ].settings.map((i) => {
+                  if (
+                    i.user_id ===
+                    appStore.user.type + '_' + appStore.user.user_id
+                  ) {
+                    i.unread_count = 0;
+                  }
+                  return i;
+                });
+                listChatStore.data = [...listChatStore.data];
+                listChatStore.dataPin = [...listChatStore.dataPin];
+              }catch (e) {
+
+              }
             }}
             style={{
               flexDirection: 'row',
@@ -610,8 +621,8 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                 }}
               >
                 {getLastMessage(item, setting, isMe)}
-                {item.message?.read_by?.map((reader) => (
-                  <>
+                {item.message?.read_by?.map((reader, index) => (
+                  <View key={index+''}>
                     {
                       reader !== (appStore.user.type + '_' + appStore.user.user_id) && reader !== item?.sender &&
                       <Image
@@ -624,7 +635,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                         source={reader.includes('VTM') ? require('../../assets/avatar_default.png') : require('../../assets/avatar_default_customer.png')}
                       />
                     }
-                  </>
+                  </View>
                 ))}
                 <View style={{ flexDirection: 'row' }}>
                   {setting?.is_pin && (
@@ -690,9 +701,10 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           listChatStore.page = 0;
           listChatStore.getData({});
         }}
-        keyExtractor={(item) => item._id}
+        // keyExtractor={(item) => item?.message?._id}
         style={{ backgroundColor: 'white' }}
         data={listChatStore.dataPin}
+        extraData={listChatStore.data}
         ItemSeparatorComponent={() => (
           <View style={{ backgroundColor: '#F8F8FA', height: 1 }}>
             <View
@@ -878,12 +890,25 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
             listChatStore.getData({});
           }}
           ListHeaderComponent={renderHeader}
-          keyExtractor={(item) => item._id}
-          onEndReached={() => setTimeout(() => {
+          keyExtractor={(item) => item.message?._id}
+          onEndReached={() => () => {
             listChatStore.getData({})
-          }, 150)}
+          } }
           style={{ flex: 1, backgroundColor: 'white' }}
           data={listChatStore.data}
+          extraData={listChatStore.data}
+          ListEmptyComponent={()=>{
+            if(!listChatStore.isLoading){
+              return(
+                <TouchableOpacity
+                  onPress={()=>intLoad()}
+                  style={{alignItems: 'center',  height: Dimensions.get('window').height}}>
+                  <Image source={require('../../assets/ic_message_empty.png')} style={{width: 120, height: 120, resizeMode: 'contain', marginTop: 28}}/>
+                  <Text style={{fontWight: '500', fontSize: 15, color: colors.neutralText, marginTop: 16,}}>Quý khách chưa có tin nhắn</Text>
+                </TouchableOpacity>
+              )
+            }
+          }}
           ItemSeparatorComponent={() => (
             <View style={{ backgroundColor: 'white', height: 1 }}>
               <View

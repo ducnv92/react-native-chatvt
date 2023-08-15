@@ -34,14 +34,14 @@ export const ModalWithBackdrop = ({
     Animated.spring(translateY, {
       toValue: isOpen ? 0 : screenHeight,
       useNativeDriver: true,
-    }).start();
+    },{useNativeDriver: false}).start();
   }, [isOpen, screenHeight, translateY]);
 
   const handleClose = () => {
     Animated.spring(translateY, {
       toValue: screenHeight,
       useNativeDriver: true,
-    }).start();
+    },{useNativeDriver: false}).start();
     handleTimeout(() => backdropPress(), 200);
   };
 

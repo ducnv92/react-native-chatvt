@@ -30,6 +30,7 @@ class ListChatStore {
 
       if(this.page === 1){
         this.data = []
+        this.dataPin = []
         this.isLoading = true;
         this.canLoadMore = true;
         if(appStore.appId!=='Admin')

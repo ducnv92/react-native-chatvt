@@ -337,7 +337,7 @@ const usePanResponder = ({
             toValue: tmpScale,
             duration: 100,
             useNativeDriver: true,
-          }).start();
+          },{useNativeDriver: false}).start();
         }
 
         currentScale = tmpScale;
@@ -380,7 +380,7 @@ const usePanResponder = ({
             duration: 100,
             useNativeDriver: true,
           }),
-        ]).start();
+        ],{useNativeDriver: false}).start();
 
         currentTranslate = { x: nextTranslateX, y: nextTranslateY };
         tmpTranslate = null;

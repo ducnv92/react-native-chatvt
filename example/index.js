@@ -8,7 +8,7 @@ import { NativeModules } from 'react-native';
 
 
 // CodePush.checkForUpdate("RkkpN6qkfZzrY3QpR0680jXbLFReG287W8rpO").then((update) => {
-//   
+//
 // });
 
 // Navigation.registerComponent(appName, () => App);
@@ -41,5 +41,5 @@ Navigation.events().registerAppLaunchedListener(() => {
     }
   })
 });
-
-LogBox.ignoreAllLogs(true);
+LogBox.ignoreLogs(['Warning']);
+LogBox.ignoreAllLogs();

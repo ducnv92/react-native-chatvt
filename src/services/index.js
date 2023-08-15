@@ -3,6 +3,9 @@ import * as Endpoint from './Endpoint';
 import { USER } from '../utils/MyAsyncStorage';
 import * as MyAsyncStorage from '../utils/MyAsyncStorage';
 import appStore from '../screens/AppStore';
+import {Alert} from "react-native";
+import listChatStore from "../screens/listchat/ListChatStore";
+import chatStore from "../screens/chat/ChatStore";
 
 export async function getHeader() {
   const user = await MyAsyncStorage.load(USER);
@@ -41,20 +44,21 @@ const create = (baseURL = Endpoint.API_BASE) => {
     timeout: 30000,
   });
 
-  api.addAsyncResponseTransform((response) => async () => {
-    const { config, message, problem } = response;
-    if (problem === 'NETWORK_ERROR') {
-      config.retry -= 1;
-      const delayRetryRequest = new Promise((resolve) => {
-        setTimeout(() => {
-          resolve();
-        }, config.retryDelay || 1000);
-      });
-      return delayRetryRequest.then(() => apisauce.create(config));
-    } else {
-      return response;
-    }
-  });
+  const transform = async (response) => {
+      const { config, message, problem } = response;
+      if (problem === 'NETWORK_ERROR') {
+        Alert.alert('Thông báo', 'Kết nối gián đoạn. Vui lòng kiểm tra lại!', [{
+          text: 'Đồng ý', onPress: ()=>{
+            listChatStore.getData({})
+            chatStore.getData({})
+          }
+        }])
+      } else {
+        return response;
+      }
+  }
+
+  api.addAsyncResponseTransform(transform);
 
   const apiMultipart = apisauce.create({
     baseURL,

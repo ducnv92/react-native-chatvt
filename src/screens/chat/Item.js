@@ -276,6 +276,7 @@ export const VideoItem = function (props) {
             <TouchableOpacity
               style={{ alignItems: 'center', justifyContent: 'center' }}
               onPress={() => setIsPause(false)}
+              // onLongPress={()=>props.onLongPress()}
             >
               <FastImage
                 style={props.style}
@@ -365,6 +366,7 @@ const MessageItem = function (props) {
                     justifyContent: right ? 'flex-end' : 'flex-start',
                   }}
                 >
+                  <ContainChatItem {...props}>
                   {item.attachmentLocal.map((File) => {
                     const attach = File.uri;
                     if (
@@ -495,6 +497,7 @@ const MessageItem = function (props) {
                     }
                     return <View />;
                   })}
+                  </ContainChatItem>
                 </View>
               )}
               {item.attachments && (
@@ -506,6 +509,7 @@ const MessageItem = function (props) {
                     justifyContent: right ? 'flex-end' : 'flex-start',
                   }}
                 >
+                  <ContainChatItem {...props}>
                   {item.attachments.map((attach) => {
                     if (
                       attach.url.toLowerCase().includes('jpg') ||
@@ -565,55 +569,51 @@ const MessageItem = function (props) {
                       );
                     }
                   })}
+                  </ContainChatItem>
                 </View>
               )}
             </View>
           </View>
-          <ContainChatItem {...props}>
-            <View
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: right ? 'flex-end' : 'flex-start',
+              alignItems: 'center',
+            }}
+          >
+            <Text
               style={{
-                flexDirection: 'row',
-                justifyContent: right ? 'flex-end' : 'flex-start',
-                alignItems: 'center',
+                fontWeight: '400',
+                fontSize: 10,
+                color: colors.neutralText,
+                marginTop: 4,
+                textAlign: right ? 'right' : 'left',
               }}
             >
-              <Text
-                style={{
-                  fontWeight: '400',
-                  fontSize: 10,
-                  color: colors.neutralText,
-                  marginTop: 4,
-                  textAlign: right ? 'right' : 'left',
-                }}
-              >
-                {new Date(item.created_at).getFullYear() <
-                  new Date().getFullYear()
-                  ? moment(item.created_at).format('DD/MM/YYYY')
-                  : moment(item.created_at).fromNow().includes('days')
+              {new Date(item.created_at).getFullYear() <
+              new Date().getFullYear()
+                ? moment(item.created_at).format('DD/MM/YYYY')
+                : moment(item.created_at).fromNow().includes('days')
+                  ? `${moment(item.created_at).format('DD/MM')}`
+                  : moment(item.created_at).fromNow().includes('day')
                     ? `${moment(item.created_at).format('DD/MM')}`
-                    : moment(item.created_at).fromNow().includes('day')
-                      ? `${moment(item.created_at).format('DD/MM')}`
-                      : moment(item.created_at).format('HH:mm')}
-              </Text>
-            </View>
-            {/*{*/}
-            {/*  item.status ==='sending' &&*/}
-            {/*  <Text style={{fontWeight: '500', fontSize: 15, color: colors.neutralText,  marginTop: 8, textAlign: right?'right': 'left'}}>{'Đang gửi...'}</Text>*/}
-            {/*}*/}
-            {item.status === 'error' && (
-              <Text
-                style={{
-                  fontWeight: '500',
-                  fontSize: 15,
-                  color: colors.primary,
-                  marginTop: 8,
-                  textAlign: right ? 'right' : 'left',
-                }}
-              >
-                {appStore.lang.chat.send_error}
-              </Text>
-            )}
-          </ContainChatItem>
+                    : moment(item.created_at).format('HH:mm')}
+            </Text>
+          </View>
+
+          {item.status === 'error' && (
+            <Text
+              style={{
+                fontWeight: '500',
+                fontSize: 15,
+                color: colors.primary,
+                marginTop: 8,
+                textAlign: right ? 'right' : 'left',
+              }}
+            >
+              {appStore.lang.chat.send_error}
+            </Text>
+          )}
         </View>
       ) : (
         <View style={{ marginVertical: 4, marginHorizontal: 16 }}>
@@ -737,7 +737,7 @@ const MessageItem = function (props) {
         </View>
       )
       }
-      < ImageViewing
+      <ImageViewing
         images={images}
         swipeToCloseEnabled={true}
         doubleTapToZoomEnabled={true}
@@ -1373,7 +1373,6 @@ function ContainChatItem(props) {
     if (response.data.status === 200) {
       if (is_enable) {
         setReactions([
-          ...reactions,
           {
             type: react,
             user_id: appStore.user.type + '_' + appStore.user.user_id,
@@ -1381,10 +1380,7 @@ function ContainChatItem(props) {
         ]);
       } else {
         setReactions(
-          reactions.filter(
-            (r) =>
-              r.user_id !== appStore.user.type + '_' + appStore.user.user_id
-          )
+         []
         );
       }
     }
@@ -1394,7 +1390,7 @@ function ContainChatItem(props) {
   }
 
   return (
-    <>
+    <View>
       <TouchableOpacity
         ref={containerRef}
         onPress={() => {
@@ -1450,7 +1446,7 @@ function ContainChatItem(props) {
             })
           }
         }}
-        style={{flexDirection: 'row', alignItems: 'center'}}
+        style={{flexDirection: 'row', alignItems: 'center', zIndex:999}}
       >
         {reactions?.length > 0 && props.right && (
           <View
@@ -1701,7 +1697,7 @@ function ContainChatItem(props) {
           </View>
         </TouchableOpacity>
       </Modal>
-    </>
+    </View>
   );
 }
 
