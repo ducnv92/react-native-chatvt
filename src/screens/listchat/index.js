@@ -907,6 +907,8 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   <Text style={{fontWight: '500', fontSize: 15, color: colors.neutralText, marginTop: 16,}}>Quý khách chưa có tin nhắn</Text>
                 </TouchableOpacity>
               )
+            }else{
+              return null
             }
           }}
           ItemSeparatorComponent={() => (

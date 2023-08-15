@@ -84,6 +84,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
       conversation_id: conversation?._id,
     });
     return () => {
+      chatStore.data = []
       chatStore.showAttachModal = false;
       chatStore.keyboardEmoji = false;
       chatStore.images = [];

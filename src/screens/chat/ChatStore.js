@@ -63,7 +63,6 @@ class ChatStore {
       }
       this.page += 1;
       if (this.page === 1) {
-        this.data = []
         this.isLoading = true;
         this.canLoadMore = false;
       } else {

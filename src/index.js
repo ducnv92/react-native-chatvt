@@ -20,7 +20,7 @@ function safeAreaProviderHOC(Component) {
   function Wrapper(props) {
     return (
       <SafeAreaProvider style={[{ flex: 1 }]}>
-        <StatusBar backgroundColor={colors.primary} />
+        <StatusBar backgroundColor={colors.primary}  />
         <Component {...props} />
       </SafeAreaProvider>
     );
@@ -41,6 +41,8 @@ class ChatVT {
 
   interval;
 
+  previewScreen;
+
   registerScreen() {
     Navigation.registerComponent('ListChatScreen', () =>
       gestureHandlerRootHOC(safeAreaProviderHOC(ListChatScreen))
@@ -54,12 +56,15 @@ class ChatVT {
     const screenEventListener =
       Navigation.events().registerComponentDidAppearListener(
         ({ componentId, componentName, passProps }) => {
+          console.log(componentName, this.previewScreen)
+
           if (
-            componentName === 'navigation.VTMan.MessengerScreen.TK'
+            componentName === 'navigation.VTMan.MessengerScreen.TK' && this.previewScreen !=='ChatScreen'
           ) {
             listChatStore.page = 0;
             listChatStore.getData({});
           }
+          this.previewScreen = componentName
         }
       );
     // screenEventListener.remove();

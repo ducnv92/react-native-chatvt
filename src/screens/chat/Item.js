@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, {cloneElement, memo, useEffect, useRef, useState} from 'react';
 import appStore from '../AppStore';
 import {
   ActivityIndicator,
@@ -276,7 +276,7 @@ export const VideoItem = function (props) {
             <TouchableOpacity
               style={{ alignItems: 'center', justifyContent: 'center' }}
               onPress={() => setIsPause(false)}
-              // onLongPress={()=>props.onLongPress()}
+              onLongPress={props.onLongPress}
             >
               <FastImage
                 style={props.style}
@@ -366,7 +366,12 @@ const MessageItem = function (props) {
                     justifyContent: right ? 'flex-end' : 'flex-start',
                   }}
                 >
-                  <ContainChatItem {...props}>
+                  <ContainChatItem {...props}   style={{
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    gap: 4,
+                    justifyContent: right ? 'flex-end' : 'flex-start',
+                  }}>
                   {item.attachmentLocal.map((File) => {
                     const attach = File.uri;
                     if (
@@ -386,6 +391,7 @@ const MessageItem = function (props) {
                             ]);
                             setImageVisible(true);
                           }}
+                          onLongPress={props.onLongPress}
                         >
                           <FastImage
                             source={{ uri: attach }}
@@ -451,8 +457,8 @@ const MessageItem = function (props) {
                             resizeMode={'contain'}
                             allowsExternalPlayback
                             style={{
-                              width: 200,
-                              height: 200,
+                              width: Dimensions.get('window').width*0.5,
+                              height: Dimensions.get('window').width*0.5,
                               backgroundColor: '#f2f2f2',
                               borderRadius: 10,
                               marginVertical: 16,
@@ -509,7 +515,12 @@ const MessageItem = function (props) {
                     justifyContent: right ? 'flex-end' : 'flex-start',
                   }}
                 >
-                  <ContainChatItem {...props}>
+                  <ContainChatItem {...props}   style={{
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    gap: 4,
+                    justifyContent: right ? 'flex-end' : 'flex-start',
+                  }}>
                   {item.attachments.map((attach) => {
                     if (
                       attach.url.toLowerCase().includes('jpg') ||
@@ -532,6 +543,7 @@ const MessageItem = function (props) {
                             ]);
                             setImageVisible(true);
                           }}
+                          onLongPress={props.onLongPress}
                         >
                           <FastImage
                             source={{ uri: attach.url }}
@@ -562,8 +574,8 @@ const MessageItem = function (props) {
                             backgroundColor: '#F2F2F2',
                             borderRadius: 5,
                             overflow: 'hidden',
-                            width: item.attachments.length === 1 ? 200 : 120,
-                            height: item.attachments.length === 1 ? 200 : 120,
+                            width: Dimensions.get('window').width*0.5,
+                            height: Dimensions.get('window').width*0.5,
                           }}
                         />
                       );
@@ -1278,7 +1290,7 @@ export class ChatItem extends React.Component {
       return (
         <View style={{ flexDirection: 'row', paddingVertical: 4 }}>
           <Image
-            source={require('../../assets/avatar_default.png')}
+            source={this.item.sender.includes('VTM') ? require('../../assets/avatar_default.png') : require('../../assets/avatar_default_customer.png')}
             style={{
               width: 32,
               height: 32,
@@ -1304,16 +1316,16 @@ export class ChatItem extends React.Component {
       );
     }
 
-    if (right) {
+    if (right || this.item.type==='GROUP') {
       return (
         <View style={{ paddingVertical: 2 }}>
           {messageView}
           {this.item.read_by?.length > 0 && this.props.index === 0 && (
             <View
               style={{
-                marginRight: 16,
+                marginHorizontal: 16,
                 flexDirection: 'row',
-                alignSelf: 'flex-end',
+                alignSelf: right?'flex-end':'flex-start',
               }}
             >
               {this.item.read_by?.map((item) => (
@@ -1355,35 +1367,54 @@ function ContainChatItem(props) {
     );
   }, [reactions]);
 
+  const onLongPress = () => {
+    if (props.item.type !== 'FILE' && props.item.type !== 'LOCATION'){
+      containerRef.current.measure((fx, fy, width, height, px, py) => {
+        setPosition({
+          width: width,
+          height: height,
+          x: px,
+          y: py,
+        })
+        setShowPopover(true);
+      })
+    }
+  }
+
   const reaction = async (react) => {
-    setShowPopover(false);
-    let is_enable = true;
-    const currentReact = reactions.find(
-      (r) => r.user_id === appStore.user.type + '_' + appStore.user.user_id
-    );
-    if (currentReact?.type === react) {
-      is_enable = false;
-    }
-    const response = await services.create().conversationReact({
-      is_enable: is_enable,
-      reaction_type: react,
-      conversation_id: props.item.conversation_id,
-      message_id: props.item._id,
-    });
-    if (response.data.status === 200) {
-      if (is_enable) {
-        setReactions([
-          {
-            type: react,
-            user_id: appStore.user.type + '_' + appStore.user.user_id,
-          },
-        ]);
-      } else {
-        setReactions(
-         []
-        );
+    try{
+      setShowPopover(false);
+      let is_enable = true;
+      const currentReact = reactions.find(
+        (r) => r.user_id === appStore.user.type + '_' + appStore.user.user_id
+      );
+      if (currentReact?.type === react) {
+        is_enable = false;
       }
+      const response = await services.create().conversationReact({
+        is_enable: is_enable,
+        reaction_type: react,
+        conversation_id: props.item.conversation_id,
+        message_id: props.item._id,
+      });
+      if (response.data.status === 200) {
+        if (is_enable) {
+          setReactions([
+            {
+              type: react,
+              user_id: appStore.user.type + '_' + appStore.user.user_id,
+            },
+          ]);
+        } else {
+          setReactions(
+            []
+          );
+        }
+      }
+    }catch (e) {
+      console.log(e)
     }
+
   };
   function getUrlExtension(url) {
     return url.split(/[#?]/)[0].split('.').pop().trim();
@@ -1433,20 +1464,8 @@ function ContainChatItem(props) {
           } catch (e) {
           }
         }}
-        onLongPress={() => {
-          if (props.item.type !== 'FILE' && props.item.type !== 'LOCATION'){
-            containerRef.current.measure((fx, fy, width, height, px, py) => {
-              setPosition({
-                width: width,
-                height: height,
-                x: px,
-                y: py,
-              })
-              setShowPopover(true);
-            })
-          }
-        }}
-        style={{flexDirection: 'row', alignItems: 'center', zIndex:999}}
+        onLongPress={onLongPress}
+        style={[props.style, {flexDirection: 'row', alignItems: 'center',}]}
       >
         {reactions?.length > 0 && props.right && (
           <View
@@ -1514,9 +1533,10 @@ function ContainChatItem(props) {
             )}
           </View>
         )}
-
-        {props.children}
-
+        {
+          props.children !==null &&
+          React.Children.map(props.children, child => React.cloneElement(child!=null?child: <></>, { onLongPress }))
+        }
         {reactions?.length > 0 && !props.right && (
           <View
             style={{
