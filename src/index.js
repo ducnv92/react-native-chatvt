@@ -120,13 +120,14 @@ class ChatVT {
     });
   }
 
-  toChat(componentId, orderChat) {
+  toChat(componentId, orderChat, isSender) {
     appStore.componentId = componentId;
     if (orderChat) {
       appStore.createConversation(
         {
           vtm_user_ids: orderChat.vtm_user_ids,
           order_number: orderChat.order_number,
+          is_receiver:!isSender
         },
         (conversation) => {
           Navigation.push(componentId, {
