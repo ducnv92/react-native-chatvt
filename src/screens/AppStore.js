@@ -81,7 +81,7 @@ class AppStore {
 
       Log(response);
       this.createConversationLoading = false;
-      if (response.status === 201) {
+      if (response.status === 201 || response.status === 200) {
         if (response.data.status === 200) {
           if (response.data.data) {
             if (onSuccess) {

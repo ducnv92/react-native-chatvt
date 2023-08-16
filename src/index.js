@@ -127,6 +127,7 @@ class ChatVT {
         {
           vtm_user_ids: orderChat.vtm_user_ids,
           order_number: orderChat.order_number,
+          vtp_phone_numbers: orderChat.vtp_phone_numbers,
           is_receiver: is_receiver
         },
         (conversation) => {
@@ -155,12 +156,13 @@ class ChatVT {
     }
   }
 
-  chatWithReceiver(componentId, order) {
+  chatWithReceiver(componentId, order, is_receiver) {
     appStore.componentId = componentId;
     if (order?.ORDER_NUMBER) {
       appStore.createConversationWithReceiver(
         {
           order_number: order?.ORDER_NUMBER,
+          is_receiver: is_receiver,
         },
         (conversation) => {
           Navigation.push(componentId, {
@@ -413,6 +415,38 @@ class ChatVT {
       {
         order_number: order.ma_phieugui,
         chat_type: type,
+      },
+      (conversation) => {
+        Navigation.push(componentId, {
+          component: {
+            name: 'ChatScreen',
+            options: {
+              popGesture: false,
+              bottomTabs: {
+                visible: false,
+              },
+              topBar: {
+                visible: false,
+                height: 0,
+              },
+            },
+            passProps: {
+              data: conversation,
+              order: order,
+            },
+          },
+        });
+      },
+      (error) => alert(error)
+    );
+  };
+
+  toChatWithShop = async (componentId, order_number, type) => {
+    appStore.createConversation(
+      {
+        order_number: order_number,
+        chat_type: type,
+        API: 'VTPost'
       },
       (conversation) => {
         Navigation.push(componentId, {
