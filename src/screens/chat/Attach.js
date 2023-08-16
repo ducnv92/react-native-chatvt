@@ -272,6 +272,11 @@ const LocationMessage =observer(function LocationMessage ( props) {
   const bottomSheetModalRef = useRef();
   const insets = useSafeAreaInsets();
 
+  const [currentPosition, setCurrentPosition] = useState({
+    latitude: 0,
+    longitude: 0
+  })
+
 
   const requestPermission = (callback)=>{
     const permission = Platform.OS ==='android'?PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION:PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
@@ -305,10 +310,10 @@ const LocationMessage =observer(function LocationMessage ( props) {
     requestPermission(()=>{
       Geolocation.getCurrentPosition(
         (position) => {
-          chatStore.location = {
+          setCurrentPosition( {
             longitude: position.coords.longitude,
             latitude: position.coords.latitude,
-          }
+          })
 
 
         },
@@ -354,7 +359,7 @@ const LocationMessage =observer(function LocationMessage ( props) {
       ref={bottomSheetModalRef}
       index={0}
       bottomInset={77+insets.bottom}
-      snapPoints={['40%', '80%']}
+      snapPoints={['80%']}
       onDismiss={() => {
         if(chatStore.tab===3){
           chatStore.showAttachModal = false
@@ -376,27 +381,21 @@ const LocationMessage =observer(function LocationMessage ( props) {
           width: '100%',
         }}
         region={{
-          latitude: chatStore.location.latitude,
-          longitude: chatStore.location.longitude,
+          latitude: currentPosition.latitude,
+          longitude: currentPosition.longitude,
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}
+        onRegionChange={position=>{
+          chatStore.location = position
+        }}
       >
-        <Marker
-          draggable
-          resizeMode={'contain'}
-          coordinate={{latitude: chatStore.location.latitude, longitude: chatStore.location.longitude}}
-          onDragEnd={e => {
-            chatStore.location = e.nativeEvent.coordinate
-          }}
-        >
-          <Image source={require('../../assets/ic_map_pin.png')}
-                 style={{width: 30, height: 30, resizeMode: 'contain'}}
-                 resizeMode="contain"
-          />
-        </Marker>
       </MapView>
-
+      <Image source={require('../../assets/ic_map_pin.png')}
+             style={{width: 30, height: 30, resizeMode: 'contain', position: 'absolute', top: '50%', left: '50%',  marginLeft: -15,
+               marginTop: -30,}}
+             resizeMode="contain"
+      />
     </View>
 
     </BottomSheetModal>

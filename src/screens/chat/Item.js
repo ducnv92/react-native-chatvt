@@ -147,32 +147,21 @@ const VoiceItem = function (props) {
                         (finishedPlaying) => {
                           setIsPlay(false);
                           clearInterval(intervalTime)
-                          _onFinishedPlayingSubscription.remove();
-                          _onFinishedLoadingSubscription.remove();
-                          _onFinishedLoadingFileSubscription.remove();
-                          _onFinishedLoadingURLSubscription.remove();
                         }
                       );
                     const _onFinishedLoadingSubscription =
                       SoundPlayer.addEventListener(
                         'FinishedLoading',
                         (success) => {
-                          // setIsLoading(false)
-                          // setIsPlay(true)
-                        }
-                      );
-                    const _onFinishedLoadingFileSubscription =
-                      SoundPlayer.addEventListener(
-                        'FinishedLoadingFile',
-                        (success) => {
-                          setIsLoading(false);
-                          setIsPlay(false);
+                          setIsLoading(false)
+                          setIsPlay(true)
                         }
                       );
                     const _onFinishedLoadingURLSubscription =
                       SoundPlayer.addEventListener(
                         'FinishedLoadingURL',
                         ({ success, url }) => {
+                          console.log(url)
                           try {
                             if (
                               success &&
@@ -180,8 +169,10 @@ const VoiceItem = function (props) {
                                 ? props.item.attachmentLocal[0].uri
                                 : props.item.attachments[0]?.url) === url
                             ) {
-                              setIsLoading(false);
+                              console.log(success, url)
+
                               setIsPlay(true);
+                              setIsLoading(false);
                             }
                           } catch (e) {
                             console.log(e);
