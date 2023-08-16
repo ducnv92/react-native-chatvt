@@ -82,7 +82,7 @@ class AppStore {
       Log(response);
       this.createConversationLoading = false;
       if (response.status === 201 || response.status === 200) {
-        if (response.data.status === 200) {
+        if (response.data.status === 200 || response.data.status === 201) {
           if (response.data.data) {
             if (onSuccess) {
               onSuccess(response.data.data);
@@ -134,7 +134,7 @@ class AppStore {
           }
         } else {
           if (response.data.status === 1006) {
-            Alert.alert('Thông báo', 'Số điện thoại của người nhận chưa có tài khoản tại ViettelPost.', [{
+            Alert.alert('Thông báo', 'Số điện thoại của người dùng chưa có tài khoản tại ViettelPost.', [{
               text: 'Đồng ý'
             }])
             return
