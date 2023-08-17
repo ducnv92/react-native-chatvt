@@ -64,4 +64,4 @@ export const ViewFileScreen = observer(function ViewFileScreen(props) {
     </SafeAreaView>
   )
 
-}
+})
