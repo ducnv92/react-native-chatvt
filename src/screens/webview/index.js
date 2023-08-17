@@ -1,6 +1,6 @@
 import {observer} from "mobx-react-lite";
 import React, {useRef, useState} from "react";
-import {Image, SafeAreaView, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, Image, SafeAreaView, TouchableOpacity, View} from "react-native";
 import colors from "../../Styles";
 import {scale} from "../../utils";
 import {MText as Text, MTextInput as TextInput} from "../../components";
@@ -11,6 +11,7 @@ import { Navigation } from 'react-native-navigation';
 
 export const ViewFileScreen = observer(function ViewFileScreen(props) {
 
+  const [loading, setLoading] = useState(true)
 
   return(
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.primary }}>
@@ -47,17 +48,20 @@ export const ViewFileScreen = observer(function ViewFileScreen(props) {
               textAlign: 'center',
             }}
           >
-            {'file name'}
+            {props.data.name}
           </Text>
         </View>
 
       </View>
       <WebView style={{flex: 1}}
-               source={{ uri: 'https://docs.google.com/viewer?url='+props.data }}
+               scalesPageToFit
+               source={{ uri: 'https://docs.google.com/viewer?url='+props.data.url }}
+               onLoad={() =>setLoading(false)}
       />
-
-
+      {
+        loading && <ActivityIndicator size={'large'} style={{position: 'absolute', left: '50%', right: '50%'}}/>
+      }
     </SafeAreaView>
   )
 
-})
+}

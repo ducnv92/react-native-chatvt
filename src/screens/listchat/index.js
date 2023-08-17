@@ -42,6 +42,26 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
   };
 
   const navigationChat = (data) => {
+    try {
+      Navigation.push(appStore.componentId, {
+        component: {
+          id: 'ChatScreen',
+          name: 'ViewFileScreen',
+          passProps: {
+            data: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+          },
+          options: {
+            bottomTabs: {
+              visible: false,
+            },
+          },
+        },
+      });
+    } catch (e) {
+      alert(e);
+    }
+
+    return
     Navigation.push(props.componentId, {
       component: {
         name: 'ChatScreen',

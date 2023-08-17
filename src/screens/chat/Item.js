@@ -37,6 +37,7 @@ import uploadProgress from './uploadProgress';
 import Image from 'react-native-fast-image';
 import VideoViewing from "../../components/videoView/ImageViewing";
 import chatStore from "./ChatStore";
+import {ViewFileScreen} from "../webview";
 
 const MapItem = function (props) {
   const right = props.right;
@@ -1432,26 +1433,6 @@ function ContainChatItem(props) {
         onPress={() => {
           try {
             if (props.item.type === 'FILE') {
-              // console.log(props.item.attachments[0].url)
-              // const extension = getUrlExtension(props.item.attachments[0].url);
-              //
-              // const localFile = `${RNFS.DocumentDirectoryPath}/${uuid.v4()}.${extension}`;
-              //
-              // const options = {
-              //   fromUrl: props.item.attachments[0].url,
-              //   toFile: localFile,
-              // };
-              // RNFS.downloadFile(options)
-              //   .promise.then(() => FileViewer.open(localFile))
-              //   .then(() => {
-              //     // success
-              //   })
-              //   .catch((error) => {
-              //     console.log(error)
-              //     // error
-              //   });
-              // FileViewer.open(props.item.attachments[0].url);
-              // Linking.openURL(props.item.attachments[0].url);
               try{
                 Navigation.push(appStore.componentId, {
                   component: {
@@ -1467,7 +1448,7 @@ function ContainChatItem(props) {
                       },
                     },
                     passProps: {
-                      data: props.item.attachments[0].url,
+                      data: props.item.attachments[0],
                     },
                   },
                 });

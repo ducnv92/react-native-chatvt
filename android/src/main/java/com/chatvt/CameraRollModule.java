@@ -43,6 +43,7 @@ import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.common.ReactConstants;
 import com.facebook.react.module.annotations.ReactModule;
+import com.facebook.react.bridge.ReactContextBaseJavaModule;
 
 import java.io.File;
 import java.io.FileInputStream;
