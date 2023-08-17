@@ -144,7 +144,7 @@ class Socket{
       this.socket = io.connect(this.URL, {
         reconnection: true,
         reconnectionDelay: 1000,
-        reconnectionDelayMax: 5000,
+        reconnectionDelayMax: 9999999,
         transports: ['websocket'],
         extraHeaders: {
           Authorization: user.token
