@@ -15,6 +15,7 @@ import { StatusBar } from 'react-native';
 import { AttachsScreen } from './screens/attachs';
 import BottomSheetChatOptions from './components/bottomSheetChatOptions';
 import listChatStore from './screens/listchat/ListChatStore';
+import {ViewFileScreen} from "./screens/webview";
 
 function safeAreaProviderHOC(Component) {
   function Wrapper(props) {
@@ -52,6 +53,9 @@ class ChatVT {
     );
     Navigation.registerComponent('AttachsScreen', () =>
       gestureHandlerRootHOC(safeAreaProviderHOC(AttachsScreen))
+    );
+    Navigation.registerComponent('ViewFileScreen', () =>
+      gestureHandlerRootHOC(safeAreaProviderHOC(ViewFileScreen))
     );
     const screenEventListener =
       Navigation.events().registerComponentDidAppearListener(
@@ -334,12 +338,7 @@ class ChatVT {
   }
 
   loginVTP(componentId, storage, username, password, onSuccess, onError) {
-    Navigation.registerComponent('ListChatScreen', () =>
-      gestureHandlerRootHOC(ListChatScreen)
-    );
-    Navigation.registerComponent('ChatScreen', () =>
-      gestureHandlerRootHOC(ChatScreen)
-    );
+    this.registerScreen()
 
     appStore.loginVTP({ username, password }, async (data) => {
       this.init(

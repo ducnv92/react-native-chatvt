@@ -110,7 +110,8 @@
         "react-native-reanimated": "*",
         "react-native-safe-area-context": "*",
         "react-native-vector-icons": "*",
-        "react-native-video": "*"
+        "react-native-video": "*",
+        "react-native-webview": "*"
     },
     "dependencies": {
         "@charkour/react-reactions": "^0.11.0",

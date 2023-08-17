@@ -37,6 +37,7 @@ import Toast, { BaseToast } from 'react-native-toast-message';
 import EmojiPicker from 'react-native-emoji-picker-staltz';
 import inputStore from './InputStore';
 import InputStore from './InputStore';
+import EmojiKeyboard from "../../components/emoji";
 
 export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
@@ -315,7 +316,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                 // inverted
                 renderItem={({ item, index }) => (
                   <View style={{transform: [{scaleY: -1}]}}>
-                    <ChatItem item={item} index={index} conversation={conversation} />
+                    <ChatItem item={item} index={index} conversation={conversation} componentId={props.componentId} />
                   </View>
                 )}
                 getItemType={(item, index) => {
@@ -578,6 +579,7 @@ const BottomChat = observer(function BottomChat(props) {
         // />
 
         <EmojiPicker
+          emojiStyle={{color: 'black'}}
           hideClearButton={true}
           onEmojiSelected={(emoji) => {
             if (emoji !== null) {

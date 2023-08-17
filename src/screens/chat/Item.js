@@ -36,6 +36,7 @@ import AnimatedProgressWheel from 'react-native-progress-wheel';
 import uploadProgress from './uploadProgress';
 import Image from 'react-native-fast-image';
 import VideoViewing from "../../components/videoView/ImageViewing";
+import chatStore from "./ChatStore";
 
 const MapItem = function (props) {
   const right = props.right;
@@ -100,15 +101,73 @@ const VoiceItem = function (props) {
   const [isPlay, setIsPlay] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentTime, setCurrentTime] = useState('00:00');
-  let intervalTime = null;
+  let _onFinishedPlayingSubscription = null;
+  let _onFinishedLoadingSubscription = null;
+  let _onFinishedLoadingFileSubscription = null;
+  let _onFinishedLoadingURLSubscription = null;
 
   useEffect(() => {
     return () => {
-      if (intervalTime) {
-        clearInterval(intervalTime)
+      if (chatStore.intervalSound) {
+        clearInterval(chatStore.intervalSound)
+      }
+      if(chatStore.pauseSound){
+        chatStore.pauseSound()
       }
     };
   }, []);
+
+  const play = ()=>{
+    if(chatStore.pauseSound){
+      chatStore.pauseSound()
+    }
+    chatStore.pauseSound = pause
+
+    pause()
+    setIsPlay(true)
+    SoundPlayer.playUrl(
+      props.item.attachmentLocal?.length > 0
+        ? props.item.attachmentLocal[0].uri
+        : props.item.attachments[0]?.url
+    );
+    chatStore.intervalSound = setInterval(async () => {
+      const info = await SoundPlayer.getInfo() // Also, you need to await this because it is async
+      console.log('getInfo', info)
+      const secs = Math.floor(info.currentTime)
+      const minutes = Math.floor(secs / 60);
+      const seconds = secs % 60;
+
+      setCurrentTime(('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2))
+    }, 1000)
+    _onFinishedPlayingSubscription = SoundPlayer.addEventListener('FinishedPlaying', ({ success }) => {
+      console.log('finished playing', success)
+      pause()
+      clearInterval(chatStore.intervalSound)
+    })
+    _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoading', ({ success }) => {
+      console.log('finished loading', success)
+    })
+    _onFinishedLoadingFileSubscription = SoundPlayer.addEventListener('FinishedLoadingFile', ({ success, name, type }) => {
+      console.log('finished loading file', success, name, type)
+
+    })
+    _onFinishedLoadingURLSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', ({ success, url }) => {
+      console.log('finished loading url', success, url)
+    })
+    console.log('play')
+  }
+
+  const pause = ()=>{
+    SoundPlayer.stop()
+    SoundPlayer.unmount()
+    clearInterval(chatStore.intervalSound)
+    _onFinishedPlayingSubscription?.remove()
+    _onFinishedLoadingSubscription?.remove()
+    _onFinishedLoadingURLSubscription?.remove()
+    _onFinishedLoadingFileSubscription?.remove()
+    setIsPlay(false)
+    console.log('stop')
+  }
 
   return (
     <View
@@ -135,28 +194,43 @@ const VoiceItem = function (props) {
         >
           <TouchableOpacity
             onPress={() => {
+              if(!isPlay){
+                play()
+              }else{
+                pause()
+              }
+
+              return
               try {
                 if (isPlay) {
                   SoundPlayer.stop();
                   setIsPlay(false);
                 } else {
                   try {
+                    try{
+                      SoundPlayer.stop();
+                      SoundPlayer.unmount();
+                    }catch (e) {
+
+                    }
+
+
+
                     const _onFinishedPlayingSubscription =
                       SoundPlayer.addEventListener(
                         'FinishedPlaying',
                         (finishedPlaying) => {
+                          console.log('FinishedPlaying', finishedPlaying)
                           setIsPlay(false);
                           clearInterval(intervalTime)
-                          _onFinishedPlayingSubscription.remove();
-                          _onFinishedLoadingSubscription.remove();
-                          _onFinishedLoadingFileSubscription.remove();
-                          _onFinishedLoadingURLSubscription.remove();
                         }
                       );
                     const _onFinishedLoadingSubscription =
                       SoundPlayer.addEventListener(
                         'FinishedLoading',
                         (success) => {
+                          console.log('FinishedLoading', success)
+
                           // setIsLoading(false)
                           // setIsPlay(true)
                         }
@@ -165,6 +239,8 @@ const VoiceItem = function (props) {
                       SoundPlayer.addEventListener(
                         'FinishedLoadingFile',
                         (success) => {
+                          console.log('FinishedLoadingFile', success)
+
                           setIsLoading(false);
                           setIsPlay(false);
                         }
@@ -173,6 +249,8 @@ const VoiceItem = function (props) {
                       SoundPlayer.addEventListener(
                         'FinishedLoadingURL',
                         ({ success, url }) => {
+                          console.log('FinishedLoadingFile', success, url)
+
                           try {
                             if (
                               success &&
@@ -188,20 +266,7 @@ const VoiceItem = function (props) {
                           }
                         }
                       );
-                    SoundPlayer.playUrl(
-                      props.item.attachmentLocal?.length > 0
-                        ? props.item.attachmentLocal[0].uri
-                        : props.item.attachments[0]?.url
-                    );
-                    intervalTime = setInterval(async () => {
-                      const info = await SoundPlayer.getInfo() // Also, you need to await this because it is async
-                      console.log('getInfo', info)
-                      const secs = Math.floor(info.currentTime)
-                      const minutes = Math.floor(secs / 60);
-                      const seconds = secs % 60;
 
-                      setCurrentTime(('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2))
-                    }, 1000)
                   } catch (e) {
                     console.log(e);
                   }
@@ -1073,30 +1138,33 @@ const OrderItem = function (props) {
               >
                 {item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER}
               </Text>
-              <View
-                style={{
-                  paddingVertical: 5,
-                  borderRadius: 28,
-                  backgroundColor: '#EB960A',
-                  marginHorizontal: 8,
-                  paddingHorizontal: 8,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  maxWidth: Dimensions.get('screen').width / 2
-                }}
-              >
-                <Text
+              {
+                order?.ORDER_STATUS &&
+                <View
                   style={{
-                    fontWeight: '600',
-                    fontSize: 11,
-                    color: 'white',
-                    textAlign: 'center',
+                    paddingVertical: 5,
+                    borderRadius: 28,
+                    backgroundColor: '#EB960A',
+                    marginHorizontal: 8,
+                    paddingHorizontal: 8,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    maxWidth: Dimensions.get('screen').width / 2
                   }}
-                  numberOfLines={1}
                 >
-                  {orderStatus(order?.ORDER_STATUS)}
-                </Text>
-              </View>
+                  <Text
+                    style={{
+                      fontWeight: '600',
+                      fontSize: 11,
+                      color: 'white',
+                      textAlign: 'center',
+                    }}
+                    numberOfLines={1}
+                  >
+                    {orderStatus(order?.ORDER_STATUS)}
+                  </Text>
+                </View>
+              }
             </View>
           </View>
           <Text
@@ -1280,7 +1348,7 @@ export class ChatItem extends React.Component {
       messageView = <MapItem item={this.props.item} right={right}/>;
     }
     if (this.item.type === 'FILE') {
-      messageView = <DocumentItem item={this.props.item} right={right}/>;
+      messageView = <DocumentItem item={this.props.item} componentId={this.props.componentId} right={right}/>;
     }
     if (this.item.type === 'VOICE') {
       messageView = <VoiceItem item={this.props.item} right={right}  />;
@@ -1427,26 +1495,24 @@ function ContainChatItem(props) {
         onPress={() => {
           try {
             if (props.item.type === 'FILE') {
-              // console.log(props.item.attachments[0].url)
-              // const extension = getUrlExtension(props.item.attachments[0].url);
-              //
-              // const localFile = `${RNFS.DocumentDirectoryPath}/${uuid.v4()}.${extension}`;
-              //
-              // const options = {
-              //   fromUrl: props.item.attachments[0].url,
-              //   toFile: localFile,
-              // };
-              // RNFS.downloadFile(options)
-              //   .promise.then(() => FileViewer.open(localFile))
-              //   .then(() => {
-              //     // success
-              //   })
-              //   .catch((error) => {
-              //     console.log(error)
-              //     // error
-              //   });
-              // FileViewer.open(props.item.attachments[0].url);
-              Linking.openURL(props.item.attachments[0].url);
+              Navigation.push(appStore.componentId, {
+                component: {
+                  name: 'ViewFileScreen',
+                  passProps: {
+                    data: props.item.attachments[0].url,
+                  },
+                  options: {
+                    popGesture: false,
+                    bottomTabs: {
+                      visible: false,
+                    },
+                    topBar: {
+                      visible: false,
+                      height: 0,
+                    },
+                  },
+                }
+              } )
             }
             if (props.item.type === 'LOCATION') {
               try {

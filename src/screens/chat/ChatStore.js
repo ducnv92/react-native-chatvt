@@ -30,6 +30,10 @@ class ChatStore {
   tabLocationMessage;
   quote;
 
+  intervalSound;
+  pauseSound;
+
+
 
   constructor() {
     makeAutoObservable(this);
