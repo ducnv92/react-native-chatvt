@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-package com.reactnativecommunity.cameraroll;
+package com.chatvt;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
