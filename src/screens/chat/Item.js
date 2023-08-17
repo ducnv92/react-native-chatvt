@@ -1451,7 +1451,31 @@ function ContainChatItem(props) {
               //     // error
               //   });
               // FileViewer.open(props.item.attachments[0].url);
-              Linking.openURL(props.item.attachments[0].url);
+              // Linking.openURL(props.item.attachments[0].url);
+              try{
+                Navigation.push(appStore.componentId, {
+                  component: {
+                    name: 'ViewFileScreen',
+                    options: {
+                      popGesture: false,
+                      bottomTabs: {
+                        visible: false,
+                      },
+                      topBar: {
+                        visible: false,
+                        height: 0,
+                      },
+                    },
+                    passProps: {
+                      data: props.item.attachments[0].url,
+                    },
+                  },
+                });
+              }catch (e) {
+                console.log(e)
+                Linking.openURL(props.item.attachments[0].url);
+              }
+
             }
             if (props.item.type === 'LOCATION') {
               try {

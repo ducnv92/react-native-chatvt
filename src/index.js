@@ -338,6 +338,7 @@ class ChatVT {
   }
 
   loginVTP(componentId, storage, username, password, onSuccess, onError) {
+    appStore.componentId = componentId
     this.registerScreen()
 
     appStore.loginVTP({ username, password }, async (data) => {
