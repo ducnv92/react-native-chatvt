@@ -56,7 +56,7 @@ export const ViewFileScreen = observer(function ViewFileScreen(props) {
       <WebView style={{flex: 1}}
                scalesPageToFit
                source={{ uri: 'https://docs.google.com/viewer?url='+props.data.url }}
-               onLoad={() =>setLoading(false)}
+               onLoadEnd={() =>setLoading(false)}
       />
       {
         loading && <ActivityIndicator size={'large'} style={{position: 'absolute', left: '50%', right: '50%'}}/>
