@@ -14,10 +14,12 @@ class Socket{
   }
 
   onConnect = ()=>{
-    Log('socket onConnected')
+    console.log('socket', 'onConnected')
+    this.socket.on('USER_MESSAGE', this.onUserMessage);
+    this.socket.on('USER_STATE', this.onUserStateMessage);
   }
   onDisconnect = ()=>{
-    Log('socket onDisconnect')
+    console.log('socket', 'onDisconnect')
   }
   onUserMessage = (event)=>{
     console.log('socket', event)
@@ -150,8 +152,6 @@ class Socket{
       });
       this.socket.on('connect', this.onConnect);
       this.socket.on('disconnect', this.onDisconnect);
-      this.socket.on('USER_MESSAGE', this.onUserMessage);
-      this.socket.on('USER_STATE', this.onUserStateMessage);
     }else {
       // alert('Kết nối Socket ko thành công.')
     }
