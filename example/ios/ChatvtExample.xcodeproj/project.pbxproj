@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B89C196810914EB9206368A /* libPods-ChatvtExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6BE9B5D4FFFE172CA28504 /* libPods-ChatvtExample.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -14,12 +15,12 @@
 		4F0F3231B979491CA57F001B /* SVN-GilroyMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96181138408746E7A6F2C571 /* SVN-GilroyMedium.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		92FD27329CE14A5E8AB99200 /* SVN-GilroyBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3B4D1DE5A0843D8BEA17AC7 /* SVN-GilroyBold.ttf */; };
-		9F06C4A701FAE852C759C07E /* libPods-ChatvtExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F11A92925ECAB93580547119 /* libPods-ChatvtExample.a */; };
 		A806B43C462E472BAB8C8865 /* SVN-Gilroy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F6A691B56D9464FAA5B6FB5 /* SVN-Gilroy.ttf */; };
 		A915E74D2A5E6D3F002925F1 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915E74C2A5E6D3F002925F1 /* File.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		110EEF135B24909C89CE81D7 /* Pods-ChatvtExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatvtExample.release.xcconfig"; path = "Target Support Files/Pods-ChatvtExample/Pods-ChatvtExample.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* ChatvtExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatvtExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ChatvtExample/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = ChatvtExample/AppDelegate.mm; sourceTree = "<group>"; };
@@ -27,9 +28,9 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ChatvtExample/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ChatvtExample/main.m; sourceTree = "<group>"; };
 		21C819806D77475393FB4A82 /* SVN-GilroySemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SVN-GilroySemiBold.ttf"; path = "../assets/fonts/SVN-GilroySemiBold.ttf"; sourceTree = "<group>"; };
-		7E7E6EFCB170BC06FBFF2A6C /* Pods-ChatvtExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatvtExample.debug.xcconfig"; path = "Target Support Files/Pods-ChatvtExample/Pods-ChatvtExample.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ChatvtExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		96181138408746E7A6F2C571 /* SVN-GilroyMedium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SVN-GilroyMedium.ttf"; path = "../assets/fonts/SVN-GilroyMedium.ttf"; sourceTree = "<group>"; };
+		9EF64779FCBCA900119E5A66 /* Pods-ChatvtExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatvtExample.debug.xcconfig"; path = "Target Support Files/Pods-ChatvtExample/Pods-ChatvtExample.debug.xcconfig"; sourceTree = "<group>"; };
 		9F6A691B56D9464FAA5B6FB5 /* SVN-Gilroy.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SVN-Gilroy.ttf"; path = "../assets/fonts/SVN-Gilroy.ttf"; sourceTree = "<group>"; };
 		A915E73B2A5E64C7002925F1 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		A915E73D2A5E64DE002925F1 /* CoreAudioTypes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioTypes.framework; path = System/Library/Frameworks/CoreAudioTypes.framework; sourceTree = SDKROOT; };
@@ -38,9 +39,8 @@
 		A915E74B2A5E6D3F002925F1 /* ChatvtExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ChatvtExample-Bridging-Header.h"; sourceTree = "<group>"; };
 		A915E74C2A5E6D3F002925F1 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		A9AFA1E02A4E771F00E71C84 /* hermes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = hermes.xcframework; path = "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework"; sourceTree = "<group>"; };
-		D3D51850010530B40F1CEDB3 /* Pods-ChatvtExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatvtExample.release.xcconfig"; path = "Target Support Files/Pods-ChatvtExample/Pods-ChatvtExample.release.xcconfig"; sourceTree = "<group>"; };
+		EA6BE9B5D4FFFE172CA28504 /* libPods-ChatvtExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatvtExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F11A92925ECAB93580547119 /* libPods-ChatvtExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatvtExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3B4D1DE5A0843D8BEA17AC7 /* SVN-GilroyBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SVN-GilroyBold.ttf"; path = "../assets/fonts/SVN-GilroyBold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -49,7 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F06C4A701FAE852C759C07E /* libPods-ChatvtExample.a in Frameworks */,
+				0B89C196810914EB9206368A /* libPods-ChatvtExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,7 +91,7 @@
 				A915E73B2A5E64C7002925F1 /* CoreAudio.framework */,
 				A9AFA1E02A4E771F00E71C84 /* hermes.xcframework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				F11A92925ECAB93580547119 /* libPods-ChatvtExample.a */,
+				EA6BE9B5D4FFFE172CA28504 /* libPods-ChatvtExample.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -129,8 +129,8 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				7E7E6EFCB170BC06FBFF2A6C /* Pods-ChatvtExample.debug.xcconfig */,
-				D3D51850010530B40F1CEDB3 /* Pods-ChatvtExample.release.xcconfig */,
+				9EF64779FCBCA900119E5A66 /* Pods-ChatvtExample.debug.xcconfig */,
+				110EEF135B24909C89CE81D7 /* Pods-ChatvtExample.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -142,14 +142,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "ChatvtExample" */;
 			buildPhases = (
-				DDAA2812B881F45264A308CE /* [CP] Check Pods Manifest.lock */,
+				665AB7978A3F9DCCDE78DF76 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				EA78678D468275D0E2E38C8E /* [CP] Embed Pods Frameworks */,
-				2FFD64C1F2907AA93821A4E6 /* [CP] Copy Pods Resources */,
+				8FCD12C443A624BE4EABC34F /* [CP] Embed Pods Frameworks */,
+				14073D4FCC4F48CA568B1C62 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -224,7 +224,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		2FFD64C1F2907AA93821A4E6 /* [CP] Copy Pods Resources */ = {
+		14073D4FCC4F48CA568B1C62 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -241,7 +241,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChatvtExample/Pods-ChatvtExample-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DDAA2812B881F45264A308CE /* [CP] Check Pods Manifest.lock */ = {
+		665AB7978A3F9DCCDE78DF76 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -263,7 +263,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EA78678D468275D0E2E38C8E /* [CP] Embed Pods Frameworks */ = {
+		8FCD12C443A624BE4EABC34F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -282,7 +282,6 @@
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
 			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
 			buildActionMask = 12;
 			files = (
 			);
@@ -318,7 +317,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7E7E6EFCB170BC06FBFF2A6C /* Pods-ChatvtExample.debug.xcconfig */;
+			baseConfigurationReference = 9EF64779FCBCA900119E5A66 /* Pods-ChatvtExample.debug.xcconfig */;
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -330,7 +329,7 @@
 				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = NO;
 				EXCLUDED_ARCHS = "";
-				GCC_NO_COMMON_BLOCKS = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = ChatvtExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Chat VT";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -359,7 +358,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D3D51850010530B40F1CEDB3 /* Pods-ChatvtExample.release.xcconfig */;
+			baseConfigurationReference = 110EEF135B24909C89CE81D7 /* Pods-ChatvtExample.release.xcconfig */;
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -370,7 +369,7 @@
 				DEVELOPMENT_TEAM = MF396VKW87;
 				ENABLE_TESTABILITY = NO;
 				EXCLUDED_ARCHS = "";
-				GCC_NO_COMMON_BLOCKS = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = ChatvtExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Chat VT";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
