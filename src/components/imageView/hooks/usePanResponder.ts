@@ -176,17 +176,17 @@ const usePanResponder = ({
             Animated.timing(translateValue.x, {
               toValue: nextTranslate.x,
               duration: 300,
-              useNativeDriver: true,
+              useNativeDriver: false,
             }),
             Animated.timing(translateValue.y, {
               toValue: nextTranslate.y,
               duration: 300,
-              useNativeDriver: true,
+              useNativeDriver: false,
             }),
             Animated.timing(scaleValue, {
               toValue: nextScale,
               duration: 300,
-              useNativeDriver: true,
+              useNativeDriver: false,
             }),
           ],
           { stopTogether: false }
@@ -336,7 +336,7 @@ const usePanResponder = ({
           Animated.timing(scaleValue, {
             toValue: tmpScale,
             duration: 100,
-            useNativeDriver: true,
+            useNativeDriver: false,
           },{useNativeDriver: false}).start();
         }
 
@@ -373,12 +373,12 @@ const usePanResponder = ({
           Animated.timing(translateValue.x, {
             toValue: nextTranslateX,
             duration: 100,
-            useNativeDriver: true,
+            useNativeDriver: false,
           }),
           Animated.timing(translateValue.y, {
             toValue: nextTranslateY,
             duration: 100,
-            useNativeDriver: true,
+            useNativeDriver: false,
           }),
         ],{useNativeDriver: false}).start();
 

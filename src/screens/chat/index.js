@@ -13,7 +13,7 @@ import {
   Keyboard,
   StatusBar,
   TextInput,
-  TouchableOpacityBase, Dimensions, Linking
+  TouchableOpacityBase, Dimensions, Linking, Image
 } from 'react-native';
 import colors from '../../Styles';
 import { BottomSheetModalProvider } from '../../components/bottomSheet/bottom-sheet';
@@ -32,7 +32,7 @@ import { RecordButton } from './RecordButton';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CameraRoll from '../../components/cameraRollPicker/CameraRoll';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Image from 'react-native-fast-image';
+// import Image from 'react-native-fast-image';
 import Toast, { BaseToast } from 'react-native-toast-message';
 import EmojiPicker from 'react-native-emoji-picker-staltz';
 import inputStore from './InputStore';
@@ -164,7 +164,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
   };
 
   return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.primary }}>
         <BottomSheetModalProvider style={{ flex: 1 }}>
           <KeyboardAvoidingView
             style={{ flex: 1 }}

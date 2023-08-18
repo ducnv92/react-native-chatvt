@@ -2,7 +2,7 @@ import React, {cloneElement, memo, useEffect, useRef, useState} from 'react';
 import appStore from '../AppStore';
 import {
   ActivityIndicator,
-  Dimensions,
+  Dimensions, Image,
   Linking,
   Modal,
   Platform,
@@ -17,7 +17,7 @@ import ParsedText from 'react-native-parsed-text';
 import { groupBy, orderStatus } from '../../utils';
 import { createThumbnail } from '../../components/createThumbnail';
 import ImageViewing from '../../components/imageView/ImageViewing';
-import FastImage from 'react-native-fast-image';
+// import FastImage from 'react-native-fast-image';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { toJS } from 'mobx';
@@ -34,7 +34,7 @@ import FileViewer from '../../components/viewFile';
 import RNFS from 'react-native-fs';
 import AnimatedProgressWheel from 'react-native-progress-wheel';
 import uploadProgress from './uploadProgress';
-import Image from 'react-native-fast-image';
+// import Image from 'react-native-fast-image';
 import VideoViewing from "../../components/videoView/ImageViewing";
 import chatStore from "./ChatStore";
 import {ViewFileScreen} from "../webview";
@@ -102,15 +102,74 @@ const VoiceItem = function (props) {
   const [isPlay, setIsPlay] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentTime, setCurrentTime] = useState('00:00');
-  let intervalTime = null;
+  let _onFinishedPlayingSubscription = null;
+  let _onFinishedLoadingSubscription = null;
+  let _onFinishedLoadingFileSubscription = null;
+  let _onFinishedLoadingURLSubscription = null;
 
   useEffect(() => {
     return () => {
-      if (intervalTime) {
-        clearInterval(intervalTime)
+      if (chatStore.intervalSound) {
+        clearInterval(chatStore.intervalSound)
+      }
+      if(chatStore.pauseSound){
+        chatStore.pauseSound()
       }
     };
   }, []);
+
+  const play = ()=>{
+    if(chatStore.pauseSound){
+      chatStore.pauseSound()
+    }
+    chatStore.pauseSound = pause
+
+    pause()
+    setIsPlay(true)
+    SoundPlayer.playUrl(
+      props.item.attachmentLocal?.length > 0
+        ? props.item.attachmentLocal[0].uri
+        : props.item.attachments[0]?.url
+    );
+    chatStore.intervalSound = setInterval(async () => {
+      const info = await SoundPlayer.getInfo() // Also, you need to await this because it is async
+      console.log('getInfo', info)
+      const secs = Math.floor(info.currentTime)
+      const minutes = Math.floor(secs / 60);
+      const seconds = secs % 60;
+
+      setCurrentTime(('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2))
+    }, 1000)
+    _onFinishedPlayingSubscription = SoundPlayer.addEventListener('FinishedPlaying', ({ success }) => {
+      console.log('finished playing', success)
+      pause()
+      clearInterval(chatStore.intervalSound)
+    })
+    _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoading', ({ success }) => {
+      console.log('finished loading', success)
+    })
+    _onFinishedLoadingFileSubscription = SoundPlayer.addEventListener('FinishedLoadingFile', ({ success, name, type }) => {
+      console.log('finished loading file', success, name, type)
+
+    })
+    _onFinishedLoadingURLSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', ({ success, url }) => {
+      console.log('finished loading url', success, url)
+    })
+    console.log('play')
+  }
+
+  const pause = ()=>{
+    SoundPlayer.stop()
+    SoundPlayer.unmount()
+    clearInterval(chatStore.intervalSound)
+    _onFinishedPlayingSubscription?.remove()
+    _onFinishedLoadingSubscription?.remove()
+    _onFinishedLoadingURLSubscription?.remove()
+    _onFinishedLoadingFileSubscription?.remove()
+    setIsPlay(false)
+    console.log('stop')
+  }
+
 
   return (
     <View
@@ -141,79 +200,6 @@ const VoiceItem = function (props) {
                 play()
               }else{
                 pause()
-              }
-
-              return
-              try {
-                if (isPlay) {
-                  SoundPlayer.stop();
-                  setIsPlay(false);
-                } else {
-                  try {
-                    try{
-                      SoundPlayer.stop();
-                      SoundPlayer.unmount();
-                    }catch (e) {
-
-                    }
-
-
-
-                    const _onFinishedPlayingSubscription =
-                      SoundPlayer.addEventListener(
-                        'FinishedPlaying',
-                        (finishedPlaying) => {
-                          console.log('FinishedPlaying', finishedPlaying)
-                          setIsPlay(false);
-                          clearInterval(intervalTime)
-                        }
-                      );
-                    const _onFinishedLoadingSubscription =
-                      SoundPlayer.addEventListener(
-                        'FinishedLoading',
-                        (success) => {
-                          console.log('FinishedLoading', success)
-
-                          // setIsLoading(false)
-                          // setIsPlay(true)
-                        }
-                      );
-                    const _onFinishedLoadingFileSubscription =
-                      SoundPlayer.addEventListener(
-                        'FinishedLoadingFile',
-                        (success) => {
-                          console.log('FinishedLoadingFile', success)
-
-                          setIsLoading(false);
-                          setIsPlay(false);
-                        }
-                      );
-                    const _onFinishedLoadingURLSubscription =
-                      SoundPlayer.addEventListener(
-                        'FinishedLoadingURL',
-                        ({ success, url }) => {
-                          try {
-                            if (
-                              success &&
-                              (props.item.attachmentLocal?.length > 0
-                                ? props.item.attachmentLocal[0].uri
-                                : props.item.attachments[0]?.url) === url
-                            ) {
-                              setIsLoading(false);
-                              setIsPlay(true);
-                            }
-                          } catch (e) {
-                            console.log(e);
-                          }
-                        }
-                      );
-
-                  } catch (e) {
-                    console.log(e);
-                  }
-                }
-              } catch (e) {
-                console.log(e);
               }
             }}
             style={{
@@ -284,12 +270,12 @@ export const VideoItem = function (props) {
               onPress={() => setIsPause(false)}
               onLongPress={props.onLongPress}
             >
-              <FastImage
+              <Image
                 style={props.style}
                 source={thumbnail ? { uri: thumbnail } : {}}
               />
               {!props.url.includes('file://') && (
-                <FastImage
+                <Image
                   source={require('../../assets/ic_play.png')}
                   style={{ width: 56, height: 56, position: 'absolute' }}
                 />
@@ -399,7 +385,7 @@ const MessageItem = function (props) {
                           }}
                           onLongPress={props.onLongPress}
                         >
-                          <FastImage
+                          <Image
                             source={{ uri: attach }}
                             style={{
                               backgroundColor: '#F2F2F2',
@@ -551,7 +537,7 @@ const MessageItem = function (props) {
                           }}
                           onLongPress={props.onLongPress}
                         >
-                          <FastImage
+                          <Image
                             source={{ uri: attach.url }}
                             style={{
                               borderWidth: 0.5,
@@ -1485,7 +1471,7 @@ function ContainChatItem(props) {
             }}
           >
             {reactObject.get('LIKE') && (
-              <FastImage
+              <Image
                 source={require('../../assets/emoji_1.png')}
                 style={{
                   width: 24,
@@ -1497,7 +1483,7 @@ function ContainChatItem(props) {
               />
             )}
             {reactObject.get('LOVE') && (
-              <FastImage
+              <Image
                 source={require('../../assets/emoji_2.png')}
                 style={{
                   width: 24,
@@ -1509,7 +1495,7 @@ function ContainChatItem(props) {
               />
             )}
             {reactObject.get('WOW') && (
-              <FastImage
+              <Image
                 source={require('../../assets/emoji_4.png')}
                 style={{
                   width: 24,
@@ -1521,7 +1507,7 @@ function ContainChatItem(props) {
               />
             )}
             {reactObject.get('SAD') && (
-              <FastImage
+              <Image
                 source={require('../../assets/emoji_5.png')}
                 style={{
                   width: 24,
@@ -1533,7 +1519,7 @@ function ContainChatItem(props) {
               />
             )}
             {reactObject.get('ANGRY') && (
-              <FastImage
+              <Image
                 source={require('../../assets/emoji_7.png')}
                 style={{
                   marginRight: 8,
@@ -1555,7 +1541,7 @@ function ContainChatItem(props) {
             }}
           >
             {reactObject.get('LIKE') && (
-              <FastImage
+              <Image
                 source={require('../../assets/emoji_1.png')}
                 style={{
                   width: 24,
@@ -1567,7 +1553,7 @@ function ContainChatItem(props) {
               />
             )}
             {reactObject.get('LOVE') && (
-              <FastImage
+              <Image
                 source={require('../../assets/emoji_2.png')}
                 style={{
                   width: 24,
@@ -1579,7 +1565,7 @@ function ContainChatItem(props) {
               />
             )}
             {reactObject.get('WOW') && (
-              <FastImage
+              <Image
                 source={require('../../assets/emoji_4.png')}
                 style={{
                   width: 24,
@@ -1591,7 +1577,7 @@ function ContainChatItem(props) {
               />
             )}
             {reactObject.get('SAD') && (
-              <FastImage
+              <Image
                 source={require('../../assets/emoji_5.png')}
                 style={{
                   width: 24,
@@ -1603,7 +1589,7 @@ function ContainChatItem(props) {
               />
             )}
             {reactObject.get('ANGRY') && (
-              <FastImage
+              <Image
                 source={require('../../assets/emoji_7.png')}
                 style={{ width: 24,
                   height: 24,
@@ -1651,7 +1637,7 @@ function ContainChatItem(props) {
             <TouchableWithoutFeedback
               onPress={() => reaction('LIKE')}
             >
-              <FastImage
+              <Image
                 source={require('../../assets/emoji_1.png')}
                 style={{
                   width: 30,
@@ -1666,7 +1652,7 @@ function ContainChatItem(props) {
               style={{ marginHorizontal: 8 }}
               onPress={() => reaction('LOVE')}
             >
-              <FastImage
+              <Image
                 source={require('../../assets/emoji_2.png')}
                 style={{
                   width: 30,
@@ -1682,7 +1668,7 @@ function ContainChatItem(props) {
               style={{ marginHorizontal: 8 }}
               onPress={() => reaction('WOW')}
             >
-              <FastImage
+              <Image
                 source={require('../../assets/emoji_4.png')}
                 style={{
                   width: 30,
@@ -1698,7 +1684,7 @@ function ContainChatItem(props) {
               style={{ marginHorizontal: 8 }}
               onPress={() => reaction('SAD')}
             >
-              <FastImage
+              <Image
                 source={require('../../assets/emoji_5.png')}
                 style={{
                   width: 30,
@@ -1714,7 +1700,7 @@ function ContainChatItem(props) {
               style={{ marginHorizontal: 8 }}
               onPress={() => reaction('ANGRY')}
             >
-              <FastImage
+              <Image
                 source={require('../../assets/emoji_7.png')}
                 style={{
                   width: 30,

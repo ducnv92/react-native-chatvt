@@ -53,7 +53,7 @@ const ImageItem = ({imageSrc, onZoom, onRequestClose, onLongPress, delayLongPres
 
   const imageOpacity = scrollValueY.interpolate({
     inputRange: [-SWIPE_CLOSE_OFFSET, 0, SWIPE_CLOSE_OFFSET],
-    outputRange: [0.5, 1, 0.5],
+    outputRange: [1, 1, 1],
   });
   const imagesStyles = getImageStyles(
     imageDimensions,

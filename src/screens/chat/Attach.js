@@ -354,7 +354,7 @@ const LocationMessage =observer(function LocationMessage ( props) {
 
 
   return(
-    <>
+    <View>
     <BottomSheetModal
       ref={bottomSheetModalRef}
       index={0}
@@ -397,14 +397,14 @@ const LocationMessage =observer(function LocationMessage ( props) {
              resizeMode="contain"
       />
     </View>
-
+      <TouchableOpacity
+        onPress={sendMap}
+        style={{ position: 'absolute', zIndex: 99999, bottom: 16, left: 16, right: 16, alignItems: 'center', justifyContent: 'center', padding: 16,  backgroundColor: colors.primary, borderRadius: 10 }}>
+        <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>Chia sẻ vị trí</Text>
+      </TouchableOpacity>
     </BottomSheetModal>
-  <TouchableOpacity
-    onPress={sendMap}
-    style={{ position: 'absolute', zIndex: 99999, bottom: 96+insets.bottom, left: 16, right: 16, alignItems: 'center', justifyContent: 'center', padding: 16,  backgroundColor: colors.primary, borderRadius: 10 }}>
-    <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>Chia sẻ vị trí</Text>
-  </TouchableOpacity>
-   </>
+
+   </View>
 
   )
 })
