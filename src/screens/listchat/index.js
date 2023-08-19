@@ -87,68 +87,72 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
 
       if (item.message.type === 'VOICE') {
         return (
-          <Text
-            numberOfLines={1}
+          <View
             style={{
               flex: 1,
-              fontSize: 15,
-              fontWeight: setting?.unread_count > 0 ? '600' : '500',
-              color:
-                setting?.unread_count > 0
-                  ? colors.primaryText
-                  : colors.neutralText,
+              flexDirection: 'row',
+              alignItems: 'center'
             }}
           >
             <Image
               source={require('../../assets/ic_attach_message.png')}
               style={{ width: 16, height: 16, resizeMode: 'contain' }}
             />
-            <Text>{prefix + appStore.lang.list_chat.message_voice}</Text>
-          </Text>
+            <Text numberOfLines={1} style={{
+              fontSize: 15,
+              fontWeight: setting?.unread_count > 0 ? '600' : '500',
+              color:
+                setting?.unread_count > 0
+                  ? colors.primaryText
+                  : colors.neutralText,
+            }}>{prefix + appStore.lang.list_chat.message_voice}</Text>
+          </View>
         );
       }
       if (item.message.type === 'LOCATION') {
         return (
-          <Text
-            numberOfLines={1}
-            style={{
-              flex: 1,
+          <View style={{
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+            <Image
+              source={require('../../assets/ic_attach_message.png')}
+              style={{ width: 16, height: 16, resizeMode: 'contain' }}
+            />
+            <Text style={{
               fontSize: 15,
               fontWeight: setting?.unread_count > 0 ? '600' : '500',
               color:
                 setting?.unread_count > 0
                   ? colors.primaryText
                   : colors.neutralText,
-            }}
-          >
-            <Image
-              source={require('../../assets/ic_attach_message.png')}
-              style={{ width: 16, height: 16, resizeMode: 'contain' }}
-            />
-            <Text>{prefix + appStore.lang.list_chat.message_location}</Text>
-          </Text>
+            }}>{prefix + appStore.lang.list_chat.message_location}</Text>
+          </View>
         );
       }
       if (item.message.type === 'FILE') {
         return (
-          <Text
-            numberOfLines={1}
-            style={{
-              flex: 1,
-              fontSize: 15,
-              fontWeight: setting?.unread_count > 0 ? '600' : '500',
-              color:
-                setting?.unread_count > 0
-                  ? colors.primaryText
-                  : colors.neutralText,
-            }}
+          <View style={{
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center'
+          }}
           >
             <Image
               source={require('../../assets/ic_attach_message.png')}
               style={{ width: 16, height: 16, resizeMode: 'contain' }}
             />
-            <Text>{prefix + appStore.lang.list_chat.message_doc}</Text>
-          </Text>
+            <Text numberOfLines={1}
+              style={{
+                flex: 1,
+                fontWeight: setting?.unread_count > 0 ? '600' : '500',
+                color:
+                  setting?.unread_count > 0
+                    ? colors.primaryText
+                    : colors.neutralText,
+              }}>{prefix + appStore.lang.list_chat.message_doc}</Text>
+          </View>
         );
       }
       if (item.message.has_attachment) {
@@ -530,7 +534,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
         //     })
         //   }}
         // >
-        <Swipeable disableRightSwipe={true} rightButtonWidth={66} rightButtons={rightButtons}>
+        <Swipeable rightButtonWidth={66} rightButtons={rightButtons}>
           <TouchableOpacity
             onPress={() => {
               try {
@@ -629,7 +633,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                           height: 16,
                           width: 16,
                           resizeMode: 'center',
-                          marginLeft: 10,
+                          marginLeft: 6,
                         }}
                         source={reader.includes('VTM') ? require('../../assets/avatar_default.png') : require('../../assets/avatar_default_customer.png')}
                       />
@@ -643,7 +647,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                         height: 16,
                         width: 16,
                         resizeMode: 'center',
-                        marginLeft: 10,
+                        marginLeft: 6,
                       }}
                       source={require('../../assets/ic_pin.png')}
                     />
@@ -654,7 +658,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                         height: 16,
                         width: 16,
                         resizeMode: 'center',
-                        marginLeft: 10,
+                        marginLeft: 6,
                       }}
                       source={require('../../assets/ic_mute.png')}
                     />
@@ -667,7 +671,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                         width: 16,
                         backgroundColor: colors.primary,
                         borderRadius: 8,
-                        marginLeft: 10,
+                        marginLeft: 6,
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
