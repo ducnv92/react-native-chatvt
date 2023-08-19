@@ -80,6 +80,13 @@
 	<string>YOUR TEXT</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>YOUR TEXT</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SVN-Gilroy.ttf</string>
+		<string>SVN-GilroyBold.ttf</string>
+		<string>SVN-GilroyMedium.ttf</string>
+		<string>SVN-GilroySemiBold.ttf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -98,12 +105,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>SVN-Gilroy.ttf</string>
-		<string>SVN-GilroyBold.ttf</string>
-		<string>SVN-GilroyMedium.ttf</string>
-		<string>SVN-GilroySemiBold.ttf</string>
-	</array>
 </dict>
 </plist>

@@ -38,6 +38,18 @@ import uploadProgress from './uploadProgress';
 import VideoViewing from "../../components/videoView/ImageViewing";
 import chatStore from "./ChatStore";
 import {ViewFileScreen} from "../webview";
+import SVGComponent01 from "../../assets/stickers/01";
+import SVGComponent02 from "../../assets/stickers/02";
+import SVGComponent03 from "../../assets/stickers/03";
+import SVGComponent04 from "../../assets/stickers/04";
+import SVGComponent05 from "../../assets/stickers/05";
+import SVGComponent06 from "../../assets/stickers/06";
+import SVGComponent07 from "../../assets/stickers/07";
+import SVGComponent08 from "../../assets/stickers/08";
+import SVGComponent09 from "../../assets/stickers/09";
+import SVGComponent010 from "../../assets/stickers/010";
+import SVGComponent011 from "../../assets/stickers/011";
+import SVGComponent012 from "../../assets/stickers/012";
 
 const MapItem = function (props) {
   const right = props.right;
@@ -1228,6 +1240,62 @@ const OrderItem = function (props) {
   }
 };
 
+
+const StickerItem = function (props) {
+  const getSticker = (id) => {
+    switch (id){
+      case '(01)':
+        return <SVGComponent01  width={86} height={86}/>
+      case '(02)':
+        return <SVGComponent02  width={86} height={86}/>
+      case '(03)':
+        return <SVGComponent03  width={86} height={86}/>
+      case '(04)':
+        return <SVGComponent04  width={86} height={86}/>
+      case '(05)':
+        return <SVGComponent05  width={86} height={86}/>
+      case '(06)':
+        return <SVGComponent06  width={86} height={86}/>
+      case '(07)':
+        return <SVGComponent07  width={86} height={86}/>
+      case '(08)':
+        return <SVGComponent08  width={86} height={86}/>
+      case '(09)':
+        return <SVGComponent09  width={86} height={86}/>
+      case '(010)':
+        return <SVGComponent010  width={86} height={86}/>
+      case '(011)':
+        return <SVGComponent011  width={86} height={86}/>
+      case '(012)':
+        return <SVGComponent012  width={86} height={86}/>
+    }
+  }
+
+  const right = props.right;
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: right ? 'flex-end' : 'flex-start',
+        alignItems: 'center',
+        marginVertical: 4,
+        marginHorizontal: 16,
+      }}
+    >
+        <View
+          style={{
+            height: 86,
+            width: 86,
+          }}
+        >
+          {
+            getSticker(props.item.text)
+          }
+        </View>
+    </View>
+  );
+};
+
 export class ChatItem extends React.Component {
   constructor(props) {
     super(props);
@@ -1266,6 +1334,12 @@ export class ChatItem extends React.Component {
       this.item.type === 'QUOTE_ORDER'
     ) {
       messageView = <OrderItem item={this.props.item} right={right}/>;
+      return messageView;
+    }
+    if (
+      this.item.type === 'STICKER'
+    ) {
+      messageView = <StickerItem item={this.props.item} right={right}/>;
       return messageView;
     }
     if (this.item.type === 'LOCATION') {

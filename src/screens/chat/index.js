@@ -431,9 +431,29 @@ const BottomChat = observer(function BottomChat(props) {
     Keyboard.dismiss();
     chatStore.showAttachModal = true;
   };
+
   const isOrderSuccess = () => {
     return false
   }
+
+  const sendSticker = async (id) => {
+    try {
+
+      const message = {
+        id: uuid.v4(),
+        type: 'STICKER',
+        has_attachment: true,
+        attachment_ids: [],
+        text: id,
+        status: 'sending',
+        conversation_id: props.data._id,
+        sender: appStore.user.type + '_' + appStore.user.user_id,
+      };
+      chatStore.data.unshift(message);
+      chatStore.sendMessage(message);
+    } catch (e) { }
+  };
+
   return (
     <>
       <TouchableOpacity
@@ -569,35 +589,35 @@ const BottomChat = observer(function BottomChat(props) {
 
       </TouchableOpacity>
       {chatStore.keyboardEmoji && (
-        // <EmojiKeyboard
-        //   styles={{
-        //     container: { borderRadius: 0, backgroundColor: 'white' },
-        //   }}
-        //   onEmojiSelected={(emoji) => {
-        //     chatStore.input += emoji.emoji;
-        //   }}
-        // />
-
-        <EmojiPicker
-          emojiStyle={{color: 'black'}}
-          hideClearButton={true}
-          onEmojiSelected={(emoji) => {
-            if (emoji !== null) {
-              inputStore.input += emoji
-            }
+        <EmojiKeyboard
+          styles={{
+            container: { borderRadius: 0, backgroundColor: 'white' },
           }}
-          rows={7}
-          localizedCategories={[ // Always in this order:
-            'Smileys and emotion',
-            'People and body',
-            'Animals and nature',
-            'Food and drink',
-            'Activities',
-            'Travel and places',
-            'Objects',
-            'Symbols',
-          ]}
+          onSelected={(stickerId) => {
+            sendSticker(stickerId)
+          }}
         />
+
+        // <EmojiPicker
+        //   emojiStyle={{color: 'black'}}
+        //   hideClearButton={true}
+        //   onEmojiSelected={(emoji) => {
+        //     if (emoji !== null) {
+        //       inputStore.input += emoji
+        //     }
+        //   }}
+        //   rows={7}
+        //   localizedCategories={[ // Always in this order:
+        //     'Smileys and emotion',
+        //     'People and body',
+        //     'Animals and nature',
+        //     'Food and drink',
+        //     'Activities',
+        //     'Travel and places',
+        //     'Objects',
+        //     'Symbols',
+        //   ]}
+        // />
       )}
     </>
   )
