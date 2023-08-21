@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E14D2742A9340C800B9C238 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E14D2732A9340C800B9C238 /* File.swift */; };
 		5E163ECC2A6BBDE900D7437E /* RNFileViewerManagerChatVT.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E163ECB2A6BBDE900D7437E /* RNFileViewerManagerChatVT.m */; };
 		5E6116AD2A6A885C0023024A /* ImageResizerChatVT.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E6116AA2A6A885C0023024A /* ImageResizerChatVT.mm */; };
 		5E6116AE2A6A885C0023024A /* ImageHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E6116AC2A6A885C0023024A /* ImageHelpers.m */; };
@@ -41,6 +42,8 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libChatvt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libChatvt.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E14D2722A93406C00B9C238 /* Chatvt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Chatvt-Bridging-Header.h"; sourceTree = "<group>"; };
+		5E14D2732A9340C800B9C238 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		5E163ECA2A6BBDE900D7437E /* RNFileViewerManagerChatVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNFileViewerManagerChatVT.h; sourceTree = "<group>"; };
 		5E163ECB2A6BBDE900D7437E /* RNFileViewerManagerChatVT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNFileViewerManagerChatVT.m; sourceTree = "<group>"; };
 		5E6116A92A6A885C0023024A /* ImageResizerChatVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageResizerChatVT.h; sourceTree = "<group>"; };
@@ -59,7 +62,6 @@
 		A915E7482A5E6876002925F1 /* CoreAudioTypes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioTypes.framework; path = System/Library/Frameworks/CoreAudioTypes.framework; sourceTree = SDKROOT; };
 		A915E75F2A5E99B8002925F1 /* CreateThumbnailChatVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateThumbnailChatVT.h; sourceTree = "<group>"; };
 		A915E7602A5E99B8002925F1 /* CreateThumbnailChatVT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateThumbnailChatVT.m; sourceTree = "<group>"; };
-		A915E76B2A5E9C0A002925F1 /* Chatvt-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Chatvt-Bridging-Header.h"; sourceTree = "<group>"; };
 		A915E76C2A5E9FE0002925F1 /* RNAudioRecorderPlayerChatVT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNAudioRecorderPlayerChatVT.m; sourceTree = "<group>"; };
 		A915E76D2A5E9FE0002925F1 /* RNAudioRecorderPlayerChatVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNAudioRecorderPlayerChatVT.h; sourceTree = "<group>"; };
 		A93AFB342A57D6D0000B0D2E /* ContextMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextMenu.h; sourceTree = "<group>"; };
@@ -105,6 +107,8 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				5E14D2732A9340C800B9C238 /* File.swift */,
+				5E14D2722A93406C00B9C238 /* Chatvt-Bridging-Header.h */,
 				B3E7B5881CC2AC0600A0062D /* Chatvt.h */,
 				A915E75F2A5E99B8002925F1 /* CreateThumbnailChatVT.h */,
 				A915E7602A5E99B8002925F1 /* CreateThumbnailChatVT.m */,
@@ -132,7 +136,6 @@
 				A9EE0C242A5BAE3200A0FE7C /* RNCPermissionHelper.m */,
 				A915E7352A5E6307002925F1 /* RNCCameraRollManager.h */,
 				A915E7362A5E6308002925F1 /* RNCCameraRollManager.m */,
-				A915E76B2A5E9C0A002925F1 /* Chatvt-Bridging-Header.h */,
 				A915E76D2A5E9FE0002925F1 /* RNAudioRecorderPlayerChatVT.h */,
 				A915E76C2A5E9FE0002925F1 /* RNAudioRecorderPlayerChatVT.m */,
 				A9EC129E2A5FABE800F68F55 /* RNSoundPlayerChatVT.m */,
@@ -232,6 +235,7 @@
 				5E163ECC2A6BBDE900D7437E /* RNFileViewerManagerChatVT.m in Sources */,
 				5E78538C2A8F1D58005183B2 /* RNCPromiseWrapper.m in Sources */,
 				A9B0E0C42A540305000E9B36 /* RNCPromiseWrapper.m in Sources */,
+				5E14D2742A9340C800B9C238 /* File.swift in Sources */,
 				5E6116AD2A6A885C0023024A /* ImageResizerChatVT.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -283,6 +287,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Chatvt-Bridging-Header.h\"";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -329,6 +334,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Chatvt-Bridging-Header.h\"";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;

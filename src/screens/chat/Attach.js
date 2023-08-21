@@ -87,9 +87,13 @@ const QuickMessageModal =observer(function QuickMessageModal ( props) {
                 value={quickMessageStore.currentMessage.text}
                 multiline={true}
                 autoFocus={true}
+                onFocus={()=>{
+
+                }}
+                placeHolderTextColor={'#B1C1D1'}
                 placeholder={'Nội dung tin nhắn'}
                 numberOfLines={10}
-                style={{textAlignVertical: 'top', minHeight: 179,   margin: 16, borderColor: '#DCE6F0', borderWidth: 1, borderRadius: 10, padding: 12 }}
+                style={{textAlignVertical: 'top', height: 132,   margin: 16, borderColor: '#DCE6F0', borderWidth: 1, borderRadius: 10, padding: 12 }}
                 onChangeText={text =>{
                   quickMessageStore.currentMessage = {...quickMessageStore.currentMessage, ...{text}}
                 }}

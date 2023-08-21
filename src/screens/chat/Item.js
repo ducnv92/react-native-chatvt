@@ -35,6 +35,7 @@ import RNFS from 'react-native-fs';
 import AnimatedProgressWheel from 'react-native-progress-wheel';
 import uploadProgress from './uploadProgress';
 // import Image from 'react-native-fast-image';
+import * as Animatable from 'react-native-animatable';
 import VideoViewing from "../../components/videoView/ImageViewing";
 import chatStore from "./ChatStore";
 import {ViewFileScreen} from "../webview";
@@ -230,11 +231,36 @@ const VoiceItem = function (props) {
               style={{ height: 32, width: 32, resizeMode: 'contain' }}
             />
           </TouchableOpacity>
-          <Image
-            source={require('../../assets/ic_wave_white.png')}
-            style={{ flex: 1, marginHorizontal: 16, height: 16, resizeMode: 'contain', tintColor: right ? 'white' : '#B5B4B8' }}
-            tintColor={right ? 'white' : '#B5B4B8'}
-          />
+          <View style={{flex: 1, flexDirection: 'row', }}>
+            <Animatable.View animation="slideInDown" iterationCount={5} direction="alternate">
+              <View style={{backgroundColor: 'white', width: 8, borderRadius: 4, height: 50, marginLeft: 4}}/>
+            </Animatable.View>
+            <Animatable.View animation="slideInDown" iterationCount={5} direction="alternate">
+              <View style={{backgroundColor: 'white', width: 8, borderRadius: 4, height: 50, marginLeft: 4}}/>
+            </Animatable.View>
+            <Animatable.View animation="slideInDown" iterationCount={5} direction="alternate">
+              <View style={{backgroundColor: 'white', width: 8, borderRadius: 4, height: 50, marginLeft: 4}}/>
+            </Animatable.View>
+            <Animatable.View animation="slideInDown" iterationCount={5} direction="alternate">
+              <View style={{backgroundColor: 'white', width: 8, borderRadius: 4, height: 50, marginLeft: 4}}/>
+            </Animatable.View>
+            <Animatable.View animation="slideInDown" iterationCount={5} direction="alternate">
+              <View style={{backgroundColor: 'white', width: 8, borderRadius: 4, height: 50, marginLeft: 4}}/>
+            </Animatable.View>
+            <Animatable.View animation="slideInDown" iterationCount={5} direction="alternate">
+              <View style={{backgroundColor: 'white', width: 8, borderRadius: 4, height: 50, marginLeft: 4}}/>
+            </Animatable.View>
+            <Animatable.View animation="slideInDown" iterationCount={5} direction="alternate">
+              <View style={{backgroundColor: 'white', width: 8, borderRadius: 4, height: 50, marginLeft: 4}}/>
+            </Animatable.View>
+          </View>
+
+
+          {/*<Image*/}
+          {/*  source={require('../../assets/ic_wave_white.png')}*/}
+          {/*  style={{ flex: 1, marginHorizontal: 16, height: 16, resizeMode: 'contain', tintColor: right ? 'white' : '#B5B4B8' }}*/}
+          {/*  tintColor={right ? 'white' : '#B5B4B8'}*/}
+          {/*/>*/}
           <Text style={{ textAlign: 'right', fontWeight: '500', fontSize: 15, color: right ? 'white' : colors.neutralText }}>{currentTime}</Text>
         </View>
       </ContainChatItem>
