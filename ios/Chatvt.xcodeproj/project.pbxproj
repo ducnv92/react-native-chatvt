@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5E14D2742A9340C800B9C238 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E14D2732A9340C800B9C238 /* File.swift */; };
+		5E14D27B2A935EE600B9C238 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E14D27A2A935EE600B9C238 /* AssetsLibrary.framework */; };
 		5E163ECC2A6BBDE900D7437E /* RNFileViewerManagerChatVT.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E163ECB2A6BBDE900D7437E /* RNFileViewerManagerChatVT.m */; };
 		5E6116AD2A6A885C0023024A /* ImageResizerChatVT.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E6116AA2A6A885C0023024A /* ImageResizerChatVT.mm */; };
 		5E6116AE2A6A885C0023024A /* ImageHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E6116AC2A6A885C0023024A /* ImageHelpers.m */; };
@@ -44,6 +45,7 @@
 		134814201AA4EA6300B7C361 /* libChatvt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libChatvt.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E14D2722A93406C00B9C238 /* Chatvt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Chatvt-Bridging-Header.h"; sourceTree = "<group>"; };
 		5E14D2732A9340C800B9C238 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		5E14D27A2A935EE600B9C238 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/System/iOSSupport/System/Library/Frameworks/AssetsLibrary.framework; sourceTree = DEVELOPER_DIR; };
 		5E163ECA2A6BBDE900D7437E /* RNFileViewerManagerChatVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNFileViewerManagerChatVT.h; sourceTree = "<group>"; };
 		5E163ECB2A6BBDE900D7437E /* RNFileViewerManagerChatVT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNFileViewerManagerChatVT.m; sourceTree = "<group>"; };
 		5E6116A92A6A885C0023024A /* ImageResizerChatVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageResizerChatVT.h; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E14D27B2A935EE600B9C238 /* AssetsLibrary.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,6 +157,7 @@
 		A915E7462A5E6876002925F1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5E14D27A2A935EE600B9C238 /* AssetsLibrary.framework */,
 				A915E7472A5E6876002925F1 /* CoreAudio.framework */,
 				A915E7482A5E6876002925F1 /* CoreAudioTypes.framework */,
 			);
