@@ -15,7 +15,8 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/ducnv92/react-native-chatvt.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*"
-  s.vendored_frameworks = 'ios/Frameworks/AssetsLibrary.framework'
+  s.frameworks = 'AssetsLibrary'
+
 
   s.dependency "React-Core"
 end
