@@ -44,7 +44,6 @@
 		134814201AA4EA6300B7C361 /* libChatvt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libChatvt.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E14D2722A93406C00B9C238 /* Chatvt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Chatvt-Bridging-Header.h"; sourceTree = "<group>"; };
 		5E14D2732A9340C800B9C238 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
-		5E14D27A2A935EE600B9C238 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/System/iOSSupport/System/Library/Frameworks/AssetsLibrary.framework; sourceTree = DEVELOPER_DIR; };
 		5E14D2832A9366C900B9C238 /* Frameworks */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Frameworks; sourceTree = "<group>"; };
 		5E14D2842A93673B00B9C238 /* RNCPromiseWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNCPromiseWrapper.m; path = "../../Downloads/react-native-document-picker-5dd2e4063a9806581d99563dce48e1ce2b474264/ios/RNCPromiseWrapper.m"; sourceTree = "<group>"; };
 		5E163ECA2A6BBDE900D7437E /* RNFileViewerManagerChatVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNFileViewerManagerChatVT.h; sourceTree = "<group>"; };
@@ -149,7 +148,6 @@
 		A915E7462A5E6876002925F1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5E14D27A2A935EE600B9C238 /* AssetsLibrary.framework */,
 				A915E7472A5E6876002925F1 /* CoreAudio.framework */,
 				A915E7482A5E6876002925F1 /* CoreAudioTypes.framework */,
 			);
