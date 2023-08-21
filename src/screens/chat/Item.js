@@ -1,4 +1,4 @@
-import React, {cloneElement, memo, useEffect, useRef, useState} from 'react';
+import React, { cloneElement, memo, useEffect, useRef, useState } from 'react';
 import appStore from '../AppStore';
 import {
   ActivityIndicator,
@@ -38,7 +38,7 @@ import uploadProgress from './uploadProgress';
 import * as Animatable from 'react-native-animatable';
 import VideoViewing from "../../components/videoView/ImageViewing";
 import chatStore from "./ChatStore";
-import {ViewFileScreen} from "../webview";
+import { ViewFileScreen } from "../webview";
 import SVGComponent01 from "../../assets/stickers/01";
 import SVGComponent02 from "../../assets/stickers/02";
 import SVGComponent03 from "../../assets/stickers/03";
@@ -60,8 +60,8 @@ const MapItem = function (props) {
         flexDirection: 'row',
         justifyContent: right ? 'flex-end' : 'flex-start',
         alignItems: 'center',
-        marginVertical: 4,
-        marginHorizontal: 16,
+        marginVertical: 2,
+        marginHorizontal: 10,
       }}
     >
       <ContainChatItem {...props}>
@@ -125,14 +125,14 @@ const VoiceItem = function (props) {
       if (chatStore.intervalSound) {
         clearInterval(chatStore.intervalSound)
       }
-      if(chatStore.pauseSound){
+      if (chatStore.pauseSound) {
         chatStore.pauseSound()
       }
     };
   }, []);
 
-  const play = ()=>{
-    if(chatStore.pauseSound){
+  const play = () => {
+    if (chatStore.pauseSound) {
       chatStore.pauseSound()
     }
     chatStore.pauseSound = pause
@@ -171,7 +171,7 @@ const VoiceItem = function (props) {
     console.log('play')
   }
 
-  const pause = ()=>{
+  const pause = () => {
     SoundPlayer.stop()
     SoundPlayer.unmount()
     clearInterval(chatStore.intervalSound)
@@ -190,8 +190,8 @@ const VoiceItem = function (props) {
         flexDirection: 'row',
         justifyContent: right ? 'flex-end' : 'flex-start',
         alignItems: 'center',
-        marginVertical: 4,
-        marginHorizontal: 16,
+        marginVertical: 2,
+        marginHorizontal: 10,
       }}
     >
       <ContainChatItem {...props}>
@@ -209,9 +209,9 @@ const VoiceItem = function (props) {
         >
           <TouchableOpacity
             onPress={() => {
-              if(!isPlay){
+              if (!isPlay) {
                 play()
-              }else{
+              } else {
                 pause()
               }
             }}
@@ -299,28 +299,28 @@ export const VideoItem = function (props) {
   return (
     <View>
 
-        <View style={props.style}>
-          {!thumbnail ? (
-            <ActivityIndicator size="large" />
-          ) : (
-            <TouchableOpacity
-              style={{ alignItems: 'center', justifyContent: 'center' }}
-              onPress={() => setIsPause(false)}
-              onLongPress={props.onLongPress}
-            >
+      <View style={props.style}>
+        {!thumbnail ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <TouchableOpacity
+            style={{ alignItems: 'center', justifyContent: 'center' }}
+            onPress={() => setIsPause(false)}
+            onLongPress={props.onLongPress}
+          >
+            <Image
+              style={props.style}
+              source={thumbnail ? { uri: thumbnail } : {}}
+            />
+            {!props.url.includes('file://') && (
               <Image
-                style={props.style}
-                source={thumbnail ? { uri: thumbnail } : {}}
+                source={require('../../assets/ic_play.png')}
+                style={{ width: 56, height: 56, position: 'absolute' }}
               />
-              {!props.url.includes('file://') && (
-                <Image
-                  source={require('../../assets/ic_play.png')}
-                  style={{ width: 56, height: 56, position: 'absolute' }}
-                />
-              )}
-            </TouchableOpacity>
-          )}
-        </View>
+            )}
+          </TouchableOpacity>
+        )}
+      </View>
       <VideoViewing
         source={{ uri: props.url }}
         swipeToCloseEnabled={true}
@@ -364,7 +364,7 @@ const MessageItem = function (props) {
   return (
     <>
       {item.has_attachment ? (
-        <View style={{ marginVertical: 4, marginHorizontal: 16 }}>
+        <View style={{ marginVertical: 2, marginHorizontal: 10 }}>
           <View
             style={{
               flexDirection: 'row',
@@ -396,143 +396,143 @@ const MessageItem = function (props) {
                     justifyContent: right ? 'flex-end' : 'flex-start',
                   }}
                 >
-                  <ContainChatItem {...props}   style={{
+                  <ContainChatItem {...props} style={{
                     flexDirection: 'row',
                     flexWrap: 'wrap',
                     gap: 4,
                     justifyContent: right ? 'flex-end' : 'flex-start',
                   }}>
-                  {item.attachmentLocal.map((File) => {
-                    const attach = File.uri;
-                    if (
-                      attach.toLowerCase().includes('jpg') ||
-                      attach.toLowerCase().includes('png') ||
-                      attach.toLowerCase().includes('jpeg') ||
-                      attach.toLowerCase().includes('heic')
-                    ) {
-                      return (
-                        <TouchableOpacity
-                          key={attach}
-                          onPress={() => {
-                            setImages([
-                              {
-                                uri: attach,
-                              },
-                            ]);
-                            setImageVisible(true);
-                          }}
-                          onLongPress={props.onLongPress}
-                        >
-                          <Image
-                            source={{ uri: attach }}
-                            style={{
-                              backgroundColor: '#F2F2F2',
-                              borderRadius: 5,
-                              overflow: 'hidden',
-                              width:
-                                item.attachmentLocal.length === 1 ? 200 : 120,
-                              height:
-                                item.attachmentLocal.length === 1 ? 200 : 120,
-                            }}
-                            LoadingIndicatorComponent={ActivityIndicator}
-                          />
+                    {item.attachmentLocal.map((File) => {
+                      const attach = File.uri;
+                      if (
+                        attach.toLowerCase().includes('jpg') ||
+                        attach.toLowerCase().includes('png') ||
+                        attach.toLowerCase().includes('jpeg') ||
+                        attach.toLowerCase().includes('heic')
+                      ) {
+                        return (
                           <TouchableOpacity
-                            style={{
-                              position: 'absolute',
-                              alignSelf: 'center',
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              padding: 16,
-                              top: item.attachmentLocal.length === 1 ? 65 : 35,
-                            }}
-                          >
-                            <AnimatedProgressWheel
-                              size={30}
-                              animateFromValue={0}
-                              progress={
-                                uploadProgress.progress[item.id]
-                                  ? uploadProgress.progress[item.id]
-                                  : 0
-                              }
-                              width={3}
-                              color={colors.primary}
-                              backgroundColor={'#FFFFFFA3'}
-                              fullColor={colors.primary}
-                            ></AnimatedProgressWheel>
-                            <Image
-                              source={require('../../assets/ic_cancel_upload.png')}
-                              style={{
-                                width: 16,
-                                height: 16,
-                                position: 'absolute',
-                                alignSelf: 'center',
-                                justifySelf: 'center',
-                              }}
-                            />
-                          </TouchableOpacity>
-                        </TouchableOpacity>
-                      );
-                    }
-                    if (
-                      attach.toLowerCase().includes('.mov') ||
-                      attach.toLowerCase().includes('.mp4')
-                    ) {
-                      return (
-                        <View>
-                          <VideoItem
                             key={attach}
-                            {...props}
-                            source={{ uri: attach }}
-                            url={attach}
-                            resizeMode={'contain'}
-                            allowsExternalPlayback
-                            style={{
-                              width: Dimensions.get('window').width*0.5,
-                              height: Dimensions.get('window').width*0.5,
-                              backgroundColor: '#f2f2f2',
-                              borderRadius: 10,
-                              marginVertical: 16,
+                            onPress={() => {
+                              setImages([
+                                {
+                                  uri: attach,
+                                },
+                              ]);
+                              setImageVisible(true);
                             }}
-                          ></VideoItem>
-                          <TouchableOpacity
-                            style={{
-                              position: 'absolute',
-                              alignSelf: 'center',
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              padding: 16,
-                              top: item.attachmentLocal.length === 1 ? 84 : 84,
-                            }}
+                            onLongPress={props.onLongPress}
                           >
-                            <AnimatedProgressWheel
-                              size={30}
-                              animateFromValue={0}
-                              progress={
-                                uploadProgress.progress[item.id]
-                                  ? uploadProgress.progress[item.id]
-                                  : 0
-                              }
-                              width={3}
-                              color={colors.primary}
-                              backgroundColor={'#FFFFFFA3'}
-                              fullColor={colors.primary}
-                            ></AnimatedProgressWheel>
                             <Image
-                              source={require('../../assets/ic_cancel_upload.png')}
+                              source={{ uri: attach }}
                               style={{
-                                width: 16,
-                                height: 16,
+                                backgroundColor: '#F2F2F2',
+                                borderRadius: 5,
+                                overflow: 'hidden',
+                                width:
+                                  item.attachmentLocal.length === 1 ? 200 : 120,
+                                height:
+                                  item.attachmentLocal.length === 1 ? 200 : 120,
+                              }}
+                              LoadingIndicatorComponent={ActivityIndicator}
+                            />
+                            <TouchableOpacity
+                              style={{
                                 position: 'absolute',
                                 alignSelf: 'center',
-                                justifySelf: 'center',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                padding: 16,
+                                top: item.attachmentLocal.length === 1 ? 65 : 35,
                               }}
-                            />
+                            >
+                              <AnimatedProgressWheel
+                                size={30}
+                                animateFromValue={0}
+                                progress={
+                                  uploadProgress.progress[item.id]
+                                    ? uploadProgress.progress[item.id]
+                                    : 0
+                                }
+                                width={3}
+                                color={colors.primary}
+                                backgroundColor={'#FFFFFFA3'}
+                                fullColor={colors.primary}
+                              ></AnimatedProgressWheel>
+                              <Image
+                                source={require('../../assets/ic_cancel_upload.png')}
+                                style={{
+                                  width: 16,
+                                  height: 16,
+                                  position: 'absolute',
+                                  alignSelf: 'center',
+                                  justifySelf: 'center',
+                                }}
+                              />
+                            </TouchableOpacity>
                           </TouchableOpacity>
-                        </View>
-                      );
-                    }
-                    return <View />;
-                  })}
+                        );
+                      }
+                      if (
+                        attach.toLowerCase().includes('.mov') ||
+                        attach.toLowerCase().includes('.mp4')
+                      ) {
+                        return (
+                          <View>
+                            <VideoItem
+                              key={attach}
+                              {...props}
+                              source={{ uri: attach }}
+                              url={attach}
+                              resizeMode={'contain'}
+                              allowsExternalPlayback
+                              style={{
+                                width: Dimensions.get('window').width * 0.5,
+                                height: Dimensions.get('window').width * 0.5,
+                                backgroundColor: '#f2f2f2',
+                                borderRadius: 10,
+                                marginVertical: 16,
+                              }}
+                            ></VideoItem>
+                            <TouchableOpacity
+                              style={{
+                                position: 'absolute',
+                                alignSelf: 'center',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                padding: 16,
+                                top: item.attachmentLocal.length === 1 ? 84 : 84,
+                              }}
+                            >
+                              <AnimatedProgressWheel
+                                size={30}
+                                animateFromValue={0}
+                                progress={
+                                  uploadProgress.progress[item.id]
+                                    ? uploadProgress.progress[item.id]
+                                    : 0
+                                }
+                                width={3}
+                                color={colors.primary}
+                                backgroundColor={'#FFFFFFA3'}
+                                fullColor={colors.primary}
+                              ></AnimatedProgressWheel>
+                              <Image
+                                source={require('../../assets/ic_cancel_upload.png')}
+                                style={{
+                                  width: 16,
+                                  height: 16,
+                                  position: 'absolute',
+                                  alignSelf: 'center',
+                                  justifySelf: 'center',
+                                }}
+                              />
+                            </TouchableOpacity>
+                          </View>
+                        );
+                      }
+                      return <View />;
+                    })}
                   </ContainChatItem>
                 </View>
               )}
@@ -545,72 +545,72 @@ const MessageItem = function (props) {
                     justifyContent: right ? 'flex-end' : 'flex-start',
                   }}
                 >
-                  <ContainChatItem {...props}   style={{
+                  <ContainChatItem {...props} style={{
                     flexDirection: 'row',
                     flexWrap: 'wrap',
                     gap: 4,
                     justifyContent: right ? 'flex-end' : 'flex-start',
                   }}>
-                  {item.attachments.map((attach) => {
-                    if (
-                      attach.url.toLowerCase().includes('jpg') ||
-                      attach.url.toLowerCase().includes('png') ||
-                      attach.url.toLowerCase().includes('jpeg') ||
-                      attach.url.toLowerCase().includes('heic')
-                    ) {
-                      return (
-                        <TouchableOpacity
-                          style={{
-                            width: item.attachments.length === 1 ? 200 : 120,
-                            height: item.attachments.length === 1 ? 200 : 120,
-                          }}
-                          key={attach.url}
-                          onPress={() => {
-                            setImages([
-                              {
-                                uri: attach.url,
-                              },
-                            ]);
-                            setImageVisible(true);
-                          }}
-                          onLongPress={props.onLongPress}
-                        >
-                          <Image
-                            source={{ uri: attach.url }}
+                    {item.attachments.map((attach) => {
+                      if (
+                        attach.url.toLowerCase().includes('jpg') ||
+                        attach.url.toLowerCase().includes('png') ||
+                        attach.url.toLowerCase().includes('jpeg') ||
+                        attach.url.toLowerCase().includes('heic')
+                      ) {
+                        return (
+                          <TouchableOpacity
                             style={{
-                              borderWidth: 0.5,
-                              borderColor: '#f2f2f2',
-                              backgroundColor: '#F2F2F2',
-                              borderRadius: 5,
-                              overflow: 'hidden',
                               width: item.attachments.length === 1 ? 200 : 120,
                               height: item.attachments.length === 1 ? 200 : 120,
                             }}
-                            LoadingIndicatorComponent={ActivityIndicator}
-                          />
-                        </TouchableOpacity>
-                      );
-                    }
+                            key={attach.url}
+                            onPress={() => {
+                              setImages([
+                                {
+                                  uri: attach.url,
+                                },
+                              ]);
+                              setImageVisible(true);
+                            }}
+                            onLongPress={props.onLongPress}
+                          >
+                            <Image
+                              source={{ uri: attach.url }}
+                              style={{
+                                borderWidth: 0.5,
+                                borderColor: '#f2f2f2',
+                                backgroundColor: '#F2F2F2',
+                                borderRadius: 5,
+                                overflow: 'hidden',
+                                width: item.attachments.length === 1 ? 200 : 120,
+                                height: item.attachments.length === 1 ? 200 : 120,
+                              }}
+                              LoadingIndicatorComponent={ActivityIndicator}
+                            />
+                          </TouchableOpacity>
+                        );
+                      }
 
-                    if (
-                      attach.url.toLowerCase().includes('.mov') ||
-                      attach.url.toLowerCase().includes('.mp4')
-                    ) {
-                      return (
-                        <VideoItem
-                          {...props}
-                          url={attach.url}
-                          style={{
-                            backgroundColor: '#F2F2F2',
-                            borderRadius: 5,
-                            overflow: 'hidden',
-                            width: Dimensions.get('window').width*0.5,
-                            height: Dimensions.get('window').width*0.5,
-                          }}
-                        />
-                      );
-                    }
-                  })}
+                      if (
+                        attach.url.toLowerCase().includes('.mov') ||
+                        attach.url.toLowerCase().includes('.mp4')
+                      ) {
+                        return (
+                          <VideoItem
+                            {...props}
+                            url={attach.url}
+                            style={{
+                              backgroundColor: '#F2F2F2',
+                              borderRadius: 5,
+                              overflow: 'hidden',
+                              width: Dimensions.get('window').width * 0.5,
+                              height: Dimensions.get('window').width * 0.5,
+                            }}
+                          />
+                        );
+                      }
+                    })}
                   </ContainChatItem>
                 </View>
               )}
@@ -633,7 +633,7 @@ const MessageItem = function (props) {
               }}
             >
               {new Date(item.created_at).getFullYear() <
-              new Date().getFullYear()
+                new Date().getFullYear()
                 ? moment(item.created_at).format('DD/MM/YYYY')
                 : moment(item.created_at).fromNow().includes('days')
                   ? `${moment(item.created_at).format('DD/MM')}`
@@ -658,7 +658,7 @@ const MessageItem = function (props) {
           )}
         </View>
       ) : (
-        <View style={{ marginVertical: 4, marginHorizontal: 16 }}>
+        <View style={{ marginVertical: 2, marginHorizontal: 10 }}>
           <View
             style={{
               flexDirection: 'row',
@@ -797,7 +797,7 @@ const DocumentItem = function (props) {
   return (
     <>
       {item.has_attachment && (
-        <View style={{ marginVertical: 4, marginHorizontal: 16 }}>
+        <View style={{ marginVertical: 2, marginHorizontal: 10 }}>
           <View
             style={{
               flexDirection: 'row',
@@ -1038,7 +1038,7 @@ const DocumentItem = function (props) {
 
 const OrderItem = function (props) {
   const item = props.item;
-  const order = item.order_info?.vtp_order?item.order_info?.vtp_order:item.order_info?.vtm_bill;
+  const order = item.order_info?.vtp_order ? item.order_info?.vtp_order : item.order_info?.vtm_bill;
 
   let productNames = '';
 
@@ -1051,7 +1051,7 @@ const OrderItem = function (props) {
           return p.PRODUCT_QUANTITY + 'x' + p.PRODUCT_NAME;
         }).join(' + ');
       }
-    }else{
+    } else {
       productNames = order.ten_hang
     }
 
@@ -1225,7 +1225,7 @@ const OrderItem = function (props) {
                   }}
                   numberOfLines={1}
                 >
-                  {order?.status_name?order?.status_name:order?.trang_thai}
+                  {order?.status_name ? order?.status_name : order?.trang_thai}
                 </Text>
               </View>
             </View>
@@ -1238,7 +1238,7 @@ const OrderItem = function (props) {
               marginTop: 10,
             }}
           >
-            {order?.ten_khnhan?order?.ten_khnhan:order?.receiver_fullname} - {order?.tel_khnhan?order?.tel_khnhan:order?.receiver_phone}
+            {order?.ten_khnhan ? order?.ten_khnhan : order?.receiver_fullname} - {order?.tel_khnhan ? order?.tel_khnhan : order?.receiver_phone}
           </Text>
           <Text
             style={{
@@ -1359,7 +1359,7 @@ export class ChatItem extends React.Component {
       this.item.type === 'CREATED_QUOTE_ORDER' ||
       this.item.type === 'QUOTE_ORDER'
     ) {
-      messageView = <OrderItem item={this.props.item} right={right}/>;
+      messageView = <OrderItem item={this.props.item} right={right} />;
       return messageView;
     }
     if (
@@ -1369,13 +1369,13 @@ export class ChatItem extends React.Component {
       return messageView;
     }
     if (this.item.type === 'LOCATION') {
-      messageView = <MapItem item={this.props.item} right={right}/>;
+      messageView = <MapItem item={this.props.item} right={right} />;
     }
     if (this.item.type === 'FILE') {
-      messageView = <DocumentItem item={this.props.item} right={right}/>;
+      messageView = <DocumentItem item={this.props.item} right={right} />;
     }
     if (this.item.type === 'VOICE') {
-      messageView = <VoiceItem item={this.props.item} right={right}  />;
+      messageView = <VoiceItem item={this.props.item} right={right} />;
     }
 
     if (!right && this.props.conversation.type === 'GROUP') {
@@ -1397,7 +1397,7 @@ export class ChatItem extends React.Component {
                 color: '#828282',
                 fontSize: 13,
                 fontWeight: '500',
-                marginLeft: 16,
+                marginLeft: 10,
               }}
             >
               {this.getFullName(this.item.sender)}
@@ -1408,7 +1408,7 @@ export class ChatItem extends React.Component {
       );
     }
 
-    if (right || this.item.type==='GROUP') {
+    if (right || this.item.type === 'GROUP') {
       return (
         <View style={{ paddingVertical: 2 }}>
           {messageView}
@@ -1417,7 +1417,7 @@ export class ChatItem extends React.Component {
               style={{
                 marginHorizontal: 16,
                 flexDirection: 'row',
-                alignSelf: right?'flex-end':'flex-start',
+                alignSelf: right ? 'flex-end' : 'flex-start',
               }}
             >
               {this.item.read_by?.map((item) => (
@@ -1447,11 +1447,12 @@ export class ChatItem extends React.Component {
 }
 
 function ContainChatItem(props) {
-  const containerRef  = useRef()
+  const containerRef = useRef()
   const [showPopover, setShowPopover] = useState(false);
   const [reactions, setReactions] = useState(props.item?.reactions);
   const [reactObject, setReactObject] = useState(new Map());
-  const [position, setPosition] = useState({width: 0, height: 0, x: 0, y: 0});
+  const [position, setPosition] = useState({ width: 0, height: 0, x: 0, y: 0 });
+
 
   useEffect(() => {
     setReactObject(
@@ -1460,7 +1461,7 @@ function ContainChatItem(props) {
   }, [reactions]);
 
   const onLongPress = () => {
-    if (props.item.type !== 'FILE' && props.item.type !== 'LOCATION'){
+    if (props.item.type !== 'FILE' && props.item.type !== 'LOCATION' && !props.right) {
       containerRef.current.measure((fx, fy, width, height, px, py) => {
         setPosition({
           width: width,
@@ -1474,7 +1475,7 @@ function ContainChatItem(props) {
   }
 
   const reaction = async (react) => {
-    try{
+    try {
       setShowPopover(false);
       let is_enable = true;
       const currentReact = reactions.find(
@@ -1503,7 +1504,7 @@ function ContainChatItem(props) {
           );
         }
       }
-    }catch (e) {
+    } catch (e) {
       console.log(e)
     }
 
@@ -1519,7 +1520,7 @@ function ContainChatItem(props) {
         onPress={() => {
           try {
             if (props.item.type === 'FILE') {
-              try{
+              try {
                 Navigation.push(appStore.componentId, {
                   component: {
                     name: 'ViewFileScreen',
@@ -1538,7 +1539,7 @@ function ContainChatItem(props) {
                     },
                   },
                 });
-              }catch (e) {
+              } catch (e) {
                 console.log(e)
                 Linking.openURL(props.item.attachments[0].url);
               }
@@ -1561,7 +1562,7 @@ function ContainChatItem(props) {
           }
         }}
         onLongPress={onLongPress}
-        style={[props.style, {flexDirection: 'row', alignItems: 'center',}]}
+        style={[props.style, { flexDirection: 'row', alignItems: 'center', }]}
       >
         {reactions?.length > 0 && props.right && (
           <View
@@ -1623,15 +1624,16 @@ function ContainChatItem(props) {
                 source={require('../../assets/emoji_7.png')}
                 style={{
                   marginRight: 8,
-                  width: 24, height: 24, resizeMode: 'contain' }}
+                  width: 24, height: 24, resizeMode: 'contain'
+                }}
                 resizeMode={'contain'}
               />
             )}
           </View>
         )}
         {
-          props.children !==null &&
-          React.Children.map(props.children, child => React.cloneElement(child!=null?child: <></>, { onLongPress }))
+          props.children !== null &&
+          React.Children.map(props.children, child => React.cloneElement(child != null ? child : <></>, { onLongPress }))
         }
         {reactions?.length > 0 && !props.right && (
           <View
@@ -1691,10 +1693,12 @@ function ContainChatItem(props) {
             {reactObject.get('ANGRY') && (
               <Image
                 source={require('../../assets/emoji_7.png')}
-                style={{ width: 24,
+                style={{
+                  width: 24,
                   height: 24,
                   marginLeft: 8,
-                  resizeMode: 'contain' }}
+                  resizeMode: 'contain'
+                }}
                 resizeMode={'contain'}
               />
             )}
@@ -1710,14 +1714,14 @@ function ContainChatItem(props) {
       >
         <TouchableOpacity
           activeOpacity={0}
-          onPress={()=>setShowPopover(false)}
-          style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height,}}>
+          onPress={() => setShowPopover(false)}
+          style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height, }}>
           <View
             style={{
               position: 'absolute',
               flexDirection: 'row',
               paddingVertical: 12,
-              top: position.y-60,
+              top: position.y - 60,
               paddingHorizontal: 16,
               borderRadius: 34,
               backgroundColor: 'white',
