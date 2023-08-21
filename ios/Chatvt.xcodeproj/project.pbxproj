@@ -8,12 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		5E14D2742A9340C800B9C238 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E14D2732A9340C800B9C238 /* File.swift */; };
-		5E14D27B2A935EE600B9C238 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E14D27A2A935EE600B9C238 /* AssetsLibrary.framework */; };
+		5E14D2852A93673B00B9C238 /* RNCPromiseWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E14D2842A93673B00B9C238 /* RNCPromiseWrapper.m */; };
 		5E163ECC2A6BBDE900D7437E /* RNFileViewerManagerChatVT.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E163ECB2A6BBDE900D7437E /* RNFileViewerManagerChatVT.m */; };
 		5E6116AD2A6A885C0023024A /* ImageResizerChatVT.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E6116AA2A6A885C0023024A /* ImageResizerChatVT.mm */; };
 		5E6116AE2A6A885C0023024A /* ImageHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E6116AC2A6A885C0023024A /* ImageHelpers.m */; };
 		5E7853892A8F1D43005183B2 /* RCTConvert+RNDocumentPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E7853882A8F1D43005183B2 /* RCTConvert+RNDocumentPicker.m */; };
-		5E78538C2A8F1D58005183B2 /* RNCPromiseWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E78538B2A8F1D58005183B2 /* RNCPromiseWrapper.m */; };
 		5E78538F2A8F1D88005183B2 /* RNDocumentPickerChatVT.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E78538D2A8F1D88005183B2 /* RNDocumentPickerChatVT.m */; };
 		A915E7392A5E6308002925F1 /* RNCCameraRollManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A915E7362A5E6308002925F1 /* RNCCameraRollManager.m */; };
 		A915E7612A5E99B8002925F1 /* CreateThumbnailChatVT.m in Sources */ = {isa = PBXBuildFile; fileRef = A915E7602A5E99B8002925F1 /* CreateThumbnailChatVT.m */; };
@@ -46,6 +45,8 @@
 		5E14D2722A93406C00B9C238 /* Chatvt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Chatvt-Bridging-Header.h"; sourceTree = "<group>"; };
 		5E14D2732A9340C800B9C238 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		5E14D27A2A935EE600B9C238 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/System/iOSSupport/System/Library/Frameworks/AssetsLibrary.framework; sourceTree = DEVELOPER_DIR; };
+		5E14D2832A9366C900B9C238 /* Frameworks */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Frameworks; sourceTree = "<group>"; };
+		5E14D2842A93673B00B9C238 /* RNCPromiseWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNCPromiseWrapper.m; path = "../../Downloads/react-native-document-picker-5dd2e4063a9806581d99563dce48e1ce2b474264/ios/RNCPromiseWrapper.m"; sourceTree = "<group>"; };
 		5E163ECA2A6BBDE900D7437E /* RNFileViewerManagerChatVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNFileViewerManagerChatVT.h; sourceTree = "<group>"; };
 		5E163ECB2A6BBDE900D7437E /* RNFileViewerManagerChatVT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNFileViewerManagerChatVT.m; sourceTree = "<group>"; };
 		5E6116A92A6A885C0023024A /* ImageResizerChatVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageResizerChatVT.h; sourceTree = "<group>"; };
@@ -87,17 +88,6 @@
 		B3E7B5881CC2AC0600A0062D /* Chatvt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chatvt.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFrameworksBuildPhase section */
-		58B511D81A9E6C8500147676 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5E14D27B2A935EE600B9C238 /* AssetsLibrary.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
 /* Begin PBXGroup section */
 		134814211AA4EA7D00B7C361 /* Products */ = {
 			isa = PBXGroup;
@@ -122,6 +112,7 @@
 				A93AFB352A57D6D0000B0D2E /* ContextMenu.m */,
 				A93AFB362A57D6D1000B0D2E /* ContextMenuAction.h */,
 				A93AFB382A57D6D1000B0D2E /* ContextMenuAction.m */,
+				5E14D2842A93673B00B9C238 /* RNCPromiseWrapper.m */,
 				A93AFB372A57D6D1000B0D2E /* ContextMenuView.h */,
 				A93AFB3A2A57D6D2000B0D2E /* ContextMenuView.m */,
 				A9B0E0BE2A540304000E9B36 /* RNCPromiseWrapper.m */,
@@ -149,6 +140,7 @@
 				5E6116AA2A6A885C0023024A /* ImageResizerChatVT.mm */,
 				5E163ECA2A6BBDE900D7437E /* RNFileViewerManagerChatVT.h */,
 				5E163ECB2A6BBDE900D7437E /* RNFileViewerManagerChatVT.m */,
+				5E14D2832A9366C900B9C238 /* Frameworks */,
 				134814211AA4EA7D00B7C361 /* Products */,
 				A915E7462A5E6876002925F1 /* Frameworks */,
 			);
@@ -172,7 +164,6 @@
 			buildConfigurationList = 58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "Chatvt" */;
 			buildPhases = (
 				58B511D71A9E6C8500147676 /* Sources */,
-				58B511D81A9E6C8500147676 /* Frameworks */,
 				58B511D91A9E6C8500147676 /* CopyFiles */,
 			);
 			buildRules = (
@@ -237,8 +228,8 @@
 				A915E7392A5E6308002925F1 /* RNCCameraRollManager.m in Sources */,
 				5E6116AE2A6A885C0023024A /* ImageHelpers.m in Sources */,
 				5E163ECC2A6BBDE900D7437E /* RNFileViewerManagerChatVT.m in Sources */,
-				5E78538C2A8F1D58005183B2 /* RNCPromiseWrapper.m in Sources */,
 				A9B0E0C42A540305000E9B36 /* RNCPromiseWrapper.m in Sources */,
+				5E14D2852A93673B00B9C238 /* RNCPromiseWrapper.m in Sources */,
 				5E14D2742A9340C800B9C238 /* File.swift in Sources */,
 				5E6116AD2A6A885C0023024A /* ImageResizerChatVT.mm in Sources */,
 			);
