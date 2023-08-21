@@ -1,6 +1,6 @@
 {
     "name": "react-native-chatvt",
-    "version": "0.1.124",
+    "version": "0.1.125",
     "description": "test",
     "main": "lib/commonjs/index",
     "module": "lib/module/index",
