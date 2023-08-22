@@ -139,6 +139,7 @@
         "react-native-clipboard-toast": "^1.0.0",
         "react-native-emoji-picker-staltz": "^1.0.0",
         "react-native-mime-types": "^2.4.0",
+        "react-native-modal": "^13.0.1",
         "react-native-open-maps": "^0.4.2",
         "react-native-parsed-text": "^0.0.22",
         "react-native-popover-view": "^5.1.7",

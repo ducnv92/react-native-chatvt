@@ -27,12 +27,12 @@ import quickMessageStore from "./QuickMessageStore";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import inputStore from './InputStore';
 import InputStore from './InputStore';
-
-
+import Modal from "react-native-modal";
 
 
 const QuickMessageModal = observer(function QuickMessageModal(props) {
   const [isFocus, setIsFocus] = useState(true)
+  const [isModalVisible, setModalVisible] = useState(true)
   const updateQuickMessage = () => {
     if (!(quickMessageStore.currentMessage.text && quickMessageStore.currentMessage.text.trim() !== '')) {
       return
@@ -58,6 +58,15 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
     }
   }
 
+  const deleteQuickMessage = () => {
+    quickMessageStore.delete({
+      id: quickMessageStore.currentMessage._id,
+    }, () => {
+      quickMessageStore.showModal = false
+      quickMessageStore.currentMessage = {}
+    })
+  }
+
   return (
     <Modal
       visible={quickMessageStore.showModal}
@@ -70,7 +79,7 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
         <SafeAreaView style={{ flex: 1, backgroundColor: '#00000059', justifyContent: 'flex-end' }}>
           <>
             <View style={{ height: 56, flexDirection: 'row', alignItems: 'center', backgroundColor: '#F8F8FA' }}>
-              <Text style={{ position: 'absolute', width: '100%', textAlign: 'center', fontWeight: '600', fontSize: 17, color: '#44494D' }} >Tạo tin chat nhanh</Text>
+              <Text style={{ position: 'absolute', width: '100%', textAlign: 'center', fontWeight: '600', fontSize: 17, color: '#44494D' }} >{quickMessageStore.currentMessage._id?'Sửa': 'Tạo'} tin chat nhanh</Text>
               <TouchableOpacity
                 onPress={() => {
                   quickMessageStore.showModal = false
@@ -98,12 +107,55 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
               <TouchableOpacity
                 onPress={updateQuickMessage}
                 style={{ margin: 16, alignItems: 'center', justifyContent: 'center', padding: 16, backgroundColor: colors.primary, borderRadius: 10 }}>
-                <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>Lưu chat nhanh</Text>
+                <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>{quickMessageStore.currentMessage._id?'Lưu chỉnh sửa':'Lưu chat nhanh'}</Text>
               </TouchableOpacity>
+              {
+                quickMessageStore.currentMessage._id &&
+                <TouchableOpacity
+                  onPress={()=>setModalVisible(true)}
+                  style={{ margin: 16, marginTop: 4, alignItems: 'center', justifyContent: 'center', padding: 16, backgroundColor: 'white', borderRadius: 10 }}>
+                  <Text style={{ color: colors.primary, fontWeight: '600', fontSize: 15 }}>{'Xoá tin chat'}</Text>
+                </TouchableOpacity>
+              }
+
             </View>
           </>
         </SafeAreaView>
       </KeyboardAvoidingView>
+      <Modal isVisible={isModalVisible}>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <View style={{ padding: 16}}>
+            <TouchableOpacity
+              onPress={()=>setModalVisible(false)}
+              style={{width: 36, height: 36, alignItems: 'center', justifyContent: 'center', position: 'absolute', left: 0, top: 0}}>
+              <Image source={require('../../assets/ic_close.png')} style={{width: 24, height: 24, resizeMode: 'contain'}}/>
+            </TouchableOpacity>
+            <View
+              style={{ padding: 16, borderRadius: 35, backgroundColor: colors.primary, marginTop: 20, marginBottom: 35, alignItems: 'center', justifyContent: 'center', position: 'absolute', left: 0, top: 0}}
+            >
+              <Image source={require('../../assets/ic_trash.png')} style={{width: 38, height: 38, resizeMode: 'contain'}}/>
+            </View>
+            <Text style={{fontSize: 17, lineHeight: 24, fontWeight: '600', color: colors.primaryText, marginBottom: 50 }}>Quý khách có chắc chắn muốn xoá tin chat nhanh này không?</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <TouchableOpacity
+                onPress={()=>setModalVisible(false)}
+                style={{flex: 1, marginRight: 12, paddingVertical: 10, borderRadius: 4, borderColor: colors.primary, alignItems: 'center', justifyContent: 'center'}}
+              >
+                <Text style={{fontSize: 15, lineHeight: 24, fontWeight: '600', color: colors.primary }}>Bỏ qua</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={()=> {
+                  setModalVisible(false)
+                  deleteQuickMessage()
+                }}
+                style={{flex: 1, paddingVertical: 10, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center'}}
+              >
+                <Text style={{fontSize: 15, lineHeight: 24, fontWeight: '600', color: 'white' }}>Xoá tin</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </Modal>
   )
 

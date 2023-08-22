@@ -78,7 +78,7 @@ class QuickMessageStore {
     }
   }
   async delete(params, onSuccess, onError) {
-    const response = await services.create().updateQuickMessage(params);
+    const response = await services.create().deleteQuickMessage(params);
     Log(response);
     if (response.status === 200) {
       if (response.data.status === 200) {

@@ -14,7 +14,7 @@ import {
 import colors from '../../Styles';
 import moment from 'moment/moment';
 import ParsedText from 'react-native-parsed-text';
-import { groupBy, orderStatus } from '../../utils';
+import {formatDuration, groupBy, orderStatus, participantType} from '../../utils';
 import { createThumbnail } from '../../components/createThumbnail';
 import ImageViewing from '../../components/imageView/ImageViewing';
 // import FastImage from 'react-native-fast-image';
@@ -114,7 +114,7 @@ const VoiceItem = function (props) {
   const right = props.right;
   const [isPlay, setIsPlay] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentTime, setCurrentTime] = useState('00:00');
+  const [currentTime, setCurrentTime] = useState(formatDuration(props.item.duration));
   let _onFinishedPlayingSubscription = null;
   let _onFinishedLoadingSubscription = null;
   let _onFinishedLoadingFileSubscription = null;
@@ -147,11 +147,8 @@ const VoiceItem = function (props) {
     chatStore.intervalSound = setInterval(async () => {
       const info = await SoundPlayer.getInfo() // Also, you need to await this because it is async
       console.log('getInfo', info)
-      const secs = Math.floor(info.currentTime)
-      const minutes = Math.floor(secs / 60);
-      const seconds = secs % 60;
 
-      setCurrentTime(('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2))
+      setCurrentTime(formatDuration(info.currentTime))
     }, 1000)
     _onFinishedPlayingSubscription = SoundPlayer.addEventListener('FinishedPlaying', ({ success }) => {
       console.log('finished playing', success)
@@ -273,6 +270,10 @@ export const VideoItem = function (props) {
   const [isPause, setIsPause] = useState(true);
   useEffect(() => {
     const createThumb = async () => {
+      if(props.item.thumb_url){
+        setThumbnail(props.item.thumb_url)
+        return
+      }
       try {
         const fileName = props.url.slice(
           props.url.lastIndexOf('/') + 1,
@@ -300,7 +301,7 @@ export const VideoItem = function (props) {
     <View>
 
       <View style={props.style}>
-        {!thumbnail ? (
+        {(!thumbnail) ? (
           <ActivityIndicator size="large" />
         ) : (
           <TouchableOpacity
@@ -318,6 +319,11 @@ export const VideoItem = function (props) {
                 style={{ width: 56, height: 56, position: 'absolute' }}
               />
             )}
+            <Text style={{ position: 'absolute', fontSize: 14, fontWeight: '500', right: 16, bottom: 16, color: 'white',
+              textShadowColor: 'rgba(0, 0, 0, 0.75)',
+              textShadowOffset: {width: -1, height: 1},
+              textShadowRadius: 2
+            }} >{formatDuration(props.item.duration)}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -973,7 +979,7 @@ const DocumentItem = function (props) {
                               fontWeight: '500',
                             }}
                           >
-                            {attach.key.replace('conversation/', '')}
+                            {attach.origin_name}
                           </Text>
                           {/*<Text style={{*/}
                           {/*  fontSize: 13,*/}
@@ -1338,8 +1344,11 @@ export class ChatItem extends React.Component {
     const find = this.props.conversation?.detail_participants?.find(
       (p) => p.full_user_id === user_id
     );
+    const findP = this.props.conversation?.participants?.find(
+      (p) => p.id === user_id
+    );
     if (find) {
-      return find.first_name + ' ' + find.last_name;
+      return find.first_name + ' ' + find.last_name + ' - '+ participantType(findP.participant_type);
     }
     if (user_id.includes('ADMIN')) {
       return 'Admin';

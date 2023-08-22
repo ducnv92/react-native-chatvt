@@ -131,3 +131,26 @@ export const formatTimeLastMessage = timeString => {
   }
   return time.format("HH:mm")
 };
+
+export const formatDuration = duration =>{
+  const secs = Math.floor(duration)
+  const minutes = Math.floor(secs / 60);
+  const seconds = secs % 60;
+
+  return ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2)
+}
+
+export const participantType = (participant_type) => {
+  switch (participant_type){
+    case 'POSTMAN_RECEIVER':
+      return 'Bưu tá nhận'
+    case 'POSTMAN_SENDER':
+      return 'Bưu tá giao'
+    case 'SHOP_SENDER':
+      return 'Người gửi'
+    case 'USER_RECEIVER':
+      return 'Người nhận'
+    case 'ADMIN':
+      return 'Admin'
+  }
+}
