@@ -1,7 +1,8 @@
-import {observable, action, makeAutoObservable} from 'mobx';
+import {observable, action, makeAutoObservable, toJS} from 'mobx';
 import services from "../../services";
 import {Log} from "../../utils";
 import appStore from '../AppStore';
+import _ from "lodash";
 
 class ListChatStore {
    isLoading = false;
@@ -86,6 +87,41 @@ class ListChatStore {
       Log(error);
     }
   }
+
+  async getDataBackground() {
+    try {
+      services.create().getConversations({
+        page: 1
+      }).then(response=>{
+        if (response.status === 200) {
+          if (response.data.status === 200) {
+            if (response.data.data) {
+              this.data = [..._.unionBy(response.data.data, toJS(this.data), "_id")];
+            }
+          }
+        }
+      })
+    } catch (error) {
+      console.log(error)
+    }
+    try {
+      services.create().getConversationPin({
+        page: 1
+      }).then(response=>{
+        if (response.status === 200) {
+          if (response.data.status === 200) {
+            if (response.data.data) {
+              this.dataPin = _.unionBy(response.data.data, toJS(this.dataPin), "_id");
+            }
+          }
+        }
+      })
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
 
 
   async pin(params, onSuccess, onError) {

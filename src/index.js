@@ -78,11 +78,11 @@ class ChatVT {
     AppState.addEventListener("change", (state) => {
       if (state === "background") {
         try {
-          socket.onConnect();
+          socket.getInstance().onConnect();
 
           this.intervalSocket = BackgroundTimer.setInterval(() => {
-            console.log('connection status ', socket.socket.connected)
-            socket.onConnect();
+            // console.log('connection status ', socket.getInstance().connected)
+          socket.getInstance().onConnect();
           }, 5000)
         } catch (e) {
 
@@ -340,7 +340,7 @@ class ChatVT {
       appStore.env = 'DEV';
       appStore.changeLanguage('VI');
       await MyAsyncStorage.save(USER, data);
-      await socket.init();
+      await socket.getInstance().init();
 
       Navigation.push(componentId, {
         component: {

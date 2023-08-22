@@ -5,10 +5,25 @@ import chatStore from "../screens/chat/ChatStore";
 import {Log} from "../utils";
 import {runInAction} from "mobx";
 import appStore from "../screens/AppStore";
+import {AppState} from "react-native";
 
 
 class Socket{
   URL = 'https://dev-receiverchat.viettelpost.vn';
+
+  static instance
+  socket
+  currentToken
+  hasDisconnect
+
+  static getInstance(){
+    if(Socket.instance!==undefined){
+      return Socket.instance
+    }else{
+      Socket.instance = new Socket()
+      return Socket.instance
+    }
+  }
 
   constructor() {
   }
@@ -17,9 +32,18 @@ class Socket{
     console.log('socket', 'onConnected')
     this.socket.on('USER_MESSAGE', this.onUserMessage);
     this.socket.on('USER_STATE', this.onUserStateMessage);
+
+    if(this.hasDisconnect){
+      this.hasDisconnect = false
+      listChatStore.getDataBackground();
+      if(chatStore.conversation_id){
+        chatStore.getDataBackground()
+      }
+    }
   }
   onDisconnect = ()=>{
     console.log('socket', 'onDisconnect')
+    this.hasDisconnect = true
   }
   onUserMessage = (event)=>{
     console.log('socket', event)
@@ -30,8 +54,8 @@ class Socket{
       try{
         runInAction(()=>{
           listChatStore.dataPin  = [...listChatStore.dataPin.map(c=>{
-            if(c._id===event?.message?.conversation_id){
-              if(!right) {
+            if(c._id===event?.message?.conversation_id && c.message._id!==event?.message?._id){
+              if(!right && chatStore.conversation_id!==event?.message?.conversation_id) {
                 c.settings = c.settings.map(setting => {
                   setting.unread_count += 1
                   return setting
@@ -51,8 +75,8 @@ class Socket{
       try{
         runInAction(()=>{
           listChatStore.data  = listChatStore.data.map(c=>{
-            if(c._id===event?.message?.conversation_id){
-              if(!right){
+            if(c._id===event?.message?.conversation_id && c.message._id!==event?.message?._id){
+              if(!right && chatStore.conversation_id!==event?.message?.conversation_id){
                 c.settings = c.settings.map(setting=>{
                   setting.unread_count+=1
                   return setting
@@ -137,10 +161,9 @@ class Socket{
 
 
   async init(){
-
     const user  = await load(USER)
-    Log( user)
-    if(user && !this.socket){
+    console.log( 'user', user)
+    if(user && this.currentToken!==user.token){
       this.socket = io.connect(this.URL, {
         reconnection: true,
         autoConnect: true,
@@ -151,6 +174,7 @@ class Socket{
           Authorization: user.token
         },
       });
+      this.currentToken = user.token
       this.socket.on('connect', this.onConnect);
       this.socket.on('disconnect', this.onDisconnect);
     }else {
@@ -162,6 +186,5 @@ class Socket{
 
 }
 
-const mSocket = new Socket()
 
-export default mSocket
+export default Socket

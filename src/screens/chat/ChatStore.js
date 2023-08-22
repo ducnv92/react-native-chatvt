@@ -1,9 +1,10 @@
-import { observable, action, makeAutoObservable } from 'mobx';
+import {observable, action, makeAutoObservable, toJS} from 'mobx';
 import services, { getHeader } from "../../services";
 import { Log } from "../../utils";
 import uuid from "react-native-uuid";
 import ImageResizer from "../../components/resizeImage";
 import uploadProgress from './uploadProgress';
+var _ = require('lodash');
 
 class ChatStore {
   isLoading = false;
@@ -121,6 +122,26 @@ class ChatStore {
       Log(error);
     }
   }
+
+  async getDataBackground() {
+    try {
+      services.create().conversationMessages({
+          conversation_id: this.conversation_id,
+          page: 1
+      }).then(response=>{
+        if (response.status === 200) {
+          if (response.data.status === 200) {
+            if (response.data.data) {
+              this.data = _.unionBy(response.data.data, toJS(this.data), "_id");
+            }
+          }
+        }
+      })
+    } catch (error) {
+      Log(error);
+    }
+  }
+
 
   delay = (delayInms) => {
     return new Promise(resolve => setTimeout(resolve, delayInms));

@@ -2077,11 +2077,6 @@
     "@pnpm/network.ca-file" "^1.0.1"
     config-chain "^1.1.11"
 
-"@react-native-community/cameraroll@*":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@react-native-community/cameraroll/-/cameraroll-4.1.2.tgz#489c6bb6137571540d93c543d5fcf8c652b548ec"
-  integrity sha512-jkdhMByMKD2CZ/5MPeBieYn8vkCfC4MOTouPpBpps3I8N6HUYJk+1JnDdktVYl2WINnqXpQptDA2YptVyifYAg==
-
 "@react-native-community/cli-clean@^10.1.1":
   version "10.1.1"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli-clean/-/cli-clean-10.1.1.tgz#4c73ce93a63a24d70c0089d4025daac8184ff504"
@@ -9253,6 +9248,11 @@ react-native-video-controls@^2.8.1:
   integrity sha512-dBmrE3TAKaR1gYMfbukjAM6Xo8OMZyRrxPzZtnaUgWcvGo11PQwzaI/j8HPD5fLgO+rlweP2pDpEJyIBsJvJkw==
   dependencies:
     lodash "^4.16.4"
+
+react-native-waves@^1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/react-native-waves/-/react-native-waves-1.2.5.tgz#33bf9242267a06de0f943fbcb9d112d747b73e32"
+  integrity sha512-fsB6aCqn9w+fPly0wMmRuRlv/OIr2h3LxCWUsQf4v7ER/xQTpbzpXyTf1KCFPopxkF/ZLXbTkKwTQz/Sgqwraw==
 
 react-native@0.71.11:
   version "0.71.11"

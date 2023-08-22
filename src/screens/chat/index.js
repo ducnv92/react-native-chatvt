@@ -88,6 +88,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
       chatStore.data = []
       chatStore.showAttachModal = false;
       chatStore.keyboardEmoji = false;
+      chatStore.conversation_id = '';
       chatStore.images = [];
       InputStore.input = ''
       showSubscription.remove();

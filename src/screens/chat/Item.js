@@ -37,6 +37,7 @@ import uploadProgress from './uploadProgress';
 // import Image from 'react-native-fast-image';
 import * as Animatable from 'react-native-animatable';
 import VideoViewing from "../../components/videoView/ImageViewing";
+import AnimatedSoundBars from "../../components/waveView";
 import chatStore from "./ChatStore";
 import { ViewFileScreen } from "../webview";
 import SVGComponent01 from "../../assets/stickers/01";
@@ -113,8 +114,11 @@ const MapItem = function (props) {
 const VoiceItem = function (props) {
   const right = props.right;
   const [isPlay, setIsPlay] = useState(false);
+  const soundbarRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
-  const [currentTime, setCurrentTime] = useState(formatDuration(props.item.duration));
+  const [currentTime, setCurrentTime] = useState(formatDuration(props.item.attachmentLocal?.length > 0
+    ? props.item.attachmentLocal[0].duration
+    : props.item.attachments[0]?.duration));
   let _onFinishedPlayingSubscription = null;
   let _onFinishedLoadingSubscription = null;
   let _onFinishedLoadingFileSubscription = null;
@@ -139,6 +143,11 @@ const VoiceItem = function (props) {
 
     pause()
     setIsPlay(true)
+    try{
+      soundbarRef.current?.play()
+    }catch (e) {
+      console.log(e)
+    }
     SoundPlayer.playUrl(
       props.item.attachmentLocal?.length > 0
         ? props.item.attachmentLocal[0].uri
@@ -169,6 +178,11 @@ const VoiceItem = function (props) {
   }
 
   const pause = () => {
+    try{
+      soundbarRef.current?.stop()
+    }catch (e) {
+      console.log(e)
+    }
     SoundPlayer.stop()
     SoundPlayer.unmount()
     clearInterval(chatStore.intervalSound)
@@ -228,29 +242,7 @@ const VoiceItem = function (props) {
               style={{ height: 32, width: 32, resizeMode: 'contain' }}
             />
           </TouchableOpacity>
-          <View style={{flex: 1, flexDirection: 'row', }}>
-            <Animatable.View animation="slideInDown" iterationCount={5} direction="alternate">
-              <View style={{backgroundColor: 'white', width: 8, borderRadius: 4, height: 50, marginLeft: 4}}/>
-            </Animatable.View>
-            <Animatable.View animation="slideInDown" iterationCount={5} direction="alternate">
-              <View style={{backgroundColor: 'white', width: 8, borderRadius: 4, height: 50, marginLeft: 4}}/>
-            </Animatable.View>
-            <Animatable.View animation="slideInDown" iterationCount={5} direction="alternate">
-              <View style={{backgroundColor: 'white', width: 8, borderRadius: 4, height: 50, marginLeft: 4}}/>
-            </Animatable.View>
-            <Animatable.View animation="slideInDown" iterationCount={5} direction="alternate">
-              <View style={{backgroundColor: 'white', width: 8, borderRadius: 4, height: 50, marginLeft: 4}}/>
-            </Animatable.View>
-            <Animatable.View animation="slideInDown" iterationCount={5} direction="alternate">
-              <View style={{backgroundColor: 'white', width: 8, borderRadius: 4, height: 50, marginLeft: 4}}/>
-            </Animatable.View>
-            <Animatable.View animation="slideInDown" iterationCount={5} direction="alternate">
-              <View style={{backgroundColor: 'white', width: 8, borderRadius: 4, height: 50, marginLeft: 4}}/>
-            </Animatable.View>
-            <Animatable.View animation="slideInDown" iterationCount={5} direction="alternate">
-              <View style={{backgroundColor: 'white', width: 8, borderRadius: 4, height: 50, marginLeft: 4}}/>
-            </Animatable.View>
-          </View>
+          <AnimatedSoundBars ref={soundbarRef} barColor={right?'white':'#44494D66'}/>
 
 
           {/*<Image*/}
@@ -270,8 +262,9 @@ export const VideoItem = function (props) {
   const [isPause, setIsPause] = useState(true);
   useEffect(() => {
     const createThumb = async () => {
-      if(props.item.thumb_url){
-        setThumbnail(props.item.thumb_url)
+      console.log('thumb_url', props.thumb_url)
+      if(props.thumb_url){
+        setThumbnail(props.thumb_url)
         return
       }
       try {
@@ -323,7 +316,7 @@ export const VideoItem = function (props) {
               textShadowColor: 'rgba(0, 0, 0, 0.75)',
               textShadowOffset: {width: -1, height: 1},
               textShadowRadius: 2
-            }} >{formatDuration(props.item.duration)}</Text>
+            }} >{formatDuration(props.duration)}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -605,6 +598,8 @@ const MessageItem = function (props) {
                         return (
                           <VideoItem
                             {...props}
+                            thumb_url={attach.thumb_url}
+                            duration={attach.duration}
                             url={attach.url}
                             style={{
                               backgroundColor: '#F2F2F2',

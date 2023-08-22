@@ -2,7 +2,7 @@ import { observable, action, runInAction } from 'mobx';
 import services from "../services";
 import * as MyAsyncStorage from "../utils/MyAsyncStorage";
 import { USER } from "../utils/MyAsyncStorage";
-import socket from "../socket";
+import Socket from "../socket";
 import vi from "../locales/vi.json";
 import en from "../locales/en.json";
 import { Log } from "../utils";
@@ -37,7 +37,7 @@ class AppStore {
           if (response.data.data) {
             this.user = response.data.data;
             await MyAsyncStorage.save(USER, { ...response.data.data, ...{ client_token: params.token } })
-            await socket.init()
+            await Socket.getInstance().init()
             this.isError = false;
             if (onSuccess) {
               onSuccess(response.data.data);

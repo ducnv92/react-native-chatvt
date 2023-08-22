@@ -149,34 +149,34 @@ android {
 
         }
     }
-//   flavorDimensions "version"
-//   productFlavors {
-//     vtp {
-//       dimension "version"
-//       applicationIdSuffix ".vtp"
-//     }
-//     vtm {
-//       dimension "version"
-//       applicationIdSuffix ".vtm"
-//     }
-//     admin {
-//       dimension "version"
-//       applicationIdSuffix ".admin"
-//       minSdkVersion 24
-//     }
-//   }
-//
-//   sourceSets {
-//     vtp {
-//       res.srcDirs = ['src/main/res-vtp']
-//     }
-//     vtm {
-//       res.srcDirs = ['src/main/res-vtm']
-//     }
-//     admin {
-//       res.srcDirs = ['src/main/res-admin']
-//     }
-//   }
+   flavorDimensions "version"
+   productFlavors {
+     vtp {
+       dimension "version"
+       applicationIdSuffix ".vtp"
+     }
+     vtm {
+       dimension "version"
+       applicationIdSuffix ".vtm"
+     }
+     admin {
+       dimension "version"
+       applicationIdSuffix ".admin"
+       minSdkVersion 24
+     }
+   }
+
+   sourceSets {
+     vtp {
+       res.srcDirs = ['src/main/res-vtp']
+     }
+     vtm {
+       res.srcDirs = ['src/main/res-vtm']
+     }
+     admin {
+       res.srcDirs = ['src/main/res-admin']
+     }
+   }
 }
 
 dependencies {

@@ -26,6 +26,13 @@ import RNFS from 'react-native-fs';
 import uuid from 'react-native-uuid';
 import DocumentPicker, { types } from '../../components/documentPicker';
 import { MText as Text } from '../../components';
+import {
+  AudioSourceAndroidType,
+  AVEncoderAudioQualityIOSType, AVEncodingOption,
+  AVModeIOSOption,
+  AudioEncoderAndroidType
+} from "../../components/audioRecord/index.android";
+import AnimatedSoundBars from "../../components/waveView";
 
 export class RecordButton extends React.Component {
   constructor(props) {
@@ -69,7 +76,15 @@ export class RecordButton extends React.Component {
           });
 
           const result = await this.audioRecorderPlayer.startRecorder(
-            this.path
+            this.path,
+            {
+              AudioEncoderAndroid: AudioEncoderAndroidType.AAC,
+              AudioSourceAndroid: AudioSourceAndroidType.MIC,
+              AVModeIOS: AVModeIOSOption.measurement,
+              AVEncoderAudioQualityKeyIOS: AVEncoderAudioQualityIOSType.high,
+              AVNumberOfChannelsKeyIOS: 2,
+              AVFormatIDKeyIOS: AVEncodingOption.aac,
+            }
           );
           this.audioRecorderPlayer.addRecordBackListener((e) => {
             this.setState({
@@ -130,6 +145,11 @@ export class RecordButton extends React.Component {
 
   onStopRecord = async () => {
     try {
+      try{
+        this.soundbarRef.stop()
+      }catch (e) {
+
+      }
       const result = await this.audioRecorderPlayer.stopRecorder();
       this.audioRecorderPlayer.removeRecordBackListener();
       if (result && result.includes('file://')) {
@@ -150,6 +170,11 @@ export class RecordButton extends React.Component {
   };
 
   onStartPlay = async () => {
+    try{
+      this.soundbarRef.play()
+    }catch (e) {
+
+    }
     const msg = await this.audioRecorderPlayer.startPlayer(
       this.state.fileRecorded
     );
@@ -284,6 +309,8 @@ export class RecordButton extends React.Component {
               source={require('../../assets/ic_wave.png')}
               style={{ flex: 1, height: 32, resizeMode: 'contain' }}
             />
+            <AnimatedSoundBars ref={ref=>this.soundbarRef = ref} barColor={colors.primary}/>
+
             <View
               style={{
                 width: 56,

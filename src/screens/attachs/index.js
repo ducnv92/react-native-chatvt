@@ -123,6 +123,7 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
           }}>
             <Text numberOfLines={1} style={{
               fontSize: 15,
+              fontWeight: '600',
               color: "#44494D"
             }}>
               {attach.key.replace("conversation/", "")}

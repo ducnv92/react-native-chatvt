@@ -27,7 +27,7 @@ import quickMessageStore from "./QuickMessageStore";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import inputStore from './InputStore';
 import InputStore from './InputStore';
-import Modal from "react-native-modal";
+import * as ModalStyled from "react-native-modal";
 
 
 const QuickMessageModal = observer(function QuickMessageModal(props) {
@@ -122,7 +122,7 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
           </>
         </SafeAreaView>
       </KeyboardAvoidingView>
-      <Modal isVisible={isModalVisible}>
+      <ModalStyled isVisible={isModalVisible}>
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <View style={{ padding: 16}}>
             <TouchableOpacity
@@ -155,7 +155,7 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
             </View>
           </View>
         </View>
-      </Modal>
+      </ModalStyled>
     </Modal>
   )
 
@@ -506,11 +506,14 @@ export const AttachScreen = observer(function AttachScreen(props) {
             'android.permission.READ_MEDIA_IMAGES',
             'android.permission.READ_MEDIA_VIDEO',
           ]).then(
-            (statuses) =>
-              statuses['android.permission.READ_MEDIA_IMAGES'] ===
+            (statuses) => {
+              console.log(statuses)
+              return statuses['android.permission.READ_MEDIA_IMAGES'] ===
               PermissionsAndroid.RESULTS.GRANTED &&
               statuses['android.permission.READ_MEDIA_VIDEO'] ===
-              PermissionsAndroid.RESULTS.GRANTED,
+              PermissionsAndroid.RESULTS.GRANTED
+
+            }
           );
           res.then(res => {
             if (res) {
