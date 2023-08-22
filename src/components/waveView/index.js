@@ -1,13 +1,15 @@
 import { View, Animated, Easing, StyleSheet } from 'react-native';
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 
-const dotAnimations = Array.from({ length: 16 }).map(
-  () => new Animated.Value(1)
-);
+const AnimatedSoundBars = (props) => {
+  let ref = useRef();
 
-const AnimatedSoundBars = ({ barColor = 'gray' }) => {
+  const dotAnimations = Array.from({ length: props?.length?props?.length:16 }).map(
+    () => new Animated.Value(1)
+  );
+
   const loopAnimation = (node) => {
-    const keyframes = [1.2, 0.7, 0.5, 0.8, 1];
+    const keyframes = [0.7, 1];
 
     const loop = Animated.sequence(
       keyframes.map((toValue) =>
@@ -22,20 +24,34 @@ const AnimatedSoundBars = ({ barColor = 'gray' }) => {
     return loop;
   };
 
-  const loadAnimation = (nodes) =>
-    Animated.loop(Animated.stagger(150, nodes.map(loopAnimation)));
+  useEffect(() => {
+    try{
+      if(props.isPlay) {
+        loadAnimation().start();
+      }else{
+        // loadAnimation().stop();
+      }
+    }catch (e) {
+      console.log(e)
+    }
+  }, [props.isPlay]);
 
-  React.useEffect(() => {
-    loadAnimation(dotAnimations);
-  }, []);
+  const loadAnimation = () =>{
+    ref = Animated.loop(Animated.stagger(100, dotAnimations.map(loopAnimation)))
+    return ref
+  };
 
-  const play = () => {
-    loadAnimation(dotAnimations).start();
-  }
-
-  const stop = () => {
-    loadAnimation(dotAnimations).stop();
-  }
+  // React.useEffect(() => {
+  //   loadAnimation();
+  // }, []);
+  //
+  // const play = () => {
+  //   loadAnimation().start();
+  // }
+  //
+  // const stop = () => {
+  //   loadAnimation().stop();
+  // }
 
   return (
     <View style={styles.row}>
@@ -45,7 +61,7 @@ const AnimatedSoundBars = ({ barColor = 'gray' }) => {
             key={`${index}`}
             style={[
               styles.bar,
-              { backgroundColor: barColor },
+              { backgroundColor: props?.barColor?props?.barColor: 'gray' },
               {
                 transform: [
                   {

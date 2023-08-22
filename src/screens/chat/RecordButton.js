@@ -305,11 +305,11 @@ export class RecordButton extends React.Component {
                 style={{ height: 24, width: 24, resizeMode: 'contain' }}
               />
             </TouchableOpacity> */}
-            <Image
-              source={require('../../assets/ic_wave.png')}
-              style={{ flex: 1, height: 32, resizeMode: 'contain' }}
-            />
-            <AnimatedSoundBars ref={ref=>this.soundbarRef = ref} barColor={colors.primary}/>
+            {/*<Image*/}
+            {/*  source={require('../../assets/ic_wave.png')}*/}
+            {/*  style={{ flex: 1, height: 32, resizeMode: 'contain' }}*/}
+            {/*/>*/}
+            <AnimatedSoundBars isPlay={true} barColor={colors.primary} length={20}/>
 
             <View
               style={{

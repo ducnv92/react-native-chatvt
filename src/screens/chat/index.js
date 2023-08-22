@@ -13,7 +13,7 @@ import {
   Keyboard,
   StatusBar,
   TextInput,
-  TouchableOpacityBase, Dimensions, Linking, Image
+  TouchableOpacityBase, Dimensions, Linking, Image, ActivityIndicator
 } from 'react-native';
 import colors from '../../Styles';
 import { BottomSheetModalProvider } from '../../components/bottomSheet/bottom-sheet';
@@ -323,9 +323,19 @@ export const ChatScreen = observer(function ChatScreen(props) {
                 getItemType={(item, index) => {
                   return item?.type;
                 }}
-                onEndReached={() => handleLoadMore()}
-                onEndReachedThreshold={10}
-                ListHeaderComponent={() => <View style={{ height: 8 }} />}
+                onEndReached={(info) => {
+                  // if(info.distanceFromEnd===0){
+                    handleLoadMore()
+                  // }
+                  console.log('handleLoadMore()', info)
+                }}
+                // maxToRenderPerBatch={20}
+                onEndReachedThreshold={0.7}
+                ListFooterComponent={() => <View style={{alignItems: 'center', padding: 4,}} >
+                  {
+                    chatStore.isLoadingMore && <ActivityIndicator color={colors.primary}/>
+                  }
+                </View>}
                 removeClippedSubviews={true}
                 keyExtractor={(item) =>
                   item._id !== undefined ? item._id : item.id

@@ -4,6 +4,7 @@ import { Log } from "../../utils";
 import uuid from "react-native-uuid";
 import ImageResizer from "../../components/resizeImage";
 import uploadProgress from './uploadProgress';
+import InputStore from "./InputStore";
 var _ = require('lodash');
 
 class ChatStore {
@@ -148,6 +149,9 @@ class ChatStore {
   }
 
   async sendMessage(params) {
+    try{
+      InputStore.inputRef?.current?.focus();
+    }catch (e) {}
 
     const quoteCopy = { ...this.quote }
     if (this.quote) {

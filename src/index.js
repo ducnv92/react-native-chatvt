@@ -76,6 +76,7 @@ class ChatVT {
       );
     // screenEventListener.remove();
     AppState.addEventListener("change", (state) => {
+      console.log('AppState', state)
       if (state === "background") {
         try {
           socket.getInstance().onConnect();

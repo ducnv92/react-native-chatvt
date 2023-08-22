@@ -143,11 +143,6 @@ const VoiceItem = function (props) {
 
     pause()
     setIsPlay(true)
-    try{
-      soundbarRef.current?.play()
-    }catch (e) {
-      console.log(e)
-    }
     SoundPlayer.playUrl(
       props.item.attachmentLocal?.length > 0
         ? props.item.attachmentLocal[0].uri
@@ -159,8 +154,8 @@ const VoiceItem = function (props) {
 
       setCurrentTime(formatDuration(info.currentTime))
     }, 1000)
-    _onFinishedPlayingSubscription = SoundPlayer.addEventListener('FinishedPlaying', ({ success }) => {
-      console.log('finished playing', success)
+    _onFinishedPlayingSubscription = SoundPlayer.addEventListener('FinishedPlaying', (props) => {
+      console.log('finished playing', props)
       pause()
       clearInterval(chatStore.intervalSound)
     })
@@ -178,11 +173,6 @@ const VoiceItem = function (props) {
   }
 
   const pause = () => {
-    try{
-      soundbarRef.current?.stop()
-    }catch (e) {
-      console.log(e)
-    }
     SoundPlayer.stop()
     SoundPlayer.unmount()
     clearInterval(chatStore.intervalSound)
@@ -242,7 +232,7 @@ const VoiceItem = function (props) {
               style={{ height: 32, width: 32, resizeMode: 'contain' }}
             />
           </TouchableOpacity>
-          <AnimatedSoundBars ref={soundbarRef} barColor={right?'white':'#44494D66'}/>
+          <AnimatedSoundBars isPlay={isPlay} barColor={right?'white':'#44494D66'}/>
 
 
           {/*<Image*/}
@@ -427,6 +417,7 @@ const MessageItem = function (props) {
                               style={{
                                 backgroundColor: '#F2F2F2',
                                 borderRadius: 5,
+                                // marginRight: 2,
                                 overflow: 'hidden',
                                 width:
                                   item.attachmentLocal.length === 1 ? 200 : 120,
