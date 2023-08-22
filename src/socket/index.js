@@ -143,12 +143,13 @@ class Socket{
     if(user && !this.socket){
       this.socket = io.connect(this.URL, {
         reconnection: true,
+        autoConnect: true,
         reconnectionDelay: 1000,
         reconnectionDelayMax: 9999999,
-        transports: ['websocket'],
+        transports: ["polling", "websocket", "webtransport"],
         extraHeaders: {
           Authorization: user.token
-        }
+        },
       });
       this.socket.on('connect', this.onConnect);
       this.socket.on('disconnect', this.onDisconnect);

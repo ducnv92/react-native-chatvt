@@ -388,10 +388,26 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   return i;
                 });
                 listChatStore.data = [...listChatStore.data];
+              } catch (e) {
+
+              }
+              try {
+                listChatStore.dataPin[index].settings = listChatStore.dataPin[
+                  index
+                  ].settings.map((i) => {
+                  if (
+                    i.user_id ===
+                    appStore.user.type + '_' + appStore.user.user_id
+                  ) {
+                    i.unread_count = 0;
+                  }
+                  return i;
+                });
                 listChatStore.dataPin = [...listChatStore.dataPin];
               } catch (e) {
 
               }
+
 
             }}
             style={{
@@ -551,6 +567,21 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   return i;
                 });
                 listChatStore.data = [...listChatStore.data];
+              } catch (e) {
+
+              }
+              try {
+                listChatStore.dataPin[index].settings = listChatStore.dataPin[
+                  index
+                  ].settings.map((i) => {
+                  if (
+                    i.user_id ===
+                    appStore.user.type + '_' + appStore.user.user_id
+                  ) {
+                    i.unread_count = 0;
+                  }
+                  return i;
+                });
                 listChatStore.dataPin = [...listChatStore.dataPin];
               } catch (e) {
 

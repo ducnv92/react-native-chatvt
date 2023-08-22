@@ -11,11 +11,12 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import colors from './Styles';
 import React from 'react';
-import { StatusBar } from 'react-native';
+import {AppState, StatusBar} from 'react-native';
 import { AttachsScreen } from './screens/attachs';
 import BottomSheetChatOptions from './components/bottomSheetChatOptions';
 import listChatStore from './screens/listchat/ListChatStore';
 import {ViewFileScreen} from "./screens/webview";
+import BackgroundTimer from './components/backgroundTimer'
 
 function safeAreaProviderHOC(Component) {
   function Wrapper(props) {
@@ -41,6 +42,8 @@ class ChatVT {
   AsyncStorage;
 
   interval;
+
+  intervalSocket;
 
   previewScreen;
 
@@ -72,6 +75,26 @@ class ChatVT {
         }
       );
     // screenEventListener.remove();
+    AppState.addEventListener("change", (state) => {
+      if (state === "background") {
+        try {
+          socket.onConnect();
+
+          this.intervalSocket = BackgroundTimer.setInterval(() => {
+            console.log('connection status ', socket.socket.connected)
+            socket.onConnect();
+          }, 5000)
+        } catch (e) {
+
+        }
+      } else if (state === "active") {
+        try{
+          BackgroundTimer.clearInterval(this.intervalSocket)
+        }catch (e) {
+
+        }
+      }
+    })
   }
 
   /** */

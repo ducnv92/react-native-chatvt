@@ -1559,8 +1559,9 @@ function ContainChatItem(props) {
                 Linking.openURL(
                   createMapLink({
                     provider: 'google',
-                    latitude: props.item?.location?.latitude,
-                    longitude: props.item?.location?.longitude,
+                    // latitude: props.item?.location?.latitude,
+                    // longitude: props.item?.location?.longitude,
+                    query: props.item?.location?.latitude+','+props.item?.location?.longitude
                   })
                 );
               } catch (e) {

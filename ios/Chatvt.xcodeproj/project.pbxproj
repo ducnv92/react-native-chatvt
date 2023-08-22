@@ -14,6 +14,7 @@
 		5E6116AE2A6A885C0023024A /* ImageHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E6116AC2A6A885C0023024A /* ImageHelpers.m */; };
 		5E7853892A8F1D43005183B2 /* RCTConvert+RNDocumentPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E7853882A8F1D43005183B2 /* RCTConvert+RNDocumentPicker.m */; };
 		5E78538F2A8F1D88005183B2 /* RNDocumentPickerChatVT.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E78538D2A8F1D88005183B2 /* RNDocumentPickerChatVT.m */; };
+		5E8FADC72A9471F000C921F3 /* RNBackgroundTimerChatVT.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E8FADC62A9471F000C921F3 /* RNBackgroundTimerChatVT.m */; };
 		A915E7392A5E6308002925F1 /* RNCCameraRollManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A915E7362A5E6308002925F1 /* RNCCameraRollManager.m */; };
 		A915E7612A5E99B8002925F1 /* CreateThumbnailChatVT.m in Sources */ = {isa = PBXBuildFile; fileRef = A915E7602A5E99B8002925F1 /* CreateThumbnailChatVT.m */; };
 		A915E76E2A5E9FE0002925F1 /* RNAudioRecorderPlayerChatVT.m in Sources */ = {isa = PBXBuildFile; fileRef = A915E76C2A5E9FE0002925F1 /* RNAudioRecorderPlayerChatVT.m */; };
@@ -57,6 +58,8 @@
 		5E78538B2A8F1D58005183B2 /* RNCPromiseWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNCPromiseWrapper.m; path = "../../Downloads/react-native-document-picker-5dd2e4063a9806581d99563dce48e1ce2b474264/ios/RNCPromiseWrapper.m"; sourceTree = "<group>"; };
 		5E78538D2A8F1D88005183B2 /* RNDocumentPickerChatVT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDocumentPickerChatVT.m; sourceTree = "<group>"; };
 		5E78538E2A8F1D88005183B2 /* RNDocumentPickerChatVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDocumentPickerChatVT.h; sourceTree = "<group>"; };
+		5E8FADC52A9471EF00C921F3 /* RNBackgroundTimerChatVT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNBackgroundTimerChatVT.h; sourceTree = "<group>"; };
+		5E8FADC62A9471F000C921F3 /* RNBackgroundTimerChatVT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNBackgroundTimerChatVT.m; sourceTree = "<group>"; };
 		A915E7352A5E6307002925F1 /* RNCCameraRollManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCCameraRollManager.h; sourceTree = "<group>"; };
 		A915E7362A5E6308002925F1 /* RNCCameraRollManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCCameraRollManager.m; sourceTree = "<group>"; };
 		A915E7472A5E6876002925F1 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk/System/Library/Frameworks/CoreAudio.framework; sourceTree = DEVELOPER_DIR; };
@@ -138,6 +141,8 @@
 				5E6116AA2A6A885C0023024A /* ImageResizerChatVT.mm */,
 				5E163ECA2A6BBDE900D7437E /* RNFileViewerManagerChatVT.h */,
 				5E163ECB2A6BBDE900D7437E /* RNFileViewerManagerChatVT.m */,
+				5E8FADC52A9471EF00C921F3 /* RNBackgroundTimerChatVT.h */,
+				5E8FADC62A9471F000C921F3 /* RNBackgroundTimerChatVT.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
 				A915E7462A5E6876002925F1 /* Frameworks */,
 			);
@@ -228,6 +233,7 @@
 				5E14D2852A93673B00B9C238 /* RNCPromiseWrapper.m in Sources */,
 				5E14D2742A9340C800B9C238 /* File.swift in Sources */,
 				5E6116AD2A6A885C0023024A /* ImageResizerChatVT.mm in Sources */,
+				5E8FADC72A9471F000C921F3 /* RNBackgroundTimerChatVT.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

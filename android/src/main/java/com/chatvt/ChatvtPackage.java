@@ -25,6 +25,7 @@ public class ChatvtPackage implements ReactPackage {
     modules.add(new RNSoundPlayerModule(reactContext));
     modules.add(new ImageResizerModule(reactContext));
     modules.add(new RNFileViewerModule(reactContext));
+    modules.add(new BackgroundTimerModule(reactContext));
     modules.add(new ChatvtModule(reactContext));
     return modules;
   }
