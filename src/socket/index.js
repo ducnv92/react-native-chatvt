@@ -3,9 +3,10 @@ import {load, USER} from "../utils/MyAsyncStorage";
 import listChatStore from "../screens/listchat/ListChatStore";
 import chatStore from "../screens/chat/ChatStore";
 import {Log} from "../utils";
-import {runInAction} from "mobx";
+import {runInAction, toJS} from "mobx";
 import appStore from "../screens/AppStore";
 import {AppState} from "react-native";
+import _ from "lodash";
 
 
 class Socket{
@@ -47,7 +48,7 @@ class Socket{
     this.hasDisconnect = true
   }
   onUserMessage = (event)=>{
-    console.log('socket', event)
+    console.log('socket onUserMessage', event)
 
     try{
       const right =  event?.message.sender === (appStore.user.type + '_' + appStore.user.user_id);
@@ -118,7 +119,9 @@ class Socket{
 
   onUserReactionMessage = (event)=> {
     console.log('socket reaction', event)
-    // if()
+    if(chatStore.conversation_id===event.conversation._id){
+      chatStore.data =  _.unionBy(event.conversation.message, toJS(chatStore.data), "_id");
+    }
   }
 
   onUserStateMessage = (event)=>{
