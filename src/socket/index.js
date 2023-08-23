@@ -32,6 +32,7 @@ class Socket{
     console.log('socket', 'onConnected')
     this.socket.on('USER_MESSAGE', this.onUserMessage);
     this.socket.on('USER_STATE', this.onUserStateMessage);
+    this.socket.on('USER_REACT_MESSAGE', this.onUserReactionMessage);
 
     if(this.hasDisconnect){
       this.hasDisconnect = false
@@ -113,6 +114,11 @@ class Socket{
     }
 
 
+  }
+
+  onUserReactionMessage = (event)=> {
+    console.log('socket reaction', event)
+    // if()
   }
 
   onUserStateMessage = (event)=>{

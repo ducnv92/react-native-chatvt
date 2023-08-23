@@ -193,6 +193,8 @@ const create = (baseURL = Endpoint.API_BASE) => {
 
   const getVTMCustomerByOrder = async (data) =>
     api.get(Endpoint.VTM_CUSTOMER_BY_ORDER, data, await getHeaderVTM());
+  const getStickers = async (data) =>
+    api.get(Endpoint.GET_STICKER, data, await getHeader());
 
   return {
     getVTMCustomerByOrder,
@@ -228,6 +230,7 @@ const create = (baseURL = Endpoint.API_BASE) => {
     conversationHide,
     conversationMessages,
     sendMessage,
+    getStickers,
   };
 };
 

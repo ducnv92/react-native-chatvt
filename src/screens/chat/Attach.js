@@ -27,12 +27,12 @@ import quickMessageStore from "./QuickMessageStore";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import inputStore from './InputStore';
 import InputStore from './InputStore';
-import * as ModalStyled from "react-native-modal";
+import ModalStyled from "react-native-modal";
 
 
 const QuickMessageModal = observer(function QuickMessageModal(props) {
   const [isFocus, setIsFocus] = useState(true)
-  const [isModalVisible, setModalVisible] = useState(true)
+  const [isModalVisible, setModalVisible] = useState(false)
   const updateQuickMessage = () => {
     if (!(quickMessageStore.currentMessage.text && quickMessageStore.currentMessage.text.trim() !== '')) {
       return
@@ -59,9 +59,7 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
   }
 
   const deleteQuickMessage = () => {
-    quickMessageStore.delete({
-      id: quickMessageStore.currentMessage._id,
-    }, () => {
+    quickMessageStore.delete(quickMessageStore.currentMessage, () => {
       quickMessageStore.showModal = false
       quickMessageStore.currentMessage = {}
     })
@@ -99,7 +97,7 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
                 onFocus={() => setIsFocus(true)}
                 placeholder={'Nội dung tin nhắn'}
                 // numberOfLines={10}
-                style={{ textAlignVertical: 'top', height: 132, margin: 16, borderColor: isFocus ? '#B1C1D1' : '#DCE6F0', borderWidth: 1, borderRadius: 10, padding: 12 }}
+                style={{ textAlignVertical: 'top', height: 132, margin: 16, lineHeight: 20, borderColor: isFocus ? '#B1C1D1' : '#DCE6F0', borderWidth: 1, borderRadius: 10, padding: 12 }}
                 onChangeText={text => {
                   quickMessageStore.currentMessage = { ...quickMessageStore.currentMessage, ...{ text } }
                 }}
@@ -124,16 +122,18 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
       </KeyboardAvoidingView>
       <ModalStyled isVisible={isModalVisible}>
         <View style={{ flex: 1, justifyContent: 'center' }}>
-          <View style={{ padding: 16}}>
+          <View style={{ padding: 16, backgroundColor: 'white', justifyContent: 'center', borderRadius: 16, }}>
             <TouchableOpacity
               onPress={()=>setModalVisible(false)}
-              style={{width: 36, height: 36, alignItems: 'center', justifyContent: 'center', position: 'absolute', left: 0, top: 0}}>
+              style={{width: 36, height: 36, alignItems: 'center', justifyContent: 'center', position: 'absolute', left: 16, top: 16}}>
               <Image source={require('../../assets/ic_close.png')} style={{width: 24, height: 24, resizeMode: 'contain'}}/>
             </TouchableOpacity>
-            <View
-              style={{ padding: 16, borderRadius: 35, backgroundColor: colors.primary, marginTop: 20, marginBottom: 35, alignItems: 'center', justifyContent: 'center', position: 'absolute', left: 0, top: 0}}
-            >
-              <Image source={require('../../assets/ic_trash.png')} style={{width: 38, height: 38, resizeMode: 'contain'}}/>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+              <View
+                style={{ padding: 16, borderRadius: 35, backgroundColor: colors.primary, marginTop: 20, marginBottom: 35, alignItems: 'center', justifyContent: 'center', }}
+              >
+                <Image source={require('../../assets/ic_trash.png')} style={{width: 38, height: 38, resizeMode: 'contain'}}/>
+              </View>
             </View>
             <Text style={{fontSize: 17, lineHeight: 24, fontWeight: '600', color: colors.primaryText, marginBottom: 50 }}>Quý khách có chắc chắn muốn xoá tin chat nhanh này không?</Text>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -148,7 +148,7 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
                   setModalVisible(false)
                   deleteQuickMessage()
                 }}
-                style={{flex: 1, paddingVertical: 10, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center'}}
+                style={{flex: 1, paddingVertical: 10, backgroundColor: colors.primary, borderRadius: 4, alignItems: 'center', justifyContent: 'center'}}
               >
                 <Text style={{fontSize: 15, lineHeight: 24, fontWeight: '600', color: 'white' }}>Xoá tin</Text>
               </TouchableOpacity>

@@ -27,6 +27,7 @@ exports.VTP_CONVERSATION_WITH_CS = `/conversation/vtp/find-create-with-cs`;
 exports.VTM_CONVERSATION_WITH_CS = `/conversation/vtm/find-create-with-cs`;
 exports.VTP_CREATE_WITH_RECEIVER = `/conversation/vtp/find-create-with-receiver`;
 exports.VTM_CREATE_WITH_RECEIVER = `/conversation/vtm/find-create-with-receiver`;
+exports.GET_STICKER = `/sticker/album/list`;
 exports.CONVERSATION_REACT = (conversation_id, message_id) =>
   `/conversation/${conversation_id}/${message_id}/reaction`;
 exports.CONVERSATION_ATTACHMENTS = (conversation_id) =>

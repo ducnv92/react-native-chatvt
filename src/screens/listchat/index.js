@@ -21,6 +21,7 @@ import { MTextInput as TextInput } from '../../components';
 import BottomSheetChatOptions from '../../components/bottomSheetChatOptions';
 import { BottomSheetModalProvider } from '../../components/bottomSheet/bottom-sheet';
 import { toJS } from 'mobx';
+import stickerStore from "../chat/StickerStore";
 
 export const ListChatScreen = observer(function ListChatScreen(props) {
   const [showSearch, setShowSearch] = useState(false);
@@ -29,6 +30,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
 
   useEffect(() => {
     listChatStore.search = '';
+    stickerStore.getStickers()
     // intLoad();
     // bottomSheetModalRef.current?.present();
     return () => {
@@ -152,6 +154,26 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     ? colors.primaryText
                     : colors.neutralText,
               }}>{prefix + appStore.lang.list_chat.message_doc}</Text>
+          </View>
+        );
+      }
+      if (item.message.type === 'STICKER') {
+        return (
+          <View style={{
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center'
+          }}
+          >
+            <Text numberOfLines={1}
+                  style={{
+                    flex: 1,
+                    fontWeight: setting?.unread_count > 0 ? '600' : '500',
+                    color:
+                      setting?.unread_count > 0
+                        ? colors.primaryText
+                        : colors.neutralText,
+                  }}>{prefix + 'gửi 1 nhãn dán'}</Text>
           </View>
         );
       }

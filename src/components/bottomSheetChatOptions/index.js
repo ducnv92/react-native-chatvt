@@ -302,7 +302,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
               >
                 <Image
                   style={{ height: 48, width: 48, resizeMode: 'center' }}
-                  source={require('../../assets/avatar_default.png')}
+                  source={require('../../assets/avatar_default_customer.png')}
                 />
               </View>
               <View style={{ flex: 1 }}>
@@ -431,7 +431,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
               >
                 <Image
                   style={{ height: 48, width: 48, resizeMode: 'center' }}
-                  source={require('../../assets/avatar_default.png')}
+                  source={require('../../assets/avatar_default_customer.png')}
                 />
               </View>
               <View style={{ flex: 1 }}>
@@ -488,7 +488,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
               >
                 <Image
                   style={{ height: 48, width: 48, resizeMode: 'center' }}
-                  source={require('../../assets/avatar_default.png')}
+                  source={require('../../assets/avatar_default_customer.png')}
                 />
               </View>
               <View style={{ flex: 1 }}>

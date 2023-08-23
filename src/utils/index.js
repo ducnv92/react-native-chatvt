@@ -1,7 +1,11 @@
 import appStore from "../screens/AppStore";
 import {check, PERMISSIONS, RESULTS, requestMultiple} from 'react-native-permissions';
-import {Dimensions} from "react-native";
+import {Dimensions, Linking} from "react-native";
 import moment from "moment";
+import RNFS from "react-native-fs";
+import FileViewer from "../components/viewFile";
+import { Platform } from "react-native";
+import uuid from "react-native-uuid";
 
 export const orderStatus = (status) => {
   switch (status) {
@@ -153,4 +157,37 @@ export const participantType = (participant_type) => {
     case 'ADMIN':
       return 'Admin'
   }
+}
+
+function getUrlExtension(url) {
+  return url.split(/[#?]/)[0].split(".").pop().trim();
+}
+
+export const DownloadViewFile = (url) =>{
+
+  try{
+    const extension = getUrlExtension(url);
+
+// Feel free to change main path according to your requirements.
+    const localFile = `${RNFS.DocumentDirectoryPath}/${uuid.v4()}.${extension}`;
+
+    const options = {
+      fromUrl: url,
+      toFile: localFile,
+    };
+    RNFS.downloadFile(options)
+      .promise.then(() => FileViewer.open(localFile))
+      .then(() => {
+        // success
+      })
+      .catch((error) => {
+        console.log(error)
+        // error
+      });
+
+  }catch (e) {
+    Linking.openURL(url)
+    console.log(e)
+  }
+
 }

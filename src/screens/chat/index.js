@@ -447,22 +447,22 @@ const BottomChat = observer(function BottomChat(props) {
     return false
   }
 
-  const sendSticker = async (id) => {
+  const sendSticker = async (sticker) => {
     try {
-
       const message = {
         id: uuid.v4(),
         type: 'STICKER',
         has_attachment: true,
-        attachment_ids: [],
-        text: id,
         status: 'sending',
         conversation_id: props.data._id,
+        sticker_ids: [sticker._id],
         sender: appStore.user.type + '_' + appStore.user.user_id,
       };
       chatStore.data.unshift(message);
       chatStore.sendMessage(message);
-    } catch (e) { }
+    } catch (e) {
+      console.log(e)
+    }
   };
 
   return (
@@ -604,8 +604,8 @@ const BottomChat = observer(function BottomChat(props) {
           styles={{
             container: { borderRadius: 0, backgroundColor: 'white' },
           }}
-          onSelected={(stickerId) => {
-            sendSticker(stickerId)
+          onSelected={(sticker) => {
+            sendSticker(sticker)
           }}
         />
 

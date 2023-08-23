@@ -5,6 +5,7 @@ import uuid from "react-native-uuid";
 import ImageResizer from "../../components/resizeImage";
 import uploadProgress from './uploadProgress';
 import InputStore from "./InputStore";
+import AnimatedSoundBars from "../../components/waveView";
 var _ = require('lodash');
 
 class ChatStore {
@@ -35,6 +36,8 @@ class ChatStore {
   intervalSound;
   pauseSound;
 
+  soundBarsRefs = {
+  };
 
 
   constructor() {
@@ -159,7 +162,7 @@ class ChatStore {
       await this.sendMessage(quoteCopy)
     }
 
-    Log(params)
+    console.log('sendMessage', params)
     let attachment_ids = []
     if (params.attachmentLocal) {
       const formData = new FormData()

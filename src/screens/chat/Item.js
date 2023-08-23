@@ -14,7 +14,7 @@ import {
 import colors from '../../Styles';
 import moment from 'moment/moment';
 import ParsedText from 'react-native-parsed-text';
-import {formatDuration, groupBy, orderStatus, participantType} from '../../utils';
+import {DownloadViewFile, formatDuration, groupBy, orderStatus, participantType} from '../../utils';
 import { createThumbnail } from '../../components/createThumbnail';
 import ImageViewing from '../../components/imageView/ImageViewing';
 // import FastImage from 'react-native-fast-image';
@@ -30,8 +30,6 @@ import { observer } from 'mobx-react-lite';
 import { Navigation } from 'react-native-navigation';
 import SoundPlayer from '../../components/playSound';
 import { MText as Text } from '../../components';
-import FileViewer from '../../components/viewFile';
-import RNFS from 'react-native-fs';
 import AnimatedProgressWheel from 'react-native-progress-wheel';
 import uploadProgress from './uploadProgress';
 // import Image from 'react-native-fast-image';
@@ -39,19 +37,8 @@ import * as Animatable from 'react-native-animatable';
 import VideoViewing from "../../components/videoView/ImageViewing";
 import AnimatedSoundBars from "../../components/waveView";
 import chatStore from "./ChatStore";
-import { ViewFileScreen } from "../webview";
-import SVGComponent01 from "../../assets/stickers/01";
-import SVGComponent02 from "../../assets/stickers/02";
-import SVGComponent03 from "../../assets/stickers/03";
-import SVGComponent04 from "../../assets/stickers/04";
-import SVGComponent05 from "../../assets/stickers/05";
-import SVGComponent06 from "../../assets/stickers/06";
-import SVGComponent07 from "../../assets/stickers/07";
-import SVGComponent08 from "../../assets/stickers/08";
-import SVGComponent09 from "../../assets/stickers/09";
-import SVGComponent010 from "../../assets/stickers/010";
-import SVGComponent011 from "../../assets/stickers/011";
-import SVGComponent012 from "../../assets/stickers/012";
+import stickerStore from "./StickerStore";
+
 
 const MapItem = function (props) {
   const right = props.right;
@@ -232,15 +219,18 @@ const VoiceItem = function (props) {
               style={{ height: 32, width: 32, resizeMode: 'contain' }}
             />
           </TouchableOpacity>
-          <AnimatedSoundBars isPlay={isPlay} barColor={right?'white':'#44494D66'}/>
-
+          {
+            isPlay?
+              <AnimatedSoundBars isPlay={true} id={props.item.attachments[0]?.url} barColor={right?'white':'#44494D66'}/>:
+              <AnimatedSoundBars  isPlay={false} barColor={right?'white':'#44494D66'}/>
+          }
 
           {/*<Image*/}
           {/*  source={require('../../assets/ic_wave_white.png')}*/}
           {/*  style={{ flex: 1, marginHorizontal: 16, height: 16, resizeMode: 'contain', tintColor: right ? 'white' : '#B5B4B8' }}*/}
           {/*  tintColor={right ? 'white' : '#B5B4B8'}*/}
           {/*/>*/}
-          <Text style={{ textAlign: 'right', fontWeight: '500', fontSize: 15, color: right ? 'white' : colors.neutralText }}>{currentTime}</Text>
+          <Text style={{ width: 55, textAlign: 'right', fontWeight: '500', fontSize: 15, color: right ? 'white' : colors.neutralText }}>{currentTime}</Text>
         </View>
       </ContainChatItem>
     </View>
@@ -1260,34 +1250,6 @@ const OrderItem = function (props) {
 
 
 const StickerItem = function (props) {
-  const getSticker = (id) => {
-    switch (id){
-      case '(01)':
-        return <SVGComponent01  width={86} height={86}/>
-      case '(02)':
-        return <SVGComponent02  width={86} height={86}/>
-      case '(03)':
-        return <SVGComponent03  width={86} height={86}/>
-      case '(04)':
-        return <SVGComponent04  width={86} height={86}/>
-      case '(05)':
-        return <SVGComponent05  width={86} height={86}/>
-      case '(06)':
-        return <SVGComponent06  width={86} height={86}/>
-      case '(07)':
-        return <SVGComponent07  width={86} height={86}/>
-      case '(08)':
-        return <SVGComponent08  width={86} height={86}/>
-      case '(09)':
-        return <SVGComponent09  width={86} height={86}/>
-      case '(010)':
-        return <SVGComponent010  width={86} height={86}/>
-      case '(011)':
-        return <SVGComponent011  width={86} height={86}/>
-      case '(012)':
-        return <SVGComponent012  width={86} height={86}/>
-    }
-  }
 
   const right = props.right;
   return (
@@ -1300,16 +1262,7 @@ const StickerItem = function (props) {
         marginHorizontal: 16,
       }}
     >
-        <View
-          style={{
-            height: 86,
-            width: 86,
-          }}
-        >
-          {
-            getSticker(props.item.text)
-          }
-        </View>
+        <Image source={{uri: stickerStore.getStickerImage(props.item.sticker_ids[0])}} style={{width: 86, height: 86, resizeMode: 'contain'}}/>
     </View>
   );
 };
@@ -1485,6 +1438,7 @@ function ContainChatItem(props) {
         conversation_id: props.item.conversation_id,
         message_id: props.item._id,
       });
+      console.log(response)
       if (response.data.status === 200) {
         if (is_enable) {
           setReactions([
@@ -1515,29 +1469,30 @@ function ContainChatItem(props) {
         onPress={() => {
           try {
             if (props.item.type === 'FILE') {
-              try {
-                Navigation.push(appStore.componentId, {
-                  component: {
-                    name: 'ViewFileScreen',
-                    options: {
-                      popGesture: false,
-                      bottomTabs: {
-                        visible: false,
-                      },
-                      topBar: {
-                        visible: false,
-                        height: 0,
-                      },
-                    },
-                    passProps: {
-                      data: props.item.attachments[0],
-                    },
-                  },
-                });
-              } catch (e) {
-                console.log(e)
-                Linking.openURL(props.item.attachments[0].url);
-              }
+              // try {
+              //   Navigation.push(appStore.componentId, {
+              //     component: {
+              //       name: 'ViewFileScreen',
+              //       options: {
+              //         popGesture: false,
+              //         bottomTabs: {
+              //           visible: false,
+              //         },
+              //         topBar: {
+              //           visible: false,
+              //           height: 0,
+              //         },
+              //       },
+              //       passProps: {
+              //         data: props.item.attachments[0],
+              //       },
+              //     },
+              //   });
+              // } catch (e) {
+              //   console.log(e)
+              //   Linking.openURL(props.item.attachments[0].url);
+              // }
+              DownloadViewFile(props.item.attachments[0].url)
 
             }
             if (props.item.type === 'LOCATION') {
@@ -1591,6 +1546,18 @@ function ContainChatItem(props) {
                 resizeMode={'contain'}
               />
             )}
+            {reactObject.get('FLUSHED_FACE') && (
+              <Image
+                source={require('../../assets/emoji_3.png')}
+                style={{
+                  width: 24,
+                  height: 24,
+                  resizeMode: 'contain',
+                  marginRight: 8,
+                }}
+                resizeMode={'contain'}
+              />
+            )}
             {reactObject.get('WOW') && (
               <Image
                 source={require('../../assets/emoji_4.png')}
@@ -1606,6 +1573,18 @@ function ContainChatItem(props) {
             {reactObject.get('SAD') && (
               <Image
                 source={require('../../assets/emoji_5.png')}
+                style={{
+                  width: 24,
+                  height: 24,
+                  resizeMode: 'contain',
+                  marginRight: 8,
+                }}
+                resizeMode={'contain'}
+              />
+            )}
+            {reactObject.get('LOUDLY_CRYING') && (
+              <Image
+                source={require('../../assets/emoji_6.png')}
                 style={{
                   width: 24,
                   height: 24,
@@ -1662,6 +1641,18 @@ function ContainChatItem(props) {
                 resizeMode={'contain'}
               />
             )}
+            {reactObject.get('LOUDLY_CRYING') && (
+              <Image
+                source={require('../../assets/emoji_3.png')}
+                style={{
+                  width: 24,
+                  height: 24,
+                  resizeMode: 'contain',
+                  marginLeft: 8,
+                }}
+                resizeMode={'contain'}
+              />
+            )}
             {reactObject.get('WOW') && (
               <Image
                 source={require('../../assets/emoji_4.png')}
@@ -1677,6 +1668,18 @@ function ContainChatItem(props) {
             {reactObject.get('SAD') && (
               <Image
                 source={require('../../assets/emoji_5.png')}
+                style={{
+                  width: 24,
+                  height: 24,
+                  resizeMode: 'contain',
+                  marginLeft: 8,
+                }}
+                resizeMode={'contain'}
+              />
+            )}
+            {reactObject.get('LOUDLY_CRYING') && (
+              <Image
+                source={require('../../assets/emoji_6.png')}
                 style={{
                   width: 24,
                   height: 24,
@@ -1728,10 +1731,10 @@ function ContainChatItem(props) {
                 width: 0,
                 height: 2,
               },
-              shadowOpacity: 0.25,
+              shadowOpacity: 0.5,
               shadowRadius: 3.84,
               margin: 10,
-              elevation: 1,
+              elevation: 2,
             }}
           >
             <TouchableWithoutFeedback
@@ -1766,6 +1769,22 @@ function ContainChatItem(props) {
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback
               style={{ marginHorizontal: 8 }}
+              onPress={() => reaction('FLUSHED_FACE')}
+            >
+              <Image
+                source={require('../../assets/emoji_3.png')}
+                style={{
+                  width: 30,
+                  height: 30,
+                  resizeMode: 'contain',
+                  marginRight: 16,
+
+                }}
+                resizeMode={'contain'}
+              />
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback
+              style={{ marginHorizontal: 8 }}
               onPress={() => reaction('WOW')}
             >
               <Image
@@ -1786,6 +1805,22 @@ function ContainChatItem(props) {
             >
               <Image
                 source={require('../../assets/emoji_5.png')}
+                style={{
+                  width: 30,
+                  height: 30,
+                  resizeMode: 'contain',
+                  marginRight: 16,
+
+                }}
+                resizeMode={'contain'}
+              />
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback
+              style={{ marginHorizontal: 8 }}
+              onPress={() => reaction('LOUDLY_CRYING')}
+            >
+              <Image
+                source={require('../../assets/emoji_6.png')}
                 style={{
                   width: 30,
                   height: 30,

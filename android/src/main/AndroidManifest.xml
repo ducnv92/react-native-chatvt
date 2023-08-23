@@ -6,6 +6,15 @@
   <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
   <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
   <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+  <queries>
+    <intent>
+      <action android:name="android.intent.action.VIEW" />
+      <!-- If you don't know the MIME type in advance, set "mimeType" to "*/*". -->
+      <data android:mimeType="*/*" />
+    </intent>
+  </queries>
+
   <application>
     <provider
       android:name="com.chatvt.FileProvider"
@@ -17,5 +26,6 @@
         android:resource="@xml/file_viewer_provider_paths"
       />
     </provider>
+
   </application>
 </manifest>

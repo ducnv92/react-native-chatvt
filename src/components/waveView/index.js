@@ -1,15 +1,12 @@
 import { View, Animated, Easing, StyleSheet } from 'react-native';
 import React, {useEffect, useRef} from 'react';
+import chatStore from "../../screens/chat/ChatStore";
 
-const AnimatedSoundBars = (props) => {
-  let ref = useRef();
 
-  const dotAnimations = Array.from({ length: props?.length?props?.length:16 }).map(
-    () => new Animated.Value(1)
-  );
+const AnimatedSoundBars = ({ barColor = 'gray', isPlay, id }) => {
 
   const loopAnimation = (node) => {
-    const keyframes = [0.7, 1];
+    const keyframes = [1.2, 0.7, 1];
 
     const loop = Animated.sequence(
       keyframes.map((toValue) =>
@@ -24,44 +21,29 @@ const AnimatedSoundBars = (props) => {
     return loop;
   };
 
-  useEffect(() => {
-    try{
-      if(props.isPlay) {
-        loadAnimation().start();
-      }else{
-        // loadAnimation().stop();
-      }
-    }catch (e) {
-      console.log(e)
+  const loadAnimation = (nodes) =>{
+    if(isPlay){
+      Animated.loop(Animated.stagger(100, nodes.map(loopAnimation))).start();
     }
-  }, [props.isPlay]);
+  }
 
-  const loadAnimation = () =>{
-    ref = Animated.loop(Animated.stagger(100, dotAnimations.map(loopAnimation)))
-    return ref
-  };
+  React.useEffect(() => {
 
-  // React.useEffect(() => {
-  //   loadAnimation();
-  // }, []);
-  //
-  // const play = () => {
-  //   loadAnimation().start();
-  // }
-  //
-  // const stop = () => {
-  //   loadAnimation().stop();
-  // }
+    chatStore.soundBarsRefs[id] = Array.from({ length: 16 }).map(
+      () => new Animated.Value(1)
+    );
+    loadAnimation(chatStore.soundBarsRefs[id]);
+  }, [isPlay]);
 
   return (
     <View style={styles.row}>
-      {dotAnimations.map((animation, index) => {
+      {chatStore.soundBarsRefs[id]?.map((animation, index) => {
         return (
           <Animated.View
             key={`${index}`}
             style={[
               styles.bar,
-              { backgroundColor: props?.barColor?props?.barColor: 'gray' },
+              { backgroundColor: barColor },
               {
                 transform: [
                   {
