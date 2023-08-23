@@ -181,6 +181,7 @@ export const DownloadViewFile = (url) =>{
         // success
       })
       .catch((error) => {
+        Linking.openURL(url)
         console.log(error)
         // error
       });
