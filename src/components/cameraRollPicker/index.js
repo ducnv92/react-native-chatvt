@@ -78,14 +78,14 @@ class CameraRollPicker extends Component {
 
 
   static getDerivedStateFromProps(nextProps, prevState){
-    if(nextProps.selected!==prevState.selected){
+    if(JSON.stringify(nextProps.selected)!==JSON.stringify(prevState.selected)){
       return { selected: nextProps.selected};
     }
     return null;
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevProps.selected!==this.props.selected){
+    if(JSON.stringify(prevProps.selected)!==JSON.stringify(this.props.selected)){
       //Perform some operation here
       this.setState({selected: this.props.selected});
 
@@ -99,7 +99,7 @@ class CameraRollPicker extends Component {
   // }
 
   onEndReached() {
-    if (!this.state.noMore) {
+    if (!this.state.noMore || this.state.data.length===0) {
       this.fetch();
     }
   }
