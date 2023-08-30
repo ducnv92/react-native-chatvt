@@ -1397,19 +1397,18 @@ export class ChatItem extends React.Component {
 function ContainChatItem(props) {
   const containerRef = useRef()
   const [showPopover, setShowPopover] = useState(false);
-  const [reactions, setReactions] = useState(props.item?.reactions);
-  const [reactObject, setReactObject] = useState(new Map());
+  const [reactObject, setReactObject] = useState(props.item?.reactions?groupBy(props.item?.reactions, (react) => react.type):new Map());
   const [position, setPosition] = useState({ width: 0, height: 0, x: 0, y: 0 });
 
 
   useEffect(() => {
     setReactObject(
-      reactions ? groupBy(reactions, (react) => react.type) : new Map()
+      props.item?.reactions?groupBy(props.item?.reactions, (react) => react.type):new Map()
     );
-  }, [reactions]);
+  }, [props.item?.reactions]);
 
   const onLongPress = () => {
-    if (props.item.type !== 'FILE' && props.item.type !== 'LOCATION' && !props.right) {
+    if (props.item.type !== 'FILE' && props.item.type !== 'LOCATION' ) {
       containerRef.current.measure((fx, fy, width, height, px, py) => {
         setPosition({
           width: width,
@@ -1425,33 +1424,26 @@ function ContainChatItem(props) {
   const reaction = async (react) => {
     try {
       setShowPopover(false);
-      let is_enable = true;
-      const currentReact = reactions.find(
-        (r) => r.user_id === appStore.user.type + '_' + appStore.user.user_id
-      );
-      if (currentReact?.type === react) {
-        is_enable = false;
-      }
+
       const response = await services.create().conversationReact({
-        is_enable: is_enable,
         reaction_type: react,
         conversation_id: props.item.conversation_id,
         message_id: props.item._id,
       });
       console.log(response)
       if (response.data.status === 200) {
-        if (is_enable) {
-          setReactions([
-            {
-              type: react,
-              user_id: appStore.user.type + '_' + appStore.user.user_id,
-            },
-          ]);
-        } else {
-          setReactions(
-            []
-          );
-        }
+        // if (is_enable) {
+        //   setReactions([
+        //     {
+        //       type: react,
+        //       user_id: appStore.user.type + '_' + appStore.user.user_id,
+        //     },
+        //   ]);
+        // } else {
+        //   setReactions(
+        //     []
+        //   );
+        // }
       }
     } catch (e) {
       console.log(e)
@@ -1515,7 +1507,7 @@ function ContainChatItem(props) {
         onLongPress={onLongPress}
         style={[props.style, { flexDirection: 'row', alignItems: 'center', }]}
       >
-        {reactions?.length > 0 && props.right && (
+        {props.item?.reactions?.length > 0 && props.right && (
           <View
             style={{
               flexDirection: 'row',
@@ -1610,7 +1602,7 @@ function ContainChatItem(props) {
           props.children !== null &&
           React.Children.map(props.children, child => React.cloneElement(child != null ? child : <></>, { onLongPress }))
         }
-        {reactions?.length > 0 && !props.right && (
+        {props.item?.reactions?.length > 0 && !props.right && (
           <View
             style={{
               flexDirection: 'row',
@@ -1705,7 +1697,6 @@ function ContainChatItem(props) {
         )}
       </TouchableOpacity>
       <Modal
-        reactions={reactions}
         visible={showPopover}
         transparent={true}
         onRequestClose={() => setShowPopover(false)}

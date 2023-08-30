@@ -118,9 +118,17 @@ class Socket{
   }
 
   onUserReactionMessage = (event)=> {
-    console.log('socket reaction', event)
-    if(chatStore.conversation_id===event.conversation._id){
-      chatStore.data =  _.unionBy(event.conversation.message, toJS(chatStore.data), "_id");
+    try{
+      if(chatStore.conversation_id===event.conversation._id){
+        chatStore.data = chatStore.data.map(m=>{
+          if(m._id === event.conversation.message._id){
+            m.reactions = event.conversation.message.reactions
+          }
+          return m
+        })
+      }
+    }catch (e) {
+
     }
   }
 
