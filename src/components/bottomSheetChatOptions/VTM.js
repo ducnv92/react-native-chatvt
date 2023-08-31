@@ -11,7 +11,8 @@ import {
   TouchableNativeFeedback,
   TouchableOpacity,
   View,
-} from 'react-native';
+  Linking, Platform
+} from "react-native";
 import {
   BottomSheetFlatList,
   BottomSheetModal,
@@ -119,7 +120,11 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
         <SafeAreaView style={{ flex: 1 }}>
           <TouchableOpacity
             onPress={()=>{
-
+              Linking.openURL(
+                `sms:${
+                  data.dienthoai_nguoigui
+                }${Platform.OS === 'ios' ? '&' : '?'}body=${''}`,
+              );
             }}
             style={{
               flexDirection: 'row',
@@ -189,7 +194,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
                   paddingTop: 4,
                 }}
               >
-                {order.SENDER_FULLNAME}
+                {order.ten_khgui}
               </Text>
             </View>
           </TouchableOpacity>
@@ -200,4 +205,4 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
   );
 });
 
-export default BottomSheetChatOptions;
+export default BottomSheetChatOptionsVTM;

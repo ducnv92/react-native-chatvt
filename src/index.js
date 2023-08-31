@@ -1,3 +1,5 @@
+
+
 import { Navigation } from 'react-native-navigation';
 import appStore from './screens/AppStore';
 // import {ChatStack} from './App.js'
@@ -11,18 +13,17 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import colors from './Styles';
 import React from 'react';
-import {AppState, StatusBar} from 'react-native';
+import { StatusBar } from 'react-native';
 import { AttachsScreen } from './screens/attachs';
 import BottomSheetChatOptions from './components/bottomSheetChatOptions';
+import BottomSheetChatOptionsVTM from './components/bottomSheetChatOptions/VTM';
 import listChatStore from './screens/listchat/ListChatStore';
-import {ViewFileScreen} from "./screens/webview";
-import BackgroundTimer from './components/backgroundTimer'
 
 function safeAreaProviderHOC(Component) {
   function Wrapper(props) {
     return (
       <SafeAreaProvider style={[{ flex: 1 }]}>
-        <StatusBar backgroundColor={colors.primary}  />
+        <StatusBar backgroundColor={colors.primary} />
         <Component {...props} />
       </SafeAreaProvider>
     );
@@ -43,10 +44,6 @@ class ChatVT {
 
   interval;
 
-  intervalSocket;
-
-  previewScreen;
-
   registerScreen() {
     Navigation.registerComponent('ListChatScreen', () =>
       gestureHandlerRootHOC(safeAreaProviderHOC(ListChatScreen))
@@ -57,45 +54,19 @@ class ChatVT {
     Navigation.registerComponent('AttachsScreen', () =>
       gestureHandlerRootHOC(safeAreaProviderHOC(AttachsScreen))
     );
-    Navigation.registerComponent('ViewFileScreen', () =>
-      gestureHandlerRootHOC(safeAreaProviderHOC(ViewFileScreen))
-    );
     const screenEventListener =
       Navigation.events().registerComponentDidAppearListener(
         ({ componentId, componentName, passProps }) => {
-          console.log(componentName, this.previewScreen)
-
           if (
-            componentName === 'navigation.VTMan.MessengerScreen.TK' && this.previewScreen !=='ChatScreen'
+            componentName === 'navigation.VTMan.MessengerScreen.TK' &&
+            listChatStore.data?.length === 0
           ) {
             listChatStore.page = 0;
             listChatStore.getData({});
           }
-          this.previewScreen = componentName
         }
       );
     // screenEventListener.remove();
-    AppState.addEventListener("change", (state) => {
-      console.log('AppState', state)
-      if (state === "background") {
-        try {
-          socket.getInstance().onConnect();
-
-          this.intervalSocket = BackgroundTimer.setInterval(() => {
-            // console.log('connection status ', socket.getInstance().connected)
-          socket.getInstance().onConnect();
-          }, 5000)
-        } catch (e) {
-
-        }
-      } else if (state === "active") {
-        try{
-          BackgroundTimer.clearInterval(this.intervalSocket)
-        }catch (e) {
-
-        }
-      }
-    })
   }
 
   /** */
@@ -118,9 +89,9 @@ class ChatVT {
         // this.interval = setInterval(()=>{
         //   appStore.onlineState()
         // }, 30000)
-        if (listChatStore.data?.length === 0) {
-          listChatStore.page = 0;
-          listChatStore.getData({});
+        if(listChatStore.data?.length===0){
+          listChatStore.page = 0
+          listChatStore.getData({})
         }
 
         if (onSuccess) onSuccess(res);
@@ -148,15 +119,13 @@ class ChatVT {
     });
   }
 
-  toChat(componentId, orderChat, is_receiver) {
+  toChat(componentId, orderChat) {
     appStore.componentId = componentId;
     if (orderChat) {
       appStore.createConversation(
         {
           vtm_user_ids: orderChat.vtm_user_ids,
           order_number: orderChat.order_number,
-          vtp_phone_numbers: orderChat.vtp_phone_numbers,
-          is_receiver: is_receiver
         },
         (conversation) => {
           Navigation.push(componentId, {
@@ -174,7 +143,7 @@ class ChatVT {
               },
               passProps: {
                 data: conversation,
-                order: orderChat?.order,
+                order: orderChat.order,
               },
             },
           });
@@ -184,13 +153,12 @@ class ChatVT {
     }
   }
 
-  chatWithReceiver(componentId, order, is_receiver) {
+  chatWithReceiver(componentId, order) {
     appStore.componentId = componentId;
     if (order?.ORDER_NUMBER) {
       appStore.createConversationWithReceiver(
         {
           order_number: order?.ORDER_NUMBER,
-          is_receiver: is_receiver,
         },
         (conversation) => {
           Navigation.push(componentId, {
@@ -341,7 +309,7 @@ class ChatVT {
       appStore.env = 'DEV';
       appStore.changeLanguage('VI');
       await MyAsyncStorage.save(USER, data);
-      await socket.getInstance().init();
+      await socket.init();
 
       Navigation.push(componentId, {
         component: {
@@ -362,8 +330,12 @@ class ChatVT {
   }
 
   loginVTP(componentId, storage, username, password, onSuccess, onError) {
-    appStore.componentId = componentId
-    this.registerScreen()
+    Navigation.registerComponent('ListChatScreen', () =>
+      gestureHandlerRootHOC(ListChatScreen)
+    );
+    Navigation.registerComponent('ChatScreen', () =>
+      gestureHandlerRootHOC(ChatScreen)
+    );
 
     appStore.loginVTP({ username, password }, async (data) => {
       this.init(
@@ -434,43 +406,11 @@ class ChatVT {
     });
   }
 
-  toChatWithCustomer = async (componentId, order, type) => {
+  toChatWithCustomer = async (componentId, order_code, type) => {
     appStore.createConversation(
       {
-        order_number: order.ma_phieugui,
+        order_number: order_code,
         chat_type: type,
-      },
-      (conversation) => {
-        Navigation.push(componentId, {
-          component: {
-            name: 'ChatScreen',
-            options: {
-              popGesture: false,
-              bottomTabs: {
-                visible: false,
-              },
-              topBar: {
-                visible: false,
-                height: 0,
-              },
-            },
-            passProps: {
-              data: conversation,
-              order: order,
-            },
-          },
-        });
-      },
-      (error) => alert(error)
-    );
-  };
-
-  toChatWithShop = async (componentId, order_number, type) => {
-    appStore.createConversation(
-      {
-        order_number: order_number,
-        chat_type: type,
-        API: 'VTPost'
       },
       (conversation) => {
         Navigation.push(componentId, {
@@ -500,3 +440,4 @@ class ChatVT {
 export const chatVT = new ChatVT();
 export const ListChat = ListChatScreen;
 export const BottomSheetChat = BottomSheetChatOptions;
+export const BottomSheetChatVTM = BottomSheetChatOptionsVTM;
