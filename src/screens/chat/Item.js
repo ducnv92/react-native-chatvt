@@ -1053,7 +1053,7 @@ const OrderItem = function (props) {
                 name: 'OrderInfomationtScreen',
                 passProps: {
                   orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
-                  isSender: true,
+                  isSender: 1,
                 },
                 options: {
                   bottomTabs: {

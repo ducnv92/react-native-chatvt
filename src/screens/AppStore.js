@@ -44,7 +44,7 @@ class AppStore {
             }
           }
         } else {
-          alert(response.data.message)
+          Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
         }
       } else {
         this.isLoading = false;
@@ -92,7 +92,7 @@ class AppStore {
           if (onError) {
             onError(response.data?.message);
           } else {
-            alert(response.data.message)
+            Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
           }
         }
       } else {
@@ -142,7 +142,7 @@ class AppStore {
           if (onError) {
             onError(response.data?.message);
           } else {
-            alert(response.data.message)
+            Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
           }
         }
       } else {
@@ -175,13 +175,15 @@ class AppStore {
               onSuccess(response.data.data);
             }
           } else {
-            alert(response.data.message)
+            Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+
           }
         } else {
           if (onError) {
             onError(response.data?.message);
           } else {
-            alert(response.data.message)
+            Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+
           }
         }
       } else {
@@ -236,7 +238,8 @@ class AppStore {
         this.user = response.data.data
         onSuccess(response.data.data)
       } else {
-        alert(response.data.message)
+        Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+
       }
 
     } catch (error) {
@@ -273,7 +276,8 @@ class AppStore {
           alert(responseClient.data.errorMessage)
         }
       } else {
-        alert(response.data.message)
+        Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+
       }
 
     } catch (error) {
@@ -314,7 +318,8 @@ class AppStore {
       if (response.status === 200) {
         onSuccess(response.data.data)
       } else {
-        alert(response.data.message)
+        Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+
       }
 
     } catch (error) {
@@ -330,7 +335,8 @@ class AppStore {
       if (response.status === 200 || response.status === 201) {
         onSuccess(response.data.data)
       } else {
-        alert(response.data.message)
+        Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+
       }
 
     } catch (error) {
@@ -346,7 +352,8 @@ class AppStore {
       if (response.status === 200 || response.status === 201) {
         onSuccess(response.data.data)
       } else {
-        alert(response.data.message)
+        Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+
       }
 
     } catch (error) {

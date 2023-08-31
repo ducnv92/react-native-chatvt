@@ -89,7 +89,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
 
   const toChatGroup = () => {
     try {
-      ref?.current?.dismiss();
+      bottomSheetRef.current?.dismiss();
       appStore.createConversation(
         {
           order_number: order.ma_phieugui,
@@ -140,7 +140,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
 
   const toChatWithCustomer = async (order_code, type) => {
     try {
-      ref?.current?.dismiss();
+      bottomSheetRef.current?.dismiss();
     } catch (e) {}
     appStore.createConversation(
       {
@@ -173,7 +173,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
   };
   const toChatReceiver = () => {
     try {
-      ref?.current?.dismiss();
+      bottomSheetRef.current?.dismiss();
     } catch (e) {}
     appStore.createConversationWithReceiver(
       {
@@ -210,7 +210,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
       <TouchableOpacity
         onPress={() => {
           try {
-            ref?.current?.dismiss();
+            bottomSheetRef.current?.dismiss();
           } catch (e) {}
           toChat([item.USERID]);
         }}
@@ -267,7 +267,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
           return (
             <TouchableOpacity
               activeOpacity={1}
-              onPress={() => ref?.current?.dismiss()}
+              onPress={() =>  bottomSheetRef.current?.dismiss()}
               style={{
                 position: 'absolute',
                 width: '100%',
@@ -467,7 +467,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
             <TouchableOpacity
               onPress={() => {
                 try {
-                  ref?.current?.dismiss();
+                  bottomSheetRef.current?.dismiss();
                 } catch (e) {}
                 toChatWithCustomer(order.ma_phieugui, 'RECEIVER');
               }}

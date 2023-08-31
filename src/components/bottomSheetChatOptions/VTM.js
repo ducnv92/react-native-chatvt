@@ -30,19 +30,22 @@ import { Navigation } from 'react-native-navigation';
 import services from '../../services';
 
 const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
-  const snapPoints = useMemo(() => ['40%'], []);
+  const snapPoints = useMemo(() => ['30%'], []);
   const bottomSheetRef = useRef();
   const [data, setData] = useState([]);
   const [order, setOrder] = useState({});
+  const [typeUser, setTypeUser] = useState('');
   const [isSender, setIsSender] = useState(true);
 
   useImperativeHandle(
     ref, // forwarded ref
     () => {
       return {
-        updateData(data, order, orderType) {
+        updateData(data, order, orderType, typeUser) {
+            console.log('udpate', typeUser)
           setData(data);
           setOrder(order);
+            setTypeUser(typeUser);
           setIsSender(orderType!==4)
         },
         present() {
@@ -60,8 +63,9 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
 
 
   const toChatWithCustomer = async (order_code, type) => {
+      console.log('type', type)
     try {
-      ref?.current?.dismiss();
+        bottomSheetRef.current?.dismiss();
     } catch (e) {}
     appStore.createConversation(
       {
@@ -103,7 +107,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
           return (
             <TouchableOpacity
               activeOpacity={1}
-              onPress={() => ref?.current?.dismiss()}
+              onPress={() =>  bottomSheetRef.current?.dismiss()}
               style={{
                 position: 'absolute',
                 width: '100%',
@@ -120,9 +124,20 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
         <SafeAreaView style={{ flex: 1 }}>
           <TouchableOpacity
             onPress={()=>{
+              bottomSheetRef.current?.dismiss();
+              if(isSender){
+
+                  Linking.openURL(
+                      `sms:${
+                          order.dienthoai_nguoigui
+                      }${Platform.OS === 'ios' ? '&' : '?'}body=${''}`,
+                  );
+                  return
+              }
+
               Linking.openURL(
                 `sms:${
-                  data.dienthoai_nguoigui
+                    typeUser ==='SENDER'?order.tel_khgui:order.tel_khnhan
                 }${Platform.OS === 'ios' ? '&' : '?'}body=${''}`,
               );
             }}
@@ -131,6 +146,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
               backgroundColor: 'white',
               paddingVertical: 12,
               paddingHorizontal: 16,
+                alignItems: 'center'
             }}
           >
             <View
@@ -146,7 +162,6 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
                 source={require('../../assets/ic_sms.png')}
               />
             </View>
-            <View style={{ flex: 1 }}>
               <Text
                 style={{
                   fontSize: 17,
@@ -154,10 +169,19 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
                   color: colors.primaryText,
                 }}
               >{`Tin nhắn văn bản (SMS)`}</Text>
-            </View>
           </TouchableOpacity>
+            <View style={{ backgroundColor: 'white', height: 1 }}>
+                <View
+                    style={{
+                        backgroundColor: '#E5E5E5',
+                        height: 1,
+                        marginLeft: 76,
+                        marginRight: 16,
+                    }}
+                ></View>
+            </View>
           <TouchableOpacity
-            onPress={()=>toChatWithCustomer(order.ma_phieugui, 'SENDER')}
+            onPress={()=>toChatWithCustomer(isSender?order.ma_vandon:order.ma_phieugui, typeUser)}
             style={{
               flexDirection: 'row',
               backgroundColor: 'white',
@@ -175,7 +199,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
             >
               <Image
                 style={{ height: 48, width: 48, resizeMode: 'center' }}
-                source={require('../../assets/ic_sms.png')}
+                source={typeUser==='SENDER'?require('../../assets/avatar_customer.png'):require('../../assets/avatar_customer.png')}
               />
             </View>
             <View style={{ flex: 1 }}>
@@ -185,7 +209,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
                   fontWeight: '600',
                   color: colors.primaryText,
                 }}
-              >{`Chat với người - Gửi hàng`}</Text>
+              >{'Chat với người - '+(typeUser ==='SENDER'?'Gửi hàng': 'Nhận hàng')}</Text>
               <Text
                 style={{
                   fontSize: 15,
@@ -194,7 +218,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
                   paddingTop: 4,
                 }}
               >
-                {order.ten_khgui}
+                {isSender?order.order_sendname:(typeUser ==='SENDER'?order.ten_khgui:order.ten_khnhan)}
               </Text>
             </View>
           </TouchableOpacity>
