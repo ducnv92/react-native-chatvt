@@ -71,6 +71,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
       {
         order_number: order_code,
         chat_type: type,
+        is_postman_receiver: props?.postman_receiver
       },
       (conversation) => {
         Navigation.push(props.componentId, {
@@ -199,7 +200,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
             >
               <Image
                 style={{ height: 48, width: 48, resizeMode: 'center' }}
-                source={typeUser==='SENDER'?require('../../assets/avatar_customer.png'):require('../../assets/avatar_customer.png')}
+                source={typeUser==='SENDER'?require('../../assets/avatar_postman.png'):require('../../assets/avatar_customer.png')}
               />
             </View>
             <View style={{ flex: 1 }}>

@@ -49,17 +49,14 @@ class AppStore {
       } else {
         this.isLoading = false;
         this.isError = true;
-        if (onError) {
-          onError('');
-        }
+        Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+
       }
     } catch (error) {
 
       this.isLoading = false;
       this.isError = true;
-      if (onError) {
-        onError(JSON.stringify(error));
-      }
+      Alert.alert('Thông báo',  'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
       Log(error);
     }
   }
@@ -89,27 +86,30 @@ class AppStore {
             }
           }
         } else {
-          if (onError) {
-            onError(response.data?.message);
-          } else {
+          // if (onError) {
+          //   onError(response.data?.message);
+          // } else {
             Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
-          }
+          // }
         }
       } else {
         this.createConversationLoading = false;
         this.createConversationError = true;
-        if (onError) {
-          onError('');
-        }
+        Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+
+        // if (onError) {
+        //   onError('');
+        // }
       }
     } catch (error) {
 
       this.createConversationLoading = false;
       this.createConversationError = true;
-      if (onError) {
-        onError(error);
-      }
-      Log(error);
+      Alert.alert('Thông báo',  'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+      // if (onError) {
+      //   onError(error);
+      // }
+      // Log(error);
     }
   }
 
@@ -139,22 +139,16 @@ class AppStore {
             }])
             return
           }
-          if (onError) {
-            onError(response.data?.message);
-          } else {
-            Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
-          }
+          Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+
         }
       } else {
-        if (onError) {
-          onError('');
-        }
+        Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+
       }
     } catch (error) {
-      if (onError) {
-        onError(error);
-      }
-      Log(error);
+      Alert.alert('Thông báo',  'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+
     }
   }
   async createConversationWithCS(params, onSuccess, onError) {
@@ -179,23 +173,16 @@ class AppStore {
 
           }
         } else {
-          if (onError) {
-            onError(response.data?.message);
-          } else {
-            Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+          Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
 
-          }
         }
       } else {
-        if (onError) {
-          onError('Có lỗi xảy ra. Vui lòng thử lại');
-        }
+        Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+
       }
     } catch (error) {
-      if (onError) {
-        onError(error);
-      }
-      Log(error);
+      Alert.alert('Thông báo',  'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+
     }
   }
 
@@ -243,7 +230,7 @@ class AppStore {
       }
 
     } catch (error) {
-      alert(error)
+      Alert.alert('Thông báo', 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
     }
   }
 
@@ -323,7 +310,8 @@ class AppStore {
       }
 
     } catch (error) {
-      alert(error)
+      Alert.alert('Thông báo',  'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+
     }
   }
 
@@ -340,7 +328,8 @@ class AppStore {
       }
 
     } catch (error) {
-      alert(error)
+      Alert.alert('Thông báo',  'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+
     }
   }
 
@@ -357,7 +346,8 @@ class AppStore {
       }
 
     } catch (error) {
-      alert(error)
+      Alert.alert('Thông báo', 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+
     }
   }
 }
