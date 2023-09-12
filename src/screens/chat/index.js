@@ -317,7 +317,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                 // inverted
                 renderItem={({ item, index }) => (
                   <View style={{transform: [{scaleY: -1}]}}>
-                    <ChatItem item={item} index={index} conversation={conversation} componentId={props.componentId} />
+                    <ChatItem item={item} index={index} data={chatStore.data} conversation={conversation} componentId={props.componentId} />
                   </View>
                 )}
                 getItemType={(item, index) => {

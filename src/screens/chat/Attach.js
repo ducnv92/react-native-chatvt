@@ -31,7 +31,7 @@ import ModalStyled from "react-native-modal";
 
 
 const QuickMessageModal = observer(function QuickMessageModal(props) {
-  const [isFocus, setIsFocus] = useState(true)
+  const [isFocus, setIsFocus] = useState(false)
   const [isModalVisible, setModalVisible] = useState(false)
   const updateQuickMessage = () => {
     if (!(quickMessageStore.currentMessage.text && quickMessageStore.currentMessage.text.trim() !== '')) {
@@ -93,25 +93,26 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
               <TextInput
                 value={quickMessageStore.currentMessage.text}
                 multiline={true}
-                autoFocus={true}
                 onFocus={() => setIsFocus(true)}
-                placeholder={'Nội dung tin nhắn'}
+                onBlur={() => setIsFocus(false)}
+                placeholder={'Nhập nội dung tin nhắn'}
+                placeholderTextColor={'#B5B4B8'}
                 // numberOfLines={10}
-                style={{ textAlignVertical: 'top', height: 132, margin: 16, lineHeight: 20, borderColor: isFocus ? '#B1C1D1' : '#DCE6F0', borderWidth: 1, borderRadius: 10, padding: 12 }}
+                style={{ textAlignVertical: 'top', fontWeight: '500', height: 132, margin: 16, lineHeight: 20, borderColor: isFocus ? '#B1C1D1' : '#DCE6F0', borderWidth: 1, borderRadius: 10, padding: 12 }}
                 onChangeText={text => {
                   quickMessageStore.currentMessage = { ...quickMessageStore.currentMessage, ...{ text } }
                 }}
               />
               <TouchableOpacity
                 onPress={updateQuickMessage}
-                style={{ margin: 16, alignItems: 'center', justifyContent: 'center', padding: 16, backgroundColor: colors.primary, borderRadius: 10 }}>
+                style={{ margin: 16, marginBottom: 4, alignItems: 'center', justifyContent: 'center', padding: 16, backgroundColor: colors.primary, borderRadius: 10 }}>
                 <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>{quickMessageStore.currentMessage._id?'Lưu chỉnh sửa':'Lưu chat nhanh'}</Text>
               </TouchableOpacity>
               {
                 quickMessageStore.currentMessage._id &&
                 <TouchableOpacity
                   onPress={()=>setModalVisible(true)}
-                  style={{ margin: 16, marginTop: 4, alignItems: 'center', justifyContent: 'center', padding: 16, backgroundColor: 'white', borderRadius: 10 }}>
+                  style={{ margin: 16, marginTop: 0, alignItems: 'center', justifyContent: 'center', padding: 16, backgroundColor: 'white', borderRadius: 10 }}>
                   <Text style={{ color: colors.primary, fontWeight: '600', fontSize: 15 }}>{'Xoá tin chat'}</Text>
                 </TouchableOpacity>
               }
@@ -135,11 +136,11 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
                 <Image source={require('../../assets/ic_trash.png')} style={{width: 38, height: 38, resizeMode: 'contain'}}/>
               </View>
             </View>
-            <Text style={{fontSize: 17, lineHeight: 24, fontWeight: '600', color: colors.primaryText, marginBottom: 50 }}>Quý khách có chắc chắn muốn xoá tin chat nhanh này không?</Text>
+            <Text style={{fontSize: 17, lineHeight: 24, fontWeight: '600', color: colors.primaryText, marginBottom: 50, textAlign: 'center' }}>Quý khách có chắc chắn muốn xoá tin chat nhanh này không?</Text>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <TouchableOpacity
                 onPress={()=>setModalVisible(false)}
-                style={{flex: 1, marginRight: 12, paddingVertical: 10, borderRadius: 4, borderColor: colors.primary, alignItems: 'center', justifyContent: 'center'}}
+                style={{flex: 1, marginRight: 12, paddingVertical: 10, borderRadius: 4, borderColor: colors.primary, borderWidth: 1, alignItems: 'center', justifyContent: 'center'}}
               >
                 <Text style={{fontSize: 15, lineHeight: 24, fontWeight: '600', color: colors.primary }}>Bỏ qua</Text>
               </TouchableOpacity>
@@ -682,6 +683,7 @@ export const Input = observer(function Input() {
         paddingTop: 18,
         padding: 12,
         fontFamily: 'SVN-GilroyMedium',
+        maxHeight: 250
       }}
     />
   )

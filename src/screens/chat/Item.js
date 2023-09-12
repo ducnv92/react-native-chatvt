@@ -14,7 +14,14 @@ import {
 import colors from '../../Styles';
 import moment from 'moment/moment';
 import ParsedText from 'react-native-parsed-text';
-import {DownloadViewFile, formatDuration, groupBy, orderStatus, participantType} from '../../utils';
+import {
+  DownloadViewFile,
+  formatDuration,
+  formatTimeLastMessage,
+  groupBy,
+  orderStatus,
+  participantType
+} from '../../utils';
 import { createThumbnail } from '../../components/createThumbnail';
 import ImageViewing from '../../components/imageView/ImageViewing';
 // import FastImage from 'react-native-fast-image';
@@ -43,6 +50,7 @@ import stickerStore from "./StickerStore";
 const MapItem = function (props) {
   const right = props.right;
   return (
+    <View>
     <View
       style={{
         flexDirection: 'row',
@@ -95,6 +103,32 @@ const MapItem = function (props) {
           </MapView>
         </View>
       </ContainChatItem>
+    </View>
+      {
+        !props.topMe &&
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: right ? 'flex-end' : 'flex-start',
+            alignItems: 'center',
+          }}
+        >
+          <Text
+            style={{
+              fontWeight: '400',
+              fontSize: 10,
+              marginHorizontal: 16,
+              color: colors.neutralText,
+              marginTop: 4,
+              textAlign: right ? 'right' : 'left',
+            }}
+          >
+            {formatTimeLastMessage(props.item.created_at)}
+          </Text>
+        </View>
+
+      }
+
     </View>
   );
 };
@@ -173,6 +207,7 @@ const VoiceItem = function (props) {
 
 
   return (
+    <View>
     <View
       style={{
         flexDirection: 'row',
@@ -233,6 +268,32 @@ const VoiceItem = function (props) {
           <Text style={{ width: 55, textAlign: 'right', fontWeight: '500', fontSize: 15, color: right ? 'white' : colors.neutralText }}>{currentTime}</Text>
         </View>
       </ContainChatItem>
+    </View>
+      {
+        !props.topMe &&
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: right ? 'flex-end' : 'flex-start',
+            alignItems: 'center',
+          }}
+        >
+          <Text
+            style={{
+              fontWeight: '400',
+              fontSize: 10,
+              color: colors.neutralText,
+              marginTop: 4,
+              marginHorizontal: 16,
+              textAlign: right ? 'right' : 'left',
+            }}
+          >
+            {formatTimeLastMessage(props.item.created_at)}
+          </Text>
+        </View>
+
+      }
+
     </View>
   );
 };
@@ -307,6 +368,29 @@ export const VideoItem = function (props) {
         visible={!isPause}
         onRequestClose={() => setIsPause(true)}
       />
+      {
+        !props.topMe &&
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: right ? 'flex-end' : 'flex-start',
+            alignItems: 'center',
+          }}
+        >
+          <Text
+            style={{
+              fontWeight: '400',
+              fontSize: 10,
+              color: colors.neutralText,
+              marginTop: 4,
+              textAlign: right ? 'right' : 'left',
+            }}
+          >
+            {formatTimeLastMessage(props.item.created_at)}
+          </Text>
+        </View>
+
+      }
     </View>
   );
 };
@@ -364,7 +448,7 @@ const MessageItem = function (props) {
             )}
 
             <View
-              style={{ borderRadius: 10, overflow: 'hidden', maxWidth: '75%' }}
+              style={{ borderRadius: 10, overflow: 'hidden', maxWidth: '75%', borderTopRightRadius: right && props.bottomMe?6:10 }}
             >
               {item.attachmentLocal && item.attachmentLocal.length > 0 && (
                 <View
@@ -598,33 +682,29 @@ const MessageItem = function (props) {
               )}
             </View>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: right ? 'flex-end' : 'flex-start',
-              alignItems: 'center',
-            }}
-          >
-            <Text
+          {
+            !props.topMe &&
+            <View
               style={{
-                fontWeight: '400',
-                fontSize: 10,
-                color: colors.neutralText,
-                marginTop: 4,
-                textAlign: right ? 'right' : 'left',
+                flexDirection: 'row',
+                justifyContent: right ? 'flex-end' : 'flex-start',
+                alignItems: 'center',
               }}
             >
-              {new Date(item.created_at).getFullYear() <
-                new Date().getFullYear()
-                ? moment(item.created_at).format('DD/MM/YYYY')
-                : moment(item.created_at).fromNow().includes('days')
-                  ? `${moment(item.created_at).format('DD/MM')}`
-                  : moment(item.created_at).fromNow().includes('day')
-                    ? `${moment(item.created_at).format('DD/MM')}`
-                    : moment(item.created_at).format('HH:mm')}
-            </Text>
-          </View>
+              <Text
+                style={{
+                  fontWeight: '400',
+                  fontSize: 10,
+                  color: colors.neutralText,
+                  marginTop: 4,
+                  textAlign: right ? 'right' : 'left',
+                }}
+              >
+                {formatTimeLastMessage(item.created_at)}
+              </Text>
+            </View>
 
+          }
           {item.status === 'error' && (
             <Text
               style={{
@@ -679,6 +759,10 @@ const MessageItem = function (props) {
                   borderRadius: 10,
                   borderWidth: right ? 0 : 1,
                   borderColor: '#DCE6F0',
+                  borderTopRightRadius: (right && props.bottomMe)?6:10,
+                  borderBottomRightRadius: (right && props.topMe)?6:10,
+                  borderTopLeftRadius: (!right && props.topMe)?6:10,
+                  borderBottomLeftRadius: (!right && props.bottomMe)?6:10,
                 }}>
 
                   <ParsedText
@@ -728,9 +812,33 @@ const MessageItem = function (props) {
                   </ParsedText>
                 </View>
               </ContainChatItem>
+
             </View>
           </View>
           {/*<Emoji {...props}/>*/}
+          {
+            !props.topMe &&
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: right ? 'flex-end' : 'flex-start',
+                alignItems: 'center',
+              }}
+            >
+              <Text
+                style={{
+                  fontWeight: '400',
+                  fontSize: 10,
+                  color: colors.neutralText,
+                  marginTop: 4,
+                  textAlign: right ? 'right' : 'left',
+                }}
+              >
+                {formatTimeLastMessage(item.created_at)}
+              </Text>
+            </View>
+
+          }
 
           {item.status === 'sending' && (
             <Text
@@ -973,32 +1081,29 @@ const DocumentItem = function (props) {
               </ContainChatItem>
             </View>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: right ? 'flex-end' : 'flex-start',
-              alignItems: 'center',
-            }}
-          >
-            <Text
+          {
+            !props.topMe &&
+            <View
               style={{
-                fontWeight: '400',
-                fontSize: 10,
-                color: colors.neutralText,
-                marginTop: 4,
-                textAlign: right ? 'right' : 'left',
+                flexDirection: 'row',
+                justifyContent: right ? 'flex-end' : 'flex-start',
+                alignItems: 'center',
               }}
             >
-              {new Date(item.created_at).getFullYear() <
-                new Date().getFullYear()
-                ? moment(item.created_at).format('DD/MM/YYYY')
-                : moment(item.created_at).fromNow().includes('days')
-                  ? `${moment(item.created_at).format('DD/MM')}`
-                  : moment(item.created_at).fromNow().includes('day')
-                    ? `${moment(item.created_at).format('DD/MM')}`
-                    : moment(item.created_at).format('HH:mm')}
-            </Text>
-          </View>
+              <Text
+                style={{
+                  fontWeight: '400',
+                  fontSize: 10,
+                  color: colors.neutralText,
+                  marginTop: 4,
+                  textAlign: right ? 'right' : 'left',
+                }}
+              >
+                {formatTimeLastMessage(item.created_at)}
+              </Text>
+            </View>
+
+          }
           {item.status === 'error' && (
             <Text
               style={{
@@ -1296,12 +1401,28 @@ export class ChatItem extends React.Component {
   }
 
   render() {
-    const right =
-      this.item.sender === appStore.user.type + '_' + appStore.user.user_id;
+    const userIdFull = appStore.user.type + '_' + appStore.user.user_id
+    const right = this.item.sender === userIdFull;
+
+    let topMe = false
+    let bottomMe = false
+    try{
+      topMe = this.props.data[this.props.index-1].sender===this.item.sender && this.props.data[this.props.index-1].type !== 'QUOTE_ORDER'
+    }catch (e) {
+    }
+
+    try{
+          bottomMe= this.props.data[this.props.index+1].sender===this.item.sender && this.props.data[this.props.index+1].type !== 'QUOTE_ORDER'
+    }catch (e) {
+    }
+
+    if(this.props.index===0){
+
+    }
 
     let messageView;
     if (this.item.type === 'MESSAGE') {
-      messageView = <MessageItem item={this.props.item} right={right} />;
+      messageView = <MessageItem item={this.props.item} topMe={topMe} bottomMe={bottomMe} right={right} />;
     }
     if (
       this.item.type === 'CREATED_QUOTE_ORDER' ||
@@ -1389,7 +1510,7 @@ export class ChatItem extends React.Component {
         </View>
       );
     } else {
-      return <View style={{ paddingVertical: 2 }}>{messageView}</View>;
+      return <View style={{ }}>{messageView}</View>;
     }
   }
 }
