@@ -69,7 +69,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
     const prefix = isMe ? appStore.lang.list_chat.you + ': ' : '';
 
     try {
-      if (item.message.type === 'CREATED_QUOTE_ORDER') {
+      if (item.message?.type === 'CREATED_QUOTE_ORDER') {
         return (
           <Text
             numberOfLines={1}
@@ -88,7 +88,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
         );
       }
 
-      if (item.message.type === 'VOICE') {
+      if (item.message?.type === 'VOICE') {
         return (
           <View
             style={{
@@ -112,7 +112,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           </View>
         );
       }
-      if (item.message.type === 'LOCATION') {
+      if (item.message?.type === 'LOCATION') {
         return (
           <View style={{
             flex: 1,
@@ -134,7 +134,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           </View>
         );
       }
-      if (item.message.type === 'FILE') {
+      if (item.message?.type === 'FILE') {
         return (
           <View style={{
             flex: 1,
@@ -158,7 +158,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           </View>
         );
       }
-      if (item.message.type === 'STICKER') {
+      if (item.message?.type === 'STICKER') {
         return (
           <View style={{
             flex: 1,
@@ -178,7 +178,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           </View>
         );
       }
-      if (item.message.has_attachment) {
+      if (item.message?.has_attachment) {
         return (
           <Text
             numberOfLines={1}
@@ -195,8 +195,8 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           >
             {prefix +
               (isMe
-                ? `Bạn đã gửi ${item.message.attachment_ids.length} ảnh/video`
-                : `Bạn đã nhận ${item.message.attachment_ids.length} ảnh/video`)}
+                ? `Bạn đã gửi ${item.message?.attachment_ids.length} ảnh/video`
+                : `Bạn đã nhận ${item.message?.attachment_ids.length} ảnh/video`)}
           </Text>
         );
       }
@@ -213,7 +213,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
             setting?.unread_count > 0 ? colors.primaryText : colors.neutralText,
         }}
       >
-        {prefix + item.message.text}
+        {prefix + item.message?.text}
       </Text>
     );
   };
@@ -231,7 +231,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
     try {
       isMe =
         appStore.user.type + '_' + appStore.user.user_id ===
-        item.message.sender;
+        item.message?.sender;
       receiver = item.detail_participants.find(
         (i) => i.user_id !== appStore.user.user_id
       );
@@ -484,7 +484,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   </Text>
                 </Text>
                 <Text style={{ textAlign: 'right', color: colors.neutralText, fontSize: 13, fontWeight: setting?.unread_count > 0?'600':'500' }}>
-                  {formatTimeLastMessage(item.message.created_at)}
+                  {formatTimeLastMessage(item.message?.created_at)}
                 </Text>
               </View>
               <View
@@ -681,7 +681,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   )}{' '}
                 </Text>
                 <Text style={{ textAlign: 'right', color: colors.neutralText, fontWeight: setting?.unread_count > 0?'600':'500', fontSize: 13 }}>
-                  {formatTimeLastMessage(item.message.created_at)}
+                  {formatTimeLastMessage(item.message?.created_at)}
                 </Text>
               </View>
               <View
