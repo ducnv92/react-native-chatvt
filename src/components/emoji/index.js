@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import {FlatList, Image, Text, TouchableOpacity, View} from "react-native";
 import stickerStore from "../../screens/chat/StickerStore";
-
+import FastImage from 'react-native-fast-image';
 
 export default function EmojiKeyboard(props) {
 
@@ -19,7 +19,7 @@ export default function EmojiKeyboard(props) {
           }
         }}
         style={{flex: 1, paddingVertical: 9, alignItems: 'center', justifyContent: 'center'}}>
-        <Image source={{uri: item.attachment.url}} style={{width: 68, height: 68, resizeMode: 'contain'}}/>
+        <FastImage source={{uri: item.attachment.url}} style={{width: 68, height: 68, resizeMode: 'contain'}}/>
       </TouchableOpacity>
     )
   }

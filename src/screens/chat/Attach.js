@@ -93,6 +93,7 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
               <TextInput
                 value={quickMessageStore.currentMessage.text}
                 multiline={true}
+                autoFocus={true}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 placeholder={'Nhập nội dung tin nhắn'}
@@ -162,7 +163,7 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
 
 })
 const QuickMessage = observer(function QuickMessage(props) {
-  const snapPoints = useMemo(() => ['40%', '80%'], []);
+  const snapPoints = useMemo(() => ['48%', '80%'], []);
   const bottomSheetModalRef = useRef();
   const insets = useSafeAreaInsets();
 
@@ -223,7 +224,7 @@ const QuickMessage = observer(function QuickMessage(props) {
         }
       }}
     >
-      <View style={{ height: 56, flexDirection: 'row', alignItems: 'center', backgroundColor: '#F8F8FA' }}>
+      <View style={{ height: 56, flexDirection: 'row', alignItems: 'center', backgroundColor: '#F8F8FA', borderTopLeftRadius: 10, borderTopRightRadius: 10, }}>
         <Text style={{ position: 'absolute', width: '100%', textAlign: 'center', fontWeight: '600', fontSize: 17, color: '#44494D' }} >Chat nhanh</Text>
         <TouchableOpacity
           onPress={() => {
@@ -250,7 +251,7 @@ const QuickMessage = observer(function QuickMessage(props) {
         }
       </View>
       {
-        quickMessageStore.data.length === 0 &&
+        quickMessageStore.data.length === 0 ?
         <View style={{ flex: 1, }}>
           <Image source={require('../../assets/ic_quick_message_empty.png')} style={{ width: 124, height: 99, alignSelf: 'center' }} />
           <Text style={{ color: colors.neutralText, fontSize: 15, fontWeight: '500', textAlign: 'center' }}>Bạn chưa có tin nhắn chat nhanh</Text>
@@ -258,16 +259,17 @@ const QuickMessage = observer(function QuickMessage(props) {
             onPress={() => {
               quickMessageStore.showModal = true
             }}
-            style={{ position: 'absolute', bottom: 56, left: 16, right: 16, alignItems: 'center', justifyContent: 'center', padding: 16, backgroundColor: colors.primary, borderRadius: 10 }}>
+            style={{marginHorizontal: 16, marginTop: 36, alignItems: 'center', justifyContent: 'center', marginBottom: 16, padding: 16, backgroundColor: colors.primary, borderRadius: 10 }}>
             <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>Tạo tin nhắn nhanh</Text>
           </TouchableOpacity>
-        </View>
-      }
-      <BottomSheetFlatList
+        </View>:
+        <BottomSheetFlatList
         data={quickMessageStore.data}
         renderItem={renderItem}
         ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: '' }} />}
-      />
+        />
+      }
+
       <QuickMessageModal />
     </BottomSheetModal>
   )
@@ -618,7 +620,7 @@ export const AttachScreen = observer(function AttachScreen(props) {
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Image source={chatStore.tab === 0 ? require('../../assets/nav_photo_video_active.png') : require('../../assets/nav_photo_video.png')}
               style={{ width: 28, height: 28, resizeMode: 'contain' }} resizeMode={'contain'} />
-            <Text style={{ color: chatStore.tab === 0 ? colors.primary : colors.neutralText, fontSize: 13, fontWeight: '500', paddingTop: 6 }}>Ảnh, video</Text>
+            <Text style={{ color: chatStore.tab === 0 ? colors.primary : colors.neutralText, fontSize: 13, fontWeight: chatStore.tab === 0? '600':'500', paddingTop: 6 }}>Ảnh, video</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
@@ -627,14 +629,14 @@ export const AttachScreen = observer(function AttachScreen(props) {
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Image source={chatStore.tab === 1 ? require('../../assets/nav_quick_message_active.png') : require('../../assets/nav_quick_message_active.png')}
               style={{ width: 28, height: 28, resizeMode: 'contain', tintColor: chatStore.tab === 1 ? colors.primary : colors.sending }} resizeMode={'contain'} />
-            <Text style={{ color: chatStore.tab === 1 ? colors.primary : colors.neutralText, fontSize: 13, fontWeight: '500', paddingTop: 6 }}>Chat nhanh</Text>
+            <Text style={{ color: chatStore.tab === 1 ? colors.primary : colors.neutralText, fontSize: 13, fontWeight: chatStore.tab === 1? '600':'500', paddingTop: 6 }}>Chat nhanh</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={handleDocumentSelection}
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Image source={chatStore.tab === 2 ? require('../../assets/nav_document.png') : require('../../assets/nav_document.png')}
               style={{ width: 28, height: 28, resizeMode: 'contain' }} resizeMode={'contain'} />
-            <Text style={{ color: chatStore.tab === 2 ? colors.primary : colors.neutralText, fontSize: 13, fontWeight: '500', paddingTop: 6 }}>Tài liệu</Text>
+            <Text style={{ color: chatStore.tab === 2 ? colors.primary : colors.neutralText, fontSize: 13, fontWeight:chatStore.tab === 2? '600':'500', paddingTop: 6 }}>Tài liệu</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
@@ -643,7 +645,7 @@ export const AttachScreen = observer(function AttachScreen(props) {
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Image source={chatStore.tab === 3 ? require('../../assets/nav_location_active.png') : require('../../assets/nav_location.png')}
               style={{ width: 28, height: 28, resizeMode: 'contain' }} resizeMode={'contain'} />
-            <Text style={{ color: chatStore.tab === 3 ? colors.primary : colors.neutralText, fontSize: 13, fontWeight: '500', paddingTop: 6 }}>Gửi vị trí</Text>
+            <Text style={{ color: chatStore.tab === 3 ? colors.primary : colors.neutralText, fontSize: 13, fontWeight: chatStore.tab === 3? '600':'500', paddingTop: 6 }}>Gửi vị trí</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>

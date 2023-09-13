@@ -24,7 +24,7 @@ import {
 } from '../../utils';
 import { createThumbnail } from '../../components/createThumbnail';
 import ImageViewing from '../../components/imageView/ImageViewing';
-// import FastImage from 'react-native-fast-image';
+import FastImage from 'react-native-fast-image';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { toJS } from 'mobx';
@@ -368,29 +368,6 @@ export const VideoItem = function (props) {
         visible={!isPause}
         onRequestClose={() => setIsPause(true)}
       />
-      {
-        !props.topMe &&
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: right ? 'flex-end' : 'flex-start',
-            alignItems: 'center',
-          }}
-        >
-          <Text
-            style={{
-              fontWeight: '400',
-              fontSize: 10,
-              color: colors.neutralText,
-              marginTop: 4,
-              textAlign: right ? 'right' : 'left',
-            }}
-          >
-            {formatTimeLastMessage(props.item.created_at)}
-          </Text>
-        </View>
-
-      }
     </View>
   );
 };
@@ -605,17 +582,17 @@ const MessageItem = function (props) {
                   style={{
                     flexDirection: 'row',
                     flexWrap: 'wrap',
-                    gap: 4,
+                    // gap: 4,
                     justifyContent: right ? 'flex-end' : 'flex-start',
                   }}
                 >
                   <ContainChatItem {...props} style={{
                     flexDirection: 'row',
                     flexWrap: 'wrap',
-                    gap: 4,
+                    // gap: 4,
                     justifyContent: right ? 'flex-end' : 'flex-start',
                   }}>
-                    {item.attachments.map((attach) => {
+                    {item.attachments.map((attach, index) => {
                       if (
                         attach.url.toLowerCase().includes('jpg') ||
                         attach.url.toLowerCase().includes('png') ||
@@ -627,6 +604,9 @@ const MessageItem = function (props) {
                             style={{
                               width: item.attachments.length === 1 ? 200 : 120,
                               height: item.attachments.length === 1 ? 200 : 120,
+                              marginLeft: right?4:0,
+                              marginRight: !right?4:0,
+                              marginTop:index>=2?4:0
                             }}
                             key={attach.url}
                             onPress={() => {
@@ -667,6 +647,8 @@ const MessageItem = function (props) {
                             duration={attach.duration}
                             url={attach.url}
                             style={{
+                              marginTop:8,
+                              marginBottom:8,
                               backgroundColor: '#F2F2F2',
                               borderRadius: 5,
                               overflow: 'hidden',
@@ -687,7 +669,7 @@ const MessageItem = function (props) {
             <View
               style={{
                 flexDirection: 'row',
-                justifyContent: right ? 'flex-end' : 'flex-start',
+                justifyContent: props.right ? 'flex-end' : 'flex-start',
                 alignItems: 'center',
               }}
             >
@@ -697,7 +679,7 @@ const MessageItem = function (props) {
                   fontSize: 10,
                   color: colors.neutralText,
                   marginTop: 4,
-                  textAlign: right ? 'right' : 'left',
+                  textAlign: props.right ? 'right' : 'left',
                 }}
               >
                 {formatTimeLastMessage(item.created_at)}
@@ -1367,7 +1349,7 @@ const StickerItem = function (props) {
         marginHorizontal: 16,
       }}
     >
-        <Image source={{uri: stickerStore.getStickerImage(props.item.sticker_ids[0])}} style={{width: 86, height: 86, resizeMode: 'contain'}}/>
+        <FastImage source={{uri: stickerStore.getStickerImage(props.item.sticker_ids[0])}} style={{width: 86, height: 86, resizeMode: 'contain'}}/>
     </View>
   );
 };
@@ -1449,7 +1431,7 @@ export class ChatItem extends React.Component {
 
     if (!right && this.props.conversation.type === 'GROUP') {
       return (
-        <View style={{ flexDirection: 'row', paddingVertical: 4 }}>
+        <View style={{ flexDirection: 'row', paddingVertical: 4, alignItems: 'flex-start' }}>
           <Image
             source={this.item.sender.includes('VTM') ? require('../../assets/avatar_default.png') : require('../../assets/avatar_default_customer.png')}
             style={{
@@ -1467,6 +1449,8 @@ export class ChatItem extends React.Component {
                 fontSize: 13,
                 fontWeight: '500',
                 marginLeft: 10,
+                lineHeight: 18,
+                marginBottom: 4,
               }}
             >
               {this.getFullName(this.item.sender)}

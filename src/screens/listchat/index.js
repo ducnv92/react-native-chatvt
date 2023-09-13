@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {createRef, useEffect, useRef, useState} from 'react';
 import {
   TouchableOpacity,
   View,
@@ -27,6 +27,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
   const [showSearch, setShowSearch] = useState(false);
   const bottomSheetModalRef = useRef();
   const [query, setQuery] = useState("");
+  const currentSwipe = createRef()
 
   useEffect(() => {
     listChatStore.search = '';
@@ -98,7 +99,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           >
             <Image
               source={require('../../assets/ic_attach_message.png')}
-              style={{ width: 16, height: 16, resizeMode: 'contain' }}
+              style={{ width: 14, height: 14, resizeMode: 'contain', marginRight: 6 }}
             />
             <Text numberOfLines={1} style={{
               fontSize: 15,
@@ -120,7 +121,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           }}>
             <Image
               source={require('../../assets/ic_attach_message.png')}
-              style={{ width: 16, height: 16, resizeMode: 'contain' }}
+              style={{ width: 14, height: 14, resizeMode: 'contain', marginRight: 6 }}
             />
             <Text style={{
               fontSize: 15,
@@ -143,7 +144,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           >
             <Image
               source={require('../../assets/ic_attach_message.png')}
-              style={{ width: 16, height: 16, resizeMode: 'contain' }}
+              style={{ width: 12, height: 12, resizeMode: 'contain', marginRight: 6 }}
             />
             <Text numberOfLines={1}
               style={{
@@ -395,7 +396,14 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
     if (item.type === 'GROUP') {
       //Group Chat
       return (
-        <Swipeable rightButtonWidth={66} rightButtons={rightButtons}>
+        <Swipeable
+          onRightButtonsActivate={(event, gestureState, swipeable)=> {
+            currentSwipe.current?.recenter()
+          }}
+          onRightButtonsOpenRelease={(event, gestureState, swipeable)=> {
+            currentSwipe.current = swipeable
+          }}
+          rightButtonWidth={66} rightButtons={rightButtons}>
           <TouchableOpacity
             onPress={() => {
               try {
@@ -475,7 +483,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     - {orderStatus(item.orders[0]?.order_status)}{' '}
                   </Text>
                 </Text>
-                <Text style={{ textAlign: 'right', color: colors.neutralText }}>
+                <Text style={{ textAlign: 'right', color: colors.neutralText, fontSize: 13, fontWeight: setting?.unread_count > 0?'600':'500' }}>
                   {formatTimeLastMessage(item.message.created_at)}
                 </Text>
               </View>
@@ -572,7 +580,14 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
         //     })
         //   }}
         // >
-        <Swipeable rightButtonWidth={66} rightButtons={rightButtons}>
+        <Swipeable
+          onRightButtonsActivate={(event, gestureState, swipeable)=> {
+            currentSwipe.current?.recenter()
+          }}
+          onRightButtonsOpenRelease={(event, gestureState, swipeable)=> {
+            currentSwipe.current = swipeable
+          }}
+          rightButtonWidth={66} rightButtons={rightButtons}>
           <TouchableOpacity
             onPress={() => {
               try {
@@ -643,7 +658,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
               )}
             </View>
             <View style={{ flex: 1 }}>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text
                   style={{
                     flex: 1,
@@ -665,7 +680,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     </Text>
                   )}{' '}
                 </Text>
-                <Text style={{ textAlign: 'right', color: colors.neutralText }}>
+                <Text style={{ textAlign: 'right', color: colors.neutralText, fontWeight: setting?.unread_count > 0?'600':'500', fontSize: 13 }}>
                   {formatTimeLastMessage(item.message.created_at)}
                 </Text>
               </View>
@@ -824,7 +839,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     ? appStore.lang.list_chat.placeholder_search
                     : appStore.lang.list_chat.placeholder_search_VTM
                 }
-                placeholderTextColor={'white'}
+                placeholderTextColor={'#eeeeeed1'}
                 value={query}
                 autoFocus={true}
                 onChangeText={setQuery}
@@ -835,7 +850,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   flex: 1,
                 }}
               />
-              {listChatStore.search !== '' && (
+              {query !== '' && (
                 <TouchableOpacity
                   onPress={() => {
                     setQuery('')
@@ -857,7 +872,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                 </TouchableOpacity>
               )}
               <View style={{
-                width: 1, backgroundColor: '#FFFFFF', height: scale(30
+                width: 1, backgroundColor: '#eeeeee99', height: scale(20
                 )
               }} />
               <TouchableOpacity
@@ -869,7 +884,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   // listChatStore.getData({});
                 }}
                 style={{
-                  width: scale(50),
+                  width: scale(54),
                   height: scale(50),
                   justifyContent: 'center',
                   alignItems: 'flex-end',
