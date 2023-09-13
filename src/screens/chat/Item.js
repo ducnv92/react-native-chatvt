@@ -1738,18 +1738,6 @@ function ContainChatItem(props) {
                 resizeMode={'contain'}
               />
             )}
-            {reactObject.get('LOUDLY_CRYING') && (
-              <Image
-                source={require('../../assets/emoji_3.png')}
-                style={{
-                  width: 24,
-                  height: 24,
-                  resizeMode: 'contain',
-                  marginLeft: 8,
-                }}
-                resizeMode={'contain'}
-              />
-            )}
             {reactObject.get('WOW') && (
               <Image
                 source={require('../../assets/emoji_4.png')}
