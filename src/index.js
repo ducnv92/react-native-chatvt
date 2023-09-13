@@ -119,13 +119,15 @@ class ChatVT {
     });
   }
 
-  toChat(componentId, orderChat) {
+  toChat(componentId, orderChat, is_receiver) {
     appStore.componentId = componentId;
     if (orderChat) {
       appStore.createConversation(
         {
           vtm_user_ids: orderChat.vtm_user_ids,
           order_number: orderChat.order_number,
+          vtp_phone_numbers: orderChat.vtp_phone_numbers,
+          is_receiver: is_receiver
         },
         (conversation) => {
           Navigation.push(componentId, {
@@ -143,7 +145,7 @@ class ChatVT {
               },
               passProps: {
                 data: conversation,
-                order: orderChat.order,
+                order: orderChat?.order,
               },
             },
           });
@@ -153,12 +155,13 @@ class ChatVT {
     }
   }
 
-  chatWithReceiver(componentId, order) {
+  chatWithReceiver(componentId, order, is_receiver) {
     appStore.componentId = componentId;
     if (order?.ORDER_NUMBER) {
       appStore.createConversationWithReceiver(
         {
           order_number: order?.ORDER_NUMBER,
+          is_receiver: is_receiver,
         },
         (conversation) => {
           Navigation.push(componentId, {
@@ -185,7 +188,6 @@ class ChatVT {
       );
     }
   }
-
   chatWithCS(componentId, order) {
     appStore.componentId = componentId;
     appStore.createConversationWithCS(
