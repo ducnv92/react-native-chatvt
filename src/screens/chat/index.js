@@ -269,6 +269,30 @@ export const ChatScreen = observer(function ChatScreen(props) {
                     </Text>
                   </View>
                 )}
+                {conversation?.type === 'GROUP' && (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginTop: 2,
+                    }}
+                  >
+
+                    <Text
+                      style={{
+                        fontWeight: '500',
+                        fontSize: 13,
+                        color: 'white',
+                        textAlign: 'center',
+                      }}
+                    >
+                      {
+                        orderStatus(order?.order_status)
+                      }
+                    </Text>
+                  </View>
+                )}
+
               </View>
 
               <TouchableOpacity

@@ -35,7 +35,7 @@ end
 
 target 'ChatvtExample' do
     config = use_native_modules!
-    use_react_native!(:path => config["reactNativePath"])
+    use_react_native!(:path => config[:reactNativePath] )
 
   pod 'Google-Maps-iOS-Utils', :git => 'https://github.com/Simon-TechForm/google-maps-ios-utils.git', :branch => 'feat/support-apple-silicon'
 
@@ -65,7 +65,7 @@ target 'ChatvtExample' do
 
   pod 'react-native-camera', path: '../node_modules/react-native-camera', subspecs: [
   ]
-  use_frameworks! :linkage => :static
+#   use_frameworks! :linkage => :static
 #   post_install do |installer|
 #     react_native_post_install(
 #       installer,

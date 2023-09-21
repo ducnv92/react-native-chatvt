@@ -18,6 +18,7 @@ import { AttachsScreen } from './screens/attachs';
 import BottomSheetChatOptions from './components/bottomSheetChatOptions';
 import BottomSheetChatOptionsVTM from './components/bottomSheetChatOptions/VTM';
 import listChatStore from './screens/listchat/ListChatStore';
+import Socket from "./socket";
 
 function safeAreaProviderHOC(Component) {
   function Wrapper(props) {
@@ -311,7 +312,7 @@ class ChatVT {
       appStore.env = 'DEV';
       appStore.changeLanguage('VI');
       await MyAsyncStorage.save(USER, data);
-      await socket.init();
+      await Socket.getInstance().init();
 
       Navigation.push(componentId, {
         component: {

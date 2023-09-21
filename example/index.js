@@ -14,8 +14,10 @@ import { NativeModules } from 'react-native';
 // Navigation.registerComponent(appName, () => App);
 
 import { Login } from './src/login';
+import {ScanQR} from "./src/scanQR";
 
 Navigation.registerComponent("Login", () => Login)
+Navigation.registerComponent("Admin.ScanQR", () => ScanQR)
 
 Navigation.registerComponent("App", () => CodePush({
   checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
@@ -32,8 +34,14 @@ Navigation.events().registerAppLaunchedListener(() => {
         children: [
           {
             component: {
-              name: 'App',
-
+              name: 'Login',
+              passProps: {
+                data: {
+                  app: 'Admin',
+                  username: 'superadmin',
+                  password: 'viettel@admin',
+                }
+              }
             }
           }
         ]

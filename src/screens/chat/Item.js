@@ -1337,7 +1337,6 @@ const OrderItem = function (props) {
 
 
 const StickerItem = function (props) {
-
   const right = props.right;
   return (
     <View
@@ -1349,7 +1348,7 @@ const StickerItem = function (props) {
         marginHorizontal: 16,
       }}
     >
-        <FastImage source={{uri: stickerStore.getStickerImage(props.item.sticker_ids[0])}} style={{width: 86, height: 86, resizeMode: 'contain'}}/>
+        <FastImage source={stickerStore.getStickerImage(props.item.sticker_ids[0])} style={{width: 86, height: 86, resizeMode: 'contain'}}/>
     </View>
   );
 };

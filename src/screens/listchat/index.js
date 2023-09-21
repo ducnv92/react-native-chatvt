@@ -912,8 +912,31 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
             >
               <TouchableOpacity
                 onPress={() => {
-                  if (props.buttonBack !== false) {
-                    Navigation.pop(props.componentId);
+                  if(appStore.appId==='Admin'){
+                    Navigation.push(props.componentId, {
+                      component: {
+                        name: 'Admin.ScanQR',
+                        options: {
+                          popGesture: false,
+                          bottomTabs: {
+                            visible: false,
+                          },
+                          topBar: {
+                            visible: false,
+                            height: 0,
+                          },
+                        },
+                        passProps: {
+                          callback: data=>{
+                            console.log(data)
+                          }
+                        },
+                      },
+                    });
+                  }else{
+                    if (props.buttonBack !== false) {
+                      Navigation.pop(props.componentId);
+                    }
                   }
                 }}
                 style={{
@@ -923,10 +946,16 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   alignItems: 'center',
                 }}
               >
-                {props.buttonBack !== false && (
+                {props.buttonBack !== false && appStore.appId!=='Admin' && (
                   <Image
                     style={{ height: 36, width: 36, resizeMode: 'contain' }}
                     source={require('../../assets/ic_back.png')}
+                  />
+                )}
+                {appStore.appId==='Admin' && (
+                  <Image
+                    style={{ height: 36, width: 36, resizeMode: 'contain' }}
+                    source={require('../../assets/ic_qr.png')}
                   />
                 )}
               </TouchableOpacity>

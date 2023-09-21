@@ -48,7 +48,7 @@
 	<key>NSCalendarsUsageDescription</key>
 	<string>YOUR TEXT</string>
 	<key>NSCameraUsageDescription</key>
-	<string>YOUR TEXT</string>
+	<string>Vui lòng cấp quyền truy cập máy ảnh</string>
 	<key>NSContactsUsageDescription</key>
 	<string>YOUR TEXT</string>
 	<key>NSFaceIDUsageDescription</key>
@@ -65,7 +65,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>YOUR TEXT</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>YOUR TEXT</string>
+	<string>Vui lòng cấp quyền truy cập mic</string>
 	<key>NSMotionUsageDescription</key>
 	<string>YOUR TEXT</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

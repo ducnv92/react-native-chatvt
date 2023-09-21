@@ -10,7 +10,7 @@ import _ from "lodash";
 
 
 class Socket{
-  URL = 'https://dev-receiverchat.viettelpost.vn';
+  URL = 'https://stag-receiverchat.viettelpost.vn';
 
   static instance
   socket

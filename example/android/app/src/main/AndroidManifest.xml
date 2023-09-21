@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
->
+          package="com.chatvtexample">
 
   <uses-permission android:name="android.permission.ACCEPT_HANDOVER" />
   <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
@@ -54,7 +54,6 @@
       android:usesCleartextTraffic="true"
       android:targetSandboxVersion="1"
       android:requestLegacyExternalStorage="true"
-      tools:overrideLibrary="com.arthenica.ffmpegkit.reactnative"
       android:theme="@style/AppTheme">
       <activity
         android:name=".MainActivity"

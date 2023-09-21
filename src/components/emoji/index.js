@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import {FlatList, Image, Text, TouchableOpacity, View} from "react-native";
+import {Dimensions, FlatList, Image, Text, TouchableOpacity, View} from "react-native";
 import stickerStore from "../../screens/chat/StickerStore";
 import FastImage from 'react-native-fast-image';
 
@@ -11,6 +11,7 @@ export default function EmojiKeyboard(props) {
 
 
   const renderItem = ({item, index}) => {
+    console.log('sticker item', item.attachment_id)
     return(
       <TouchableOpacity
         onPress={()=>{
@@ -18,8 +19,8 @@ export default function EmojiKeyboard(props) {
             props.onSelected(item)
           }
         }}
-        style={{flex: 1, paddingVertical: 9, alignItems: 'center', justifyContent: 'center'}}>
-        <FastImage source={{uri: item.attachment.url}} style={{width: 68, height: 68, resizeMode: 'contain'}}/>
+        style={{flex: 1, maxWidth: Dimensions.get('window').width/4, paddingVertical: 9, alignItems: 'center', justifyContent: 'center'}}>
+        <FastImage source={stickerStore.getStickerImage(item.attachment_id)} style={{width: 68, height: 68, resizeMode: 'contain'}}/>
       </TouchableOpacity>
     )
   }

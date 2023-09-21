@@ -75,7 +75,7 @@ export default function App(props: any) {
 
 
   return (
-    <SafeAreaView style={{  flex: 1, }} >
+    <SafeAreaView style={{  flex: 1 }} >
       <KeyboardAvoidingView
         style={{flex: 1, paddingHorizontal: 16, justifyContent: 'center'}}
         behavior={Platform.OS === 'ios' ? 'padding' : ''}>
