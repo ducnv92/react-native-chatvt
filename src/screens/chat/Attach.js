@@ -393,8 +393,8 @@ const LocationMessage = observer(function LocationMessage(props) {
         id: uuid.v4(),
         type: "LOCATION",
         location: {
-          latitude: chatStore.location.latitude,
-          longitude: chatStore.location.longitude,
+          latitude: currentPosition.latitude,
+          longitude: currentPosition.longitude,
         },
         status: "sending",
         sender: appStore.user.type + '_' + appStore.user.user_id,
