@@ -49,14 +49,14 @@ class AppStore {
       } else {
         this.isLoading = false;
         this.isError = true;
-        Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+        // Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
 
       }
     } catch (error) {
 
       this.isLoading = false;
       this.isError = true;
-      Alert.alert('Thông báo',  'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+      // Alert.alert('Thông báo',  'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
       Log(error);
     }
   }

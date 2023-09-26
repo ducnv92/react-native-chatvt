@@ -84,6 +84,9 @@ class ChatStore {
         }
       });
 
+      this.isLoading = false;
+      this.isLoadingMore = false;
+
       Log(response)
 
       if (response.status === 200) {
@@ -97,8 +100,6 @@ class ChatStore {
             } else {
               this.data = [...this.data, ...response.data.data];
             }
-            this.isLoading = false;
-            this.isLoadingMore = false;
             this.canLoadMore = response.data.data.length > 0
             this.isError = false;
             if (onSuccess) {
@@ -106,23 +107,23 @@ class ChatStore {
             }
           }
         } else {
-          alert(response.data.message)
+          // alert(response.data.message)
         }
       } else {
         this.isLoading = false;
         this.isLoadingMore = false;
         this.isError = true;
-        if (onError) {
-          onError('');
-        }
+        // if (onError) {
+        //   onError('');
+        // }
       }
     } catch (error) {
       this.isLoading = false;
       this.isLoadingMore = false;
       this.isError = true;
-      if (onError) {
-        onError(JSON.stringify(error));
-      }
+      // if (onError) {
+      //   onError(JSON.stringify(error));
+      // }
       Log(error);
     }
   }

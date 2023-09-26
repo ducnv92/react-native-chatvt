@@ -1132,27 +1132,27 @@ const OrderItem = function (props) {
 
     return (
       <TouchableOpacity
-        onPress={() => {
-          try {
-            Navigation.push(appStore.componentId, {
-              component: {
-                id: 'OrderInfomationtScreenID',
-                name: 'OrderInfomationtScreen',
-                passProps: {
-                  orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
-                  isSender: 1,
-                },
-                options: {
-                  bottomTabs: {
-                    visible: false,
-                  },
-                },
-              },
-            });
-          } catch (e) {
-            alert(e);
-          }
-        }}
+        // onPress={() => {
+        //   try {
+        //     Navigation.push(appStore.componentId, {
+        //       component: {
+        //         id: 'OrderInfomationtScreenID',
+        //         name: 'OrderInfomationtScreen',
+        //         passProps: {
+        //           orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
+        //           isSender: 1,
+        //         },
+        //         options: {
+        //           bottomTabs: {
+        //             visible: false,
+        //           },
+        //         },
+        //       },
+        //     });
+        //   } catch (e) {
+        //     alert(e);
+        //   }
+        // }}
       >
         <View
           style={{
