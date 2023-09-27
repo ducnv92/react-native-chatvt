@@ -82,10 +82,9 @@ export const Login =  observer(function Login ( props){
         onChangeText={text => setPassword(text)}
       />
       <Button
-        onPressOut={login}
         style={{marginTop: 30}}
         mode="contained" onPress={() => {
-
+        login()
       }}>
         Login
       </Button>

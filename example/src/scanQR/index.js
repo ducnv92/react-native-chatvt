@@ -7,44 +7,52 @@ import {
   FlatList,
   Platform,
   KeyboardAvoidingView,
-  StyleSheet, Linking, ActivityIndicator,
+  StyleSheet, Linking, ActivityIndicator, Alert,
 } from 'react-native';
 import { observer } from 'mobx-react-lite';
 import { Navigation } from 'react-native-navigation';
 import {Button, TextInput} from 'react-native-paper'
 import Image from 'react-native-fast-image';
+import {chatVT} from 'react-native-chatvt';
 import AsyncStorage from '@react-native-community/async-storage';
-import {BarcodeFormat, scanBarcodes, useScanBarcodes} from "vision-camera-code-scanner";
-import {Camera, useCameraDevices, useFrameProcessor} from "react-native-vision-camera";
+// import {BarcodeFormat, scanBarcodes, useScanBarcodes} from "vision-camera-code-scanner";
+// import {Camera, useCameraDevices, useFrameProcessor} from "react-native-vision-camera";
 
-
+import QRCodeScanner from 'react-native-qrcode-scanner';
+import jwt_decode from "jwt-decode";
+import listChatStore from "../../../src/screens/listchat/ListChatStore";
 
 export const ScanQR =  observer(function ScanQR ( props){
+  const [reactive, setReactive] = useState(true)
 
-  const [hasPermission, setHasPermission] = React.useState(false);
-  const devices = useCameraDevices();
-  const device = devices.back;
+  const  onSuccess = async (e) =>{
+    console.log('ScanQR', e.data)
+    // alert(JSON.stringify(e.data))
+    try{
+      var decoded = jwt_decode(e.data, { header: true });
+      console.log('decoded', decoded)
 
-  // const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
-  //   checkInverted: true,
-  // });
+      if(decoded?.conversation_id) {
+        setReactive(false)
+        chatVT.toConversation(props.componentId, decoded?.conversation_id)
+      }
+    }catch (e) {
+      alert(e)
+    }
 
-  // Alternatively you can use the underlying function:
-  //
-  const frameProcessor = useFrameProcessor((frame) => {
-    const detectedBarcodes = scanBarcodes(frame, [BarcodeFormat.QR_CODE], { checkInverted: true });
-    console.log(detectedBarcodes)
-  }, []);
+    // Linking.openURL(e.data).catch(err =>
+    //   console.error('An error occured', err)
+    // );
+  }
 
-
-
-  React.useEffect(() => {
-    (async () => {
-      const status = await Camera.requestCameraPermission();
-      console.log(status)
-      setHasPermission(status === 'authorized');
-    })();
-  }, []);
+  useEffect(()=>{
+    Navigation.events().registerComponentDidAppearListener(
+      ({ componentId, componentName, passProps }) => {
+        console.log('componentName', componentName)
+        setReactive(componentName === 'Admin.ScanQR')
+      }
+    )
+  }, [])
 
   return (
 
@@ -75,15 +83,12 @@ export const ScanQR =  observer(function ScanQR ( props){
             <Text style={{ fontFamily: "SVN-GilroySemiBold", position: 'absolute', textAlign: 'center', width: '100%', alignSelf: 'center',  fontSize: 16, color: "white"}}>Quét mã QR</Text>
         </View>
         {
-          (device != null &&
-          hasPermission )? ( <Camera
-            style={{flex: 1,}}
-            device={device}
-            isActive={true}
-            frameProcessor={frameProcessor}
-            frameProcessorFps={5}
-          />    ):
-            <ActivityIndicator color={'#EE0033'} style={{margin: 24}}/>
+          reactive &&
+          <QRCodeScanner
+            reactivate={true}
+            onRead={onSuccess}
+          />
+
         }
 
       </View>
