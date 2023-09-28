@@ -201,10 +201,13 @@ export const ChatScreen = observer(function ChatScreen(props) {
                   >
                     <Text
                       style={{
+                        flex: 1,
                         fontWeight: '600',
                         fontSize: 17,
                         color: 'white',
+                        textAlign: 'center'
                       }}
+                      numberOfLines={2} ellipsizeMode='tail'
                     >
                       {conversation?.type === 'GROUP'
                         ? 'Đơn ' + conversation?.order_numbers[0]

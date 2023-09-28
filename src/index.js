@@ -439,34 +439,6 @@ class ChatVT {
       (error) => alert(error)
     );
   };
-
-  toConversation = async (componentId, conversation_id) => {
-    appStore.conversationDetail(
-      {
-        conversation_id: conversation_id,
-      },
-      (conversation) => {
-        Navigation.push(componentId, {
-          component: {
-            name: 'ChatScreen',
-            options: {
-              popGesture: false,
-              bottomTabs: {
-                visible: false,
-              },
-              topBar: {
-                visible: false,
-                height: 0,
-              },
-            },
-            passProps: {
-              data: conversation,
-            },
-          },
-        });
-      }
-    );
-  };
 }
 export const chatVT = new ChatVT();
 export const ListChat = ListChatScreen;

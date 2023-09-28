@@ -42,7 +42,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
     () => {
       return {
         updateData(data, order, orderType, typeUser) {
-            console.log('udpate', typeUser)
+            console.log('order', order)
           setData(data);
           setOrder(order);
             setTypeUser(typeUser);
@@ -89,7 +89,12 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
             },
             passProps: {
               data: conversation,
-              order: order,
+              order: {...order,
+                  ...{
+                      order_number: order_code,
+                      ma_phieugui: order_code,
+                  }
+              },
             },
           },
         });
