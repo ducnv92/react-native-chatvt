@@ -11,6 +11,7 @@ import {
   TouchableNativeFeedback,
   TouchableOpacity,
   View,
+    Modal,
   Linking, Platform
 } from "react-native";
 import {
@@ -30,8 +31,7 @@ import { Navigation } from 'react-native-navigation';
 import services from '../../services';
 
 const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
-  const snapPoints = useMemo(() => ['30%'], []);
-  const bottomSheetRef = useRef();
+  const [show, setShow] = useState(false);
   const [data, setData] = useState([]);
   const [order, setOrder] = useState({});
   const [typeUser, setTypeUser] = useState('');
@@ -46,13 +46,13 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
           setData(data);
           setOrder(order);
             setTypeUser(typeUser);
-          setIsSender(orderType!==4)
+          setIsSender(typeUser==='SENDER')
         },
         present() {
-          bottomSheetRef.current?.present();
+          setShow(true)
         },
         dismiss() {
-          bottomSheetRef.current?.dismiss();
+            setShow(false)
         },
       }; // the forwarded ref value
     },
@@ -65,7 +65,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
   const toChatWithCustomer = async (order_code, type) => {
       console.log('type', type)
     try {
-        bottomSheetRef.current?.dismiss();
+        setShow(false)
     } catch (e) {}
     appStore.createConversation(
       {
@@ -101,36 +101,30 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
 
 
   return (
-    <BottomSheetModalProvider>
-      <BottomSheetModal
-        ref={bottomSheetRef}
-        backdropComponent={() => {
-          return (
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={() =>  bottomSheetRef.current?.dismiss()}
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                backgroundColor: '#00000059',
-              }}
-            />
-          );
-        }}
-        index={0}
-        snapPoints={snapPoints}
-        onDismiss={() => {}}
+      <Modal
+          visible={show}
+          transparent={true}
+         animationType={"fade"}
       >
-        <SafeAreaView style={{ flex: 1 }}>
+          <TouchableOpacity
+              activeOpacity={1}
+              onPress={() =>  setShow(false)}
+              style={{
+                  flex: 1,
+                  backgroundColor: '#00000059',
+              }}
+          >
+        <SafeAreaView style={{ flex: 1, justifyContent: 'flex-end' }}>
+            <View style={{borderTopLeftRadius: 16,
+                borderTopRightRadius: 16, overflow: 'hidden'}}>
           <TouchableOpacity
             onPress={()=>{
-              bottomSheetRef.current?.dismiss();
+              setShow(false)
               if(isSender){
 
                   Linking.openURL(
                       `sms:${
-                          order.dienthoai_nguoigui
+                          order.tel_khgui?order.tel_khgui:order.dienthoai_nguoigui
                       }${Platform.OS === 'ios' ? '&' : '?'}body=${''}`,
                   );
                   return
@@ -182,7 +176,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
                 ></View>
             </View>
           <TouchableOpacity
-            onPress={()=>toChatWithCustomer(isSender?order.ma_vandon:order.ma_phieugui, typeUser)}
+            onPress={()=>toChatWithCustomer(isSender?(order.ma_vandon?order.ma_vandon:order.ma_phieugui):order.ma_phieugui, typeUser)}
             style={{
               flexDirection: 'row',
               backgroundColor: 'white',
@@ -219,14 +213,14 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
                   paddingTop: 4,
                 }}
               >
-                {isSender?order.order_sendname:(typeUser ==='SENDER'?order.ten_khgui:order.ten_khnhan)}
+                {isSender?(order.ten_khgui?order.ten_khgui:order.ten_nguoigui):(typeUser ==='SENDER'?order.ten_khgui:order.ten_khnhan)}
               </Text>
             </View>
           </TouchableOpacity>
-
+            </View>
         </SafeAreaView>
-      </BottomSheetModal>
-    </BottomSheetModalProvider>
+          </TouchableOpacity>
+      </Modal>
   );
 });
 
