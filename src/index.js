@@ -15,6 +15,7 @@ import colors from './Styles';
 import React from 'react';
 import { StatusBar } from 'react-native';
 import { AttachsScreen } from './screens/attachs';
+import { ViewFileScreen } from './screens/webview';
 import BottomSheetChatOptions from './components/bottomSheetChatOptions';
 import BottomSheetChatOptionsVTM from './components/bottomSheetChatOptions/VTM';
 import listChatStore from './screens/listchat/ListChatStore';
@@ -54,6 +55,9 @@ class ChatVT {
     );
     Navigation.registerComponent('AttachsScreen', () =>
       gestureHandlerRootHOC(safeAreaProviderHOC(AttachsScreen))
+    );
+    Navigation.registerComponent('ViewFileScreen', () =>
+      gestureHandlerRootHOC(safeAreaProviderHOC(ViewFileScreen))
     );
     const screenEventListener =
       Navigation.events().registerComponentDidAppearListener(
@@ -260,7 +264,7 @@ class ChatVT {
               conversation_id: conversation_id,
             },
             (conversation) => {
-              //Navigation.pop('ChatScreen')
+              Navigation.popTo('ListChatScreen')
               Navigation.push(componentId, {
                 component: {
                   id: 'ChatScreen',
@@ -291,7 +295,7 @@ class ChatVT {
           conversation_id: conversation_id,
         },
         (conversation) => {
-          //Navigation.pop('ChatScreen')
+          Navigation.popTo('ListChatScreen')
           Navigation.push(componentId, {
             component: {
               id: 'ChatScreen',
