@@ -102,9 +102,12 @@ class ChatVT {
   }
 
   toListChat(componentId) {
-    appStore.componentId = componentId;
+    if(componentId){
+      appStore.componentId = componentId;
+    }
     Navigation.push(componentId, {
       component: {
+        id: 'ListChatScreen',
         name: 'ListChatScreen',
         options: {
           popGesture: false,
@@ -121,7 +124,9 @@ class ChatVT {
   }
 
   toChat(componentId, orderChat, is_receiver) {
-    appStore.componentId = componentId;
+    if(componentId){
+      appStore.componentId = componentId;
+    }
     if (orderChat) {
       appStore.createConversation(
         {
@@ -131,8 +136,10 @@ class ChatVT {
           is_receiver: is_receiver
         },
         (conversation) => {
+          //Navigation.pop('ChatScreen')
           Navigation.push(componentId, {
             component: {
+              id: 'ChatScreen',
               name: 'ChatScreen',
               options: {
                 popGesture: false,
@@ -157,7 +164,9 @@ class ChatVT {
   }
 
   chatWithReceiver(componentId, order, is_receiver) {
-    appStore.componentId = componentId;
+    if(componentId){
+      appStore.componentId = componentId;
+    }
     if (order?.ORDER_NUMBER) {
       appStore.createConversationWithReceiver(
         {
@@ -165,8 +174,10 @@ class ChatVT {
           is_receiver: is_receiver,
         },
         (conversation) => {
+          //Navigation.pop('ChatScreen')
           Navigation.push(componentId, {
             component: {
+              id: 'ChatScreen',
               name: 'ChatScreen',
               options: {
                 popGesture: false,
@@ -190,14 +201,18 @@ class ChatVT {
     }
   }
   chatWithCS(componentId, order) {
-    appStore.componentId = componentId;
+    if(componentId){
+      appStore.componentId = componentId;
+    }
     appStore.createConversationWithCS(
       {
         order_number: order?.ORDER_NUMBER,
       },
       (conversation) => {
+        //Navigation.pop('ChatScreen')
         Navigation.push(componentId, {
           component: {
+            id: 'ChatScreen',
             name: 'ChatScreen',
             options: {
               popGesture: false,
@@ -245,8 +260,10 @@ class ChatVT {
               conversation_id: conversation_id,
             },
             (conversation) => {
+              //Navigation.pop('ChatScreen')
               Navigation.push(componentId, {
                 component: {
+                  id: 'ChatScreen',
                   name: 'ChatScreen',
                   options: {
                     popGesture: false,
@@ -274,8 +291,10 @@ class ChatVT {
           conversation_id: conversation_id,
         },
         (conversation) => {
+          //Navigation.pop('ChatScreen')
           Navigation.push(componentId, {
             component: {
+              id: 'ChatScreen',
               name: 'ChatScreen',
               options: {
                 popGesture: false,
@@ -303,7 +322,9 @@ class ChatVT {
   }
 
   loginAdmin(componentId, storage, username, password, onSuccess, onError) {
-    appStore.componentId = componentId;
+    if(componentId){
+      appStore.componentId = componentId;
+    }
     this.registerScreen();
 
     appStore.loginAdmin({ username, password }, async (data) => {
@@ -316,6 +337,7 @@ class ChatVT {
 
       Navigation.push(componentId, {
         component: {
+          id: 'ListChatScreen',
           name: 'ListChatScreen',
           options: {
             popGesture: false,
@@ -365,8 +387,10 @@ class ChatVT {
 
   vtpWithCS(componentId, order_number) {
     appStore.vtpWithCS({ order_number }, async (data) => {
+      //Navigation.pop('ChatScreen')
       Navigation.push(componentId, {
         component: {
+          id: 'ChatScreen',
           name: 'ChatScreen',
           options: {
             popGesture: false,
@@ -388,8 +412,10 @@ class ChatVT {
 
   vtmWithCS(componentId, order_number) {
     appStore.vtmWithCS({ order_number }, async (data) => {
+      //Navigation.pop('ChatScreen')
       Navigation.push(componentId, {
         component: {
+          id: 'ChatScreen',
           name: 'ChatScreen',
           options: {
             popGesture: false,
@@ -416,8 +442,10 @@ class ChatVT {
         chat_type: type,
       },
       (conversation) => {
+        //Navigation.pop('ChatScreen')
         Navigation.push(componentId, {
           component: {
+            id: 'ChatScreen',
             name: 'ChatScreen',
             options: {
               popGesture: false,

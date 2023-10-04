@@ -47,6 +47,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
   const navigationChat = (data) => {
     Navigation.push(props.componentId, {
       component: {
+        id: 'ChatScreen',
         name: 'ChatScreen',
         passProps: {
           data: data,
@@ -251,7 +252,8 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
 
               }
 
-              listChatStore.data.unshift(item)
+                listChatStore.data  = [message, ...listChatStore.data];
+
               listChatStore.dataPin = [...listChatStore.dataPin.filter(i => i._id !== item._id)]
               listChatStore.data = [...listChatStore.data]
             });
@@ -265,7 +267,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
               } catch (e) {
 
               }
-              listChatStore.dataPin.unshift(item)
+              listChatStore.dataPin = [item, ...listChatStore.dataPin]
               listChatStore.data = [...listChatStore.data.filter(i => i._id !== item._id)]
               listChatStore.dataPin = [...listChatStore.dataPin]
             });
@@ -667,7 +669,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     color: colors.primaryText,
                   }}
                 >
-                  {(receiver?.first_name ? receiver?.first_name : '') + ' ' + (receiver?.last_name ? receiver?.last_name : '')}{' '}
+                  {(receiver?.last_name ? receiver?.last_name : '')+ ' ' + (receiver?.first_name ? receiver?.first_name : '')  }{' '}
                   {receiver?.type === 'VTMAN' && (
                     <Text
                       style={{

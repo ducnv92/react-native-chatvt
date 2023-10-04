@@ -94,8 +94,8 @@ class ChatStore {
           if (response.data.data) {
             if (this.page === 1) {
               this.data = response.data.data;
-              if (chatStore.quote !== undefined) {
-                chatStore.data.unshift(chatStore.quote)
+              if (this.quote !== undefined) {
+                this.data = [chatStore.quote, ...this.data]
               }
             } else {
               this.data = [...this.data, ...response.data.data];

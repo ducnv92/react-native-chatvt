@@ -34,6 +34,7 @@ class Socket{
     this.socket.on('USER_MESSAGE', this.onUserMessage);
     this.socket.on('USER_STATE', this.onUserStateMessage);
     this.socket.on('USER_REACT_MESSAGE', this.onUserReactionMessage);
+    this.socket.on('USER_READ_MESSAGE', this.onUserReadMessage);
 
     if(this.hasDisconnect){
       this.hasDisconnect = false
@@ -123,6 +124,20 @@ class Socket{
         chatStore.data = chatStore.data.map(m=>{
           if(m._id === event.conversation.message._id){
             m.reactions = event.conversation.message.reactions
+          }
+          return m
+        })
+      }
+    }catch (e) {
+
+    }
+  }
+  onUserReadMessage = (event)=> {
+    try{
+      if(chatStore.conversation_id===event.conversation._id){
+        chatStore.data = chatStore.data.map(m=>{
+          if(m._id === event.conversation.message._id){
+            m.read_by = event.conversation.message.read_by
           }
           return m
         })

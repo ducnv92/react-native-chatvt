@@ -127,7 +127,7 @@ export class RecordButton extends React.Component {
         conversation_id: this.props.data._id,
       };
 
-      chatStore.data.unshift(message);
+      chatStore.data  = [message, ...chatStore.data];
       await chatStore.sendMessage(message);
 
       this.setState({

@@ -63,8 +63,10 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
         is_receiver:!isSender
       },
       (conversation) => {
+        // Navigation.pop('ChatScreen')
         Navigation.push(props.componentId, {
           component: {
+            id: 'ChatScreen',
             name: 'ChatScreen',
             options: {
               popGesture: false,
@@ -96,8 +98,10 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
           chat_type: 'GROUP',
         },
         (conversation) => {
+          // Navigation.pop('ChatScreen')
           Navigation.push(props.componentId, {
             component: {
+              id: 'ChatScreen',
               name: 'ChatScreen',
               options: {
                 popGesture: false,
@@ -148,8 +152,10 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
         chat_type: type,
       },
       (conversation) => {
+        // Navigation.pop('ChatScreen')
         Navigation.push(props.componentId, {
           component: {
+            id: 'ChatScreen',
             name: 'ChatScreen',
             options: {
               popGesture: false,
@@ -181,8 +187,10 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
         is_receiver:!isSender
       },
       (conversation) => {
+        // Navigation.pop('ChatScreen')
         Navigation.push(props.componentId, {
           component: {
+            id: 'ChatScreen',
             name: 'ChatScreen',
             options: {
               popGesture: false,

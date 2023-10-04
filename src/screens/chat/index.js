@@ -50,6 +50,8 @@ export const ChatScreen = observer(function ChatScreen(props) {
   };
 
   useEffect(() => {
+      chatStore.resetData();
+
     chatStore.quote = props.order
       ? {
         _id: uuid.v4(),
@@ -70,7 +72,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
         InputStore.inputRef?.current?.focus();
       }
     });
-    chatStore.resetData();
 
 
     let receiver = {};
@@ -159,7 +160,8 @@ export const ChatScreen = observer(function ChatScreen(props) {
         conversation_id: props.data._id,
       };
       chatStore.images = [];
-      chatStore.data.unshift(message);
+      chatStore.data  = [message, ...chatStore.data];
+
       chatStore.sendMessage(message);
     } catch (e) { }
   };
@@ -212,7 +214,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                       {conversation?.type === 'GROUP'
                         ? 'Đơn ' + conversation?.order_numbers[0]
                         : conversation?.type === 'PAIR'
-                          ? (receiver?.first_name?receiver?.first_name: '') + ' ' + (receiver?.last_name?receiver?.last_name:'')
+                          ?  (receiver?.last_name?receiver?.last_name:'')+ ' ' + (receiver?.first_name?receiver?.first_name: '')
                           : conversation?.type === 'PAIR_SUPPORT'
                             ? 'Chăm sóc khách hàng'
                             : 'Không tên'}
@@ -354,7 +356,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
                   // if(info.distanceFromEnd===0){
                     handleLoadMore()
                   // }
-                  console.log('handleLoadMore()', info)
                 }}
                 // maxToRenderPerBatch={20}
                 onEndReachedThreshold={0.7}
@@ -460,7 +461,8 @@ const BottomChat = observer(function BottomChat(props) {
       conversation_id: conversation._id,
     };
     InputStore.input = '';
-    chatStore.data.unshift(message);
+    chatStore.data  = [message, ...chatStore.data];
+
     chatStore.sendMessage(message);
   };
 
@@ -485,7 +487,8 @@ const BottomChat = observer(function BottomChat(props) {
         sticker_ids: [sticker._id],
         sender: appStore.user.type + '_' + appStore.user.user_id,
       };
-      chatStore.data.unshift(message);
+      chatStore.data  = [message, ...chatStore.data];
+
       chatStore.sendMessage(message);
     } catch (e) {
       console.log(e)

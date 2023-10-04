@@ -370,6 +370,10 @@ const LocationMessage = observer(function LocationMessage(props) {
             longitude: position.coords.longitude,
             latitude: position.coords.latitude,
           })
+          chatStore.location = {
+            longitude: position.coords.longitude,
+            latitude: position.coords.latitude,
+          }
 
 
         },
@@ -393,15 +397,16 @@ const LocationMessage = observer(function LocationMessage(props) {
         id: uuid.v4(),
         type: "LOCATION",
         location: {
-          latitude: currentPosition.latitude,
-          longitude: currentPosition.longitude,
+          latitude: chatStore.location.latitude,
+          longitude: chatStore.location.longitude,
         },
         status: "sending",
         sender: appStore.user.type + '_' + appStore.user.user_id,
         conversation_id: chatStore.conversation_id
       }
 
-      chatStore.data.unshift(message)
+      chatStore.data  = [message, ...chatStore.data];
+
       chatStore.sendMessage(message)
     } catch (e) {
       console.log(e)
@@ -493,7 +498,8 @@ export const AttachScreen = observer(function AttachScreen(props) {
         sender: appStore.user.type + '_' + appStore.user.user_id,
         conversation_id: props.data._id
       }
-      chatStore.data.unshift(message)
+      chatStore.data  = [message, ...chatStore.data];
+
       chatStore.sendMessage(message)
     } catch (err) {
       console.warn(err);
