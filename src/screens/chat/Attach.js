@@ -3,7 +3,7 @@ import BottomSheet, { BottomSheetFlatList, BottomSheetModal } from '../../compon
 import chatStore from './ChatStore';
 import CameraRollPicker from '../../components/cameraRollPicker';
 import { observer } from 'mobx-react-lite';
-import { Log } from '../../utils';
+import { Log, getRotation } from '../../utils';
 import {
   Dimensions,
   FlatList,
@@ -28,6 +28,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import inputStore from './InputStore';
 import InputStore from './InputStore';
 import ModalStyled from "react-native-modal";
+import { toJS } from 'mobx';
 
 
 const QuickMessageModal = observer(function QuickMessageModal(props) {
@@ -252,22 +253,22 @@ const QuickMessage = observer(function QuickMessage(props) {
       </View>
       {
         quickMessageStore.data.length === 0 ?
-        <View style={{ flex: 1, }}>
-          <Image source={require('../../assets/ic_quick_message_empty.png')} style={{ width: 124, height: 99, alignSelf: 'center' }} />
-          <Text style={{ color: colors.neutralText, fontSize: 15, fontWeight: '500', textAlign: 'center' }}>Bạn chưa có tin nhắn chat nhanh</Text>
-          <TouchableOpacity
-            onPress={() => {
-              quickMessageStore.showModal = true
-            }}
-            style={{marginHorizontal: 16, marginTop: 36, alignItems: 'center', justifyContent: 'center', marginBottom: 16, padding: 16, backgroundColor: colors.primary, borderRadius: 10 }}>
-            <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>Tạo tin nhắn nhanh</Text>
-          </TouchableOpacity>
-        </View>:
-        <BottomSheetFlatList
-        data={quickMessageStore.data}
-        renderItem={renderItem}
-        ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: '' }} />}
-        />
+          <View style={{ flex: 1, }}>
+            <Image source={require('../../assets/ic_quick_message_empty.png')} style={{ width: 124, height: 99, alignSelf: 'center' }} />
+            <Text style={{ color: colors.neutralText, fontSize: 15, fontWeight: '500', textAlign: 'center' }}>Bạn chưa có tin nhắn chat nhanh</Text>
+            <TouchableOpacity
+              onPress={() => {
+                quickMessageStore.showModal = true
+              }}
+              style={{marginHorizontal: 16, marginTop: 36, alignItems: 'center', justifyContent: 'center', marginBottom: 16, padding: 16, backgroundColor: colors.primary, borderRadius: 10 }}>
+              <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>Tạo tin nhắn nhanh</Text>
+            </TouchableOpacity>
+          </View>:
+          <BottomSheetFlatList
+            data={quickMessageStore.data}
+            renderItem={renderItem}
+            ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: '' }} />}
+          />
       }
 
       <QuickMessageModal />
@@ -327,6 +328,7 @@ const ImageMessage = observer(function ImageMessage(props) {
 const LocationMessage = observer(function LocationMessage(props) {
   const bottomSheetModalRef = useRef();
   const insets = useSafeAreaInsets();
+  const mapRef = useRef()
 
   const [currentPosition, setCurrentPosition] = useState({
     latitude: 0,
@@ -435,6 +437,7 @@ const LocationMessage = observer(function LocationMessage(props) {
             width: '100%',
           }}>
           <MapView
+            ref={mapRef}
             zoomTapEnabled={false}
             scrollEnabled={true}
             provider={PROVIDER_GOOGLE} // remove if not using Google Maps
@@ -448,17 +451,36 @@ const LocationMessage = observer(function LocationMessage(props) {
               latitudeDelta: 0.015,
               longitudeDelta: 0.0121,
             }}
-            onRegionChange={position => {
-              chatStore.location = position
+            onRegionChangeComplete={ (region, gesture) => {
+              if (!gesture.isGesture) {
+                return;
+              }
+              chatStore.location = region
             }}
           >
           </MapView>
-          <Image source={require('../../assets/ic_map_pin.png')}
+          <TouchableOpacity
             style={{
-              width: 30, height: 30, resizeMode: 'contain', position: 'absolute', top: '50%', left: '50%', marginLeft: -15,
-              marginTop: -30,
+              width: 56, height: 56, position: 'absolute', top: 8, right: 8
             }}
-            resizeMode="contain"
+            onPress={()=>{
+              mapRef.current?.animateCamera({center: toJS(currentPosition)});
+              // setCurrentPosition(currentPosition)
+            }}
+          >
+            <Image source={require('../../assets/ic_location.png')}
+                   style={{
+                     width: 56, height: 56, resizeMode: 'contain'
+                   }}
+                   resizeMode="contain"
+            />
+          </TouchableOpacity>
+          <Image source={require('../../assets/ic_map_pin.png')}
+                 style={{
+                   width: 30, height: 30, resizeMode: 'contain', position: 'absolute', top: '50%', left: '50%', marginLeft: -15,
+                   marginTop: -30,
+                 }}
+                 resizeMode="contain"
           />
         </View>
         <TouchableOpacity
@@ -519,11 +541,11 @@ export const AttachScreen = observer(function AttachScreen(props) {
             (statuses) => {
               console.log(statuses)
               return statuses['android.permission.READ_MEDIA_IMAGES'] ===
-              PermissionsAndroid.RESULTS.GRANTED &&
-              statuses['android.permission.READ_MEDIA_VIDEO'] ===
-              PermissionsAndroid.RESULTS.GRANTED &&
-              statuses['android.permission.READ_EXTERNAL_STORAGE'] ===
-              PermissionsAndroid.RESULTS.GRANTED
+                PermissionsAndroid.RESULTS.GRANTED &&
+                statuses['android.permission.READ_MEDIA_VIDEO'] ===
+                PermissionsAndroid.RESULTS.GRANTED &&
+                statuses['android.permission.READ_EXTERNAL_STORAGE'] ===
+                PermissionsAndroid.RESULTS.GRANTED
 
             }
           );
@@ -625,7 +647,7 @@ export const AttachScreen = observer(function AttachScreen(props) {
             }}
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Image source={chatStore.tab === 0 ? require('../../assets/nav_photo_video_active.png') : require('../../assets/nav_photo_video.png')}
-              style={{ width: 28, height: 28, resizeMode: 'contain' }} resizeMode={'contain'} />
+                   style={{ width: 28, height: 28, resizeMode: 'contain' }} resizeMode={'contain'} />
             <Text style={{ color: chatStore.tab === 0 ? colors.primary : colors.neutralText, fontSize: 13, fontWeight: chatStore.tab === 0? '600':'500', paddingTop: 6 }}>Ảnh, video</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -634,14 +656,14 @@ export const AttachScreen = observer(function AttachScreen(props) {
             }}
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Image source={chatStore.tab === 1 ? require('../../assets/nav_quick_message_active.png') : require('../../assets/nav_quick_message_active.png')}
-              style={{ width: 28, height: 28, resizeMode: 'contain', tintColor: chatStore.tab === 1 ? colors.primary : colors.sending }} resizeMode={'contain'} />
+                   style={{ width: 28, height: 28, resizeMode: 'contain', tintColor: chatStore.tab === 1 ? colors.primary : colors.sending }} resizeMode={'contain'} />
             <Text style={{ color: chatStore.tab === 1 ? colors.primary : colors.neutralText, fontSize: 13, fontWeight: chatStore.tab === 1? '600':'500', paddingTop: 6 }}>Chat nhanh</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={handleDocumentSelection}
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Image source={chatStore.tab === 2 ? require('../../assets/nav_document.png') : require('../../assets/nav_document.png')}
-              style={{ width: 28, height: 28, resizeMode: 'contain' }} resizeMode={'contain'} />
+                   style={{ width: 28, height: 28, resizeMode: 'contain' }} resizeMode={'contain'} />
             <Text style={{ color: chatStore.tab === 2 ? colors.primary : colors.neutralText, fontSize: 13, fontWeight:chatStore.tab === 2? '600':'500', paddingTop: 6 }}>Tài liệu</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -650,7 +672,7 @@ export const AttachScreen = observer(function AttachScreen(props) {
             }}
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Image source={chatStore.tab === 3 ? require('../../assets/nav_location_active.png') : require('../../assets/nav_location.png')}
-              style={{ width: 28, height: 28, resizeMode: 'contain' }} resizeMode={'contain'} />
+                   style={{ width: 28, height: 28, resizeMode: 'contain' }} resizeMode={'contain'} />
             <Text style={{ color: chatStore.tab === 3 ? colors.primary : colors.neutralText, fontSize: 13, fontWeight: chatStore.tab === 3? '600':'500', paddingTop: 6 }}>Gửi vị trí</Text>
           </TouchableOpacity>
         </View>
