@@ -794,6 +794,34 @@ const MessageItem = function (props) {
 
           </View>
           {/*<Emoji {...props}/>*/}
+
+          {item.status === 'sending' && (
+            <Text
+              style={{
+                fontWeight: '500',
+                fontSize: 15,
+                color: colors.sending,
+                marginTop: 8,
+                textAlign: right ? 'right' : 'left',
+              }}
+            >
+              {appStore.lang.chat.sending + '...'}
+            </Text>
+          )}
+
+          {item.status === 'error' && (
+            <Text
+              style={{
+                fontWeight: '500',
+                fontSize: 15,
+                color: colors.primary,
+                marginTop: 8,
+                textAlign: right ? 'right' : 'left',
+              }}
+            >
+              {appStore.lang.chat.send_error}
+            </Text>
+          )}
           {
             !props.topMe &&
             <View
@@ -818,32 +846,6 @@ const MessageItem = function (props) {
 
           }
 
-          {item.status === 'sending' && (
-            <Text
-              style={{
-                fontWeight: '500',
-                fontSize: 15,
-                color: colors.sending,
-                marginTop: 8,
-                textAlign: right ? 'right' : 'left',
-              }}
-            >
-              {appStore.lang.chat.sending + '...'}
-            </Text>
-          )}
-          {item.status === 'error' && (
-            <Text
-              style={{
-                fontWeight: '500',
-                fontSize: 15,
-                color: colors.primary,
-                marginTop: 8,
-                textAlign: right ? 'right' : 'left',
-              }}
-            >
-              {appStore.lang.chat.send_error}
-            </Text>
-          )}
         </View>
       )
       }
@@ -1138,21 +1140,7 @@ const OrderItem = function (props) {
                         name: 'OrderInfomationtScreen',
                         passProps: {
                             orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
-                            isSender: item.order_info?.type===1?4:1,
-                        },
-                        options: {
-                            bottomTabs: {
-                                visible: false,
-                            },
-                        },
-                    },
-                }); Navigation.push('ChatScreen', {
-                    component: {
-                        id: 'OrderInfomationtScreenID',
-                        name: 'OrderInfomationtScreen',
-                        passProps: {
-                            orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
-                            isSender:  item.order_info?.type===1?4:1,
+                            isSender: item.order_info?.sender_phone!==appStore.user?.phone?4:1,
                         },
                         options: {
                             bottomTabs: {

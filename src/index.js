@@ -264,26 +264,39 @@ class ChatVT {
               conversation_id: conversation_id,
             },
             (conversation) => {
-              Navigation.popTo('ListChatScreen')
-              Navigation.push(componentId, {
-                component: {
-                  id: 'ChatScreen',
-                  name: 'ChatScreen',
-                  options: {
-                    popGesture: false,
-                    bottomTabs: {
-                      visible: false,
-                    },
-                    topBar: {
-                      visible: false,
-                      height: 0,
-                    },
-                  },
-                  passProps: {
-                    data: conversation,
-                  },
-                },
-              });
+              try{
+                Navigation.popTo('ListChatScreen')
+              }catch (e) {
+
+              }
+             setTimeout(()=>{
+               try{
+                 Navigation.push(componentId, {
+                   component: {
+                     id: 'ChatScreen',
+                     name: 'ChatScreen',
+                     options: {
+                       popGesture: false,
+                       bottomTabs: {
+                         visible: false,
+                       },
+                       topBar: {
+                         visible: false,
+                         height: 0,
+                       },
+                     },
+                     passProps: {
+                       data: conversation,
+                     },
+                   },
+                 });
+                 console.log('ChatScreen end')
+
+               }catch (e) {
+                 console.log(e)
+               }
+
+             }, 200)
             }
           );
         },
@@ -294,9 +307,15 @@ class ChatVT {
         {
           conversation_id: conversation_id,
         },
-        (conversation) => {
-          Navigation.popTo('ListChatScreen')
-          Navigation.push(componentId, {
+        async (conversation) => {
+          try{
+            await Navigation.popTo('ListChatScreen')
+
+          }catch (e) {
+
+          }
+          setTimeout(()=>{
+          Navigation.push('ListChatScreen', {
             component: {
               id: 'ChatScreen',
               name: 'ChatScreen',
@@ -315,6 +334,7 @@ class ChatVT {
               },
             },
           });
+          }, 200)
         }
       );
     }
