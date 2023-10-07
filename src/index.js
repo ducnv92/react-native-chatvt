@@ -271,7 +271,7 @@ class ChatVT {
               }
              setTimeout(()=>{
                try{
-                 Navigation.push(componentId, {
+                 Navigation.push(componentId?componentId: 'ListChatScreen', {
                    component: {
                      id: 'ChatScreen',
                      name: 'ChatScreen',
@@ -315,7 +315,7 @@ class ChatVT {
 
           }
           setTimeout(()=>{
-          Navigation.push('ListChatScreen', {
+          Navigation.push(componentId?componentId: 'ListChatScreen', {
             component: {
               id: 'ChatScreen',
               name: 'ChatScreen',
