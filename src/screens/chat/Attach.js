@@ -439,7 +439,7 @@ const LocationMessage = observer(function LocationMessage(props) {
           <MapView
             ref={mapRef}
             zoomTapEnabled={false}
-            scrollEnabled={true}
+            scrollEnabled={false}
             provider={PROVIDER_GOOGLE} // remove if not using Google Maps
             style={{
               height: '100%',

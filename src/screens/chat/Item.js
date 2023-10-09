@@ -1,26 +1,26 @@
 import React, { cloneElement, memo, useEffect, useRef, useState } from 'react';
 import appStore from '../AppStore';
 import {
-    ActivityIndicator,
-    Dimensions, Image,
-    Linking,
-    Modal,
-    Platform,
-    StyleSheet,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    View,
+  ActivityIndicator,
+  Dimensions, Image,
+  Linking,
+  Modal,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from 'react-native';
 import colors from '../../Styles';
 import moment from 'moment/moment';
 import ParsedText from 'react-native-parsed-text';
 import {
-    DownloadViewFile,
-    formatDuration,
-    formatTimeLastMessage,
-    groupBy,
-    orderStatus,
-    participantType
+  DownloadViewFile,
+  formatDuration,
+  formatTimeLastMessage,
+  groupBy,
+  orderStatus,
+  participantType
 } from '../../utils';
 import { createThumbnail } from '../../components/createThumbnail';
 import ImageViewing from '../../components/imageView/ImageViewing';
@@ -51,59 +51,59 @@ const MapItem = function (props) {
   const right = props.right;
   return (
     <View>
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: right ? 'flex-end' : 'flex-start',
-        alignItems: 'center',
-        marginVertical: 2,
-        marginHorizontal: 10,
-      }}
-    >
-      <ContainChatItem {...props}>
-        <View
-          style={{
-            height: 178,
-            width: 290,
-            borderRadius: 10,
-            overflow: 'hidden',
-            backgroundColor: colors.blueBG,
-          }}
-        >
-          <MapView
-            zoomEnabled={false}
-            zoomTapEnabled={false}
-            scrollEnabled={false}
-            provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: right ? 'flex-end' : 'flex-start',
+          alignItems: 'center',
+          marginVertical: 2,
+          marginHorizontal: 10,
+        }}
+      >
+        <ContainChatItem {...props}>
+          <View
             style={{
               height: 178,
               width: 290,
               borderRadius: 10,
               overflow: 'hidden',
-            }}
-            region={{
-              latitude: props.item?.location?.latitude,
-              longitude: props.item?.location?.longitude,
-              latitudeDelta: 0.015,
-              longitudeDelta: 0.0121,
+              backgroundColor: colors.blueBG,
             }}
           >
-            <Marker
-              coordinate={{
+            <MapView
+              zoomEnabled={false}
+              zoomTapEnabled={false}
+              scrollEnabled={false}
+              provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+              style={{
+                height: 178,
+                width: 290,
+                borderRadius: 10,
+                overflow: 'hidden',
+              }}
+              region={{
                 latitude: props.item?.location?.latitude,
                 longitude: props.item?.location?.longitude,
+                latitudeDelta: 0.015,
+                longitudeDelta: 0.0121,
               }}
             >
-              <Image
-                source={require('../../assets/ic_map_pin.png')}
-                style={{ width: 30, height: 30, resizeMode: 'contain' }}
-                resizeMode="contain"
-              />
-            </Marker>
-          </MapView>
-        </View>
-      </ContainChatItem>
-    </View>
+              <Marker
+                coordinate={{
+                  latitude: props.item?.location?.latitude,
+                  longitude: props.item?.location?.longitude,
+                }}
+              >
+                <Image
+                  source={require('../../assets/ic_map_pin.png')}
+                  style={{ width: 30, height: 30, resizeMode: 'contain' }}
+                  resizeMode="contain"
+                />
+              </Marker>
+            </MapView>
+          </View>
+        </ContainChatItem>
+      </View>
       {
         !props.topMe &&
         <View
@@ -208,67 +208,67 @@ const VoiceItem = function (props) {
 
   return (
     <View>
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: right ? 'flex-end' : 'flex-start',
-        alignItems: 'center',
-        marginVertical: 2,
-        marginHorizontal: 10,
-      }}
-    >
-      <ContainChatItem {...props}>
-        <View
-          style={{
-            height: 56,
-            width: 251,
-            borderRadius: 10,
-            padding: 12,
-            flexDirection: 'row',
-            alignItems: 'center',
-            overflow: 'hidden',
-            backgroundColor: right ? colors.primary : '#F2F2F2',
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              if (!isPlay) {
-                play()
-              } else {
-                pause()
-              }
-            }}
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: right ? 'flex-end' : 'flex-start',
+          alignItems: 'center',
+          marginVertical: 2,
+          marginHorizontal: 10,
+        }}
+      >
+        <ContainChatItem {...props}>
+          <View
             style={{
-              width: 32,
-              height: 32,
+              height: 56,
+              width: 251,
+              borderRadius: 10,
+              padding: 12,
+              flexDirection: 'row',
               alignItems: 'center',
-              justifyContent: 'center',
+              overflow: 'hidden',
+              backgroundColor: right ? colors.primary : '#F2F2F2',
             }}
           >
-            <Image
-              source={
-                isPlay
-                  ? require('../../assets/ic_pause.png')
-                  : (right ? require('../../assets/ic_play.png') : require('../../assets/ic_play_left.png'))
-              }
-              style={{ height: 32, width: 32, resizeMode: 'contain' }}
-            />
-          </TouchableOpacity>
-          {
-            isPlay?
-              <AnimatedSoundBars isPlay={true} id={props.item.attachments[0]?.url} barColor={right?'white':'#44494D66'}/>:
-              <AnimatedSoundBars  isPlay={false} barColor={right?'white':'#44494D66'}/>
-          }
+            <TouchableOpacity
+              onPress={() => {
+                if (!isPlay) {
+                  play()
+                } else {
+                  pause()
+                }
+              }}
+              style={{
+                width: 32,
+                height: 32,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Image
+                source={
+                  isPlay
+                    ? require('../../assets/ic_pause.png')
+                    : (right ? require('../../assets/ic_play.png') : require('../../assets/ic_play_left.png'))
+                }
+                style={{ height: 32, width: 32, resizeMode: 'contain' }}
+              />
+            </TouchableOpacity>
+            {
+              isPlay?
+                <AnimatedSoundBars isPlay={true} id={props.item.attachments[0]?.url} barColor={right?'white':'#44494D66'}/>:
+                <AnimatedSoundBars  isPlay={false} barColor={right?'white':'#44494D66'}/>
+            }
 
-          {/*<Image*/}
-          {/*  source={require('../../assets/ic_wave_white.png')}*/}
-          {/*  style={{ flex: 1, marginHorizontal: 16, height: 16, resizeMode: 'contain', tintColor: right ? 'white' : '#B5B4B8' }}*/}
-          {/*  tintColor={right ? 'white' : '#B5B4B8'}*/}
-          {/*/>*/}
-          <Text style={{ width: 55, textAlign: 'right', fontWeight: '500', fontSize: 15, color: right ? 'white' : colors.neutralText }}>{currentTime}</Text>
-        </View>
-      </ContainChatItem>
-    </View>
+            {/*<Image*/}
+            {/*  source={require('../../assets/ic_wave_white.png')}*/}
+            {/*  style={{ flex: 1, marginHorizontal: 16, height: 16, resizeMode: 'contain', tintColor: right ? 'white' : '#B5B4B8' }}*/}
+            {/*  tintColor={right ? 'white' : '#B5B4B8'}*/}
+            {/*/>*/}
+            <Text style={{ width: 55, textAlign: 'right', fontWeight: '500', fontSize: 15, color: right ? 'white' : colors.neutralText }}>{currentTime}</Text>
+          </View>
+        </ContainChatItem>
+      </View>
       {
         !props.topMe &&
         <View
@@ -372,33 +372,33 @@ export const VideoItem = function (props) {
 };
 
 const MessageItem = function (props) {
-    const item = props.item;
-    const right = props.right;
-    const [images, setImages] = useState([]);
-    const [imageVisible, setImageVisible] = useState(false);
+  const item = props.item;
+  const right = props.right;
+  const [images, setImages] = useState([]);
+  const [imageVisible, setImageVisible] = useState(false);
 
-    const handleUrlPress = (url, matchIndex) => {
-        Linking.openURL(url);
-    };
+  const handleUrlPress = (url, matchIndex) => {
+    Linking.openURL(url);
+  };
 
-    const handlePhonePress = (phone, matchIndex /*: number*/) => {
-        // alert(`${phone} has been pressed!`);
-    };
+  const handlePhonePress = (phone, matchIndex /*: number*/) => {
+    // alert(`${phone} has been pressed!`);
+  };
 
-    const handleNamePress = (name, matchIndex /*: number*/) => {
-        // alert(`Hello ${name}`);
-    };
+  const handleNamePress = (name, matchIndex /*: number*/) => {
+    // alert(`Hello ${name}`);
+  };
 
-    const handleEmailPress = (email, matchIndex /*: number*/) => {
-        // alert(`send email to ${email}`);
-    };
+  const handleEmailPress = (email, matchIndex /*: number*/) => {
+    // alert(`send email to ${email}`);
+  };
 
-    const renderText = (matchingString, matches) => {
-        // matches => ["[@michel:5455345]", "@michel", "5455345"]
-        let pattern = /\[(@[^:]+):([^\]]+)\]/i;
-        let match = matchingString.match(pattern);
-        return `^^${match[1]}^^`;
-    };
+  const renderText = (matchingString, matches) => {
+    // matches => ["[@michel:5455345]", "@michel", "5455345"]
+    let pattern = /\[(@[^:]+):([^\]]+)\]/i;
+    let match = matchingString.match(pattern);
+    return `^^${match[1]}^^`;
+  };
 
   return (
     <>
@@ -722,75 +722,75 @@ const MessageItem = function (props) {
             )}
 
 
-              <ContainChatItem {...props}   >
+            <ContainChatItem {...props}   >
 
-                <View style={{
-                  backgroundColor:
-                    appStore.appId === 'VTPost'
-                      ? right
-                        ? colors.primary
-                        : '#F2F2F2'
-                      : right
-                        ? colors.bgVTM
-                        : '#F2F2F2',
-                  padding: 12,
-                    maxWidth: Dimensions.get('window').width*0.75,
-                  borderRadius: 10,
-                  borderWidth: right ? 0 : 1,
-                  borderColor: '#DCE6F0',
-                  borderTopRightRadius: (right && props.bottomMe)?6:10,
-                  borderBottomRightRadius: (right && props.topMe)?6:10,
-                  borderTopLeftRadius: (!right && props.topMe)?6:10,
-                  borderBottomLeftRadius: (!right && props.bottomMe)?6:10,
-                }}>
+              <View style={{
+                backgroundColor:
+                  appStore.appId === 'VTPost'
+                    ? right
+                      ? colors.primary
+                      : '#F2F2F2'
+                    : right
+                      ? colors.bgVTM
+                      : '#F2F2F2',
+                padding: 12,
+                maxWidth: Dimensions.get('window').width*0.75,
+                borderRadius: 10,
+                borderWidth: right ? 0 : 1,
+                borderColor: '#DCE6F0',
+                borderTopRightRadius: (right && props.bottomMe)?6:10,
+                borderBottomRightRadius: (right && props.topMe)?6:10,
+                borderTopLeftRadius: (!right && props.topMe)?6:10,
+                borderBottomLeftRadius: (!right && props.bottomMe)?6:10,
+              }}>
 
-                  <ParsedText
-                    accessible={true}
-                    // accessibilityActions={[
-                    //   {name: 'cut', label: 'cut'},
-                    //   {name: 'copy', label: 'copy'},
-                    //   {name: 'paste', label: 'paste'},
-                    // ]}
-                    // onAccessibilityAction={event => {
-                    //   switch (event.nativeEvent.actionName) {
-                    //     case 'cut':
-                    //       Alert.alert('Alert', 'cut action success');
-                    //       break;
-                    //     case 'copy':
-                    //       Alert.alert('Alert', 'copy action success');
-                    //       break;
-                    //     case 'paste':
-                    //       Alert.alert('Alert', 'paste action success');
-                    //       break;
-                    //   }
-                    // }}
-                    style={{
-                      fontFamily: 'SVN-GilroyMedium',
-                      fontWeight: '500',
-                      fontSize: 15,
-                      lineHeight: 21,
-                      color:
-                        appStore.appId === 'VTPost'
-                          ? right
-                            ? 'white'
-                            : colors.primaryText
-                          : colors.primaryText,
-                    }}
-                    parse={[
-                      { type: 'url', style: styles.url, onPress: handleUrlPress },
-                      // {type: 'phone', style: styles.phone, onPress: handlePhonePress},
-                      // {type: 'email', style: styles.email, onPress: handleEmailPress},
-                      // {pattern: /Bob|David/,              style: styles.name, onPress: handleNamePress},
-                      // {pattern: /\[(@[^:]+):([^\]]+)\]/i, style: styles.username, onPress: handleNamePress, renderText: renderText},
-                      // {pattern: /42/,                     style: styles.magicNumber},
-                      // {pattern: /#(\w+)/, style: styles.hashTag},
-                    ]}
-                    childrenProps={{ allowFontScaling: false }}
-                  >
-                    {item.text}
-                  </ParsedText>
-                </View>
-              </ContainChatItem>
+                <ParsedText
+                  accessible={true}
+                  // accessibilityActions={[
+                  //   {name: 'cut', label: 'cut'},
+                  //   {name: 'copy', label: 'copy'},
+                  //   {name: 'paste', label: 'paste'},
+                  // ]}
+                  // onAccessibilityAction={event => {
+                  //   switch (event.nativeEvent.actionName) {
+                  //     case 'cut':
+                  //       Alert.alert('Alert', 'cut action success');
+                  //       break;
+                  //     case 'copy':
+                  //       Alert.alert('Alert', 'copy action success');
+                  //       break;
+                  //     case 'paste':
+                  //       Alert.alert('Alert', 'paste action success');
+                  //       break;
+                  //   }
+                  // }}
+                  style={{
+                    fontFamily: 'SVN-GilroyMedium',
+                    fontWeight: '500',
+                    fontSize: 15,
+                    lineHeight: 21,
+                    color:
+                      appStore.appId === 'VTPost'
+                        ? right
+                          ? 'white'
+                          : colors.primaryText
+                        : colors.primaryText,
+                  }}
+                  parse={[
+                    { type: 'url', style: styles.url, onPress: handleUrlPress },
+                    // {type: 'phone', style: styles.phone, onPress: handlePhonePress},
+                    // {type: 'email', style: styles.email, onPress: handleEmailPress},
+                    // {pattern: /Bob|David/,              style: styles.name, onPress: handleNamePress},
+                    // {pattern: /\[(@[^:]+):([^\]]+)\]/i, style: styles.username, onPress: handleNamePress, renderText: renderText},
+                    // {pattern: /42/,                     style: styles.magicNumber},
+                    // {pattern: /#(\w+)/, style: styles.hashTag},
+                  ]}
+                  childrenProps={{ allowFontScaling: false }}
+                >
+                  {item.text}
+                </ParsedText>
+              </View>
+            </ContainChatItem>
 
           </View>
           {/*<Emoji {...props}/>*/}
@@ -926,28 +926,28 @@ const DocumentItem = function (props) {
                           )}
                           {(attach.type.includes('doc') ||
                             attach.type.includes('docx')) && (
-                              <Image
-                                source={require('../../assets/file_doc.png')}
-                                style={{
-                                  width: 42,
-                                  height: 42,
-                                  resizeMode: 'contain',
-                                  marginRight: 14,
-                                }}
-                              />
-                            )}
+                            <Image
+                              source={require('../../assets/file_doc.png')}
+                              style={{
+                                width: 42,
+                                height: 42,
+                                resizeMode: 'contain',
+                                marginRight: 14,
+                              }}
+                            />
+                          )}
                           {(attach.type.includes('xlsx') ||
                             attach.type.includes('xls')) && (
-                              <Image
-                                source={require('../../assets/file_xls.png')}
-                                style={{
-                                  width: 42,
-                                  height: 42,
-                                  resizeMode: 'contain',
-                                  marginRight: 14,
-                                }}
-                              />
-                            )}
+                            <Image
+                              source={require('../../assets/file_xls.png')}
+                              style={{
+                                width: 42,
+                                height: 42,
+                                resizeMode: 'contain',
+                                marginRight: 14,
+                              }}
+                            />
+                          )}
                           <View>
                             <Text
                               numberOfLines={1}
@@ -1010,28 +1010,28 @@ const DocumentItem = function (props) {
                           )}
                           {(attach.url.includes('.doc') ||
                             attach.url.includes('.docx')) && (
-                              <Image
-                                source={require('../../assets/file_doc.png')}
-                                style={{
-                                  width: 42,
-                                  height: 42,
-                                  resizeMode: 'contain',
-                                  marginRight: 14,
-                                }}
-                              />
-                            )}
+                            <Image
+                              source={require('../../assets/file_doc.png')}
+                              style={{
+                                width: 42,
+                                height: 42,
+                                resizeMode: 'contain',
+                                marginRight: 14,
+                              }}
+                            />
+                          )}
                           {(attach.url.includes('.xls') ||
                             attach.url.includes('.xlsx')) && (
-                              <Image
-                                source={require('../../assets/file_xls.png')}
-                                style={{
-                                  width: 42,
-                                  height: 42,
-                                  resizeMode: 'contain',
-                                  marginRight: 14,
-                                }}
-                              />
-                            )}
+                            <Image
+                              source={require('../../assets/file_xls.png')}
+                              style={{
+                                width: 42,
+                                height: 42,
+                                resizeMode: 'contain',
+                                marginRight: 14,
+                              }}
+                            />
+                          )}
                           {/*<View>*/}
                           <Text
                             numberOfLines={1}
@@ -1126,129 +1126,129 @@ const OrderItem = function (props) {
     console.log(e);
   }
   if(item.type==='CREATED_GROUP_QUOTE_ORDER'){
-      return (
-          <TouchableOpacity
-              onPress={() => {
-                  try {
-                      if(appStore.appId === 'VTPost') {
-                          Navigation.pop('OrderInfomationtScreenID')
-                          Navigation.push('ChatScreen', {
-                              component: {
-                                  id: 'OrderInfomationtScreenID',
-                                  name: 'OrderInfomationtScreen',
-                                  passProps: {
-                                      orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
-                                      isSender: item.order_info?.sender_phone!==appStore.user?.phone?4:1,
-                                  },
-                                  options: {
-                                      bottomTabs: {
-                                          visible: false,
-                                      },
-                                  },
-                              },
-                          });
-                      }
-                  } catch (e) {
-                      console.log(e)
-                  }
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          try {
+            if(appStore.appId === 'VTPost') {
+              Navigation.pop('OrderInfomationtScreenID')
+              Navigation.push('ChatScreen', {
+                component: {
+                  id: 'OrderInfomationtScreenID',
+                  name: 'OrderInfomationtScreen',
+                  passProps: {
+                    orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
+                    isSender: item.order_info?.sender_phone!==appStore.user?.phone?4:1,
+                  },
+                  options: {
+                    bottomTabs: {
+                      visible: false,
+                    },
+                  },
+                },
+              });
+            }
+          } catch (e) {
+            console.log(e)
+          }
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: colors.blueBG,
+            padding: 12,
+            marginVertical: 8,
+          }}
+        >
+          <View style={{ flexDirection: 'row' }}>
+
+            <View
+              style={{
+                paddingVertical: 5,
+                borderRadius: 28,
+                backgroundColor: '#EB960A',
+                paddingHorizontal: 8,
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
-          >
-              <View
-                  style={{
-                      backgroundColor: colors.blueBG,
-                      padding: 12,
-                      marginVertical: 8,
-                  }}
+            >
+              <Text
+                style={{
+                  fontWeight: '600',
+                  fontSize: 11,
+                  color: 'white',
+                  textAlign: 'center',
+                }}
+                numberOfLines={1}
               >
-                  <View style={{ flexDirection: 'row' }}>
+                {orderStatus(order?.ORDER_STATUS)}
+              </Text>
+            </View>
+          </View>
+          <View style={{ marginTop: 8, flexDirection: 'row', alignItems: 'center' }}>
+            <Text
+              style={{
+                fontWeight: '600',
+                fontSize: 13,
+                flex: 1,
+                color: colors.primaryText,
+              }}
+            >
+              Thông báo đơn hàng
+            </Text>
+            <Text
+              style={{
+                fontWeight: '600',
+                fontSize: 13,
+                color: '#E03',
+              }}
+            >
+              {item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER}
+            </Text>
+          </View>
 
-                          <View
-                              style={{
-                                  paddingVertical: 5,
-                                  borderRadius: 28,
-                                  backgroundColor: '#EB960A',
-                                  paddingHorizontal: 8,
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                              }}
-                          >
-                              <Text
-                                  style={{
-                                      fontWeight: '600',
-                                      fontSize: 11,
-                                      color: 'white',
-                                      textAlign: 'center',
-                                  }}
-                                  numberOfLines={1}
-                              >
-                                  {orderStatus(order?.ORDER_STATUS)}
-                              </Text>
-                          </View>
-                  </View>
-                  <View style={{ marginTop: 8, flexDirection: 'row', alignItems: 'center' }}>
-                      <Text
-                          style={{
-                              fontWeight: '600',
-                              fontSize: 13,
-                              flex: 1,
-                              color: colors.primaryText,
-                          }}
-                      >
-                          Thông báo đơn hàng
-                      </Text>
-                      <Text
-                          style={{
-                              fontWeight: '600',
-                              fontSize: 13,
-                              color: '#E03',
-                          }}
-                      >
-                          {item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER}
-                      </Text>
-                  </View>
-
-                  <Text
-                      style={{
-                          fontWeight: '500',
-                          fontSize: 15,
-                          color: colors.neutralText,
-                          marginTop: 8,
-                      }}
-                  >
-                      {productNames}
-                  </Text>
-                  <View style={{height: 1, backgroundColor: '#EEE', marginVertical: 8}}/>
-                  <Text
-                      style={{
-                          fontWeight: '600',
-                          fontSize: 17,
-                          color: colors.primaryText,
-                      }}
-                  >
-                      {order?.RECEIVER_FULLNAME} - {order?.RECEIVER_PHONE}
-                  </Text>
-                  <Text
-                      style={{
-                          fontWeight: '500',
-                          fontSize: 15,
-                          color: colors.neutralText,
-                          marginTop: 8,
-                      }}
-                  >
-                      {item.order_info?.tracking_order?.content}
-                  </Text>
-              </View>
-              {/*{*/}
-              {/*  item.status === 'sending' &&*/}
-              {/*  <Text style={{*/}
-              {/*    fontWeight: '500',*/}
-              {/*    fontSize: 15,*/}
-              {/*    color: colors.neutralText,*/}
-              {/*    marginTop: 8*/}
-              {/*  }}>{appStore.lang.chat.sending + '...'}</Text>*/}
-              {/*}*/}
-          </TouchableOpacity>
-      );
+          <Text
+            style={{
+              fontWeight: '500',
+              fontSize: 15,
+              color: colors.neutralText,
+              marginTop: 8,
+            }}
+          >
+            {productNames}
+          </Text>
+          <View style={{height: 1, backgroundColor: '#EEE', marginVertical: 8}}/>
+          <Text
+            style={{
+              fontWeight: '600',
+              fontSize: 17,
+              color: colors.primaryText,
+            }}
+          >
+            {order?.RECEIVER_FULLNAME} - {order?.RECEIVER_PHONE}
+          </Text>
+          <Text
+            style={{
+              fontWeight: '500',
+              fontSize: 15,
+              color: colors.neutralText,
+              marginTop: 8,
+            }}
+          >
+            {item.order_info?.tracking_order?.content}
+          </Text>
+        </View>
+        {/*{*/}
+        {/*  item.status === 'sending' &&*/}
+        {/*  <Text style={{*/}
+        {/*    fontWeight: '500',*/}
+        {/*    fontSize: 15,*/}
+        {/*    color: colors.neutralText,*/}
+        {/*    marginTop: 8*/}
+        {/*  }}>{appStore.lang.chat.sending + '...'}</Text>*/}
+        {/*}*/}
+      </TouchableOpacity>
+    );
   }
 
   if (order?.ORDER_NUMBER) {
@@ -1259,22 +1259,22 @@ const OrderItem = function (props) {
         onPress={() => {
           try {
             if(appStore.appId === 'VTPost') {
-                Navigation.pop('OrderInfomationtScreenID')
-                Navigation.push('ChatScreen', {
-                    component: {
-                        id: 'OrderInfomationtScreenID',
-                        name: 'OrderInfomationtScreen',
-                        passProps: {
-                            orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
-                            isSender: item.order_info?.sender_phone!==appStore.user?.phone?4:1,
-                        },
-                        options: {
-                            bottomTabs: {
-                                visible: false,
-                            },
-                        },
+              Navigation.pop('OrderInfomationtScreenID')
+              Navigation.push('ChatScreen', {
+                component: {
+                  id: 'OrderInfomationtScreenID',
+                  name: 'OrderInfomationtScreen',
+                  passProps: {
+                    orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
+                    isSender: item.order_info?.sender_phone!==appStore.user?.phone?4:1,
+                  },
+                  options: {
+                    bottomTabs: {
+                      visible: false,
                     },
-                });
+                  },
+                },
+              });
             }
           } catch (e) {
             console.log(e)
@@ -1398,7 +1398,7 @@ const OrderItem = function (props) {
                   color: colors.primaryText,
                 }}
               >
-                {order?.order_number}
+                {item.order_info?.order_number ? item.order_info?.order_number : (order?.ma_phieugui?order?.ma_phieugui: order?.ORDER_NUMBER)}
               </Text>
               <View
                 style={{
@@ -1475,7 +1475,7 @@ const StickerItem = function (props) {
         marginHorizontal: 16,
       }}
     >
-        <FastImage source={stickerStore.getStickerImage(props.item.sticker_ids[0])} style={{width: 86, height: 86, resizeMode: 'contain'}}/>
+      <FastImage source={stickerStore.getStickerImage(props.item.sticker_ids[0])} style={{width: 86, height: 86, resizeMode: 'contain'}}/>
     </View>
   );
 };
@@ -1500,7 +1500,7 @@ export class ChatItem extends React.Component {
       (p) => p.id === user_id
     );
     if (find) {
-      return find.first_name + ' ' + find.last_name + ' - '+ participantType(findP.participant_type);
+      return  find.last_name  +' '+ find.first_name + ' - '+ participantType(findP.participant_type);
     }
     if (user_id.includes('ADMIN')) {
       return 'Admin';
@@ -1520,7 +1520,7 @@ export class ChatItem extends React.Component {
     }
 
     try{
-          bottomMe= this.props.data[this.props.index+1].sender===this.item.sender && this.props.data[this.props.index+1].type !== 'QUOTE_ORDER'
+      bottomMe= this.props.data[this.props.index+1].sender===this.item.sender && this.props.data[this.props.index+1].type !== 'QUOTE_ORDER'
     }catch (e) {
     }
 

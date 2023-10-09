@@ -61,7 +61,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
               order_number: props.order.ORDER_NUMBER?props.order.ORDER_NUMBER:props.order.ma_phieugui,
               has_attachment: false,
               order_info: {
-                  vtp_order: props.order,
+                  vtp_order: {...props.order},
               },
           }
           : undefined;
@@ -73,12 +73,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
       }catch (e) {
       }
 
-      const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-          if (chatStore.keyboardEmoji) {
-              chatStore.keyboardEmoji = false;
-              InputStore.inputRef?.current?.focus();
-          }
-      });
+
 
 
       let receiver = {};
@@ -95,6 +90,12 @@ export const ChatScreen = observer(function ChatScreen(props) {
   }
 
   useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      if (chatStore.keyboardEmoji) {
+        chatStore.keyboardEmoji = false;
+        InputStore.inputRef?.current?.focus();
+      }
+    });
       initData()
     return () => {
       chatStore.data = []
@@ -425,34 +426,34 @@ export const ChatScreen = observer(function ChatScreen(props) {
               </TouchableOpacity>
           )}
         </BottomSheetModalProvider>
-        <Toast
-            bottomOffset={90}
-            config={{
-              info: (props) => (
-                  <BaseToast
-                      {...props}
-                      style={{
-                        borderLeftColor: 'transparent',
-                        borderRadius: 8,
-                        backgroundColor: colors.primaryText,
-                        flexWrap: 'wrap',
-                      }}
-                      // contentContainerStyle={{
-                      //   backgroundColor: colors.primaryText,
-                      //   borderRadius: 8,
-                      //   marginHorizontal: 16,
-                      // }}
-                      text1Style={{
-                        flexWrap: 'wrap',
-                        color: 'white',
-                        fontSize: 13,
-                        fontWeight: '500',
-                        fontFamily: 'SVN-GilroyMedium',
-                      }}
-                  />
-              ),
-            }}
-        />
+        {/*<Toast*/}
+        {/*    bottomOffset={90}*/}
+        {/*    config={{*/}
+        {/*      info: (props) => (*/}
+        {/*          <BaseToast*/}
+        {/*              {...props}*/}
+        {/*              style={{*/}
+        {/*                borderLeftColor: 'transparent',*/}
+        {/*                borderRadius: 8,*/}
+        {/*                backgroundColor: colors.primaryText,*/}
+        {/*                flexWrap: 'wrap',*/}
+        {/*              }}*/}
+        {/*              // contentContainerStyle={{*/}
+        {/*              //   backgroundColor: colors.primaryText,*/}
+        {/*              //   borderRadius: 8,*/}
+        {/*              //   marginHorizontal: 16,*/}
+        {/*              // }}*/}
+        {/*              text1Style={{*/}
+        {/*                flexWrap: 'wrap',*/}
+        {/*                color: 'white',*/}
+        {/*                fontSize: 13,*/}
+        {/*                fontWeight: '500',*/}
+        {/*                fontFamily: 'SVN-GilroyMedium',*/}
+        {/*              }}*/}
+        {/*          />*/}
+        {/*      ),*/}
+        {/*    }}*/}
+        {/*/>*/}
       </SafeAreaView>
   );
 });

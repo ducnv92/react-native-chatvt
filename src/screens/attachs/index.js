@@ -156,7 +156,7 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
         </TouchableOpacity>
       </View>
       <View style={{ alignItems: 'center', backgroundColor: 'white', }}>
-        <Text style={{ fontWeight: '600', fontSize: 20, marginTop: insets.top + 118 - scale(64), color: colors.primaryText, }}>{(receiver?.first_name + " " + receiver?.last_name)}</Text>
+        <Text style={{ fontWeight: '600', fontSize: 20, marginTop: insets.top + 118 - scale(64), color: colors.primaryText, }}>{(receiver?.last_name?receiver?.last_name:''+" " + receiver?.first_name?receiver?.first_name: '')}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
           {/*{*/}
           {/*  receiver?.state?.includes('ONLINE') &&*/}
