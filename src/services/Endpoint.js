@@ -16,6 +16,8 @@ exports.CONVERSATION_ME = `/conversation/me`;
 exports.CONVERSATION_ADMIN = `/conversation/list`;
 exports.CONVERSATION_PIN = (conversation_id) =>
   `/conversation/${conversation_id}/pin`;
+exports.CONVERSATION_UNPIN = (conversation_id) =>
+  `/conversation/${conversation_id}/unpin`;
 exports.CONVERSATION = (conversation_id) => `/conversation/${conversation_id}`;
 exports.CONVERSATION_HIDE = (conversation_id) =>
   `/conversation/${conversation_id}/hide`;

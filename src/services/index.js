@@ -97,7 +97,7 @@ const create = (baseURL = Endpoint.API_BASE) => {
       );
   const conversationUnPin = async (data) =>
       api.delete(
-          Endpoint.CONVERSATION_PIN(data.conversation_id),
+          Endpoint.CONVERSATION_UNPIN(data.conversation_id),
           data,
           await getHeader()
       );
