@@ -30,26 +30,28 @@ class Socket{
   }
 
   onConnect = ()=>{
-    console.log('socket', 'onConnected')
     this.socket.on('USER_MESSAGE', this.onUserMessage);
     this.socket.on('USER_STATE', this.onUserStateMessage);
     this.socket.on('USER_REACT_MESSAGE', this.onUserReactionMessage);
     this.socket.on('USER_READ_MESSAGE', this.onUserReadMessage);
 
-    if(this.hasDisconnect){
-      this.hasDisconnect = false
-      listChatStore.getDataBackground();
-      if(chatStore.conversation_id){
-        chatStore.getDataBackground()
+    try{
+      if(this.hasDisconnect){
+        this.hasDisconnect = false
+        listChatStore.getDataBackground();
+        if(chatStore.conversation_id){
+          chatStore.getDataBackground()
+        }
       }
+    }catch (e) {
+      console.log(e)
     }
+
   }
   onDisconnect = ()=>{
-    console.log('socket', 'onDisconnect')
     this.hasDisconnect = true
   }
   onUserMessage = (event)=>{
-    console.log('socket onUserMessage', event)
 
     try{
       const right =  event?.message.sender === (appStore.user.type + '_' + appStore.user.user_id);
@@ -148,8 +150,6 @@ class Socket{
   }
 
   onUserStateMessage = (event)=>{
-    console.log('socket state', event)
-
     try{
       runInAction(()=>{
         listChatStore.dataPin  = [...listChatStore.dataPin.map(c=>{
@@ -194,7 +194,6 @@ class Socket{
 
   async init(){
     const user  = await load(USER)
-    console.log( 'user', user)
     if(user && this.currentToken!==user.token){
       this.socket = io.connect(this.URL, {
         reconnection: true,
@@ -213,9 +212,6 @@ class Socket{
       // alert('Kết nối Socket ko thành công.')
     }
   }
-
-
-
 }
 
 
