@@ -1374,7 +1374,7 @@ export class ChatItem extends React.Component {
       (p) => p.id === user_id
     );
     if (find) {
-      return find.first_name + ' ' + find.last_name + ' - '+ participantType(findP.participant_type);
+      return  find.last_name + ' ' + find.first_name +' - '+ participantType(findP.participant_type);
     }
     if (user_id.includes('ADMIN')) {
       return 'Admin';
