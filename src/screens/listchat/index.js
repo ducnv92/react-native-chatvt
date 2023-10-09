@@ -252,7 +252,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
 
               }
 
-                listChatStore.data  = [message, ...listChatStore.data];
+                listChatStore.data  = [item, ...listChatStore.data];
 
               listChatStore.dataPin = [...listChatStore.dataPin.filter(i => i._id !== item._id)]
               listChatStore.data = [...listChatStore.data]
