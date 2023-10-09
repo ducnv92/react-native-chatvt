@@ -241,6 +241,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
     const rightButtons = [
       <TouchableOpacity
         onPress={() => {
+
           if (setting.is_pin) {
             listChatStore.unPin({ conversation_id: item._id }, () => {
               try {

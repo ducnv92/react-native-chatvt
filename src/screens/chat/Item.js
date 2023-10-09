@@ -1125,6 +1125,132 @@ const OrderItem = function (props) {
   } catch (e) {
     console.log(e);
   }
+  if(item.type==='CREATED_GROUP_QUOTE_ORDER'){
+      return (
+          <TouchableOpacity
+              onPress={() => {
+                  try {
+                      if(appStore.appId === 'VTPost') {
+                          Navigation.pop('OrderInfomationtScreenID')
+                          Navigation.push('ChatScreen', {
+                              component: {
+                                  id: 'OrderInfomationtScreenID',
+                                  name: 'OrderInfomationtScreen',
+                                  passProps: {
+                                      orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
+                                      isSender: item.order_info?.sender_phone!==appStore.user?.phone?4:1,
+                                  },
+                                  options: {
+                                      bottomTabs: {
+                                          visible: false,
+                                      },
+                                  },
+                              },
+                          });
+                      }
+                  } catch (e) {
+                      console.log(e)
+                  }
+              }}
+          >
+              <View
+                  style={{
+                      backgroundColor: colors.blueBG,
+                      padding: 12,
+                      marginVertical: 8,
+                  }}
+              >
+                  <View style={{ flexDirection: 'row' }}>
+
+                          <View
+                              style={{
+                                  paddingVertical: 5,
+                                  borderRadius: 28,
+                                  backgroundColor: '#EB960A',
+                                  paddingHorizontal: 8,
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                              }}
+                          >
+                              <Text
+                                  style={{
+                                      fontWeight: '600',
+                                      fontSize: 11,
+                                      color: 'white',
+                                      textAlign: 'center',
+                                  }}
+                                  numberOfLines={1}
+                              >
+                                  {orderStatus(order?.ORDER_STATUS)}
+                              </Text>
+                          </View>
+                  </View>
+                  <View style={{ marginTop: 8, flexDirection: 'row', alignItems: 'center' }}>
+                      <Text
+                          style={{
+                              fontWeight: '600',
+                              fontSize: 13,
+                              flex: 1,
+                              color: colors.primaryText,
+                          }}
+                      >
+                          Thông báo đơn hàng
+                      </Text>
+                      <Text
+                          style={{
+                              fontWeight: '600',
+                              fontSize: 13,
+                              color: '#E03',
+                          }}
+                      >
+                          {item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER}
+                      </Text>
+                  </View>
+
+                  <Text
+                      style={{
+                          fontWeight: '500',
+                          fontSize: 15,
+                          color: colors.neutralText,
+                          marginTop: 8,
+                      }}
+                  >
+                      {productNames}
+                  </Text>
+                  <View style={{height: 1, backgroundColor: '#EEE', marginVertical: 8}}/>
+                  <Text
+                      style={{
+                          fontWeight: '600',
+                          fontSize: 17,
+                          color: colors.primaryText,
+                      }}
+                  >
+                      {order?.RECEIVER_FULLNAME} - {order?.RECEIVER_PHONE}
+                  </Text>
+                  <Text
+                      style={{
+                          fontWeight: '500',
+                          fontSize: 15,
+                          color: colors.neutralText,
+                          marginTop: 8,
+                      }}
+                  >
+                      {item.order_info?.tracking_order?.content}
+                  </Text>
+              </View>
+              {/*{*/}
+              {/*  item.status === 'sending' &&*/}
+              {/*  <Text style={{*/}
+              {/*    fontWeight: '500',*/}
+              {/*    fontSize: 15,*/}
+              {/*    color: colors.neutralText,*/}
+              {/*    marginTop: 8*/}
+              {/*  }}>{appStore.lang.chat.sending + '...'}</Text>*/}
+              {/*}*/}
+          </TouchableOpacity>
+      );
+  }
+
   if (order?.ORDER_NUMBER) {
 
 
@@ -1374,7 +1500,7 @@ export class ChatItem extends React.Component {
       (p) => p.id === user_id
     );
     if (find) {
-      return  find.last_name + ' ' + find.first_name +' - '+ participantType(findP.participant_type);
+      return find.first_name + ' ' + find.last_name + ' - '+ participantType(findP.participant_type);
     }
     if (user_id.includes('ADMIN')) {
       return 'Admin';
@@ -1405,6 +1531,7 @@ export class ChatItem extends React.Component {
     }
     if (
       this.item.type === 'CREATED_QUOTE_ORDER' ||
+      this.item.type === 'CREATED_GROUP_QUOTE_ORDER' ||
       this.item.type === 'QUOTE_ORDER'
     ) {
       messageView = <OrderItem item={this.props.item} right={right} />;
