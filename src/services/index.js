@@ -45,17 +45,17 @@ const create = (baseURL = Endpoint.API_BASE) => {
   });
 
   const transform = async (response) => {
-      const { config, message, problem } = response;
-      if (problem === 'NETWORK_ERROR') {
-        Alert.alert('Thông báo', 'Kết nối gián đoạn. Vui lòng kiểm tra lại!', [{
-          text: 'Đồng ý', onPress: ()=>{
-            listChatStore.getData({})
-            chatStore.getData({})
-          }
-        }])
-      } else {
-        return response;
-      }
+    const { config, message, problem } = response;
+    if (problem === 'NETWORK_ERROR') {
+      Alert.alert('Thông báo', 'Kết nối gián đoạn. Vui lòng kiểm tra lại!', [{
+        text: 'Đồng ý', onPress: ()=>{
+          listChatStore.getData({})
+          chatStore.getData({})
+        }
+      }])
+    } else {
+      return response;
+    }
   }
 
   api.addAsyncResponseTransform(transform);
@@ -86,117 +86,121 @@ const create = (baseURL = Endpoint.API_BASE) => {
   const authVTP = (data) => api.post(Endpoint.AUTH_VTP, data);
   const authVTM = (data) => api.post(Endpoint.AUTH_VTM, data);
   const getConversations = async (data) =>
-    api.get(Endpoint.CONVERSATION_ME, data, await getHeader());
+      api.get(Endpoint.CONVERSATION_ME, data, await getHeader());
   const getConversationsAdmin = async (data) =>
-    api.get(Endpoint.CONVERSATION_ADMIN, data, await getHeader());
+      api.get(Endpoint.CONVERSATION_ADMIN, data, await getHeader());
   const conversationPin = async (data) =>
-    api.post(
-      Endpoint.CONVERSATION_PIN(data.conversation_id),
-      data,
-      await getHeader()
-    );
+      api.post(
+          Endpoint.CONVERSATION_PIN(data.conversation_id),
+          data,
+          await getHeader()
+      );
   const conversationUnPin = async (data) =>
-    api.delete(
-      Endpoint.CONVERSATION_PIN(data.conversation_id),
-      data,
-      await getHeader()
-    );
+      api.delete(
+          Endpoint.CONVERSATION_PIN(data.conversation_id),
+          data,
+          await getHeader()
+      );
   const conversationHide = async (data) =>
-    api.post(
-      Endpoint.CONVERSATION_HIDE(data.conversation_id),
-      data,
-      await getHeader()
-    );
+      api.post(
+          Endpoint.CONVERSATION_HIDE(data.conversation_id),
+          data,
+          await getHeader()
+      );
   const conversationMessages = async (data) =>
-    api.get(
-      Endpoint.CONVERSATION_MESSAGES(data.conversation_id),
-      data,
-      await getHeader()
-    );
+      api.get(
+          Endpoint.CONVERSATION_MESSAGES(data.conversation_id),
+          data,
+          await getHeader()
+      );
   const sendMessage = async (data) =>
-    api.post(
-      Endpoint.SEND_MESSAGE(data.conversation_id),
-      data,
-      await getHeader()
-    );
+      api.post(
+          Endpoint.SEND_MESSAGE(data.conversation_id),
+          data,
+          await getHeader()
+      );
   const uploadFile = async (data, onUploadProgress) =>
-    apiMultipart.post(Endpoint.UPLOAD_FILE, data, {
-      ...(await getHeader()),
-      ...{
-        retry: 3,
-        onUploadProgress,
-      },
-    });
+      apiMultipart.post(Endpoint.UPLOAD_FILE, data, {
+        ...(await getHeader()),
+        ...{
+          retry: 3,
+          onUploadProgress,
+        },
+      });
   const downloadFile = async (data) =>
-    api.get(Endpoint.DOWNLOAD_FILE, data, await getHeader());
+      api.get(Endpoint.DOWNLOAD_FILE, data, await getHeader());
   const createConversationVTM = async (data) =>
-    api.post(Endpoint.CREATE_CONVERSATION_WITH_VTM, data, await getHeader());
+      api.post(Endpoint.CREATE_CONVERSATION_WITH_VTM, data, await getHeader());
   const createConversationVTP = async (data) =>
-    api.post(Endpoint.CREATE_CONVERSATION_WITH_VTP, data, await getHeader());
+      api.post(Endpoint.CREATE_CONVERSATION_WITH_VTP, data, await getHeader());
   const onlineState = async (data) =>
-    api.post(Endpoint.ONLINE_STATE, data, await getHeader());
+      api.post(Endpoint.ONLINE_STATE, data, await getHeader());
   const orderValidate = async (data) =>
-    api.post(Endpoint.ORDER_VALIDATE, data, await getHeader());
+      api.post(Endpoint.ORDER_VALIDATE, data, await getHeader());
   const getConversationPin = async (data) =>
-    api.get(Endpoint.GET_CONVERSATION_PIN, data, await getHeader());
+      api.get(Endpoint.GET_CONVERSATION_PIN, data, await getHeader());
   const conversationMute = async (data) =>
-    api.post(
-      Endpoint.CONVERSATION_MUTE(data.conversation_id),
-      data,
-      await getHeader()
-    );
+      api.post(
+          Endpoint.CONVERSATION_MUTE(data.conversation_id),
+          data,
+          await getHeader()
+      );
   const conversationReact = async (data) =>
-    api.post(
-      Endpoint.CONVERSATION_REACT(data.conversation_id, data.message_id),
-      data,
-      await getHeader()
-    );
+      api.post(
+          Endpoint.CONVERSATION_REACT(data.conversation_id, data.message_id),
+          data,
+          await getHeader()
+      );
 
   const createQuickMessage = async (data) =>
-    api.post(Endpoint.QUICK_MESSAGE_CREATE, data, await getHeader());
+      api.post(Endpoint.QUICK_MESSAGE_CREATE, data, await getHeader());
   const updateQuickMessage = async (data) =>
-    api.put(Endpoint.QUICK_MESSAGE_UPDATE(data._id), data, await getHeader());
+      api.put(Endpoint.QUICK_MESSAGE_UPDATE(data._id), data, await getHeader());
   const deleteQuickMessage = async (data) =>
-    api.delete(
-      Endpoint.QUICK_MESSAGE_UPDATE(data._id),
-      data,
-      await getHeader()
-    );
+      api.delete(
+          Endpoint.QUICK_MESSAGE_UPDATE(data._id),
+          data,
+          await getHeader()
+      );
   const listQuickMessage = async (data) =>
-    api.get(Endpoint.QUICK_MESSAGE_LIST, data, await getHeader());
+      api.get(Endpoint.QUICK_MESSAGE_LIST, data, await getHeader());
   const vtpConversationWithCS = async (data) =>
-    api.post(Endpoint.VTP_CONVERSATION_WITH_CS, data, await getHeader());
+      api.post(Endpoint.VTP_CONVERSATION_WITH_CS, data, await getHeader());
   const vtmConversationWithCS = async (data) =>
-    api.post(Endpoint.VTM_CONVERSATION_WITH_CS, data, await getHeader());
+      api.post(Endpoint.VTM_CONVERSATION_WITH_CS, data, await getHeader());
   const vtpConversationWithReceiver = async (data) =>
-    api.post(Endpoint.VTP_CREATE_WITH_RECEIVER, data, await getHeader());
+      api.post(Endpoint.VTP_CREATE_WITH_RECEIVER, data, await getHeader());
   const vtmConversationWithReceiver = async (data) =>
-    api.post(Endpoint.VTM_CREATE_WITH_RECEIVER, data, await getHeader());
+      api.post(Endpoint.VTM_CREATE_WITH_RECEIVER, data, await getHeader());
 
   const loginAdmin = async (data) => api.post(Endpoint.ADMIN_LOGIN, data);
   const loginVTP = async (data) => api.post(Endpoint.VTP_Login, data);
   const loginVTPClient = async (data) =>
-    api.post(Endpoint.VTP_Login_Client, data);
+      api.post(Endpoint.VTP_Login_Client, data);
   const loginVTM = async (data) => api.post(Endpoint.VTM_Login, data);
   const getConversationDetail = async (data) =>
-    api.get(
-      Endpoint.CONVERSATION(data.conversation_id),
-      null,
-      await getHeader()
-    );
+      api.get(
+          Endpoint.CONVERSATION(data.conversation_id),
+          null,
+          await getHeader()
+      );
   const getConversationAttachments = async (data) =>
-    api.get(
-      Endpoint.CONVERSATION_ATTACHMENTS(data.conversation_id),
-      data,
-      await getHeader()
-    );
+      api.get(
+          Endpoint.CONVERSATION_ATTACHMENTS(data.conversation_id),
+          data,
+          await getHeader()
+      );
 
   const getVTMCustomerByOrder = async (data) =>
-    api.get(Endpoint.VTM_CUSTOMER_BY_ORDER, data, await getHeaderVTM());
+      api.get(Endpoint.VTM_CUSTOMER_BY_ORDER, data, await getHeaderVTM());
   const getStickers = async (data) =>
-    api.get(Endpoint.GET_STICKER, data, await getHeader());
+      api.get(Endpoint.GET_STICKER, data, await getHeader());
+
+  const getOrderInfoVTM = async (data) =>
+      api.get(Endpoint.GET_ORDER_INFO(data.order_number), null, await getHeader());
 
   return {
+    getOrderInfoVTM,
     getVTMCustomerByOrder,
     vtpConversationWithReceiver,
     vtmConversationWithReceiver,

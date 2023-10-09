@@ -49,42 +49,53 @@ export const ChatScreen = observer(function ChatScreen(props) {
     return order?.order_status === 501;
   };
 
-  useEffect(() => {
+  const initData = async ()=>{
       chatStore.resetData();
 
-    chatStore.quote = props.order
-      ? {
-        _id: uuid.v4(),
-        conversation_id: conversation._id,
-        text: 'QUOTE_ORDER',
-        type: 'QUOTE_ORDER',
-        order_number: props.order.ORDER_NUMBER?props.order.ORDER_NUMBER:props.order.ma_phieugui,
-        has_attachment: false,
-        order_info: {
-          vtp_order: props.order,
-        },
+      chatStore.quote = props.order
+          ? {
+              _id: uuid.v4(),
+              conversation_id: conversation._id,
+              text: 'QUOTE_ORDER',
+              type: 'QUOTE_ORDER',
+              order_number: props.order.ORDER_NUMBER?props.order.ORDER_NUMBER:props.order.ma_phieugui,
+              has_attachment: false,
+              order_info: {
+                  vtp_order: props.order,
+              },
+          }
+          : undefined;
+
+      try {
+          if(chatStore.quote){
+              await chatStore.getOrderInfoVTM(chatStore.quote.order_number)
+          }
+      }catch (e) {
       }
-      : undefined;
 
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-      if (chatStore.keyboardEmoji) {
-        chatStore.keyboardEmoji = false;
-        InputStore.inputRef?.current?.focus();
-      }
-    });
+      const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+          if (chatStore.keyboardEmoji) {
+              chatStore.keyboardEmoji = false;
+              InputStore.inputRef?.current?.focus();
+          }
+      });
 
 
-    let receiver = {};
-    try {
-      receiver = conversation.detail_participants.find(
-        (i) => i.user_id !== appStore.user.user_id
-      );
-      setReceiver(receiver ? receiver : {});
-    } catch (e) { }
-    chatStore.page = 0;
-    chatStore.getData({
-      conversation_id: conversation?._id,
-    });
+      let receiver = {};
+      try {
+          receiver = conversation.detail_participants.find(
+              (i) => i.user_id !== appStore.user.user_id
+          );
+          setReceiver(receiver ? receiver : {});
+      } catch (e) { }
+      chatStore.page = 0;
+      chatStore.getData({
+          conversation_id: conversation?._id,
+      });
+  }
+
+  useEffect(() => {
+      initData()
     return () => {
       chatStore.data = []
       chatStore.showAttachModal = false;
@@ -92,7 +103,12 @@ export const ChatScreen = observer(function ChatScreen(props) {
       chatStore.conversation_id = '';
       chatStore.images = [];
       InputStore.input = ''
-      showSubscription.remove();
+        try{
+            showSubscription.remove();
+
+        }catch (e) {
+
+        }
     };
   }, []);
 
@@ -137,8 +153,8 @@ export const ChatScreen = observer(function ChatScreen(props) {
             const regex = /:\/\/(.{36})\//i;
             const result = chatStore.images[i].uri.match(regex);
             const photoDetail = await CameraRoll.getPhotoByInternalID(
-              result[1],
-              {}
+                result[1],
+                {}
             );
             chatStore.images[i].uri = photoDetail.node.image.filepath;
           }
@@ -170,211 +186,216 @@ export const ChatScreen = observer(function ChatScreen(props) {
       <SafeAreaView style={{ flex: 1, backgroundColor: colors.primary }}>
         <BottomSheetModalProvider style={{ flex: 1 }}>
           <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === 'ios' ? 'padding' : ''}
+              style={{ flex: 1 }}
+              behavior={Platform.OS === 'ios' ? 'padding' : ''}
           >
             <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                height: 64,
-                backgroundColor: colors.primary,
-              }}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  height: 64,
+                  backgroundColor: colors.primary,
+                }}
             >
               <TouchableOpacity
-                onPress={() => Navigation.pop(props.componentId)}
-                style={{
-                  width: 50,
-                  height: 50,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
+                  onPress={() => {
+                      try {
+                          Navigation.pop(props.componentId?props.componentId:'ChatScreen')
+                      }catch (e) {
+
+                      }
+                  }}
+                  style={{
+                    width: 50,
+                    height: 50,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
               >
                 <Image
-                  style={{ height: 36, width: 36, resizeMode: 'contain' }}
-                  source={require('../../assets/ic_back.png')}
+                    style={{ height: 36, width: 36, resizeMode: 'contain' }}
+                    source={require('../../assets/ic_back.png')}
                 />
               </TouchableOpacity>
-              <View style={{ flex: 1, alignItems: 'center' }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ flex: 1, alignItems: 'center' , paddingHorizontal: 16 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16 }}>
                   <TouchableOpacity
-                    onPress={navigateAttachs}
-                    style={{ flexDirection: 'row', alignItems: 'center' }}
+                      onPress={navigateAttachs}
+                      style={{ flexDirection: 'row', alignItems: 'center' }}
                   >
                     <Text
-                      style={{
-                        flex: 1,
-                        fontWeight: '600',
-                        fontSize: 17,
-                        color: 'white',
-                        textAlign: 'center'
-                      }}
-                      numberOfLines={2} ellipsizeMode='tail'
+                        style={{
+                          fontWeight: '600',
+                          fontSize: 17,
+                          color: 'white',
+                          textAlign: 'center'
+                        }}
+                        numberOfLines={2} ellipsizeMode='tail'
                     >
                       {conversation?.type === 'GROUP'
-                        ? 'Đơn ' + conversation?.order_numbers[0]
-                        : conversation?.type === 'PAIR'
-                          ?  (receiver?.last_name?receiver?.last_name:'')+ ' ' + (receiver?.first_name?receiver?.first_name: '')
-                          : conversation?.type === 'PAIR_SUPPORT'
-                            ? 'Chăm sóc khách hàng'
-                            : 'Không tên'}
+                          ? 'Đơn ' + conversation?.order_numbers[0]
+                          : conversation?.type === 'PAIR'
+                              ?  (receiver?.last_name?receiver?.last_name:'')+ ' ' + (receiver?.first_name?receiver?.first_name: '')
+                              : conversation?.type === 'PAIR_SUPPORT'
+                                  ? 'Chăm sóc khách hàng'
+                                  : 'Không tên'}
                     </Text>
                     {conversation?.type === 'PAIR' && (
-                      <Image
-                        style={{
-                          height: 14,
-                          width: 14,
-                          marginLeft: 4,
-                          resizeMode: 'contain',
-                        }}
-                        source={require('../../assets/ic_arrow_down.png')}
-                      />
+                        <Image
+                            style={{
+                              height: 14,
+                              width: 14,
+                              marginLeft: 4,
+                              resizeMode: 'contain',
+                            }}
+                            source={require('../../assets/ic_arrow_down.png')}
+                        />
                     )}
                   </TouchableOpacity>
                 </View>
                 {conversation?.type === 'PAIR' && (
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      marginTop: 2,
-                    }}
-                  >
-                    {receiver.state?.includes('ONLINE') && (
-                      <View style={{
-                        flexDirection: 'row',
-                        alignItems: 'center'
-                      }}>
-                        <View
-                          style={{
-                            height: 8,
-                            width: 8,
-                            marginRight: 8,
-                            borderRadius: 4,
-                            backgroundColor: '#30F03B',
-                          }}
-                        />
-                        <Text style={{ fontSize: 13, color: "white" }}>{
-                          receiver.type === 'VTMAN' ?
-                            '' : 'Đang hoạt động'}</Text>
-                      </View>
-                    )}
-
-                    <Text
-                      style={{
-                        fontWeight: '500',
-                        fontSize: 13,
-                        color: 'white',
-                        textAlign: 'center',
-                      }}
+                    <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          marginTop: 2,
+                        }}
                     >
-                      {conversation.type === 'PAIR' &&
-                        receiver.type === 'VTMAN' &&
-                        appStore.lang.common.postman}
-                    </Text>
-                  </View>
+                      {receiver.state?.includes('ONLINE') && (
+                          <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                          }}>
+                            <View
+                                style={{
+                                  height: 8,
+                                  width: 8,
+                                  marginRight: 8,
+                                  borderRadius: 4,
+                                  backgroundColor: '#30F03B',
+                                }}
+                            />
+                            <Text style={{ fontSize: 13, color: "white" }}>{
+                              receiver.type === 'VTMAN' ?
+                                  '' : 'Đang hoạt động'}</Text>
+                          </View>
+                      )}
+
+                      <Text
+                          style={{
+                            fontWeight: '500',
+                            fontSize: 13,
+                            color: 'white',
+                            textAlign: 'center',
+                          }}
+                      >
+                        {conversation.type === 'PAIR' &&
+                            receiver.type === 'VTMAN' &&
+                            appStore.lang.common.postman}
+                      </Text>
+                    </View>
                 )}
                 {conversation?.type === 'GROUP' && (
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      marginTop: 2,
-                    }}
-                  >
-
-                    <Text
-                      style={{
-                        fontWeight: '500',
-                        fontSize: 13,
-                        color: 'white',
-                        textAlign: 'center',
-                      }}
+                    <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          marginTop: 2,
+                        }}
                     >
-                      {
-                        orderStatus(order?.order_status)
-                      }
-                    </Text>
-                  </View>
+
+                      <Text
+                          style={{
+                            fontWeight: '500',
+                            fontSize: 13,
+                            color: 'white',
+                            textAlign: 'center',
+                          }}
+                      >
+                        {
+                          orderStatus(order?.order_status)
+                        }
+                      </Text>
+                    </View>
                 )}
 
               </View>
 
               <TouchableOpacity
-                onPress={() => {
-                  try {
-                    Linking.openURL(`tel:${receiver?.phone}`)
-                  } catch (e) {
-                    console.log(e)
-                  }
-                }}
-                style={{
-                  width: 50,
-                  height: 50,
-                  justifyContent: 'center',
-                  alignItems: 'flex-end',
-                }}
+                  onPress={() => {
+                    try {
+                      Linking.openURL(`tel:${receiver?.phone}`)
+                    } catch (e) {
+                      console.log(e)
+                    }
+                  }}
+                  style={{
+                    width: 50,
+                    height: 50,
+                    justifyContent: 'center',
+                    alignItems: 'flex-end',
+                  }}
               >
                 <Image
-                  style={{
-                    height: 18,
-                    width: 18,
-                    resizeMode: 'contain',
-                    marginRight: 16,
-                  }}
-                  source={require('../../assets/ic_call_out_white.png')}
+                    style={{
+                      height: 18,
+                      width: 18,
+                      resizeMode: 'contain',
+                      marginRight: 16,
+                    }}
+                    source={require('../../assets/ic_call_out_white.png')}
                 />
               </TouchableOpacity>
             </View>
             <View style={{ flex: 1, backgroundColor: 'white' }}>
 
               <FlatList
-                keyboardShouldPersistTaps={'always'}
-                estimatedItemSize={100}
-                viewabilityConfig={{
-                  waitForInteraction: true,
-                  itemVisiblePercentThreshold: 50,
-                  minimumViewTime: 1000,
-                }}
-                overrideItemLayout={(layout, item) => {
-                  layout.size = 200;
-                }}
-                // forceNonDeterministicRendering={true}
-                style={{ flex: 1, backgroundColor: 'white', transform: [{scaleY: -1}] }}
-                data={chatStore.data}
-                extraData={chatStore.data}
-                // inverted
-                renderItem={({ item, index }) => (
-                  <View style={{transform: [{scaleY: -1}]}}>
-                    <ChatItem item={item} index={index} data={chatStore.data} conversation={conversation} componentId={props.componentId} />
-                  </View>
-                )}
-                getItemType={(item, index) => {
-                  return item?.type;
-                }}
-                onEndReached={(info) => {
-                  // if(info.distanceFromEnd===0){
+                  keyboardShouldPersistTaps={'always'}
+                  estimatedItemSize={100}
+                  viewabilityConfig={{
+                    waitForInteraction: true,
+                    itemVisiblePercentThreshold: 50,
+                    minimumViewTime: 1000,
+                  }}
+                  overrideItemLayout={(layout, item) => {
+                    layout.size = 200;
+                  }}
+                  // forceNonDeterministicRendering={true}
+                  style={{ flex: 1, backgroundColor: 'white', transform: [{scaleY: -1}] }}
+                  data={chatStore.data}
+                  extraData={chatStore.data}
+                  // inverted
+                  renderItem={({ item, index }) => (
+                      <View style={{transform: [{scaleY: -1}]}}>
+                        <ChatItem item={item} index={index} data={chatStore.data} conversation={conversation} componentId={props.componentId} />
+                      </View>
+                  )}
+                  getItemType={(item, index) => {
+                    return item?.type;
+                  }}
+                  onEndReached={(info) => {
+                    // if(info.distanceFromEnd===0){
                     handleLoadMore()
-                  // }
-                }}
-                // maxToRenderPerBatch={20}
-                onEndReachedThreshold={0.7}
-                ListFooterComponent={() => <View style={{alignItems: 'center', padding: 4,}} >
-                  {
-                    chatStore.isLoadingMore && <ActivityIndicator color={colors.primary}/>
+                    // }
+                  }}
+                  // maxToRenderPerBatch={20}
+                  onEndReachedThreshold={0.7}
+                  ListFooterComponent={() => <View style={{alignItems: 'center', padding: 4,}} >
+                    {
+                        chatStore.isLoadingMore && <ActivityIndicator color={colors.primary}/>
+                    }
+                  </View>}
+                  removeClippedSubviews={true}
+                  keyExtractor={(item) =>
+                      item._id !== undefined ? item._id : item.id
                   }
-                </View>}
-                removeClippedSubviews={true}
-                keyExtractor={(item) =>
-                  item._id !== undefined ? item._id : item.id
-                }
-                refreshing={chatStore.isLoading}
-                onRefresh={() => {
-                  chatStore.page = 0;
-                  chatStore.getData({
-                    conversation_id: conversation._id,
-                  });
-                }}
+                  refreshing={chatStore.isLoading}
+                  onRefresh={() => {
+                    chatStore.page = 0;
+                    chatStore.getData({
+                      conversation_id: conversation._id,
+                    });
+                  }}
               />
             </View>
             <BottomChat {...props} />
@@ -382,55 +403,55 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
           <AttachScreen {...props} />
           {chatStore.images.length > 0 && chatStore.showAttachModal && (
-            <TouchableOpacity
-              onPress={sendImages}
-              style={{
-                position: 'absolute',
-                zIndex: 99999,
-                bottom: 92 + useSafeAreaInsets().bottom,
-                left: 16,
-                right: 16,
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 16,
-                margin: 16,
-                backgroundColor: colors.primary,
-                borderRadius: 10,
-              }}
-            >
-              <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>
-                {appStore.lang.chat.send}
-              </Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                  onPress={sendImages}
+                  style={{
+                    position: 'absolute',
+                    zIndex: 99999,
+                    bottom: 92 + useSafeAreaInsets().bottom,
+                    left: 16,
+                    right: 16,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 16,
+                    margin: 16,
+                    backgroundColor: colors.primary,
+                    borderRadius: 10,
+                  }}
+              >
+                <Text style={{ color: 'white', fontWeight: '600', fontSize: 15 }}>
+                  {appStore.lang.chat.send}
+                </Text>
+              </TouchableOpacity>
           )}
         </BottomSheetModalProvider>
         <Toast
-          bottomOffset={90}
-          config={{
-            info: (props) => (
-              <BaseToast
-                {...props}
-                style={{
-                  borderLeftColor: 'transparent',
-                  borderRadius: 8,
-                  backgroundColor: colors.primaryText,
-                  flexWrap: 'wrap',
-                }}
-                // contentContainerStyle={{
-                //   backgroundColor: colors.primaryText,
-                //   borderRadius: 8,
-                //   marginHorizontal: 16,
-                // }}
-                text1Style={{
-                  flexWrap: 'wrap',
-                  color: 'white',
-                  fontSize: 13,
-                  fontWeight: '500',
-                  fontFamily: 'SVN-GilroyMedium',
-                }}
-              />
-            ),
-          }}
+            bottomOffset={90}
+            config={{
+              info: (props) => (
+                  <BaseToast
+                      {...props}
+                      style={{
+                        borderLeftColor: 'transparent',
+                        borderRadius: 8,
+                        backgroundColor: colors.primaryText,
+                        flexWrap: 'wrap',
+                      }}
+                      // contentContainerStyle={{
+                      //   backgroundColor: colors.primaryText,
+                      //   borderRadius: 8,
+                      //   marginHorizontal: 16,
+                      // }}
+                      text1Style={{
+                        flexWrap: 'wrap',
+                        color: 'white',
+                        fontSize: 13,
+                        fontWeight: '500',
+                        fontFamily: 'SVN-GilroyMedium',
+                      }}
+                  />
+              ),
+            }}
         />
       </SafeAreaView>
   );
@@ -455,8 +476,8 @@ const BottomChat = observer(function BottomChat(props) {
       text: InputStore.input,
       status: 'sending',
       order_number: props.order
-        ? props.order.ORDER_NUMBER
-        : conversation.order_info?.order_number,
+          ? props.order.ORDER_NUMBER
+          : conversation.order_info?.order_number,
       sender: appStore.user.type + '_' + appStore.user.user_id,
       conversation_id: conversation._id,
     };
@@ -496,170 +517,170 @@ const BottomChat = observer(function BottomChat(props) {
   };
 
   return (
-    <>
-      <TouchableOpacity
-        disabled={!isOrderSuccess()}
-        onPress={() => {
-          Toast.show({
-            type: 'info',
-            position: 'bottom',
-            text1: 'Chat với bưu tá lấy không khả dụng do\ntrạng thái đơn không cho phép. ',
-          });
-        }}
-        style={{
-          minHeight: 56,
-          backgroundColor: '#F8F8FA',
-          flexDirection: 'row',
-          alignItems: 'flex-end',
-          borderTopWidth: 1,
-          borderColor: '#DCE6F0',
-        }}
-      >
+      <>
         <TouchableOpacity
-          disabled={isOrderSuccess()}
-          onPress={handlePresentModalPress}
-          style={{
-            width: 56,
-            height: 56,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+            disabled={!isOrderSuccess()}
+            onPress={() => {
+              Toast.show({
+                type: 'info',
+                position: 'bottom',
+                text1: 'Chat với bưu tá lấy không khả dụng do\ntrạng thái đơn không cho phép. ',
+              });
+            }}
+            style={{
+              minHeight: 56,
+              backgroundColor: '#F8F8FA',
+              flexDirection: 'row',
+              alignItems: 'flex-end',
+              borderTopWidth: 1,
+              borderColor: '#DCE6F0',
+            }}
         >
-          <Image
-            source={require('../../assets/ic_attach.png')}
-            tintColor={isOrderSuccess() ? '#B5B4B8' : colors.primary}
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: 'contain',
-              tintColor: isOrderSuccess() ? '#B5B4B8' : colors.primary,
-            }}
-          />
-        </TouchableOpacity>
-        <View style={{ width: 1, height: '100%' }}>
-          <View
-            style={{
-              width: 1,
-              backgroundColor: '#DCE6F0',
-              marginVertical: 14,
-              flex: 1,
-            }}
-          />
-        </View>
-        <Input />
-        <TouchableOpacity
-          disabled={isOrderSuccess()}
-          onPress={() => {
-            if (chatStore.keyboardEmoji) {
-              chatStore.keyboardEmoji = false;
-            } else {
-              chatStore.keyboardEmoji = true;
-              Keyboard.dismiss();
-            }
-          }}
-          style={{
-            width: 40,
-            height: 56,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Image
-            source={
-              isOrderSuccess()
-                ? require('../../assets/ic_emoji_disabled.png')
-                : require('../../assets/ic_emoj.png')
-            }
-            style={{
-              height: 24,
-              width: 24,
-              resizeMode: 'contain',
-            }}
-          />
-        </TouchableOpacity>
-        {/*<TouchableOpacity*/}
-        {/*  onPress={() => sendMap()}*/}
-        {/*  style={{ width: 40, height: 56, alignItems: 'center', justifyContent: 'center' }}>*/}
-        {/*  <Image source={require('../../assets/nav_location_active.png')} style={{ height: 24, width: 24, resizeMode: "contain" }} />*/}
-        {/*</TouchableOpacity>*/}
-        {/*<TouchableOpacity*/}
-        {/*  onPress={()=>pickDocument()}*/}
-        {/*  style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>*/}
-        {/*  <Image source={require('../../assets/nav_document.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>*/}
-        {/*</TouchableOpacity>*/}
-
-        {inputStore.input.trim() !== '' && !isOrderSuccess() && (
           <TouchableOpacity
-            onPress={sendMessage}
-            style={{
-              width: 40,
-              height: 56,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+              disabled={isOrderSuccess()}
+              onPress={handlePresentModalPress}
+              style={{
+                width: 56,
+                height: 56,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
           >
             <Image
-              source={require('../../assets/ic_send.png')}
-              style={{ height: 24, width: 24, resizeMode: 'contain' }}
+                source={require('../../assets/ic_attach.png')}
+                tintColor={isOrderSuccess() ? '#B5B4B8' : colors.primary}
+                style={{
+                  height: 24,
+                  width: 24,
+                  resizeMode: 'contain',
+                  tintColor: isOrderSuccess() ? '#B5B4B8' : colors.primary,
+                }}
             />
           </TouchableOpacity>
-        )}
-        {inputStore.input.trim() === '' && (
-          <RecordButton
-            disabled={isOrderSuccess()}
-            {...props}
-            style={{
-              width: 40,
-              height: 56,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+          <View style={{ width: 1, height: '100%' }}>
+            <View
+                style={{
+                  width: 1,
+                  backgroundColor: '#DCE6F0',
+                  marginVertical: 14,
+                  flex: 1,
+                }}
+            />
+          </View>
+          <Input />
+          <TouchableOpacity
+              disabled={isOrderSuccess()}
+              onPress={() => {
+                if (chatStore.keyboardEmoji) {
+                  chatStore.keyboardEmoji = false;
+                } else {
+                  chatStore.keyboardEmoji = true;
+                  Keyboard.dismiss();
+                }
+              }}
+              style={{
+                width: 40,
+                height: 56,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
           >
             <Image
-              source={require('../../assets/ic_microphone.png')}
-              style={{
-                height: 24,
-                width: 24,
-                resizeMode: 'contain',
-                tintColor: isOrderSuccess() ? '#B5B4B8' : colors.primary,
-              }}
-              tintColor={isOrderSuccess() ? '#B5B4B8' : colors.primary}
+                source={
+                  isOrderSuccess()
+                      ? require('../../assets/ic_emoji_disabled.png')
+                      : require('../../assets/ic_emoj.png')
+                }
+                style={{
+                  height: 24,
+                  width: 24,
+                  resizeMode: 'contain',
+                }}
             />
-          </RecordButton>
+          </TouchableOpacity>
+          {/*<TouchableOpacity*/}
+          {/*  onPress={() => sendMap()}*/}
+          {/*  style={{ width: 40, height: 56, alignItems: 'center', justifyContent: 'center' }}>*/}
+          {/*  <Image source={require('../../assets/nav_location_active.png')} style={{ height: 24, width: 24, resizeMode: "contain" }} />*/}
+          {/*</TouchableOpacity>*/}
+          {/*<TouchableOpacity*/}
+          {/*  onPress={()=>pickDocument()}*/}
+          {/*  style={{width: 40, height: 56, alignItems: 'center', justifyContent: 'center'}}>*/}
+          {/*  <Image source={require('../../assets/nav_document.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>*/}
+          {/*</TouchableOpacity>*/}
+
+          {inputStore.input.trim() !== '' && !isOrderSuccess() && (
+              <TouchableOpacity
+                  onPress={sendMessage}
+                  style={{
+                    width: 40,
+                    height: 56,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+              >
+                <Image
+                    source={require('../../assets/ic_send.png')}
+                    style={{ height: 24, width: 24, resizeMode: 'contain' }}
+                />
+              </TouchableOpacity>
+          )}
+          {inputStore.input.trim() === '' && (
+              <RecordButton
+                  disabled={isOrderSuccess()}
+                  {...props}
+                  style={{
+                    width: 40,
+                    height: 56,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+              >
+                <Image
+                    source={require('../../assets/ic_microphone.png')}
+                    style={{
+                      height: 24,
+                      width: 24,
+                      resizeMode: 'contain',
+                      tintColor: isOrderSuccess() ? '#B5B4B8' : colors.primary,
+                    }}
+                    tintColor={isOrderSuccess() ? '#B5B4B8' : colors.primary}
+                />
+              </RecordButton>
+          )}
+
+        </TouchableOpacity>
+        {chatStore.keyboardEmoji && (
+            <EmojiKeyboard
+                styles={{
+                  container: { borderRadius: 0, backgroundColor: 'white' },
+                }}
+                onSelected={(sticker) => {
+                  sendSticker(sticker)
+                }}
+            />
+
+            // <EmojiPicker
+            //   emojiStyle={{color: 'black'}}
+            //   hideClearButton={true}
+            //   onEmojiSelected={(emoji) => {
+            //     if (emoji !== null) {
+            //       inputStore.input += emoji
+            //     }
+            //   }}
+            //   rows={7}
+            //   localizedCategories={[ // Always in this order:
+            //     'Smileys and emotion',
+            //     'People and body',
+            //     'Animals and nature',
+            //     'Food and drink',
+            //     'Activities',
+            //     'Travel and places',
+            //     'Objects',
+            //     'Symbols',
+            //   ]}
+            // />
         )}
-
-      </TouchableOpacity>
-      {chatStore.keyboardEmoji && (
-        <EmojiKeyboard
-          styles={{
-            container: { borderRadius: 0, backgroundColor: 'white' },
-          }}
-          onSelected={(sticker) => {
-            sendSticker(sticker)
-          }}
-        />
-
-        // <EmojiPicker
-        //   emojiStyle={{color: 'black'}}
-        //   hideClearButton={true}
-        //   onEmojiSelected={(emoji) => {
-        //     if (emoji !== null) {
-        //       inputStore.input += emoji
-        //     }
-        //   }}
-        //   rows={7}
-        //   localizedCategories={[ // Always in this order:
-        //     'Smileys and emotion',
-        //     'People and body',
-        //     'Animals and nature',
-        //     'Food and drink',
-        //     'Activities',
-        //     'Travel and places',
-        //     'Objects',
-        //     'Symbols',
-        //   ]}
-        // />
-      )}
-    </>
+      </>
   )
 })

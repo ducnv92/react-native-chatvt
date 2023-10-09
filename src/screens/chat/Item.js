@@ -1272,7 +1272,7 @@ const OrderItem = function (props) {
                   color: colors.primaryText,
                 }}
               >
-                {order?.ma_phieugui}
+                {order?.order_number}
               </Text>
               <View
                 style={{
@@ -1308,7 +1308,7 @@ const OrderItem = function (props) {
               marginTop: 10,
             }}
           >
-            {order?.ten_khnhan ? order?.ten_khnhan : order?.receiver_fullname} - {order?.tel_khnhan ? order?.tel_khnhan : order?.receiver_phone}
+            {order?.ten_khnhan ? order?.ten_khnhan : (order.order_sendname?order.order_sendname:order?.receiver_fullname)} - {order?.tel_khnhan ? order?.tel_khnhan : (order.order_sendtel?order.order_sendtel:order?.receiver_phone)}
           </Text>
           <Text
             style={{
@@ -1318,7 +1318,7 @@ const OrderItem = function (props) {
               marginTop: 2,
             }}
           >
-            {productNames}
+            {order.mota_sp?order.mota_sp:productNames}
           </Text>
         </View>
         {/*{*/}

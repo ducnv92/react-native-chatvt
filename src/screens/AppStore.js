@@ -32,9 +32,10 @@ class AppStore {
 
       Log(response);
       this.isLoading = false;
-      if (response.status === 201) {
-        if (response.data.status === 200) {
+      if (response.status === 201||response.status === 200) {
+        if (response.data.status === 201||response.data.status === 200) {
           if (response.data.data) {
+            console.log('response.data.data', response.data.data)
             this.user = response.data.data;
             await MyAsyncStorage.save(USER, { ...response.data.data, ...{ client_token: params.token } })
             await Socket.getInstance().init()
@@ -89,7 +90,7 @@ class AppStore {
           // if (onError) {
           //   onError(response.data?.message);
           // } else {
-            Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
+          Alert.alert('Thông báo', response?.data?.message?response?.data?.message: 'Có lỗi xảy ra.', [{text: 'Đồng ý'}])
           // }
         }
       } else {

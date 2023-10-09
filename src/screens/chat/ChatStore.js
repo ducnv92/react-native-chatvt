@@ -131,8 +131,8 @@ class ChatStore {
   async getDataBackground() {
     try {
       services.create().conversationMessages({
-          conversation_id: this.conversation_id,
-          page: 1
+        conversation_id: this.conversation_id,
+        page: 1
       }).then(response=>{
         if (response.status === 200) {
           if (response.data.status === 200) {
@@ -147,6 +147,29 @@ class ChatStore {
     }
   }
 
+  async getOrderInfoVTM(order_number) {
+    try {
+      const response = await services.create().getOrderInfoVTM({
+        order_number: order_number,
+      })
+        if (response.status === 200) {
+          if (response.data.status === 200 && response.data.data) {
+            if(this.quote && response.data.data?.order_number===this.quote.order_number){
+              this.quote.order_info.vtp_order = {...this.quote.order_info.vtp_order, ...{
+                  product_name: response.data.data?.product_name,
+                  status_name: response.data.data?.status_name,
+                }}
+              this.quote = {...this.quote}
+            }
+            // if (response.data.data) {
+            //   this.data = _.unionBy(response.data.data, toJS(this.data), "_id");
+            // }
+          }
+        }
+    } catch (error) {
+      Log(error);
+    }
+  }
 
   delay = (delayInms) => {
     return new Promise(resolve => setTimeout(resolve, delayInms));
@@ -211,12 +234,12 @@ class ChatStore {
           if (params.attachmentLocal[i].width >= 900 || params.attachmentLocal[i].height >= 900) {
             try {
               const result = await ImageResizer.createResizedImage(
-                absolutePath,
-                900,
-                900,
-                'JPEG',
-                80,
-                0
+                  absolutePath,
+                  900,
+                  900,
+                  'JPEG',
+                  80,
+                  0
               )
               fileUri = result.uri
             } catch (e) {

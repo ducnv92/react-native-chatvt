@@ -32,6 +32,8 @@ exports.CONVERSATION_REACT = (conversation_id, message_id) =>
   `/conversation/${conversation_id}/${message_id}/reaction`;
 exports.CONVERSATION_ATTACHMENTS = (conversation_id) =>
   `/conversation/${conversation_id}/attachments`;
+exports.GET_ORDER_INFO = (order_number) =>
+  `/conversation/vtm/bill-info/${order_number}`;
 
 //Space
 exports.UPLOAD_FILE = `${API_BASE}/space/upload`;

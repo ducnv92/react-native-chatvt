@@ -452,7 +452,8 @@ const LocationMessage = observer(function LocationMessage(props) {
               longitudeDelta: 0.0121,
             }}
             onRegionChangeComplete={ (region, gesture) => {
-              if (!gesture.isGesture) {
+
+              if (!gesture?.isGesture && appStore.appId ==='VTPost') {
                 return;
               }
               chatStore.location = region
