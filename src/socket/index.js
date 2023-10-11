@@ -217,7 +217,7 @@ class Socket{
       this.socket = io.connect(this.URL, {
         reconnection: true,
         autoConnect: true,
-        transports: [ "webtransport"],
+        transports: ["polling", "websocket", "webtransport"],
         extraHeaders: {
           Authorization: user.token
         },
