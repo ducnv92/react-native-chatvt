@@ -1,6 +1,6 @@
 {
     "name": "react-native-chatvt",
-    "version": "1.0.15",
+    "version": "1.0.16",
     "description": "test",
     "main": "lib/commonjs/index",
     "module": "lib/module/index",
@@ -117,6 +117,7 @@
     "dependencies": {
         "@charkour/react-reactions": "^0.11.0",
         "apisauce": "1.1.1",
+        "babel-plugin-transform-remove-console": "^6.9.4",
         "deprecated-react-native-prop-types": "^4.1.0",
         "emoji-datasource": "~5.0.1",
         "emoji-datasource-apple": "^15.0.1",
