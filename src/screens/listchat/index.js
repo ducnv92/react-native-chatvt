@@ -770,12 +770,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
   function renderHeader() {
     return (
       <FlatList
-        refreshing={listChatStore.isLoading}
-        onRefresh={() => {
-          listChatStore.page = 0;
-          listChatStore.getData({});
-        }}
-        // keyExtractor={(item) => item?.message?._id}
+        keyExtractor={(item) => item?.message?._id}
         style={{ backgroundColor: 'white' }}
         data={listChatStore.dataPin}
         extraData={listChatStore.data}
@@ -997,7 +992,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
             listChatStore.getData({});
           }}
           ListHeaderComponent={renderHeader}
-          keyExtractor={(item) => item.message?._id}
+          keyExtractor={(item) => item?.message?._id}
           onEndReached={() => () => {
             listChatStore.getData({})
           }}

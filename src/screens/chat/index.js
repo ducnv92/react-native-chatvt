@@ -364,7 +364,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                   // forceNonDeterministicRendering={true}
                   style={{ flex: 1, backgroundColor: 'white', transform: [{scaleY: -1}] }}
                   data={chatStore.data}
-                  extraData={chatStore.data}
+                  // extraData={chatStore.data}
                   // inverted
                   renderItem={({ item, index }) => (
                       <View style={{transform: [{scaleY: -1}]}}>

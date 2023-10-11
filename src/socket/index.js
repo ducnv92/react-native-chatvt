@@ -17,6 +17,12 @@ class Socket{
   currentToken
   hasDisconnect
 
+  arraymove(arr, fromIndex, toIndex) {
+    var element = arr[fromIndex];
+    arr.splice(fromIndex, 1);
+    arr.splice(toIndex, 0, element);
+  }
+
   static getInstance(){
     if(Socket.instance!==undefined){
       return Socket.instance
@@ -58,7 +64,8 @@ class Socket{
 
       try{
         runInAction(()=>{
-          listChatStore.dataPin  = [...listChatStore.dataPin.map(c=>{
+          let messageIdx=0
+          listChatStore.dataPin  = [...listChatStore.dataPin.map((c, index)=>{
             if(c._id===event?.message?.conversation_id && c.message._id!==event?.message?._id){
               if(!right && chatStore.conversation_id!==event?.message?.conversation_id) {
                 c.settings = c.settings.map(setting => {
@@ -67,9 +74,11 @@ class Socket{
                 })
               }
               c.message  = event.message
+              messageIdx = index
             }
             return c
           })]
+          this.arraymove(listChatStore.dataPin, messageIdx, 0)
           listChatStore.dataPin = [...listChatStore.dataPin]
         })
       }catch (e) {
@@ -79,7 +88,8 @@ class Socket{
       //Handler conversation
       try{
         runInAction(()=>{
-          listChatStore.data  = listChatStore.data.map(c=>{
+          let messageIdx = 0
+          listChatStore.data  = listChatStore.data.map((c, index)=>{
             if(c._id===event?.message?.conversation_id && c.message._id!==event?.message?._id){
               if(!right && chatStore.conversation_id!==event?.message?.conversation_id){
                 c.settings = c.settings.map(setting=>{
@@ -87,10 +97,12 @@ class Socket{
                   return setting
                 })
               }
+              messageIdx = index
               c.message  = event.message
             }
             return c
           })
+          this.arraymove(listChatStore.data, messageIdx, 0)
           listChatStore.data = [...listChatStore.data]
         })
       }catch (e) {

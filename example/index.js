@@ -34,7 +34,7 @@ Navigation.events().registerAppLaunchedListener(() => {
         children: [
           {
             component: {
-              name: 'Login',
+              name: 'App',
               passProps: {
                 data: {
                   app: 'Admin',
