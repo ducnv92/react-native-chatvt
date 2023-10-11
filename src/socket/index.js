@@ -18,9 +18,16 @@ class Socket{
   hasDisconnect
 
   arraymove(arr, fromIndex, toIndex) {
-    var element = arr[fromIndex];
-    arr.splice(fromIndex, 1);
-    arr.splice(toIndex, 0, element);
+    try{
+      if(fromIndex!==toIndex){
+        var element = arr[fromIndex];
+        arr.splice(fromIndex, 1);
+        arr.splice(toIndex, 0, element);
+      }
+    }catch (e) {
+      console.log(e)
+    }
+
   }
 
   static getInstance(){
@@ -210,9 +217,7 @@ class Socket{
       this.socket = io.connect(this.URL, {
         reconnection: true,
         autoConnect: true,
-        reconnectionDelay: 1000,
-        reconnectionDelayMax: 9999999,
-        transports: ["polling", "websocket", "webtransport"],
+        transports: [ "webtransport"],
         extraHeaders: {
           Authorization: user.token
         },

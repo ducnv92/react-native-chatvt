@@ -256,7 +256,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
                   paddingTop: 4,
                 }}
             >
-              {item.FIRSTNAME + ' ' + item.LASTNAME}
+              { item.LASTNAME + ' ' + item.FIRSTNAME}
             </Text>
           </View>
         </TouchableOpacity>

@@ -25,6 +25,8 @@ chatVT.init(env, AsyncStorage, lang, appId,  token, tokenSSO, onSuccess?, onErro
 
   ```
 
+
+
 ## Ví dụ VTPost
 
 ```js
@@ -155,6 +157,153 @@ export default function App(props: any) {
 
 ```
 
+## BottomSheetChat
+
+### Với app VTPost và Đơn nhận VTMan
+```js
+
+// BottomSheet hiển thị options chat với ngừoi gửi, nhận, bưu tá gửi, bưu tá nhận
+
+import {BottomSheetChat}  from 'react-native-chatvt';
+
+export default function MyScreen() {
+
+  const bottomSheetChatRef = useRef();
+
+  const onMessage = ()=>{
+      // Cập nhật thông tin đơn hàng đã chọn vào BottomSheet
+       bottomSheetChatRef?.current?.updateData(
+        //Danh sách bưu tá
+        res,
+        //Chi tiết đơn hàng
+        orderSelected,
+        //Tab Đơn gửi hay đơn nhận
+        tabSelected,
+        // Đơn gửi hay đơn nhận SENDER/RECEIVER
+        'SENDER'
+      );
+      // Hiện Bottomsheet
+      bottomSheetChatRef.current?.present();
+
+  }
+  ...
+
+ return(
+  <View>
+    ...
+    <BottomSheetChat
+          // ref
+          ref={bottomSheetChatRef}
+          // Navigation componentId
+          componentId={props.componentId}
+        />
+  </View>
+ )
+
+}
+
+```
+
+### Với app VTMan đơn nhận
+```js
+
+// BottomSheet hiển thị options chat với ngừoi gửi, nhận, bưu tá gửi, bưu tá nhận
+
+import {BottomSheetChatVTM} from 'react-native-chatvt';
+
+export default function MyScreen() {
+
+  const bottomSheetChatRef = useRef();
+
+  const onMessage = ()=>{
+      // Cập nhật thông tin đơn hàng đã chọn vào BottomSheet
+      bottomSheetChatRef?.current?.updateData(
+        //Danh sách bưu tá
+        res,
+        //Chi tiết đơn hàng
+        orderSelected,
+        //Tab Đơn gửi hay đơn nhận 4 / 1
+        tabSelected,
+        // Đơn gửi hay đơn nhận SENDER/RECEIVER
+        'SENDER'
+      );
+      // Hiện Bottomsheet
+      bottomSheetChatRef.current?.present();
+  }
+  ...
+
+ return(
+  <View>
+    ...
+    <BottomSheetChatVTM
+              // Navigation ComponentId
+              componentId={this.props.parentComponentId}
+              // ref
+              ref={(ref) => (this.bottomSheetChatRef = ref)} />
+  </View>
+ )
+
+}
+
+```
+
+
+## Xử lý notification
+
+### Với app VTPost
+```js
+
+import {chatVT}  from 'react-native-chatvt';
+
+ const chatProcess = (data) => {
+  try {
+    // Lấy ref từ data của thông báo
+    const { ref } = data;
+    let eToken = UserData?.userInfo?.tokenKey;
+    let sToken = UserData?.userInfo?.tokenSSO;
+    chatVT.handleNotification(
+      'DEV',
+      AsyncStorage,
+      'VN',
+      'VTPost',
+      eToken,
+      sToken,
+      () => {},
+      () => {},
+      //Navigation componentId
+      StackScreen.componentId,
+      //Conversation Id lọc từ ref
+      ref?.replace('group:', ''),
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+```
+
+
+### Với app VTMan
+```js
+
+import {chatVT}  from 'react-native-chatvt';
+
+
+  chatVT.handleNotification(
+        "DEV",
+        AsyncStorage,
+        "VN",
+        "VTMan",
+        TKModelData.tokenVTMan,
+        '',
+        () => {},
+        () => {},
+        // Navigation componentId
+        TKModelData.last_componentid,
+        // Conversation Id lọc từ dữ liệu noitification
+        data?.additionalProp1
+      );
+```
 
 ## License
 
