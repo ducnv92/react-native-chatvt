@@ -67,6 +67,8 @@ class Socket{
   onUserMessage = (event)=>{
 
     try{
+      let handled = false
+
       const right =  event?.message.sender === (appStore.user.type + '_' + appStore.user.user_id);
 
       try{
@@ -82,6 +84,7 @@ class Socket{
               }
               c.message  = event.message
               messageIdx = index
+              handled = true
             }
             return c
           })]
@@ -106,6 +109,7 @@ class Socket{
               }
               messageIdx = index
               c.message  = event.message
+              handled = true
             }
             return c
           })
@@ -131,7 +135,11 @@ class Socket{
         }
       }
 
-
+      if(!handled){
+        runInAction(()=>{
+          listChatStore.data = [event, ...listChatStore.data]
+        })
+      }
     }catch (e) {
       Log(e)
     }
