@@ -13,10 +13,16 @@ import {
   Keyboard,
   StatusBar,
   TextInput,
-  TouchableOpacityBase, Dimensions, Linking, Image, ActivityIndicator
+  TouchableOpacityBase,
+  Dimensions,
+  Linking,
+  Image,
+  ActivityIndicator,
+  TouchableNativeFeedback,
+  TouchableNativeFeedbackComponent, TouchableWithoutFeedback,
 } from 'react-native';
 import colors from '../../Styles';
-import { BottomSheetModalProvider } from '../../components/bottomSheet/bottom-sheet';
+import { BottomSheetModalProvider, TouchableHighlight } from '../../components/bottomSheet/bottom-sheet';
 import { MText as Text } from '../../components';
 import chatStore from './ChatStore';
 import { Log, orderStatus } from '../../utils';
@@ -367,9 +373,16 @@ export const ChatScreen = observer(function ChatScreen(props) {
                   // extraData={chatStore.data}
                   // inverted
                   renderItem={({ item, index }) => (
-                      <View style={{transform: [{scaleY: -1}]}}>
+                      <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={()=>{
+                          if(chatStore.keyboardEmoji===true){
+                            chatStore.keyboardEmoji = false
+                          }
+                        }}
+                        style={{transform: [{scaleY: -1}]}}>
                         <ChatItem item={item} index={index} data={chatStore.data} conversation={conversation} componentId={props.componentId} />
-                      </View>
+                      </TouchableOpacity>
                   )}
                   getItemType={(item, index) => {
                     return item?.type;
