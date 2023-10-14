@@ -1688,33 +1688,34 @@ function ContainChatItem(props) {
         onPress={() => {
           try {
             if (props.item.type === 'FILE') {
-              // try {
-              //   Navigation.push(appStore.componentId, {
-              //     component: {
-              //       name: 'ViewFileScreen',
-              //       options: {
-              //         popGesture: false,
-              //         bottomTabs: {
-              //           visible: false,
-              //         },
-              //         topBar: {
-              //           visible: false,
-              //           height: 0,
-              //         },
-              //       },
-              //       passProps: {
-              //         data: props.item.attachments[0],
-              //       },
-              //     },
-              //   });
-              // } catch (e) {
-              //   console.log(e)
-              //   Linking.openURL(props.item.attachments[0].url);
-              // }
+              try {
+                Navigation.push(appStore.componentId, {
+                  component: {
+                    name: 'ViewFileScreen',
+                    options: {
+                      popGesture: false,
+                      bottomTabs: {
+                        visible: false,
+                      },
+                      topBar: {
+                        visible: false,
+                        height: 0,
+                      },
+                    },
+                    passProps: {
+                      data: props.item.attachments[0],
+                    },
+                  },
+                });
+              } catch (e) {
+                console.log(e)
+                DownloadViewFile(props.item.attachments[0].url)
+
+                // Linking.openURL(props.item.attachments[0].url);
+              }
 
               // Linking.openURL(props.item.attachments[0].url);
 
-              DownloadViewFile(props.item.attachments[0].url)
 
             }
             if (props.item.type === 'LOCATION') {

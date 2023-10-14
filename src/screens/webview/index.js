@@ -46,6 +46,7 @@ export const ViewFileScreen = observer(function ViewFileScreen(props) {
               color: 'white',
               flex: 1,
               textAlign: 'center',
+              marginRight: 50
             }}
           >
             {props.data.name}
@@ -55,6 +56,7 @@ export const ViewFileScreen = observer(function ViewFileScreen(props) {
       </View>
       <WebView style={{flex: 1}}
                scalesPageToFit
+               javaScriptEnabled={true}
                source={{ uri: 'https://docs.google.com/viewer?url='+props.data.url }}
                onLoadEnd={() =>setLoading(false)}
       />

@@ -26,7 +26,7 @@ import stickerStore from "../chat/StickerStore";
 export const ListChatScreen = observer(function ListChatScreen(props) {
   const [showSearch, setShowSearch] = useState(false);
   const bottomSheetModalRef = useRef();
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(undefined);
   const currentSwipe = createRef()
 
   useEffect(() => {
@@ -38,6 +38,18 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
       bottomSheetModalRef.current?.dismiss();
     };
   }, []);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if(query!==undefined){
+        listChatStore.search = query;
+        listChatStore.page = 0;
+        listChatStore.getData({});
+      }
+    }, 1000);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [query]);
 
   const intLoad = () => {
     listChatStore.page = 0;
@@ -792,15 +804,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
   }
 
 
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      listChatStore.search = query;
-      listChatStore.page = 0;
-      listChatStore.getData({});
-    }, 1000);
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [query]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.primary }}>
