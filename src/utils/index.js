@@ -137,6 +137,7 @@ export const formatTimeLastMessage = timeString => {
 };
 
 export const formatDuration = duration =>{
+  console.log('duration', duration)
   const secs = Math.floor(duration)
   const minutes = Math.floor(secs / 60);
   const seconds = secs % 60;

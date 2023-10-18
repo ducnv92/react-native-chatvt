@@ -118,6 +118,7 @@ export class RecordButton extends React.Component {
             uri: this.state.fileRecorded,
             extension: 'mp3',
             name: uuid.v4() + '.mp3',
+            duration: this.state.recordSecs/1000
           },
         ],
         has_attachment: true,
@@ -156,13 +157,11 @@ export class RecordButton extends React.Component {
         this.setState({
           isRecording: false,
           fileRecorded: result,
-          recordSecs: 0,
         });
       } else {
         this.setState({
           isRecording: false,
           fileRecorded: undefined,
-          recordSecs: 0,
         });
       }
     } catch (e) {

@@ -4,7 +4,7 @@ import {
   View,
   FlatList,
   Platform,
-  KeyboardAvoidingView, Dimensions,
+  KeyboardAvoidingView, Dimensions, StatusBar,
 } from 'react-native';
 import { MText as Text } from '../../components';
 import { observer } from 'mobx-react-lite';
@@ -30,6 +30,8 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
   const currentSwipe = createRef()
 
   useEffect(() => {
+    // StatusBar.setBackgroundColor(colors.primary)
+    // StatusBar.setBarStyle(StatusBarSty, false)
     listChatStore.search = '';
     stickerStore.getStickers()
     // intLoad();
@@ -63,6 +65,9 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
         name: 'ChatScreen',
         passProps: {
           data: data,
+        },
+        style: {
+          backgroundColor: 'white',
         },
         options: {
           popGesture: false,
@@ -807,11 +812,12 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
 
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.primary }}>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : ''}
-      >
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: colors.primary}}
+      behavior={Platform.OS === 'ios' ? 'padding' : ''}
+    >
+    <SafeAreaView style={{ flex: 1, }}>
+
         <View style={{ height: scale(64), backgroundColor: colors.primary }}>
           {showSearch === true ? (
             <View
@@ -1051,8 +1057,9 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
             />
           </View>
         )}
-      </KeyboardAvoidingView>
       <BottomSheetChatOptions ref={bottomSheetModalRef} />
     </SafeAreaView>
+    </KeyboardAvoidingView>
+
   );
 });
