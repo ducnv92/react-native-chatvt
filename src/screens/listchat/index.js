@@ -995,6 +995,17 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
             </View>
           )}
         </View>
+        {
+          listChatStore.data.length === 0 &&  listChatStore.dataPin.length === 0 && !listChatStore.isLoading && !listChatStore.isLoadingPin &&
+          (
+          <TouchableOpacity
+            onPress={() => intLoad()}
+            style={{ alignItems: 'center', height: Dimensions.get('window').height, backgroundColor: 'white'}}>
+            <Image source={require('../../assets/ic_message_empty.png')} style={{ width: 120, height: 120, resizeMode: 'contain', marginTop: 28 }} />
+            <Text style={{ fontWight: '500', fontSize: 15, color: colors.primaryText, marginTop: 16, }}>Quý khách chưa có tin nhắn</Text>
+          </TouchableOpacity>
+          )
+        }
         <FlatList
           refreshing={listChatStore.isLoading}
           onRefresh={() => {
@@ -1009,20 +1020,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           style={{ flex: 1, backgroundColor: 'white' }}
           data={listChatStore.data}
           extraData={listChatStore.data}
-          ListEmptyComponent={() => {
-            if (!listChatStore.isLoading  && listChatStore.dataPin.length===0) {
-              return (
-                <TouchableOpacity
-                  onPress={() => intLoad()}
-                  style={{ alignItems: 'center', height: Dimensions.get('window').height }}>
-                  <Image source={require('../../assets/ic_message_empty.png')} style={{ width: 120, height: 120, resizeMode: 'contain', marginTop: 28 }} />
-                  <Text style={{ fontWight: '500', fontSize: 15, color: colors.neutralText, marginTop: 16, }}>Quý khách chưa có tin nhắn</Text>
-                </TouchableOpacity>
-              )
-            } else {
-              return null
-            }
-          }}
+
           ItemSeparatorComponent={() => (
             <View style={{ backgroundColor: 'white', height: 1 }}>
               <View

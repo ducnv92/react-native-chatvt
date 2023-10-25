@@ -6,6 +6,7 @@ import _ from "lodash";
 
 class ListChatStore {
    isLoading = false;
+   isLoadingPin = false;
    isLoadingMore = false;
    canLoadMore = true;
    isError = false;
@@ -181,7 +182,7 @@ class ListChatStore {
 
 
   async getConversationPin(params) {
-
+    this.isLoadingPin = true
     const response = await services.create().getConversationPin(params);
     Log(response);
     if (response.status === 200||response.status === 201) {
@@ -189,6 +190,7 @@ class ListChatStore {
           this.dataPin = response.data.data
       }
     }
+    this.isLoadingPin = false
 
   }
 

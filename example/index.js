@@ -3,7 +3,7 @@ import App from './src/App';
 import { name as appName } from './app.json';
 import { Navigation } from "react-native-navigation";
 // import CodePush from 'react-native-code-push'
-import 'react-native-reanimated'
+// import 'react-native-reanimated'
 import { NativeModules } from 'react-native';
 
 

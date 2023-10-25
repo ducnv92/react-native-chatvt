@@ -6,9 +6,6 @@ module.exports = {
   plugins: [
     [
       'react-native-reanimated/plugin',
-      {
-        globals: ['__scanCodes'],
-      },
     ],
     ["@babel/plugin-proposal-decorators", {"legacy": true}],
     [
