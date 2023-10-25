@@ -415,8 +415,8 @@ const MessageItem = function (props) {
               <Image
                 source={require('../../assets/ic_send_error.png')}
                 style={{
-                  width: 24,
-                  height: 24,
+                  width: 12,
+                  height: 12,
                   resizeMode: 'contain',
                   marginRight: 14,
                 }}
@@ -713,8 +713,8 @@ const MessageItem = function (props) {
               <Image
                 source={require('../../assets/ic_send_error.png')}
                 style={{
-                  width: 24,
-                  height: 24,
+                  width: 12,
+                  height: 12,
                   resizeMode: 'contain',
                   marginRight: 14,
                 }}

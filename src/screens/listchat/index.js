@@ -847,7 +847,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     ? appStore.lang.list_chat.placeholder_search
                     : appStore.lang.list_chat.placeholder_search_VTM
                 }
-                placeholderTextColor={'#eeeeeed1'}
+                placeholderTextColor={'#ffffffd1'}
                 value={query}
                 autoFocus={true}
                 onChangeText={setQuery}
@@ -1010,7 +1010,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           data={listChatStore.data}
           extraData={listChatStore.data}
           ListEmptyComponent={() => {
-            if (!listChatStore.isLoading) {
+            if (!listChatStore.isLoading  && listChatStore.dataPin.length===0) {
               return (
                 <TouchableOpacity
                   onPress={() => intLoad()}
