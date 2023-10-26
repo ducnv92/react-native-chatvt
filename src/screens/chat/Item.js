@@ -57,7 +57,7 @@ const MapItem = function(props) {
           flexDirection: 'row',
           justifyContent: right ? 'flex-end' : 'flex-start',
           alignItems: 'center',
-          marginVertical: 2,
+          marginVertical: right?2.5:4,
           marginHorizontal: 10,
         }}
       >
@@ -221,7 +221,7 @@ const VoiceItem = function(props) {
           flexDirection: 'row',
           justifyContent: right ? 'flex-end' : 'flex-start',
           alignItems: 'center',
-          marginVertical: 2,
+          marginVertical: right?2.5:4,
           marginHorizontal: 10,
         }}
       >
@@ -424,7 +424,7 @@ const MessageItem = function(props) {
   return (
     <>
       {item.has_attachment ? (
-        <View style={{ marginVertical: 2, marginHorizontal: 10 }}>
+        <View style={{ marginVertical: right?2.5:4, marginHorizontal: 10 }}>
           <View
             style={{
               flexDirection: 'row',
@@ -715,7 +715,7 @@ const MessageItem = function(props) {
           )}
         </View>
       ) : (
-        <View style={{ marginVertical: 2, marginHorizontal: 10 }}>
+        <View style={{ marginVertical: right?2: 3, marginHorizontal: 10 }}>
           <View
             style={{
               flexDirection: 'row',
@@ -756,8 +756,8 @@ const MessageItem = function(props) {
                   borderColor: '#DCE6F0',
                   borderTopRightRadius: (right && props.bottomMe) ? 6 : 10,
                   borderBottomRightRadius: (right && props.topMe) ? 6 : 10,
-                  borderTopLeftRadius: (!right && props.topMe) ? 6 : 10,
-                  borderBottomLeftRadius: (!right && props.bottomMe) ? 6 : 10,
+                  borderTopLeftRadius: (!right && !props.topMe) ? 6 : 10,
+                  borderBottomLeftRadius: (!right && !props.bottomMe) ? 6 : 10,
                 }}>
 
                 <ParsedText
@@ -883,7 +883,7 @@ const DocumentItem = function(props) {
   return (
     <>
       {item.has_attachment && (
-        <View style={{ marginVertical: 2, marginHorizontal: 10 }}>
+        <View style={{ marginVertical: right?2.5:4, marginHorizontal: 10 }}>
           <View
             style={{
               flexDirection: 'row',
