@@ -156,7 +156,6 @@ class CameraRollPicker extends Component {
 
     CameraRoll.getPhotos(fetchParams)
       .then(data => {
-        console.log('fetchParams', fetchParams, data.edges)
         data.edges.map(async (edge) => {
 
           // if (Platform.OS === 'ios') {
@@ -165,6 +164,8 @@ class CameraRollPicker extends Component {
           return edge
         })
         this.appendImages(data)
+        console.log(data)
+
       }, e => Log(e));
   }
 

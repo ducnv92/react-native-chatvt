@@ -873,6 +873,7 @@ const MessageItem = function (props) {
 const DocumentItem = function (props) {
   const item = props.item;
   const right = props.right;
+  console.log('document', item)
   return (
     <>
       {item.has_attachment && (
@@ -922,7 +923,7 @@ const DocumentItem = function (props) {
                             width: '100%',
                           }}
                         >
-                          {attach.type.includes('pdf') && (
+                          {attach.name?.includes('pdf') && (
                             <Image
                               source={require('../../assets/file_pdf.png')}
                               style={{
@@ -933,8 +934,8 @@ const DocumentItem = function (props) {
                               }}
                             />
                           )}
-                          {(attach.type.includes('doc') ||
-                            attach.type.includes('docx')) && (
+                          {(attach.name?.includes('doc') ||
+                            attach.name?.includes('docx')) && (
                             <Image
                               source={require('../../assets/file_doc.png')}
                               style={{
@@ -945,8 +946,8 @@ const DocumentItem = function (props) {
                               }}
                             />
                           )}
-                          {(attach.type.includes('xlsx') ||
-                            attach.type.includes('xls')) && (
+                          {(attach.name?.includes('xlsx') ||
+                            attach.name?.includes('xls')) && (
                             <Image
                               source={require('../../assets/file_xls.png')}
                               style={{

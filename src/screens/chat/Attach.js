@@ -509,6 +509,8 @@ export const AttachScreen = observer(function AttachScreen(props) {
         type: [types.pdf, types.xls, types.docx, types.xlsx, types.docx, types.doc, types.xls],
       });
 
+      console.log(response)
+
       chatStore.showAttachModal = false
 
       const message = {
