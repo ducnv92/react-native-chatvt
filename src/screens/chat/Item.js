@@ -349,7 +349,7 @@ export const VideoItem = function (props) {
             onLongPress={props.onLongPress}
           >
             <Image
-              style={props.style}
+              style={{width: '100%', height: '100%', resizeMode: 'cover'}}
               source={thumbnail ? { uri: thumbnail } : {}}
             />
             {!props.url.includes('file://') && (
@@ -436,17 +436,14 @@ const MessageItem = function (props) {
               {item.attachmentLocal && item.attachmentLocal.length > 0 && (
                 <View
                   style={{
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    gap: 4,
-                    justifyContent: right ? 'flex-end' : 'flex-start',
+                    width: item.attachments?.length>1?294:200,
                   }}
                 >
                   <ContainChatItem {...props} style={{
                     flexDirection: 'row',
                     flexWrap: 'wrap',
-                    gap: 4,
-                    justifyContent: right ? 'flex-end' : 'flex-start',
+                    borderRadius: 10,
+                    overflow: 'hidden',
                   }}>
                     {item.attachmentLocal.map((File) => {
                       const attach = File.uri;
@@ -538,7 +535,7 @@ const MessageItem = function (props) {
                                 height: Dimensions.get('window').width * 0.5,
                                 backgroundColor: '#f2f2f2',
                                 borderRadius: 10,
-                                marginVertical: 16,
+                                overflow: 'hidden',
                               }}
                             ></VideoItem>
                             <TouchableOpacity
@@ -586,17 +583,14 @@ const MessageItem = function (props) {
               {item.attachments && (
                 <View
                   style={{
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    // gap: 4,
-                    justifyContent: right ? 'flex-end' : 'flex-start',
+                    width: item.attachments?.length>1?294:200,
                   }}
                 >
                   <ContainChatItem {...props} style={{
                     flexDirection: 'row',
                     flexWrap: 'wrap',
-                    // gap: 4,
-                    justifyContent: right ? 'flex-end' : 'flex-start',
+                    borderRadius: 10,
+                    overflow: 'hidden',
                   }}>
                     {item.attachments.map((attach, index) => {
                       if (
@@ -608,11 +602,9 @@ const MessageItem = function (props) {
                         return (
                           <TouchableOpacity
                             style={{
-                              width: item.attachments.length === 1 ? 200 : 120,
-                              height: item.attachments.length === 1 ? 200 : 120,
-                              marginLeft: right?4:0,
-                              marginRight: !right?4:0,
-                              marginTop:index>=2?4:0
+                              // width: item.attachments.length === 1 ? 200 : 145,
+                              // height: item.attachments.length === 1 ? 200 : 145,
+
                             }}
                             key={attach.url}
                             onPress={() => {
@@ -628,13 +620,15 @@ const MessageItem = function (props) {
                             <Image
                               source={{ uri: attach.url }}
                               style={{
-                                borderWidth: 0.5,
                                 borderColor: '#f2f2f2',
                                 backgroundColor: '#F2F2F2',
-                                borderRadius: 5,
-                                overflow: 'hidden',
-                                width: item.attachments.length === 1 ? 200 : 120,
-                                height: item.attachments.length === 1 ? 200 : 120,
+                                // borderRadius: 5,
+                                // overflow: 'hidden',
+                                width: item.attachments.length === 1 ? 200 : 145,
+                                height: item.attachments.length === 1 ? 200 : 145,
+                                marginLeft: item.attachments.length>0?((index+1)%2===0?4:0):0,
+                                marginTop: item.attachments.length>0?(index>1?4:0):0,
+                                resizeMode: 'cover'
                               }}
                               LoadingIndicatorComponent={ActivityIndicator}
                             />
@@ -653,8 +647,6 @@ const MessageItem = function (props) {
                             duration={attach.duration}
                             url={attach.url}
                             style={{
-                              marginTop:8,
-                              marginBottom:8,
                               backgroundColor: '#F2F2F2',
                               borderRadius: 5,
                               overflow: 'hidden',

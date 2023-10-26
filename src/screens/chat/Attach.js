@@ -7,12 +7,13 @@ import { Log, getRotation } from '../../utils';
 import {
   Dimensions,
   FlatList,
-  Image, KeyboardAvoidingView,
+  Image, Keyboard, KeyboardAvoidingView,
   Modal, PermissionsAndroid,
   Platform,
   SafeAreaView,
   TouchableOpacity,
   View,
+  TextInput as  TextInputNative
 } from 'react-native';
 import { MTextInput as TextInput } from '../../components'
 import { MText as Text } from '../../components'
@@ -32,6 +33,7 @@ import { toJS } from 'mobx';
 
 
 const QuickMessageModal = observer(function QuickMessageModal(props) {
+  const inputRef = useRef(null)
   const [isFocus, setIsFocus] = useState(false)
   const [isModalVisible, setModalVisible] = useState(false)
   const updateQuickMessage = () => {
@@ -71,6 +73,10 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
       visible={quickMessageStore.showModal}
       transparent={true}
       animationType={'fade'}
+      onShow={() => {
+        console.log(inputRef.current)
+        inputRef.current.focus()
+      }}
     >
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -92,9 +98,10 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
             </View>
             <View style={{ backgroundColor: 'white' }}>
               <TextInput
+                ref={inputRef}
                 value={quickMessageStore.currentMessage.text}
                 multiline={true}
-                autoFocus={true}
+                // autoFocus={true}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 placeholder={'Nhập nội dung tin nhắn'}
@@ -123,7 +130,9 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
           </>
         </SafeAreaView>
       </KeyboardAvoidingView>
-      <ModalStyled isVisible={isModalVisible}>
+      <Modal visible={isModalVisible} animationType={'fade'}
+             onModalShow={() => input.current.focus()}
+      >
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <View style={{ padding: 16, backgroundColor: 'white', justifyContent: 'center', borderRadius: 16, }}>
             <TouchableOpacity
@@ -158,7 +167,7 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
             </View>
           </View>
         </View>
-      </ModalStyled>
+      </Modal>
     </Modal>
   )
 
