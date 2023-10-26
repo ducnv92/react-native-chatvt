@@ -275,30 +275,30 @@ const VoiceItem = function (props) {
           </TouchableOpacity>
         </ContainChatItem>
       </View>
-      {/*{*/}
-      {/*  showTime &&*/}
-      {/*  <View*/}
-      {/*    style={{*/}
-      {/*      flexDirection: 'row',*/}
-      {/*      justifyContent: right ? 'flex-end' : 'flex-start',*/}
-      {/*      alignItems: 'center',*/}
-      {/*    }}*/}
-      {/*  >*/}
-      {/*    <Text*/}
-      {/*      style={{*/}
-      {/*        fontWeight: '400',*/}
-      {/*        fontSize: 10,*/}
-      {/*        color: colors.neutralText,*/}
-      {/*        marginTop: 4,*/}
-      {/*        marginHorizontal: 16,*/}
-      {/*        textAlign: right ? 'right' : 'left',*/}
-      {/*      }}*/}
-      {/*    >*/}
-      {/*      {formatTimeLastMessage(props.item.created_at)}*/}
-      {/*    </Text>*/}
-      {/*  </View>*/}
+      {
+        showTime &&
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: right ? 'flex-end' : 'flex-start',
+            alignItems: 'center',
+          }}
+        >
+          <Text
+            style={{
+              fontWeight: '400',
+              fontSize: 10,
+              color: colors.neutralText,
+              marginTop: 4,
+              marginHorizontal: 16,
+              textAlign: right ? 'right' : 'left',
+            }}
+          >
+            {formatTimeLastMessage(props.item.created_at)}
+          </Text>
+        </View>
 
-      {/*}*/}
+      }
 
     </View>
   );
@@ -881,8 +881,8 @@ const DocumentItem = function (props) {
               <Image
                 source={require('../../assets/ic_send_error.png')}
                 style={{
-                  width: 24,
-                  height: 24,
+                  width: 12,
+                  height: 12,
                   resizeMode: 'contain',
                   marginRight: 14,
                 }}

@@ -215,6 +215,7 @@ export class RecordButton extends React.Component {
               if (this.state.isRecording) {
                 this.onStopRecord();
               } else {
+                this.onStopRecord();
                 this.startRecord();
               }
             }}
@@ -284,6 +285,7 @@ export class RecordButton extends React.Component {
                 />
               }
             </TouchableOpacity>
+            <View style={{width: 1,  height: 28, backgroundColor: '#DCE6F0', marginVertical: 4}}/>
             {/* <TouchableOpacity
               onPress={() => {
                 if (this.state.isRecording) {

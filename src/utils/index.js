@@ -133,6 +133,13 @@ export const formatTimeLastMessage = timeString => {
   if(moment().endOf('day').diff(time, 'days')>0){
     return time.format("DD/MM")
   }
+  if(moment().diff(time, 'seconds')<60 ){
+    return moment().diff(time, 'seconds')+' giây trước'
+  }
+  if(moment().diff(time, 'minutes')<60 ){
+    return moment().diff(time, 'minutes')+' phút trước'
+  }
+
   return time.format("HH:mm")
 };
 
