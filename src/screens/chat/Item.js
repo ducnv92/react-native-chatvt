@@ -6,7 +6,7 @@ import {
   Linking,
   Modal,
   Platform,
-  StyleSheet,
+  StyleSheet, TouchableHighlight,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -20,7 +20,7 @@ import {
   formatTimeLastMessage,
   groupBy,
   orderStatus,
-  participantType
+  participantType,
 } from '../../utils';
 import { createThumbnail } from '../../components/createThumbnail';
 import ImageViewing from '../../components/imageView/ImageViewing';
@@ -41,13 +41,13 @@ import AnimatedProgressWheel from 'react-native-progress-wheel';
 import uploadProgress from './uploadProgress';
 // import Image from 'react-native-fast-image';
 import * as Animatable from 'react-native-animatable';
-import VideoViewing from "../../components/videoView/ImageViewing";
-import AnimatedSoundBars from "../../components/waveView";
-import chatStore from "./ChatStore";
-import stickerStore from "./StickerStore";
+import VideoViewing from '../../components/videoView/ImageViewing';
+import AnimatedSoundBars from '../../components/waveView';
+import chatStore from './ChatStore';
+import stickerStore from './StickerStore';
 
 
-const MapItem = function (props) {
+const MapItem = function(props) {
   const right = props.right;
   return (
     <View>
@@ -99,7 +99,7 @@ const MapItem = function (props) {
                 <Image
                   source={require('../../assets/ic_map_pin.png')}
                   style={{ width: 30, height: 30, resizeMode: 'contain' }}
-                  resizeMode="contain"
+                  resizeMode='contain'
                 />
               </Marker>
             </MapView>
@@ -134,7 +134,7 @@ const MapItem = function (props) {
     </View>
   );
 };
-const VoiceItem = function (props) {
+const VoiceItem = function(props) {
   const right = props.right;
   const [isPlay, setIsPlay] = useState(false);
   const [showTime, setShowTime] = useState(false);
@@ -151,62 +151,66 @@ const VoiceItem = function (props) {
   useEffect(() => {
     return () => {
       if (chatStore.intervalSound) {
-        clearInterval(chatStore.intervalSound)
+        clearInterval(chatStore.intervalSound);
       }
       if (chatStore.pauseSound) {
-        chatStore.pauseSound()
+        chatStore.pauseSound();
       }
     };
   }, []);
 
   const play = () => {
     if (chatStore.pauseSound) {
-      chatStore.pauseSound()
+      chatStore.pauseSound();
     }
-    chatStore.pauseSound = pause
+    chatStore.pauseSound = pause;
 
-    pause()
-    setIsPlay(true)
+    pause();
+    setIsPlay(true);
     SoundPlayer.playUrl(
       props.item.attachmentLocal?.length > 0
         ? props.item.attachmentLocal[0].uri
-        : props.item.attachments[0]?.url
+        : props.item.attachments[0]?.url,
     );
     chatStore.intervalSound = setInterval(async () => {
-      const info = await SoundPlayer.getInfo() // Also, you need to await this because it is async
-      console.log('getInfo', info)
+      const info = await SoundPlayer.getInfo(); // Also, you need to await this because it is async
+      console.log('getInfo', info);
 
-      setCurrentTime(formatDuration(info.currentTime))
-    }, 1000)
+      setCurrentTime(formatDuration(info.currentTime));
+    }, 1000);
     _onFinishedPlayingSubscription = SoundPlayer.addEventListener('FinishedPlaying', (props) => {
-      console.log('finished playing', props)
-      pause()
-      clearInterval(chatStore.intervalSound)
-    })
+      console.log('finished playing', props);
+      pause();
+      clearInterval(chatStore.intervalSound);
+    });
     _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoading', ({ success }) => {
-      console.log('finished loading', success)
-    })
-    _onFinishedLoadingFileSubscription = SoundPlayer.addEventListener('FinishedLoadingFile', ({ success, name, type }) => {
-      console.log('finished loading file', success, name, type)
+      console.log('finished loading', success);
+    });
+    _onFinishedLoadingFileSubscription = SoundPlayer.addEventListener('FinishedLoadingFile', ({
+                                                                                                success,
+                                                                                                name,
+                                                                                                type,
+                                                                                              }) => {
+      console.log('finished loading file', success, name, type);
 
-    })
+    });
     _onFinishedLoadingURLSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', ({ success, url }) => {
-      console.log('finished loading url', success, url)
-    })
-    console.log('play')
-  }
+      console.log('finished loading url', success, url);
+    });
+    console.log('play');
+  };
 
   const pause = () => {
-    SoundPlayer.stop()
-    SoundPlayer.unmount()
-    clearInterval(chatStore.intervalSound)
-    _onFinishedPlayingSubscription?.remove()
-    _onFinishedLoadingSubscription?.remove()
-    _onFinishedLoadingURLSubscription?.remove()
-    _onFinishedLoadingFileSubscription?.remove()
-    setIsPlay(false)
-    console.log('stop')
-  }
+    SoundPlayer.stop();
+    SoundPlayer.unmount();
+    clearInterval(chatStore.intervalSound);
+    _onFinishedPlayingSubscription?.remove();
+    _onFinishedLoadingSubscription?.remove();
+    _onFinishedLoadingURLSubscription?.remove();
+    _onFinishedLoadingFileSubscription?.remove();
+    setIsPlay(false);
+    console.log('stop');
+  };
 
 
   return (
@@ -222,7 +226,7 @@ const VoiceItem = function (props) {
       >
         <ContainChatItem {...props}>
           <TouchableOpacity
-            onPress={()=>setShowTime(!showTime)}
+            onPress={() => setShowTime(!showTime)}
             style={{
               height: 56,
               width: 251,
@@ -239,9 +243,9 @@ const VoiceItem = function (props) {
             <TouchableOpacity
               onPress={() => {
                 if (!isPlay) {
-                  play()
+                  play();
                 } else {
-                  pause()
+                  pause();
                 }
               }}
               style={{
@@ -261,9 +265,10 @@ const VoiceItem = function (props) {
               />
             </TouchableOpacity>
             {
-              isPlay?
-                <AnimatedSoundBars isPlay={true} id={props.item.attachments[0]?.url} barColor={right?'white':'#44494D66'}/>:
-                <AnimatedSoundBars  isPlay={false} barColor={right?'white':'#44494D66'}/>
+              isPlay ?
+                <AnimatedSoundBars isPlay={true} id={props.item.attachments[0]?.url}
+                                   barColor={right ? 'white' : '#44494D66'} /> :
+                <AnimatedSoundBars isPlay={false} barColor={right ? 'white' : '#44494D66'} />
             }
 
             {/*<Image*/}
@@ -271,7 +276,13 @@ const VoiceItem = function (props) {
             {/*  style={{ flex: 1, marginHorizontal: 16, height: 16, resizeMode: 'contain', tintColor: right ? 'white' : '#B5B4B8' }}*/}
             {/*  tintColor={right ? 'white' : '#B5B4B8'}*/}
             {/*/>*/}
-            <Text style={{ width: 55, textAlign: 'right', fontWeight: '500', fontSize: 15, color: right ? 'white' : colors.neutralText }}>{currentTime}</Text>
+            <Text style={{
+              width: 55,
+              textAlign: 'right',
+              fontWeight: '500',
+              fontSize: 15,
+              color: right ? 'white' : colors.neutralText,
+            }}>{currentTime}</Text>
           </TouchableOpacity>
         </ContainChatItem>
       </View>
@@ -304,19 +315,19 @@ const VoiceItem = function (props) {
   );
 };
 
-export const VideoItem = function (props) {
+export const VideoItem = function(props) {
   const [thumbnail, setThumbnail] = useState('');
   const [isPause, setIsPause] = useState(true);
   useEffect(() => {
     const createThumb = async () => {
-      if(props.thumb_url){
-        setThumbnail(props.thumb_url)
-        return
+      if (props.thumb_url) {
+        setThumbnail(props.thumb_url);
+        return;
       }
       try {
         const fileName = props.url.slice(
           props.url.lastIndexOf('/') + 1,
-          props.url.length
+          props.url.length,
         );
 
         const response = await createThumbnail({
@@ -327,7 +338,8 @@ export const VideoItem = function (props) {
         });
 
         setThumbnail(response.path);
-      } catch (e) { }
+      } catch (e) {
+      }
     };
 
     createThumb();
@@ -341,7 +353,7 @@ export const VideoItem = function (props) {
 
       <View style={props.style}>
         {(!thumbnail) ? (
-          <ActivityIndicator size="large" />
+          <ActivityIndicator size='large' />
         ) : (
           <TouchableOpacity
             style={{ alignItems: 'center', justifyContent: 'center' }}
@@ -349,7 +361,7 @@ export const VideoItem = function (props) {
             onLongPress={props.onLongPress}
           >
             <Image
-              style={{width: '100%', height: '100%', resizeMode: 'cover'}}
+              style={{ width: '100%', height: '100%', resizeMode: 'cover' }}
               source={thumbnail ? { uri: thumbnail } : {}}
             />
             {!props.url.includes('file://') && (
@@ -358,11 +370,12 @@ export const VideoItem = function (props) {
                 style={{ width: 56, height: 56, position: 'absolute' }}
               />
             )}
-            <Text style={{ position: 'absolute', fontSize: 14, fontWeight: '500', right: 16, bottom: 16, color: 'white',
+            <Text style={{
+              position: 'absolute', fontSize: 14, fontWeight: '500', right: 16, bottom: 16, color: 'white',
               textShadowColor: 'rgba(0, 0, 0, 0.75)',
-              textShadowOffset: {width: -1, height: 1},
-              textShadowRadius: 2
-            }} >{formatDuration(props.duration)}</Text>
+              textShadowOffset: { width: -1, height: 1 },
+              textShadowRadius: 2,
+            }}>{formatDuration(props.duration)}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -377,7 +390,7 @@ export const VideoItem = function (props) {
   );
 };
 
-const MessageItem = function (props) {
+const MessageItem = function(props) {
   const item = props.item;
   const right = props.right;
   const [showTime, setShowTime] = useState(false);
@@ -431,19 +444,19 @@ const MessageItem = function (props) {
             )}
 
             <View
-              style={{ borderRadius: 10, overflow: 'hidden', maxWidth: '75%', borderTopRightRadius: right && props.bottomMe?6:10 }}
+              style={{ borderRadius: 10, maxWidth: '75%', borderTopRightRadius: right && props.bottomMe ? 6 : 10 }}
             >
               {item.attachmentLocal && item.attachmentLocal.length > 0 && (
                 <View
                   style={{
-                    width: item.attachments?.length>1?294:200,
+                    width: item.attachments?.length > 1 ? 294 : 200,
                   }}
                 >
                   <ContainChatItem {...props} style={{
                     flexDirection: 'row',
                     flexWrap: 'wrap',
                     borderRadius: 10,
-                    overflow: 'hidden',
+                    // overflow: 'hidden',
                   }}>
                     {item.attachmentLocal.map((File) => {
                       const attach = File.uri;
@@ -583,14 +596,14 @@ const MessageItem = function (props) {
               {item.attachments && (
                 <View
                   style={{
-                    width: item.attachments?.length>1?294:200,
+                    width: item.attachments?.length > 1 ? 294 : 200,
                   }}
                 >
                   <ContainChatItem {...props} style={{
                     flexDirection: 'row',
                     flexWrap: 'wrap',
                     borderRadius: 10,
-                    overflow: 'hidden',
+                    // overflow: 'hidden',
                   }}>
                     {item.attachments.map((attach, index) => {
                       if (
@@ -626,9 +639,9 @@ const MessageItem = function (props) {
                                 // overflow: 'hidden',
                                 width: item.attachments.length === 1 ? 200 : 145,
                                 height: item.attachments.length === 1 ? 200 : 145,
-                                marginLeft: item.attachments.length>0?((index+1)%2===0?4:0):0,
-                                marginTop: item.attachments.length>0?(index>1?4:0):0,
-                                resizeMode: 'cover'
+                                marginLeft: item.attachments.length > 0 ? ((index + 1) % 2 === 0 ? 4 : 0) : 0,
+                                marginTop: item.attachments.length > 0 ? (index > 1 ? 4 : 0) : 0,
+                                resizeMode: 'cover',
                               }}
                               LoadingIndicatorComponent={ActivityIndicator}
                             />
@@ -724,26 +737,26 @@ const MessageItem = function (props) {
             <ContainChatItem {...props}   >
 
               <TouchableOpacity
-                onPress={()=>setShowTime(!showTime)}
+                onPress={() => setShowTime(!showTime)}
                 style={{
-                backgroundColor:
-                  appStore.appId === 'VTPost'
-                    ? right
-                      ? colors.primary
-                      : '#F2F2F2'
-                    : right
-                      ? colors.bgVTM
-                      : '#F2F2F2',
-                padding: 12,
-                maxWidth: Dimensions.get('window').width*0.75,
-                borderRadius: 10,
-                borderWidth: right ? 0 : 1,
-                borderColor: '#DCE6F0',
-                borderTopRightRadius: (right && props.bottomMe)?6:10,
-                borderBottomRightRadius: (right && props.topMe)?6:10,
-                borderTopLeftRadius: (!right && props.topMe)?6:10,
-                borderBottomLeftRadius: (!right && props.bottomMe)?6:10,
-              }}>
+                  backgroundColor:
+                    appStore.appId === 'VTPost'
+                      ? right
+                        ? colors.primary
+                        : '#F2F2F2'
+                      : right
+                        ? colors.bgVTM
+                        : '#F2F2F2',
+                  padding: 12,
+                  maxWidth: Dimensions.get('window').width * 0.75,
+                  borderRadius: 10,
+                  borderWidth: right ? 0 : 1,
+                  borderColor: '#DCE6F0',
+                  borderTopRightRadius: (right && props.bottomMe) ? 6 : 10,
+                  borderBottomRightRadius: (right && props.topMe) ? 6 : 10,
+                  borderTopLeftRadius: (!right && props.topMe) ? 6 : 10,
+                  borderBottomLeftRadius: (!right && props.bottomMe) ? 6 : 10,
+                }}>
 
                 <ParsedText
                   accessible={true}
@@ -862,10 +875,10 @@ const MessageItem = function (props) {
   );
 };
 
-const DocumentItem = function (props) {
+const DocumentItem = function(props) {
   const item = props.item;
   const right = props.right;
-  console.log('document', item)
+  console.log('document', item);
   return (
     <>
       {item.has_attachment && (
@@ -1105,7 +1118,7 @@ const DocumentItem = function (props) {
   );
 };
 
-const OrderItem = function (props) {
+const OrderItem = function(props) {
   const item = props.item;
   const order = item.order_info?.vtp_order ? item.order_info?.vtp_order : item.order_info?.vtm_bill;
 
@@ -1121,26 +1134,26 @@ const OrderItem = function (props) {
         }).join(' + ');
       }
     } else {
-      productNames = order.ten_hang
+      productNames = order.ten_hang;
     }
 
   } catch (e) {
     console.log(e);
   }
-  if(item.type==='CREATED_GROUP_QUOTE_ORDER'){
+  if (item.type === 'CREATED_GROUP_QUOTE_ORDER') {
     return (
       <TouchableOpacity
         onPress={() => {
           try {
-            if(appStore.appId === 'VTPost') {
-              Navigation.pop('OrderInfomationtScreenID')
+            if (appStore.appId === 'VTPost') {
+              Navigation.pop('OrderInfomationtScreenID');
               Navigation.push('ChatScreen', {
                 component: {
                   id: 'OrderInfomationtScreenID',
                   name: 'OrderInfomationtScreen',
                   passProps: {
                     orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
-                    isSender: item.order_info?.sender_phone!==appStore.user?.phone?4:1,
+                    isSender: item.order_info?.sender_phone !== appStore.user?.phone ? 4 : 1,
                   },
                   options: {
                     bottomTabs: {
@@ -1151,7 +1164,7 @@ const OrderItem = function (props) {
               });
             }
           } catch (e) {
-            console.log(e)
+            console.log(e);
           }
         }}
       >
@@ -1219,7 +1232,7 @@ const OrderItem = function (props) {
           >
             {productNames}
           </Text>
-          <View style={{height: 1, backgroundColor: '#EEE', marginVertical: 8}}/>
+          <View style={{ height: 1, backgroundColor: '#EEE', marginVertical: 8 }} />
           <Text
             style={{
               fontWeight: '600',
@@ -1260,15 +1273,15 @@ const OrderItem = function (props) {
       <TouchableOpacity
         onPress={() => {
           try {
-            if(appStore.appId === 'VTPost') {
-              Navigation.pop('OrderInfomationtScreenID')
+            if (appStore.appId === 'VTPost') {
+              Navigation.pop('OrderInfomationtScreenID');
               Navigation.push('ChatScreen', {
                 component: {
                   id: 'OrderInfomationtScreenID',
                   name: 'OrderInfomationtScreen',
                   passProps: {
                     orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
-                    isSender: item.order_info?.sender_phone!==appStore.user?.phone?4:1,
+                    isSender: item.order_info?.sender_phone !== appStore.user?.phone ? 4 : 1,
                   },
                   options: {
                     bottomTabs: {
@@ -1279,7 +1292,7 @@ const OrderItem = function (props) {
               });
             }
           } catch (e) {
-            console.log(e)
+            console.log(e);
           }
         }}
       >
@@ -1310,7 +1323,7 @@ const OrderItem = function (props) {
                   paddingHorizontal: 8,
                   alignItems: 'center',
                   justifyContent: 'center',
-                  maxWidth: Dimensions.get('screen').width / 2
+                  maxWidth: Dimensions.get('screen').width / 2,
                 }}
               >
                 <Text
@@ -1370,7 +1383,7 @@ const OrderItem = function (props) {
                 name: 'OrderInfomationtScreen',
                 passProps: {
                   orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
-                  isSender: item.order_info?.type===1?4:1,
+                  isSender: item.order_info?.type === 1 ? 4 : 1,
                 },
                 options: {
                   bottomTabs: {
@@ -1400,7 +1413,7 @@ const OrderItem = function (props) {
                   color: colors.primaryText,
                 }}
               >
-                {item.order_info?.order_number ? item.order_info?.order_number : (order?.ma_phieugui?order?.ma_phieugui: order?.ORDER_NUMBER)}
+                {item.order_info?.order_number ? item.order_info?.order_number : (order?.ma_phieugui ? order?.ma_phieugui : order?.ORDER_NUMBER)}
               </Text>
               <View
                 style={{
@@ -1411,7 +1424,7 @@ const OrderItem = function (props) {
                   paddingHorizontal: 8,
                   alignItems: 'center',
                   justifyContent: 'center',
-                  maxWidth: Dimensions.get('screen').width / 2
+                  maxWidth: Dimensions.get('screen').width / 2,
                 }}
               >
                 <Text
@@ -1436,7 +1449,7 @@ const OrderItem = function (props) {
               marginTop: 10,
             }}
           >
-            {order?.ten_khnhan ? order?.ten_khnhan : (order.order_sendname?order.order_sendname:order?.receiver_fullname)} - {order?.tel_khnhan ? order?.tel_khnhan : (order.order_sendtel?order.order_sendtel:order?.receiver_phone)}
+            {order?.ten_khnhan ? order?.ten_khnhan : (order.order_sendname ? order.order_sendname : order?.receiver_fullname)} - {order?.tel_khnhan ? order?.tel_khnhan : (order.order_sendtel ? order.order_sendtel : order?.receiver_phone)}
           </Text>
           <Text
             style={{
@@ -1446,7 +1459,7 @@ const OrderItem = function (props) {
               marginTop: 2,
             }}
           >
-            {order.mota_sp?order.mota_sp:productNames}
+            {order.mota_sp ? order.mota_sp : productNames}
           </Text>
         </View>
         {/*{*/}
@@ -1465,7 +1478,7 @@ const OrderItem = function (props) {
 };
 
 
-const StickerItem = function (props) {
+const StickerItem = function(props) {
   const right = props.right;
   return (
     <View
@@ -1477,7 +1490,8 @@ const StickerItem = function (props) {
         marginHorizontal: 16,
       }}
     >
-      <FastImage source={stickerStore.getStickerImage(props.item.sticker_ids[0])} style={{width: 86, height: 86, resizeMode: 'contain'}}/>
+      <FastImage source={stickerStore.getStickerImage(props.item.sticker_ids[0])}
+                 style={{ width: 86, height: 86, resizeMode: 'contain' }} />
     </View>
   );
 };
@@ -1496,13 +1510,13 @@ export class ChatItem extends React.Component {
 
   getFullName(user_id) {
     const find = this.props.conversation?.detail_participants?.find(
-      (p) => p.full_user_id === user_id
+      (p) => p.full_user_id === user_id,
     );
     const findP = this.props.conversation?.participants?.find(
-      (p) => p.id === user_id
+      (p) => p.id === user_id,
     );
     if (find) {
-      return  find.last_name  +' '+ find.first_name + ' - '+ participantType(findP.participant_type);
+      return find.last_name + ' ' + find.first_name + ' - ' + participantType(findP.participant_type);
     }
     if (user_id.includes('ADMIN')) {
       return 'Admin';
@@ -1511,19 +1525,19 @@ export class ChatItem extends React.Component {
   }
 
   render() {
-    const userIdFull = appStore.user.type + '_' + appStore.user.user_id
+    const userIdFull = appStore.user.type + '_' + appStore.user.user_id;
     const right = this.item.sender === userIdFull;
 
-    let topMe = false
-    let bottomMe = false
-    try{
-      topMe = this.props.data[this.props.index-1].sender===this.item.sender && this.props.data[this.props.index-1].type !== 'QUOTE_ORDER'
-    }catch (e) {
+    let topMe = false;
+    let bottomMe = false;
+    try {
+      topMe = this.props.data[this.props.index - 1].sender === this.item.sender && this.props.data[this.props.index - 1].type !== 'QUOTE_ORDER';
+    } catch (e) {
     }
 
-    try{
-      bottomMe= this.props.data[this.props.index+1].sender===this.item.sender && this.props.data[this.props.index+1].type !== 'QUOTE_ORDER'
-    }catch (e) {
+    try {
+      bottomMe = this.props.data[this.props.index + 1].sender === this.item.sender && this.props.data[this.props.index + 1].type !== 'QUOTE_ORDER';
+    } catch (e) {
     }
 
 
@@ -1542,7 +1556,7 @@ export class ChatItem extends React.Component {
     if (
       this.item.type === 'STICKER'
     ) {
-      messageView = <StickerItem item={this.props.item} right={right}/>;
+      messageView = <StickerItem item={this.props.item} right={right} />;
     }
     if (this.item.type === 'LOCATION') {
       messageView = <MapItem item={this.props.item} right={right} />;
@@ -1618,37 +1632,37 @@ export class ChatItem extends React.Component {
         </View>
       );
     } else {
-      return <View style={{ }}>{messageView}</View>;
+      return <View style={{}}>{messageView}</View>;
     }
   }
 }
 
 function ContainChatItem(props) {
-  const containerRef = useRef()
+  const containerRef = useRef();
   const [showPopover, setShowPopover] = useState(false);
-  const [reactObject, setReactObject] = useState(props.item?.reactions?groupBy(props.item?.reactions, (react) => react.type):new Map());
+  const [reactObject, setReactObject] = useState(props.item?.reactions ? groupBy(props.item?.reactions, (react) => react.type) : new Map());
   const [position, setPosition] = useState({ width: 0, height: 0, x: 0, y: 0 });
 
 
   useEffect(() => {
     setReactObject(
-      props.item?.reactions?groupBy(props.item?.reactions, (react) => react.type):new Map()
+      props.item?.reactions ? groupBy(props.item?.reactions, (react) => react.type) : new Map(),
     );
   }, [props.item?.reactions]);
 
   const onLongPress = () => {
-    if (props.item.type !== 'FILE' && props.item.type !== 'LOCATION' ) {
+    if (props.item.type !== 'FILE' && props.item.type !== 'LOCATION') {
       containerRef.current.measure((fx, fy, width, height, px, py) => {
         setPosition({
           width: width,
           height: height,
           x: px,
           y: py,
-        })
+        });
         setShowPopover(true);
-      })
+      });
     }
-  }
+  };
 
   const reaction = async (react) => {
     try {
@@ -1659,7 +1673,7 @@ function ContainChatItem(props) {
         conversation_id: props.item.conversation_id,
         message_id: props.item._id,
       });
-      console.log(response)
+      console.log(response);
       if (response.data.status === 200) {
         // if (is_enable) {
         //   setReactions([
@@ -1675,76 +1689,72 @@ function ContainChatItem(props) {
         // }
       }
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
 
   };
+
   function getUrlExtension(url) {
     return url.split(/[#?]/)[0].split('.').pop().trim();
   }
 
   return (
-    <View>
-      <TouchableOpacity
-        ref={containerRef}
-        onPress={() => {
-          try {
-            if (props.item.type === 'FILE') {
-              // try {
-              //   Navigation.push(appStore.componentId, {
-              //     component: {
-              //       name: 'ViewFileScreen',
-              //       options: {
-              //         popGesture: false,
-              //         bottomTabs: {
-              //           visible: false,
-              //         },
-              //         topBar: {
-              //           visible: false,
-              //           height: 0,
-              //         },
-              //       },
-              //       passProps: {
-              //         data: props.item.attachments[0],
-              //       },
-              //     },
-              //   });
-              // } catch (e) {
-              //   console.log(e)
-              //   Linking.openURL(props.item.attachments[0].url);
-              // }
-
-              // Linking.openURL(props.item.attachments[0].url);
-
-              DownloadViewFile(props.item.attachments[0].url)
-
-            }
-            if (props.item.type === 'LOCATION') {
-              try {
-                Linking.openURL(
-                  createMapLink({
-                    provider: 'google',
-                    // latitude: props.item?.location?.latitude,
-                    // longitude: props.item?.location?.longitude,
-                    query: props.item?.location?.latitude+','+props.item?.location?.longitude
-                  })
-                );
-              } catch (e) {
-                console.log(e);
-              }
-            }
-          } catch (e) {
+    <TouchableHighlight
+      delayLongPress={300}
+      ref={containerRef}
+      onPress={() => {
+        try {
+          if (props.item.type === 'FILE') {
+            DownloadViewFile(props.item.attachments[0].url);
           }
-        }}
-        onLongPress={onLongPress}
-        style={[props.style, { flexDirection: 'row', alignItems: 'center', justifyContent: props.right?'flex-end': 'flex-start' }]}
+          if (props.item.type === 'LOCATION') {
+            try {
+              Linking.openURL(
+                createMapLink({
+                  provider: 'google',
+                  // latitude: props.item?.location?.latitude,
+                  // longitude: props.item?.location?.longitude,
+                  query: props.item?.location?.latitude + ',' + props.item?.location?.longitude,
+                }),
+              );
+            } catch (e) {
+              console.log(e);
+            }
+          }
+        } catch (e) {
+        }
+      }}
+      onLongPress={onLongPress}
+    >
+      <View
+
+        style={[{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: props.right ? 'flex-end' : 'flex-start',
+        }]}
       >
-        {props.item?.reactions?.length > 0 && props.right && (
+        <View style={[props.style, { overflow: 'hidden' }]}>
+          {
+            props.children !== null &&
+            React.Children.map(props.children, child => React.cloneElement(child != null ? child : <></>, { onLongPress }))
+          }
+        </View>
+        {props.item?.reactions?.length > 0 && (
           <View
-            style={{
+            style={[{
               flexDirection: 'row',
               borderColor: 'white',
-            }}
+              position: 'absolute',
+
+            },
+              (props.right ? {
+                left: -32,
+                top: 10,
+              } : {
+                right: -40,
+                top: 10,
+              })]}
           >
             {reactObject.get('LIKE') && (
               <Image
@@ -1823,243 +1833,159 @@ function ContainChatItem(props) {
                 source={require('../../assets/emoji_7.png')}
                 style={{
                   marginRight: 8,
-                  width: 24, height: 24, resizeMode: 'contain'
+                  width: 24, height: 24, resizeMode: 'contain',
                 }}
                 resizeMode={'contain'}
               />
             )}
           </View>
         )}
-        {
-          props.children !== null &&
-          React.Children.map(props.children, child => React.cloneElement(child != null ? child : <></>, { onLongPress }))
-        }
-        {props.item?.reactions?.length > 0 && !props.right && (
-          <View
-            style={{
-              flexDirection: 'row',
-              borderColor: 'white',
-            }}
-          >
-            {reactObject.get('LIKE') && (
-              <Image
-                source={require('../../assets/emoji_1.png')}
-                style={{
-                  width: 24,
-                  height: 24,
-                  resizeMode: 'contain',
-                  marginLeft: 8,
-                }}
-                resizeMode={'contain'}
-              />
-            )}
-            {reactObject.get('LOVE') && (
-              <Image
-                source={require('../../assets/emoji_2.png')}
-                style={{
-                  width: 24,
-                  height: 24,
-                  resizeMode: 'contain',
-                  marginLeft: 8,
-                }}
-                resizeMode={'contain'}
-              />
-            )}
-            {reactObject.get('WOW') && (
-              <Image
-                source={require('../../assets/emoji_4.png')}
-                style={{
-                  width: 24,
-                  height: 24,
-                  resizeMode: 'contain',
-                  marginLeft: 8,
-                }}
-                resizeMode={'contain'}
-              />
-            )}
-            {reactObject.get('SAD') && (
-              <Image
-                source={require('../../assets/emoji_5.png')}
-                style={{
-                  width: 24,
-                  height: 24,
-                  resizeMode: 'contain',
-                  marginLeft: 8,
-                }}
-                resizeMode={'contain'}
-              />
-            )}
-            {reactObject.get('LOUDLY_CRYING') && (
-              <Image
-                source={require('../../assets/emoji_6.png')}
-                style={{
-                  width: 24,
-                  height: 24,
-                  resizeMode: 'contain',
-                  marginLeft: 8,
-                }}
-                resizeMode={'contain'}
-              />
-            )}
-            {reactObject.get('ANGRY') && (
-              <Image
-                source={require('../../assets/emoji_7.png')}
-                style={{
-                  width: 24,
-                  height: 24,
-                  marginLeft: 8,
-                  resizeMode: 'contain'
-                }}
-                resizeMode={'contain'}
-              />
-            )}
-          </View>
-        )}
-      </TouchableOpacity>
-      <Modal
-        visible={showPopover}
-        transparent={true}
-        onRequestClose={() => setShowPopover(false)}
-        backgroundStyle={{ backgroundColor: 'transparent' }}
-      >
-        <TouchableOpacity
-          activeOpacity={0}
-          onPress={() => setShowPopover(false)}
-          style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height, }}>
-          <View
-            style={{
-              position: 'absolute',
-              flexDirection: 'row',
-              paddingVertical: 12,
-              top: position.y - 60,
-              paddingHorizontal: 16,
-              borderRadius: 34,
-              backgroundColor: 'white',
-              overflow: 'hidden',
-              alignSelf: 'center',
-              shadowColor: '#0000004c',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.5,
-              shadowRadius: 3.84,
-              margin: 10,
-              elevation: 2,
-            }}
-          >
-            <TouchableWithoutFeedback
-              onPress={() => reaction('LIKE')}
+        <Modal
+          visible={showPopover}
+          transparent={true}
+          onRequestClose={() => setShowPopover(false)}
+          backgroundStyle={{ backgroundColor: 'transparent' }}
+        >
+          <TouchableOpacity
+            activeOpacity={0}
+            onPress={() => setShowPopover(false)}
+            style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}>
+            <View
+              style={{
+                position: 'absolute',
+                flexDirection: 'row',
+                paddingVertical: 12,
+                top: position.y - 60,
+                paddingHorizontal: 16,
+                borderRadius: 34,
+                backgroundColor: 'white',
+                overflow: 'hidden',
+                alignSelf: 'center',
+                shadowColor: '#0000004c',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.5,
+                shadowRadius: 3.84,
+                margin: 10,
+                elevation: 2,
+              }}
             >
-              <Image
-                source={require('../../assets/emoji_1.png')}
-                style={{
-                  width: 30,
-                  height: 30,
-                  marginRight: 16,
-                  resizeMode: 'contain',
-                }}
-                resizeMode={'contain'}
-              />
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback
-              style={{ marginHorizontal: 8 }}
-              onPress={() => reaction('LOVE')}
-            >
-              <Image
-                source={require('../../assets/emoji_2.png')}
-                style={{
-                  width: 30,
-                  height: 30,
-                  resizeMode: 'contain',
-                  marginRight: 16,
+              <TouchableWithoutFeedback
+                onPress={() => reaction('LIKE')}
+              >
+                <Image
+                  source={require('../../assets/emoji_1.png')}
+                  style={{
+                    width: 30,
+                    height: 30,
+                    marginRight: 16,
+                    resizeMode: 'contain',
+                  }}
+                  resizeMode={'contain'}
+                />
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback
+                style={{ marginHorizontal: 8 }}
+                onPress={() => reaction('LOVE')}
+              >
+                <Image
+                  source={require('../../assets/emoji_2.png')}
+                  style={{
+                    width: 30,
+                    height: 30,
+                    resizeMode: 'contain',
+                    marginRight: 16,
 
-                }}
-                resizeMode={'contain'}
-              />
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback
-              style={{ marginHorizontal: 8 }}
-              onPress={() => reaction('FLUSHED_FACE')}
-            >
-              <Image
-                source={require('../../assets/emoji_3.png')}
-                style={{
-                  width: 30,
-                  height: 30,
-                  resizeMode: 'contain',
-                  marginRight: 16,
+                  }}
+                  resizeMode={'contain'}
+                />
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback
+                style={{ marginHorizontal: 8 }}
+                onPress={() => reaction('FLUSHED_FACE')}
+              >
+                <Image
+                  source={require('../../assets/emoji_3.png')}
+                  style={{
+                    width: 30,
+                    height: 30,
+                    resizeMode: 'contain',
+                    marginRight: 16,
 
-                }}
-                resizeMode={'contain'}
-              />
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback
-              style={{ marginHorizontal: 8 }}
-              onPress={() => reaction('WOW')}
-            >
-              <Image
-                source={require('../../assets/emoji_4.png')}
-                style={{
-                  width: 30,
-                  height: 30,
-                  resizeMode: 'contain',
-                  marginRight: 16,
+                  }}
+                  resizeMode={'contain'}
+                />
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback
+                style={{ marginHorizontal: 8 }}
+                onPress={() => reaction('WOW')}
+              >
+                <Image
+                  source={require('../../assets/emoji_4.png')}
+                  style={{
+                    width: 30,
+                    height: 30,
+                    resizeMode: 'contain',
+                    marginRight: 16,
 
-                }}
-                resizeMode={'contain'}
-              />
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback
-              style={{ marginHorizontal: 8 }}
-              onPress={() => reaction('SAD')}
-            >
-              <Image
-                source={require('../../assets/emoji_5.png')}
-                style={{
-                  width: 30,
-                  height: 30,
-                  resizeMode: 'contain',
-                  marginRight: 16,
+                  }}
+                  resizeMode={'contain'}
+                />
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback
+                style={{ marginHorizontal: 8 }}
+                onPress={() => reaction('SAD')}
+              >
+                <Image
+                  source={require('../../assets/emoji_5.png')}
+                  style={{
+                    width: 30,
+                    height: 30,
+                    resizeMode: 'contain',
+                    marginRight: 16,
 
-                }}
-                resizeMode={'contain'}
-              />
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback
-              style={{ marginHorizontal: 8 }}
-              onPress={() => reaction('LOUDLY_CRYING')}
-            >
-              <Image
-                source={require('../../assets/emoji_6.png')}
-                style={{
-                  width: 30,
-                  height: 30,
-                  resizeMode: 'contain',
-                  marginRight: 16,
+                  }}
+                  resizeMode={'contain'}
+                />
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback
+                style={{ marginHorizontal: 8 }}
+                onPress={() => reaction('LOUDLY_CRYING')}
+              >
+                <Image
+                  source={require('../../assets/emoji_6.png')}
+                  style={{
+                    width: 30,
+                    height: 30,
+                    resizeMode: 'contain',
+                    marginRight: 16,
 
-                }}
-                resizeMode={'contain'}
-              />
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback
-              style={{ marginHorizontal: 8 }}
-              onPress={() => reaction('ANGRY')}
-            >
-              <Image
-                source={require('../../assets/emoji_7.png')}
-                style={{
-                  width: 30,
-                  height: 30,
-                  resizeMode: 'contain',
-                }}
-                resizeMode={'contain'}
-              />
-            </TouchableWithoutFeedback>
-          </View>
-        </TouchableOpacity>
-      </Modal>
-    </View>
+                  }}
+                  resizeMode={'contain'}
+                />
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback
+                style={{ marginHorizontal: 8 }}
+                onPress={() => reaction('ANGRY')}
+              >
+                <Image
+                  source={require('../../assets/emoji_7.png')}
+                  style={{
+                    width: 30,
+                    height: 30,
+                    resizeMode: 'contain',
+                  }}
+                  resizeMode={'contain'}
+                />
+              </TouchableWithoutFeedback>
+            </View>
+          </TouchableOpacity>
+        </Modal>
+      </View>
+
+    </TouchableHighlight>
   );
 }
 

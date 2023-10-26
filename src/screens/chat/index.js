@@ -619,9 +619,9 @@ const BottomChat = observer(function BottomChat(props) {
           >
             <Image
                 source={
-                  isOrderSuccess()
+                  chatStore.keyboardEmoji?require('../../assets/ic_emoji_disabled.png'):(isOrderSuccess()
                       ? require('../../assets/ic_emoji_disabled.png')
-                      : require('../../assets/ic_emoj.png')
+                      : require('../../assets/ic_emoj.png'))
                 }
                 style={{
                   height: 24,

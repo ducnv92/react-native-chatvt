@@ -51,6 +51,7 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
     if (attachsStore.currentTab === 0) {
       if (attach.url.toLowerCase().includes('jpg') || attach.url.toLowerCase().includes('png') || attach.url.toLowerCase().includes('jpeg') || attach.url.toLowerCase().includes('heic')) {
         return <TouchableOpacity
+          style={{backgroundColor: 'black'}}
           onPress={() => {
             setImages([
               {
@@ -63,10 +64,9 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
           }}>
 
           <Image source={{ uri: attach.url }} style={{
-            borderWidth: 0.5,
-            borderColor: '#f2f2f2',
-            backgroundColor: "#F2F2F2",
-            borderRadius: 5,
+            borderWidth: 2,
+            // borderColor: '#f2f2f2',
+            // backgroundColor: "#F2F2F2",
             overflow: 'hidden',
             width: Dimensions.get('window').width / 3,
             height: Dimensions.get('window').width / 3
@@ -79,9 +79,9 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
           {...props}
           url={attach.url}
           style={{
-            backgroundColor: "#F2F2F2",
-            borderRadius: 5,
+            borderWidth: 2,
             overflow: 'hidden',
+            backgroundColor: 'black',
             width: Dimensions.get('window').width / 3,
             height: Dimensions.get('window').width / 3
           }} />
@@ -106,15 +106,15 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          {attach.type.includes('pdf') && (
+          {attach.url.includes('pdf') && (
             <Image source={require('../../assets/file_pdf.png')}
               style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
           )}
-          {(attach.type.includes('.doc') || attach.url.includes('.docx')) && (
+          {(attach.url.includes('.doc') || attach.url.includes('.docx')) && (
             <Image source={require('../../assets/file_doc.png')}
               style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
           )}
-          {(attach.type.includes('.xls') || attach.url.includes('.xlsx')) && (
+          {(attach.url.includes('.xls') || attach.url.includes('.xlsx')) && (
             <Image source={require('../../assets/file_xls.png')}
               style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
           )}
@@ -157,7 +157,7 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
         </TouchableOpacity>
       </View>
       <View style={{ alignItems: 'center', backgroundColor: 'white', }}>
-        <Text style={{ fontWeight: '600', fontSize: 20, marginTop: 72, color: colors.primaryText, }}>{(receiver?.last_name?receiver?.last_name:''+" " + receiver?.first_name?receiver?.first_name: '')}</Text>
+        <Text style={{ fontWeight: '600', fontSize: 20, marginTop: 72, color: colors.primaryText, paddingHorizontal: 16, textAlign: 'center' }}>{(receiver?.last_name?receiver?.last_name:''+" " + receiver?.first_name?receiver?.first_name: '')}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
           {/*{*/}
           {/*  receiver?.state?.includes('ONLINE') &&*/}
@@ -225,24 +225,29 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
         keyExtractor={(item) => item._id}
         numColumns={attachsStore.currentTab === 0 ? 3 : 1}
         onEndReached={() => loadData()}
-        style={{ flex: 1, backgroundColor: 'white', paddingTop: 8 }}
+        style={{ flex: 1, paddingTop: 8, backgroundColor: 'white'}}
         data={attachsStore.data}
         renderItem={renderItem}
         ItemSeparatorComponent={() => (
-          <View style={{ backgroundColor: 'white', height: 1 }}>
-            <View
-              style={{
-                backgroundColor: '#E5E5E5',
-                height: 1,
-                marginLeft: 66,
-                marginRight: 16,
-              }}
-            ></View>
+          <View style={{ backgroundColor: attachsStore.currentTab === 0?'black':'white', height: attachsStore.currentTab === 0?2:1 }}>
+            {
+              attachsStore.currentTab === 1 &&
+              <View
+                style={{
+                  backgroundColor: '#E5E5E5',
+                  height: 1,
+                  marginLeft: 66,
+                  marginRight: 16,
+                }}
+              ></View>
+            }
           </View>
         )}
         ListEmptyComponent={() => {
+          if(attachsStore.isLoading)
+            return null
           return (
-            <View style={{ alignItems: 'center', marginTop: 50 }}>
+            <View style={{ alignItems: 'center', marginTop: 50, backgroundColor: 'white', height: '100%' }}>
               {attachsStore.currentTab === 0 ? (
                 <Image style={{ width: 102, height: 102, resizeMode: 'contain' }}
                   source={require('../../assets/ic_no_picture.png')} />
