@@ -118,7 +118,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           >
             <Image
               source={require('../../assets/ic_attach_message.png')}
-              style={{ width: 14, height: 14, resizeMode: 'contain', marginRight: 6 }}
+              style={{ width: 16, height: 16, resizeMode: 'contain', marginRight: 6 }}
             />
             <Text numberOfLines={1} style={{
               fontSize: 15,
@@ -140,7 +140,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           }}>
             <Image
               source={require('../../assets/ic_attach_message.png')}
-              style={{ width: 14, height: 14, resizeMode: 'contain', marginRight: 6 }}
+              style={{ width: 16, height: 16, resizeMode: 'contain', marginRight: 6 }}
             />
             <Text style={{
               fontSize: 15,
@@ -163,7 +163,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           >
             <Image
               source={require('../../assets/ic_attach_message.png')}
-              style={{ width: 12, height: 12, resizeMode: 'contain', marginRight: 6 }}
+              style={{ width: 16, height: 16, resizeMode: 'contain', marginRight: 6 }}
             />
             <Text numberOfLines={1}
               style={{

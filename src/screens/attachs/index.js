@@ -26,7 +26,7 @@ import { MText as Text } from '../../components'
 export const AttachsScreen = observer(function AttachsScreen(props) {
   const conversation = props.data;
   const receiver = props.receiver;
-  const insets = useSafeAreaInsets();
+  // const insets = useSafeAreaInsets();
   const [images, setImages] = useState([])
   const [imageVisible, setImageVisible] = useState(false);
 
@@ -130,6 +130,7 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
             </Text>
             <Text style={{
               fontSize: 13,
+              fontWeight: '500',
               color: "#828282",
               marginTop: 8
             }}>
@@ -145,7 +146,7 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.primary }}>
-      <View style={{ height: scale(64), backgroundColor: colors.primary, }}>
+      <View style={{ height: 66, backgroundColor: colors.primary, justifyContent: 'center' }}>
         <TouchableOpacity
           onPress={() => {
             Navigation.pop(props.componentId)
@@ -156,7 +157,7 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
         </TouchableOpacity>
       </View>
       <View style={{ alignItems: 'center', backgroundColor: 'white', }}>
-        <Text style={{ fontWeight: '600', fontSize: 20, marginTop: insets.top + 118 - scale(64), color: colors.primaryText, }}>{(receiver?.last_name?receiver?.last_name:''+" " + receiver?.first_name?receiver?.first_name: '')}</Text>
+        <Text style={{ fontWeight: '600', fontSize: 20, marginTop: 72, color: colors.primaryText, }}>{(receiver?.last_name?receiver?.last_name:''+" " + receiver?.first_name?receiver?.first_name: '')}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
           {/*{*/}
           {/*  receiver?.state?.includes('ONLINE') &&*/}
@@ -213,7 +214,6 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
           <Text style={{ borderLeftWidth: 1, borderColor: '#DCE6F0', fontWeight: '600', fontSize: 17, color: attachsStore.currentTab === 1 ? colors.primary : colors.primaryText, textAlign: 'center' }}>Tài liệu</Text>
         </TouchableOpacity>
       </View>
-      <View style={{ backgroundColor: '#f2f2f2', height: 8 }} />
 
       <FlatList
         key={(attachsStore.currentTab === 0 ? '0' : '1')}
@@ -225,7 +225,7 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
         keyExtractor={(item) => item._id}
         numColumns={attachsStore.currentTab === 0 ? 3 : 1}
         onEndReached={() => loadData()}
-        style={{ flex: 1, backgroundColor: 'white' }}
+        style={{ flex: 1, backgroundColor: 'white', paddingTop: 8 }}
         data={attachsStore.data}
         renderItem={renderItem}
         ItemSeparatorComponent={() => (
@@ -250,13 +250,13 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
                 <Image style={{ width: 102, height: 102, resizeMode: 'contain' }}
                   source={require('../../assets/ic_no_file.png')} />
               )}
-              <Text style={{ fontWeight: '600', fontSize: 15, color: '#828282' }}>{attachsStore.currentTab === 0 ? "Chưa có ảnh, video được gửi trong hội thoại " : "Chưa có tài liệu được gửi trong hội thoại "}</Text>
+              <Text style={{ fontWeight: '500', fontSize: 15, color: '#828282' }}>{attachsStore.currentTab === 0 ? "Chưa có ảnh, video được gửi trong hội thoại " : "Chưa có tài liệu được gửi trong hội thoại "}</Text>
             </View>
           )
         }}
       />
 
-      <View style={{ height: 94, width: 94, top: insets.top + 20, resizeMode: 'contain', position: 'absolute', alignSelf: 'center' }}>
+      <View style={{ height: 94, width: 94, marginTop: 20, resizeMode: 'contain', position: 'absolute', alignSelf: 'center' }}>
         {
           receiver?.type === 'VTMAN' ? (
             <Image style={{ height: 94, width: 94, resizeMode: 'contain' }}

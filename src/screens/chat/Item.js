@@ -65,9 +65,11 @@ const MapItem = function (props) {
             style={{
               height: 178,
               width: 290,
-              borderRadius: 10,
               overflow: 'hidden',
               backgroundColor: colors.blueBG,
+              borderWidth: right ? 0 : 1,
+              borderColor: '#DCE6F0',
+              borderRadius: 10,
             }}
           >
             <MapView
@@ -104,30 +106,30 @@ const MapItem = function (props) {
           </View>
         </ContainChatItem>
       </View>
-      {
-        !props.topMe &&
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: right ? 'flex-end' : 'flex-start',
-            alignItems: 'center',
-          }}
-        >
-          <Text
-            style={{
-              fontWeight: '400',
-              fontSize: 10,
-              marginHorizontal: 16,
-              color: colors.neutralText,
-              marginTop: 4,
-              textAlign: right ? 'right' : 'left',
-            }}
-          >
-            {formatTimeLastMessage(props.item.created_at)}
-          </Text>
-        </View>
+      {/*{*/}
+      {/*  !props.topMe &&*/}
+      {/*  <View*/}
+      {/*    style={{*/}
+      {/*      flexDirection: 'row',*/}
+      {/*      justifyContent: right ? 'flex-end' : 'flex-start',*/}
+      {/*      alignItems: 'center',*/}
+      {/*    }}*/}
+      {/*  >*/}
+      {/*    <Text*/}
+      {/*      style={{*/}
+      {/*        fontWeight: '400',*/}
+      {/*        fontSize: 10,*/}
+      {/*        marginHorizontal: 16,*/}
+      {/*        color: colors.neutralText,*/}
+      {/*        marginTop: 4,*/}
+      {/*        textAlign: right ? 'right' : 'left',*/}
+      {/*      }}*/}
+      {/*    >*/}
+      {/*      {formatTimeLastMessage(props.item.created_at)}*/}
+      {/*    </Text>*/}
+      {/*  </View>*/}
 
-      }
+      {/*}*/}
 
     </View>
   );
@@ -135,6 +137,7 @@ const MapItem = function (props) {
 const VoiceItem = function (props) {
   const right = props.right;
   const [isPlay, setIsPlay] = useState(false);
+  const [showTime, setShowTime] = useState(false);
   const soundbarRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [currentTime, setCurrentTime] = useState(formatDuration(props.item.attachmentLocal?.length > 0
@@ -218,16 +221,19 @@ const VoiceItem = function (props) {
         }}
       >
         <ContainChatItem {...props}>
-          <View
+          <TouchableOpacity
+            onPress={()=>setShowTime(!showTime)}
             style={{
               height: 56,
               width: 251,
-              borderRadius: 10,
               padding: 12,
               flexDirection: 'row',
               alignItems: 'center',
               overflow: 'hidden',
               backgroundColor: right ? colors.primary : '#F2F2F2',
+              borderWidth: right ? 0 : 1,
+              borderColor: '#DCE6F0',
+              borderRadius: 10,
             }}
           >
             <TouchableOpacity
@@ -266,33 +272,33 @@ const VoiceItem = function (props) {
             {/*  tintColor={right ? 'white' : '#B5B4B8'}*/}
             {/*/>*/}
             <Text style={{ width: 55, textAlign: 'right', fontWeight: '500', fontSize: 15, color: right ? 'white' : colors.neutralText }}>{currentTime}</Text>
-          </View>
+          </TouchableOpacity>
         </ContainChatItem>
       </View>
-      {
-        !props.topMe &&
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: right ? 'flex-end' : 'flex-start',
-            alignItems: 'center',
-          }}
-        >
-          <Text
-            style={{
-              fontWeight: '400',
-              fontSize: 10,
-              color: colors.neutralText,
-              marginTop: 4,
-              marginHorizontal: 16,
-              textAlign: right ? 'right' : 'left',
-            }}
-          >
-            {formatTimeLastMessage(props.item.created_at)}
-          </Text>
-        </View>
+      {/*{*/}
+      {/*  showTime &&*/}
+      {/*  <View*/}
+      {/*    style={{*/}
+      {/*      flexDirection: 'row',*/}
+      {/*      justifyContent: right ? 'flex-end' : 'flex-start',*/}
+      {/*      alignItems: 'center',*/}
+      {/*    }}*/}
+      {/*  >*/}
+      {/*    <Text*/}
+      {/*      style={{*/}
+      {/*        fontWeight: '400',*/}
+      {/*        fontSize: 10,*/}
+      {/*        color: colors.neutralText,*/}
+      {/*        marginTop: 4,*/}
+      {/*        marginHorizontal: 16,*/}
+      {/*        textAlign: right ? 'right' : 'left',*/}
+      {/*      }}*/}
+      {/*    >*/}
+      {/*      {formatTimeLastMessage(props.item.created_at)}*/}
+      {/*    </Text>*/}
+      {/*  </View>*/}
 
-      }
+      {/*}*/}
 
     </View>
   );
@@ -374,6 +380,7 @@ export const VideoItem = function (props) {
 const MessageItem = function (props) {
   const item = props.item;
   const right = props.right;
+  const [showTime, setShowTime] = useState(false);
   const [images, setImages] = useState([]);
   const [imageVisible, setImageVisible] = useState(false);
 
@@ -664,7 +671,7 @@ const MessageItem = function (props) {
             </View>
           </View>
           {
-            !props.topMe &&
+            showTime &&
             <View
               style={{
                 flexDirection: 'row',
@@ -724,7 +731,9 @@ const MessageItem = function (props) {
 
             <ContainChatItem {...props}   >
 
-              <View style={{
+              <TouchableOpacity
+                onPress={()=>setShowTime(!showTime)}
+                style={{
                 backgroundColor:
                   appStore.appId === 'VTPost'
                     ? right
@@ -789,7 +798,7 @@ const MessageItem = function (props) {
                 >
                   {item.text}
                 </ParsedText>
-              </View>
+              </TouchableOpacity>
             </ContainChatItem>
 
           </View>
@@ -823,7 +832,7 @@ const MessageItem = function (props) {
             </Text>
           )}
           {
-            !props.topMe &&
+            showTime &&
             <View
               style={{
                 flexDirection: 'row',
@@ -1061,29 +1070,29 @@ const DocumentItem = function (props) {
               </ContainChatItem>
             </View>
           </View>
-          {
-            !props.topMe &&
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: right ? 'flex-end' : 'flex-start',
-                alignItems: 'center',
-              }}
-            >
-              <Text
-                style={{
-                  fontWeight: '400',
-                  fontSize: 10,
-                  color: colors.neutralText,
-                  marginTop: 4,
-                  textAlign: right ? 'right' : 'left',
-                }}
-              >
-                {formatTimeLastMessage(item.created_at)}
-              </Text>
-            </View>
+          {/*{*/}
+          {/*  !props.topMe &&*/}
+          {/*  <View*/}
+          {/*    style={{*/}
+          {/*      flexDirection: 'row',*/}
+          {/*      justifyContent: right ? 'flex-end' : 'flex-start',*/}
+          {/*      alignItems: 'center',*/}
+          {/*    }}*/}
+          {/*  >*/}
+          {/*    <Text*/}
+          {/*      style={{*/}
+          {/*        fontWeight: '400',*/}
+          {/*        fontSize: 10,*/}
+          {/*        color: colors.neutralText,*/}
+          {/*        marginTop: 4,*/}
+          {/*        textAlign: right ? 'right' : 'left',*/}
+          {/*      }}*/}
+          {/*    >*/}
+          {/*      {formatTimeLastMessage(item.created_at)}*/}
+          {/*    </Text>*/}
+          {/*  </View>*/}
 
-          }
+          {/*}*/}
           {item.status === 'error' && (
             <Text
               style={{

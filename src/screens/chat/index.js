@@ -25,7 +25,7 @@ import colors from '../../Styles';
 import { BottomSheetModalProvider, TouchableHighlight } from '../../components/bottomSheet/bottom-sheet';
 import { MText as Text } from '../../components';
 import chatStore from './ChatStore';
-import { Log, orderStatus } from '../../utils';
+import { Log, orderStatus, timeSince } from '../../utils';
 import appStore from '../AppStore';
 import { observer } from 'mobx-react-lite';
 import { Navigation } from 'react-native-navigation';
@@ -243,9 +243,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                           ? 'Đơn ' + conversation?.order_numbers[0]
                           : conversation?.type === 'PAIR'
                               ?  (receiver?.last_name?receiver?.last_name:'')+ ' ' + (receiver?.first_name?receiver?.first_name: '')
-                              : conversation?.type === 'PAIR_SUPPORT'
-                                  ? 'Chăm sóc khách hàng'
-                                  : 'Không tên'}
+                              : ''}
                     </Text>
                     {conversation?.type === 'PAIR' && (
                         <Image
@@ -268,7 +266,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                           marginTop: 2,
                         }}
                     >
-                      {receiver.state?.includes('ONLINE') && (
+                      {receiver?.state?.includes('ONLINE') && (
                           <View style={{
                             flexDirection: 'row',
                             alignItems: 'center'
@@ -290,19 +288,34 @@ export const ChatScreen = observer(function ChatScreen(props) {
                                   '' : 'Đang hoạt động'}</Text>
                           </View>
                       )}
+                      {
+                        receiver.type === 'VTMAN' ? (
+                          <Text
+                            style={{
+                              fontWeight: '500',
+                              fontSize: 13,
+                              color: 'white',
+                              textAlign: 'center',
+                            }}
+                          >
+                            {receiver.type === 'VTMAN' ?
+                              appStore.lang.common.postman: ('Hoạt động '+timeSince(receiver.last_login))}
+                          </Text>
+                        ) :(
+                          receiver.last_login?
+                          <Text
+                            style={{
+                              fontWeight: '500',
+                              fontSize: 13,
+                              color: 'white',
+                              textAlign: 'center',
+                            }}
+                          >
+                            {'Hoạt động '+timeSince(receiver.last_login)}
+                          </Text>:null
+                        )
+                      }
 
-                      <Text
-                          style={{
-                            fontWeight: '500',
-                            fontSize: 13,
-                            color: 'white',
-                            textAlign: 'center',
-                          }}
-                      >
-                        {conversation.type === 'PAIR' &&
-                            receiver.type === 'VTMAN' &&
-                            appStore.lang.common.postman}
-                      </Text>
                     </View>
                 )}
                 {conversation?.type === 'GROUP' && (

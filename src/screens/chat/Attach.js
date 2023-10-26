@@ -506,7 +506,7 @@ export const AttachScreen = observer(function AttachScreen(props) {
     try {
       const response = await DocumentPicker.pick({
         presentationStyle: 'fullScreen',
-        type: [types.pdf, types.xls, types.docx, types.xlsx, types.docx],
+        type: [types.pdf, types.xls, types.docx, types.xlsx, types.docx, types.doc, types.xls],
       });
 
       chatStore.showAttachModal = false
