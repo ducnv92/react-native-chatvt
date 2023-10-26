@@ -237,7 +237,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                           color: 'white',
                           textAlign: 'center'
                         }}
-                        numberOfLines={2} ellipsizeMode='tail'
+                        numberOfLines={1} ellipsizeMode='tail'
                     >
                       {conversation?.type === 'GROUP'
                           ? 'Đơn ' + conversation?.order_numbers[0]
@@ -282,7 +282,10 @@ export const ChatScreen = observer(function ChatScreen(props) {
                                   backgroundColor: '#30F03B',
                                 }}
                             />
-                            <Text style={{ fontSize: 13, color: "white" }}>{
+                            <Text
+                              ellipsizeMode="tail"
+                              numberOfLines={1}
+                              style={{ fontSize: 13, color: "white" }}>{
                               receiver.type === 'VTMAN' ?
                                   '' : 'Đang hoạt động'}</Text>
                           </View>
@@ -312,6 +315,8 @@ export const ChatScreen = observer(function ChatScreen(props) {
                     >
 
                       <Text
+                        ellipsizeMode="tail"
+                        numberOfLines={1}
                           style={{
                             fontWeight: '500',
                             fontSize: 13,

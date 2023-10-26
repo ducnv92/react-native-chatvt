@@ -49,13 +49,13 @@ class Socket{
     this.socket.on('USER_READ_MESSAGE', this.onUserReadMessage);
 
     try{
-      if(this.hasDisconnect){
-        this.hasDisconnect = false
-        listChatStore.getDataBackground();
-        if(chatStore.conversation_id){
-          chatStore.getDataBackground()
-        }
-      }
+      // if(this.hasDisconnect){
+      //   this.hasDisconnect = false
+      //   listChatStore.getDataBackground();
+      //   if(chatStore.conversation_id){
+      //     chatStore.getDataBackground()
+      //   }
+      // }
     }catch (e) {
       console.log(e)
     }

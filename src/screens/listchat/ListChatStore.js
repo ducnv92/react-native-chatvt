@@ -185,12 +185,13 @@ class ListChatStore {
     this.isLoadingPin = true
     const response = await services.create().getConversationPin(params);
     Log(response);
+    this.isLoadingPin = false
     if (response.status === 200||response.status === 201) {
       if (response.data.status === 200) {
-          this.dataPin = response.data.data
+          this.dataPin = _.orderBy(response.data.data, c=>c?.message?.created_at, "desc")
+          this.data = _.orderBy(this.data, c=>c?.message?.created_at, "desc")
       }
     }
-    this.isLoadingPin = false
 
   }
 

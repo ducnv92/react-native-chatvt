@@ -22,6 +22,7 @@ import BottomSheetChatOptions from '../../components/bottomSheetChatOptions';
 import { BottomSheetModalProvider } from '../../components/bottomSheet/bottom-sheet';
 import { toJS } from 'mobx';
 import stickerStore from "../chat/StickerStore";
+import _ from 'lodash';
 
 export const ListChatScreen = observer(function ListChatScreen(props) {
   const [showSearch, setShowSearch] = useState(false);
@@ -272,8 +273,8 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
 
                 listChatStore.data  = [item, ...listChatStore.data];
 
-              listChatStore.dataPin = [...listChatStore.dataPin.filter(i => i._id !== item._id)]
-              listChatStore.data = [...listChatStore.data]
+              listChatStore.dataPin = _.orderBy(listChatStore.dataPin.filter(i => i._id !== item._id), c=>c?.message?.created_at, "desc")
+              listChatStore.data = _.orderBy(listChatStore.data, c=>c?.message?.created_at, "desc")
             });
           } else {
             listChatStore.pin({ conversation_id: item._id }, () => {
@@ -286,8 +287,8 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
 
               }
               listChatStore.dataPin = [item, ...listChatStore.dataPin]
-              listChatStore.data = [...listChatStore.data.filter(i => i._id !== item._id)]
-              listChatStore.dataPin = [...listChatStore.dataPin]
+              listChatStore.data = _.orderBy(listChatStore.data.filter(i => i._id !== item._id), c=>c?.message?.created_at, "desc")
+              listChatStore.dataPin = _.orderBy(listChatStore.dataPin, c=>c?.message?.created_at, "desc")
             });
           }
         }}
@@ -486,22 +487,26 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                 <Text
                   numberOfLines={1}
                   style={{
-                    flex: 1,
+
                     fontSize: 17,
                     fontWeight: '600',
                     color: colors.primaryText,
                   }}
                 >
                   Đơn {item.order_numbers[0]}{' '}
-                  <Text
-                    style={{
-                      fontSize: 13,
-                      fontWeight: '400',
-                      color: colors.neutralText,
-                    }}
-                  >
-                    - {orderStatus(item.orders[0]?.order_status)}{' '}
-                  </Text>
+
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={{
+                    flex: 1,
+                    fontSize: 13,
+                    fontWeight: '400',
+                    color: colors.neutralText,
+                  }}
+                >
+                  - {orderStatus(item.orders[0]?.order_status)}{' '}
                 </Text>
                 <Text style={{ textAlign: 'right', color: colors.neutralText, fontSize: 13, fontWeight: setting?.unread_count > 0?'600':'500' }}>
                   {formatTimeLastMessage(item.message?.created_at)}
@@ -680,6 +685,8 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
             <View style={{ flex: 1 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
                   style={{
                     flex: 1,
                     fontSize: 17,
@@ -790,7 +797,6 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
         keyExtractor={(item) => item?.message?._id}
         style={{ backgroundColor: 'white' }}
         data={listChatStore.dataPin}
-        extraData={listChatStore.data}
         ItemSeparatorComponent={() => (
           <View style={{ backgroundColor: '#F8F8FA', height: 1 }}>
             <View
