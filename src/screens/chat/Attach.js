@@ -709,6 +709,7 @@ export const Input = observer(function Input() {
   }, [])
   return (
     <TextInput
+      editable={chatStore.canSend}
       ref={inputRef}
       placeholder={appStore.lang.chat.input_message}
       placeholderTextColor={'#B5B4B8'}

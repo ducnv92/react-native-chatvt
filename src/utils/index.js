@@ -144,7 +144,6 @@ export const formatTimeLastMessage = timeString => {
 };
 
 export const formatDuration = duration =>{
-  console.log('duration', duration)
   if(!duration){
     return '00:00'
   }

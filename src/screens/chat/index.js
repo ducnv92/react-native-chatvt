@@ -93,6 +93,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
       chatStore.getData({
           conversation_id: conversation?._id,
       });
+      chatStore.checkCanSend()
   }
 
   useEffect(() => {
@@ -492,6 +493,8 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
 const BottomChat = observer(function BottomChat(props) {
 
+  const [showAlert, setShowAlert] = useState(false)
+
   useEffect(()=>{
 
     return ()=>{
@@ -551,13 +554,10 @@ const BottomChat = observer(function BottomChat(props) {
   return (
       <>
         <TouchableOpacity
-            disabled={!isOrderSuccess()}
+            disabled={chatStore.canSend}
             onPress={() => {
-              Toast.show({
-                type: 'info',
-                position: 'bottom',
-                text1: 'Chat với bưu tá lấy không khả dụng do\ntrạng thái đơn không cho phép. ',
-              });
+              setShowAlert(true)
+              setTimeout(()=>{setShowAlert(false)}, 2000)
             }}
             style={{
               minHeight: 56,
@@ -569,7 +569,7 @@ const BottomChat = observer(function BottomChat(props) {
             }}
         >
           <TouchableOpacity
-              disabled={isOrderSuccess()}
+              disabled={!chatStore.canSend}
               onPress={handlePresentModalPress}
               style={{
                 width: 56,
@@ -580,12 +580,12 @@ const BottomChat = observer(function BottomChat(props) {
           >
             <Image
                 source={require('../../assets/ic_attach.png')}
-                tintColor={isOrderSuccess() ? '#B5B4B8' : colors.primary}
+                tintColor={!chatStore.canSend ? '#B5B4B8' : colors.primary}
                 style={{
                   height: 24,
                   width: 24,
                   resizeMode: 'contain',
-                  tintColor: isOrderSuccess() ? '#B5B4B8' : colors.primary,
+                  tintColor: !chatStore.canSend ? '#B5B4B8' : colors.primary,
                 }}
             />
           </TouchableOpacity>
@@ -601,7 +601,7 @@ const BottomChat = observer(function BottomChat(props) {
           </View>
           <Input />
           <TouchableOpacity
-              disabled={isOrderSuccess()}
+              disabled={!chatStore.canSend}
               onPress={() => {
                 if (chatStore.keyboardEmoji) {
                   chatStore.keyboardEmoji = false;
@@ -619,7 +619,7 @@ const BottomChat = observer(function BottomChat(props) {
           >
             <Image
                 source={
-                  chatStore.keyboardEmoji?require('../../assets/ic_emoji_disabled.png'):(isOrderSuccess()
+                  chatStore.keyboardEmoji?require('../../assets/ic_emoji_disabled.png'):(!chatStore.canSend
                       ? require('../../assets/ic_emoji_disabled.png')
                       : require('../../assets/ic_emoj.png'))
                 }
@@ -641,7 +641,7 @@ const BottomChat = observer(function BottomChat(props) {
           {/*  <Image source={require('../../assets/nav_document.png')} style={{height: 24, width: 24, resizeMode:"contain"}}/>*/}
           {/*</TouchableOpacity>*/}
 
-          {inputStore.input.trim() !== '' && !isOrderSuccess() && (
+          {inputStore.input.trim() !== '' && chatStore.canSend && (
               <TouchableOpacity
                   onPress={sendMessage}
                   style={{
@@ -659,7 +659,7 @@ const BottomChat = observer(function BottomChat(props) {
           )}
           {inputStore.input.trim() === '' && (
               <RecordButton
-                  disabled={isOrderSuccess()}
+                  disabled={!chatStore.canSend}
                   {...props}
                   style={{
                     width: 40,
@@ -674,9 +674,9 @@ const BottomChat = observer(function BottomChat(props) {
                       height: 24,
                       width: 24,
                       resizeMode: 'contain',
-                      tintColor: isOrderSuccess() ? '#B5B4B8' : colors.primary,
+                      tintColor: !chatStore.canSend ? '#B5B4B8' : colors.primary,
                     }}
-                    tintColor={isOrderSuccess() ? '#B5B4B8' : colors.primary}
+                    tintColor={!chatStore.canSend ? '#B5B4B8' : colors.primary}
                 />
               </RecordButton>
           )}
@@ -713,6 +713,24 @@ const BottomChat = observer(function BottomChat(props) {
             //   ]}
             // />
         )}
+        {
+          showAlert && (
+            <View style={{
+              position: 'absolute',
+              width: Dimensions.get('window').width-28,
+              backgroundColor: '#44494D',
+              height: 68,
+              marginHorizontal: 14,
+              borderRadius: 8,
+              justifyContent: 'center',
+              alignItems: 'center',
+              bottom: 78
+
+            }}>
+              <Text style={{color: 'white', fontWeight: '500', lineHeight: 18, fontSize: 13, padding: 16 }}>Chat với bưu tá lấy không khả dụng do trạng thái đơn không cho phép.</Text>
+            </View>
+          )
+        }
       </>
   )
 })

@@ -199,7 +199,11 @@ const create = (baseURL = Endpoint.API_BASE) => {
   const getOrderInfoVTM = async (data) =>
       api.get(Endpoint.GET_ORDER_INFO(data.order_number), null, await getHeader());
 
+  const checkCanSend = async (data) =>
+      api.get(Endpoint.CHECK_CAN_SEND(data.conversation_id), null, await getHeader());
+
   return {
+    checkCanSend,
     getOrderInfoVTM,
     getVTMCustomerByOrder,
     vtpConversationWithReceiver,

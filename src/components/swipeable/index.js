@@ -144,15 +144,15 @@ export default class Swipeable extends PureComponent {
     swipeReleaseAnimationFn: Animated.timing,
     swipeReleaseAnimationConfig: {
       toValue: {x: 0, y: 0},
-      duration: 250,
-      easing: Easing.elastic(0.5),
+      duration: 200,
+      easing: Easing.elastic(0.3),
       useNativeDriver: false
     },
 
     // misc
     onRef: noop,
     onPanAnimatedValueRef: noop,
-    swipeStartMinDistance: 15
+    swipeStartMinDistance: 2
   };
 
   state = {

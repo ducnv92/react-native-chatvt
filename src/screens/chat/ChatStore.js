@@ -35,6 +35,7 @@ class ChatStore {
 
   intervalSound;
   pauseSound;
+  canSend = true;
 
   soundBarsRefs = {
   };
@@ -61,6 +62,7 @@ class ChatStore {
     this.data = [];
     this.images = [];
     this.showAttachModal = false;
+    this.canSend = true;
   }
 
 
@@ -139,6 +141,23 @@ class ChatStore {
             if (response.data.data) {
               this.data = _.unionBy(response.data.data, toJS(this.data), "_id");
             }
+          }
+        }
+      })
+    } catch (error) {
+      Log(error);
+    }
+  }
+
+  async checkCanSend() {
+    try {
+      services.create().checkCanSend({
+        conversation_id: this.conversation_id,
+      }).then(response=>{
+        console.log('can send', response)
+        if (response.status === 200) {
+          if (response.data.status === 200) {
+              this.canSend = response.data.data
           }
         }
       })

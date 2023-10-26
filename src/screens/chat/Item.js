@@ -45,6 +45,7 @@ import VideoViewing from '../../components/videoView/ImageViewing';
 import AnimatedSoundBars from '../../components/waveView';
 import chatStore from './ChatStore';
 import stickerStore from './StickerStore';
+var _ = require('lodash');
 
 
 const MapItem = function(props) {
@@ -879,7 +880,6 @@ const MessageItem = function(props) {
 const DocumentItem = function(props) {
   const item = props.item;
   const right = props.right;
-  console.log('document', item);
   return (
     <>
       {item.has_attachment && (
@@ -1541,6 +1541,20 @@ export class ChatItem extends React.Component {
     } catch (e) {
     }
 
+    let dividerDay =  null
+    try {
+      if(this.props.index>0 &&  moment(this.props.data[this.props.index - 1].created_at).startOf('day').diff(moment(this.props.data[this.props.index].created_at).endOf('day'), 'day')>0){
+        dividerDay = (
+          <View style={{width: '100%', height: 42, paddingHorizontal: 16, alignItems: 'center', justifyContent: 'center'}}>
+            <View style={{width: '100%', height: 1, backgroundColor: '#DCE6F0'}}></View>
+            <Text style={{color: '#828282'  , fontSize: 13, fontWeight: '500', padding: 12, backgroundColor: 'white', position: 'absolute'}}>{moment(this.props.data[this.props.index - 1].created_at).format('DD/MM')}</Text>
+          </View>
+        )
+      }
+    }catch (e) {
+      console.log(e)
+    }
+
 
     let messageView;
     if (this.item.type === 'MESSAGE') {
@@ -1600,9 +1614,13 @@ export class ChatItem extends React.Component {
       );
     }
 
+
+
+
     if (right || this.item.type === 'GROUP') {
       return (
-        <View style={{ paddingVertical: 2 }}>
+        <View style={{ flexDirection: 'column', paddingVertical: 2 }}>
+          {dividerDay}
           {messageView}
           {this.item.read_by?.length > 0 && this.props.index === 0 && (
             <View
@@ -1633,7 +1651,9 @@ export class ChatItem extends React.Component {
         </View>
       );
     } else {
-      return <View style={{}}>{messageView}</View>;
+      return <View style={{}}>
+        {dividerDay}
+        {messageView}</View>;
     }
   }
 }
@@ -1646,7 +1666,6 @@ function ContainChatItem(props) {
 
 
   useEffect(() => {
-    console.log(props.item?.reactions)
     setReactObject(
       props.item?.reactions ? groupBy(props.item?.reactions, (react) => react.type) : new Map(),
     );
@@ -1751,10 +1770,10 @@ function ContainChatItem(props) {
 
             },
               (props.right ? {
-                left: -32,
+                left: props.item?.reactions.length>0?(-props.item?.reactions.length*32):0,
                 top: 10,
               } : {
-                right: -40,
+                right: -8-(props.item?.reactions.length*32),
                 top: 10,
               })]}
           >
@@ -1874,7 +1893,8 @@ function ContainChatItem(props) {
                 elevation: 2,
               }}
             >
-              <TouchableWithoutFeedback
+              <TouchableOpacity
+                style={{alignItems: 'center', marginRight: 16,}}
                 onPress={() => reaction('LIKE')}
               >
                 <Image
@@ -1882,14 +1902,19 @@ function ContainChatItem(props) {
                   style={{
                     width: 30,
                     height: 30,
-                    marginRight: 16,
+
                     resizeMode: 'contain',
                   }}
                   resizeMode={'contain'}
                 />
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback
-                style={{ marginHorizontal: 8 }}
+                {
+                  (_.findIndex(props.item?.reactions, {type: 'LIKE', user_id: appStore.user.type + '_' + appStore.user.user_id})!==-1)&&
+                  <View style={{position: 'absolute', bottom: -9, width: 6, height: 6, marginTop: 3, borderRadius: 3, backgroundColor: colors.primary}}/>
+                }
+
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ marginHorizontal: 8, alignItems: 'center', marginRight: 16 }}
                 onPress={() => reaction('LOVE')}
               >
                 <Image
@@ -1898,14 +1923,17 @@ function ContainChatItem(props) {
                     width: 30,
                     height: 30,
                     resizeMode: 'contain',
-                    marginRight: 16,
 
                   }}
                   resizeMode={'contain'}
                 />
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback
-                style={{ marginHorizontal: 8 }}
+                {
+                  (_.findIndex(props.item?.reactions, {type: 'LOVE', user_id: appStore.user.type + '_' + appStore.user.user_id})!==-1)&&
+                  <View style={{position: 'absolute', bottom: -9, width: 6, height: 6, marginTop: 3, borderRadius: 3, backgroundColor: colors.primary}}/>
+                }
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ marginHorizontal: 8, marginRight: 16, alignItems: 'center' }}
                 onPress={() => reaction('FLUSHED_FACE')}
               >
                 <Image
@@ -1914,14 +1942,17 @@ function ContainChatItem(props) {
                     width: 30,
                     height: 30,
                     resizeMode: 'contain',
-                    marginRight: 16,
 
                   }}
                   resizeMode={'contain'}
                 />
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback
-                style={{ marginHorizontal: 8 }}
+                {
+                  (_.findIndex(props.item?.reactions, {type: 'FLUSHED_FACE', user_id: appStore.user.type + '_' + appStore.user.user_id})!==-1)&&
+                  <View style={{position: 'absolute', bottom: -9, width: 6, height: 6, marginTop: 3, borderRadius: 3, backgroundColor: colors.primary}}/>
+                }
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ marginHorizontal: 8, marginRight: 16, alignItems: 'center' }}
                 onPress={() => reaction('WOW')}
               >
                 <Image
@@ -1930,14 +1961,17 @@ function ContainChatItem(props) {
                     width: 30,
                     height: 30,
                     resizeMode: 'contain',
-                    marginRight: 16,
 
                   }}
                   resizeMode={'contain'}
                 />
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback
-                style={{ marginHorizontal: 8 }}
+                {
+                  (_.findIndex(props.item?.reactions, {type: 'WOW', user_id: appStore.user.type + '_' + appStore.user.user_id})!==-1)&&
+                  <View style={{position: 'absolute', bottom: -9, width: 6, height: 6, marginTop: 3, borderRadius: 3, backgroundColor: colors.primary}}/>
+                }
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ marginHorizontal: 8, marginRight: 16, alignItems: 'center' }}
                 onPress={() => reaction('SAD')}
               >
                 <Image
@@ -1946,14 +1980,16 @@ function ContainChatItem(props) {
                     width: 30,
                     height: 30,
                     resizeMode: 'contain',
-                    marginRight: 16,
-
                   }}
                   resizeMode={'contain'}
                 />
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback
-                style={{ marginHorizontal: 8 }}
+                {
+                  (_.findIndex(props.item?.reactions, {type: 'SAD', user_id: appStore.user.type + '_' + appStore.user.user_id})!==-1)&&
+                  <View style={{position: 'absolute', bottom: -9, width: 6, height: 6, marginTop: 3, borderRadius: 3, backgroundColor: colors.primary}}/>
+                }
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ marginHorizontal: 8, marginRight: 16, alignItems: 'center' }}
                 onPress={() => reaction('LOUDLY_CRYING')}
               >
                 <Image
@@ -1962,14 +1998,17 @@ function ContainChatItem(props) {
                     width: 30,
                     height: 30,
                     resizeMode: 'contain',
-                    marginRight: 16,
 
                   }}
                   resizeMode={'contain'}
                 />
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback
-                style={{ marginHorizontal: 8 }}
+                {
+                  (_.findIndex(props.item?.reactions, {type: 'LOUDLY_CRYING', user_id: appStore.user.type + '_' + appStore.user.user_id})!==-1)&&
+                  <View style={{position: 'absolute', bottom: -9, width: 6, height: 6, marginTop: 3, borderRadius: 3, backgroundColor: colors.primary}}/>
+                }
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ marginHorizontal: 8, alignItems: 'center' }}
                 onPress={() => reaction('ANGRY')}
               >
                 <Image
@@ -1981,7 +2020,11 @@ function ContainChatItem(props) {
                   }}
                   resizeMode={'contain'}
                 />
-              </TouchableWithoutFeedback>
+                {
+                  (_.findIndex(props.item?.reactions, {type: 'ANGRY', user_id: appStore.user.type + '_' + appStore.user.user_id})!==-1)&&
+                  <View style={{position: 'absolute', bottom: -9, width: 6, height: 6, marginTop: 3, borderRadius: 3, backgroundColor: colors.primary}}/>
+                }
+              </TouchableOpacity>
             </View>
           </TouchableOpacity>
         </Modal>

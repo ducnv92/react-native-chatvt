@@ -43,6 +43,8 @@ exports.DOWNLOAD_FILE = `${API_BASE}/space/download`;
 exports.QUICK_MESSAGE_CREATE = `/quick-message/create`;
 exports.QUICK_MESSAGE_UPDATE = (conversation_id) =>
   `/quick-message/${conversation_id}`;
+exports.CHECK_CAN_SEND = (conversation_id) =>
+  `/conversation/${conversation_id}/able-send`;
 exports.QUICK_MESSAGE_LIST = `/quick-message/list`;
 
 //Admin
