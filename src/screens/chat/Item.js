@@ -455,6 +455,7 @@ const MessageItem = function(props) {
                   <ContainChatItem {...props} style={{
                     flexDirection: 'row',
                     flexWrap: 'wrap',
+                    alignItems: 'flex-end',
                     borderRadius: 10,
                     // overflow: 'hidden',
                   }}>
@@ -1645,6 +1646,7 @@ function ContainChatItem(props) {
 
 
   useEffect(() => {
+    console.log(props.item?.reactions)
     setReactObject(
       props.item?.reactions ? groupBy(props.item?.reactions, (react) => react.type) : new Map(),
     );
@@ -1729,12 +1731,12 @@ function ContainChatItem(props) {
       <View
 
         style={[{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: props.right ? 'flex-end' : 'flex-start',
+
         }]}
       >
-        <View style={[props.style, { overflow: 'hidden' }]}>
+        <View style={[props.style, { overflow: 'hidden',  flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: props.right ? 'flex-end' : 'flex-start', }]}>
           {
             props.children !== null &&
             React.Children.map(props.children, child => React.cloneElement(child != null ? child : <></>, { onLongPress }))

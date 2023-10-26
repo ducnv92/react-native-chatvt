@@ -1,7 +1,22 @@
-import React, {useEffect} from 'react'
+import React, { useEffect, useState } from 'react';
 import {Dimensions, FlatList, Image, Text, TouchableOpacity, View} from "react-native";
 import stickerStore from "../../screens/chat/StickerStore";
 import FastImage from 'react-native-fast-image';
+
+function ImageLoading(props) {
+  const [loaded, setLoaded] = useState(false)
+  return(
+    <FastImage
+      {...props}
+      style={{...props.style,...{
+        backgroundColor: loaded?'transparent': '#f8f8f8',
+          overflow: 'hidden',
+          borderRadius: loaded?0:10,
+      }}}
+       onLoadEnd={()=>setLoaded(true)}
+    />
+  )
+}
 
 export default function EmojiKeyboard(props) {
 
@@ -20,7 +35,7 @@ export default function EmojiKeyboard(props) {
           }
         }}
         style={{flex: 1, maxWidth: Dimensions.get('window').width/4, paddingVertical: 9, alignItems: 'center', justifyContent: 'center'}}>
-        <FastImage source={stickerStore.getStickerImage(item.attachment_id)} style={{width: 68, height: 68, resizeMode: 'contain'}}/>
+        <ImageLoading source={stickerStore.getStickerImage(item.attachment_id)} style={{width: 68, height: 68, resizeMode: 'contain'}}/>
       </TouchableOpacity>
     )
   }

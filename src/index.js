@@ -88,6 +88,8 @@ class ChatVT {
         token_sso: tokenSSO,
       },
       (res) => {
+        listChatStore.data = []
+        listChatStore.dataPin = []
         // if(this.interval){
         //   clearInterval(this.interval)
         // }

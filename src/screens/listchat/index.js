@@ -4,7 +4,7 @@ import {
   View,
   FlatList,
   Platform,
-  KeyboardAvoidingView, Dimensions, StatusBar,
+  KeyboardAvoidingView, Dimensions, StatusBar, Alert,
 } from 'react-native';
 import { MText as Text } from '../../components';
 import { observer } from 'mobx-react-lite';
@@ -384,7 +384,17 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
       </TouchableOpacity>,
       <TouchableOpacity
         onPress={() => {
-          listChatStore.hide({ conversation_id: item._id }, () => intLoad());
+          Alert.alert('Xác nhận', 'Bạn chắc chắn xoá hội thoại này?', [
+            {
+            text: 'Bỏ qua',
+            onPress: ()=>{}
+          },   {
+            text: 'Đồng ý',
+            onPress: ()=>{
+              listChatStore.hide({ conversation_id: item._id }, () => intLoad());
+            }
+          },
+          ])
         }}
         style={{
           width: 66,
