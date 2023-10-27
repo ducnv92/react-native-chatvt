@@ -450,17 +450,16 @@ const MessageItem = function(props) {
               {item.attachmentLocal && item.attachmentLocal.length > 0 && (
                 <View
                   style={{
-                    width: item.attachments?.length > 1 ? 294 : 200,
+                    width: item.attachmentLocal?.length > 1 ? 294 : 200,
                   }}
                 >
                   <ContainChatItem {...props} style={{
                     flexDirection: 'row',
                     flexWrap: 'wrap',
-                    alignItems: 'flex-end',
                     borderRadius: 10,
                     // overflow: 'hidden',
                   }}>
-                    {item.attachmentLocal.map((File) => {
+                    {item.attachmentLocal.map((File, index) => {
                       const attach = File.uri;
                       if (
                         attach.toLowerCase().includes('jpg') ||
@@ -470,7 +469,12 @@ const MessageItem = function(props) {
                       ) {
                         return (
                           <TouchableOpacity
-                            key={attach}
+                            style={{
+                              // width: item.attachments.length === 1 ? 200 : 145,
+                              // height: item.attachments.length === 1 ? 200 : 145,
+
+                            }}
+                            key={attach.url}
                             onPress={() => {
                               setImages([
                                 {
@@ -486,49 +490,15 @@ const MessageItem = function(props) {
                               style={{
                                 backgroundColor: '#F2F2F2',
                                 borderRadius: 5,
-                                // marginRight: 2,
                                 overflow: 'hidden',
-                                width:
-                                  item.attachmentLocal.length === 1 ? 200 : 120,
-                                height:
-                                  item.attachmentLocal.length === 1 ? 200 : 120,
+                                width: item.attachmentLocal.length === 1 ? 200 : 145,
+                                height: item.attachmentLocal.length === 1 ? 200 : 145,
+                                marginLeft: item.attachmentLocal.length > 0 ? ((index + 1) % 2 === 0 ? 4 : 0) : 0,
+                                marginTop: item.attachmentLocal.length > 0 ? (index > 1 ? 4 : 0) : 0,
+                                resizeMode: 'cover',
                               }}
                               LoadingIndicatorComponent={ActivityIndicator}
                             />
-                            <TouchableOpacity
-                              style={{
-                                position: 'absolute',
-                                alignSelf: 'center',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                padding: 16,
-                                top: item.attachmentLocal.length === 1 ? 65 : 35,
-                              }}
-                            >
-                              <AnimatedProgressWheel
-                                size={30}
-                                animateFromValue={0}
-                                progress={
-                                  uploadProgress.progress[item.id]
-                                    ? uploadProgress.progress[item.id]
-                                    : 0
-                                }
-                                width={3}
-                                color={colors.primary}
-                                backgroundColor={'#FFFFFFA3'}
-                                fullColor={colors.primary}
-                              ></AnimatedProgressWheel>
-                              <Image
-                                source={require('../../assets/ic_cancel_upload.png')}
-                                style={{
-                                  width: 16,
-                                  height: 16,
-                                  position: 'absolute',
-                                  alignSelf: 'center',
-                                  justifySelf: 'center',
-                                }}
-                              />
-                            </TouchableOpacity>
                           </TouchableOpacity>
                         );
                       }
@@ -537,60 +507,24 @@ const MessageItem = function(props) {
                         attach.toLowerCase().includes('.mp4')
                       ) {
                         return (
-                          <View>
-                            <VideoItem
-                              key={attach}
-                              {...props}
-                              source={{ uri: attach }}
-                              url={attach}
-                              resizeMode={'contain'}
-                              allowsExternalPlayback
-                              style={{
-                                width: Dimensions.get('window').width * 0.5,
-                                height: Dimensions.get('window').width * 0.5,
-                                backgroundColor: '#f2f2f2',
-                                borderRadius: 10,
-                                overflow: 'hidden',
-                              }}
-                            ></VideoItem>
-                            <TouchableOpacity
-                              style={{
-                                position: 'absolute',
-                                alignSelf: 'center',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                padding: 16,
-                                top: item.attachmentLocal.length === 1 ? 84 : 84,
-                              }}
-                            >
-                              <AnimatedProgressWheel
-                                size={30}
-                                animateFromValue={0}
-                                progress={
-                                  uploadProgress.progress[item.id]
-                                    ? uploadProgress.progress[item.id]
-                                    : 0
-                                }
-                                width={3}
-                                color={colors.primary}
-                                backgroundColor={'#FFFFFFA3'}
-                                fullColor={colors.primary}
-                              ></AnimatedProgressWheel>
-                              <Image
-                                source={require('../../assets/ic_cancel_upload.png')}
-                                style={{
-                                  width: 16,
-                                  height: 16,
-                                  position: 'absolute',
-                                  alignSelf: 'center',
-                                  justifySelf: 'center',
-                                }}
-                              />
-                            </TouchableOpacity>
-                          </View>
+                          <VideoItem
+                            key={attach}
+                            {...props}
+                            source={{ uri: attach }}
+                            url={attach}
+                            resizeMode={'contain'}
+                            allowsExternalPlayback
+                            style={{
+                              width: Dimensions.get('window').width * 0.5,
+                              height: Dimensions.get('window').width * 0.5,
+                              backgroundColor: '#f2f2f2',
+                              borderRadius: 10,
+                              overflow: 'hidden',
+                              marginTop: index>0?4:0
+                            }}
+                          ></VideoItem>
                         );
                       }
-                      return <View />;
                     })}
                   </ContainChatItem>
                 </View>
@@ -637,8 +571,8 @@ const MessageItem = function(props) {
                               style={{
                                 borderColor: '#f2f2f2',
                                 backgroundColor: '#F2F2F2',
-                                // borderRadius: 5,
-                                // overflow: 'hidden',
+                                borderRadius: 5,
+                                overflow: 'hidden',
                                 width: item.attachments.length === 1 ? 200 : 145,
                                 height: item.attachments.length === 1 ? 200 : 145,
                                 marginLeft: item.attachments.length > 0 ? ((index + 1) % 2 === 0 ? 4 : 0) : 0,
@@ -667,6 +601,7 @@ const MessageItem = function(props) {
                               overflow: 'hidden',
                               width: Dimensions.get('window').width * 0.5,
                               height: Dimensions.get('window').width * 0.5,
+                              marginTop: index>0?4:0
                             }}
                           />
                         );
