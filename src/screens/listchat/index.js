@@ -503,7 +503,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     color: colors.primaryText,
                   }}
                 >
-                  Đơn {item.order_numbers[0]}{' '}
+                  Đơn {item.order_numbers?.length>0 && item.order_numbers[0]}{' '}
 
                 </Text>
                 <Text
@@ -516,7 +516,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     color: colors.neutralText,
                   }}
                 >
-                  - {orderStatus(item.orders[0]?.order_status)}{' '}
+                  - {orderStatus(item.orders?.length>0 && item.orders[0]?.order_status)}{' '}
                 </Text>
                 <Text style={{ textAlign: 'right', color: colors.neutralText, fontSize: 13, fontWeight: setting?.unread_count > 0?'600':'500' }}>
                   {formatTimeLastMessage(item.message?.created_at)}

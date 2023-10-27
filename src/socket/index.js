@@ -65,7 +65,7 @@ class Socket{
     this.hasDisconnect = true
   }
   onUserMessage = (event)=>{
-
+    console.log('socket', event)
     try{
       let handled = false
 
@@ -137,7 +137,7 @@ class Socket{
 
       if(!handled){
         runInAction(()=>{
-          listChatStore.data = [event, ...listChatStore.data]
+          listChatStore.data = _.unionBy([event], listChatStore.data, '_id' )
         })
       }
     }catch (e) {

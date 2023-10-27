@@ -142,8 +142,8 @@ const VoiceItem = function(props) {
   const soundbarRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [currentTime, setCurrentTime] = useState(formatDuration(props.item.attachmentLocal?.length > 0
-    ? props.item.attachmentLocal[0].duration
-    : props.item.attachments[0]?.duration));
+    ? (props.item.attachmentLocal.length>0 &&props.item.attachmentLocal[0].duration)
+    :(props.item.attachments.length>0 && props.item.attachments[0]?.duration)));
   let _onFinishedPlayingSubscription = null;
   let _onFinishedLoadingSubscription = null;
   let _onFinishedLoadingFileSubscription = null;
@@ -170,8 +170,8 @@ const VoiceItem = function(props) {
     setIsPlay(true);
     SoundPlayer.playUrl(
       props.item.attachmentLocal?.length > 0
-        ? props.item.attachmentLocal[0].uri
-        : props.item.attachments[0]?.url,
+        ? (props.item.attachmentLocal.length>0 &&props.item.attachmentLocal[0].uri)
+        : (props.item.attachments.length>0 && props.item.attachments[0]?.url),
     );
     chatStore.intervalSound = setInterval(async () => {
       const info = await SoundPlayer.getInfo(); // Also, you need to await this because it is async
@@ -267,7 +267,7 @@ const VoiceItem = function(props) {
             </TouchableOpacity>
             {
               isPlay ?
-                <AnimatedSoundBars isPlay={true} id={props.item.attachments[0]?.url}
+                <AnimatedSoundBars isPlay={true} id={props.item.attachments.length>0 && props.item.attachments[0]?.url}
                                    barColor={right ? 'white' : '#44494D66'} /> :
                 <AnimatedSoundBars isPlay={false} barColor={right ? 'white' : '#44494D66'} />
             }
@@ -1426,7 +1426,7 @@ const StickerItem = function(props) {
         marginHorizontal: 16,
       }}
     >
-      <FastImage source={stickerStore.getStickerImage(props.item.sticker_ids[0])}
+      <FastImage source={stickerStore.getStickerImage(props.item.sticker_ids?.length>0 && props.item.sticker_ids[0])}
                  style={{ width: 86, height: 86, resizeMode: 'contain' }} />
     </View>
   );
@@ -1662,7 +1662,7 @@ function ContainChatItem(props) {
       onPress={() => {
         try {
           if (props.item.type === 'FILE') {
-            DownloadViewFile(props.item.attachments[0].url);
+            DownloadViewFile(props.item.attachments?.length>0 && props.item.attachments[0].url);
           }
           if (props.item.type === 'LOCATION') {
             try {
