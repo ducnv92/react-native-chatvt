@@ -1721,6 +1721,7 @@ function ContainChatItem(props) {
 
   return (
     <TouchableHighlight
+      underlayColor="white"
       delayLongPress={300}
       ref={containerRef}
       onPress={() => {
@@ -1865,12 +1866,12 @@ function ContainChatItem(props) {
           visible={showPopover}
           transparent={true}
           onRequestClose={() => setShowPopover(false)}
-          backgroundStyle={{ backgroundColor: 'transparent' }}
+
         >
           <TouchableOpacity
             activeOpacity={0}
             onPress={() => setShowPopover(false)}
-            style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}>
+            style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height, }}>
             <View
               style={{
                 position: 'absolute',
@@ -1882,19 +1883,19 @@ function ContainChatItem(props) {
                 backgroundColor: 'white',
                 overflow: 'hidden',
                 alignSelf: 'center',
-                shadowColor: '#0000004c',
+                shadowColor: '#0000001a',
                 shadowOffset: {
-                  width: 0,
-                  height: 2,
+                  width: 4,
+                  height: 16,
                 },
-                shadowOpacity: 0.5,
-                shadowRadius: 3.84,
+                shadowOpacity: 1,
+                shadowRadius: 8,
                 margin: 10,
-                elevation: 2,
+                elevation: 16,
               }}
             >
               <TouchableOpacity
-                style={{alignItems: 'center', marginRight: 16,}}
+                style={{alignItems: 'center', marginHorizontal: 8}}
                 onPress={() => reaction('LIKE')}
               >
                 <Image
@@ -1914,7 +1915,7 @@ function ContainChatItem(props) {
 
               </TouchableOpacity>
               <TouchableOpacity
-                style={{ marginHorizontal: 8, alignItems: 'center', marginRight: 16 }}
+                style={{ marginHorizontal: 8, alignItems: 'center' }}
                 onPress={() => reaction('LOVE')}
               >
                 <Image
@@ -1933,7 +1934,7 @@ function ContainChatItem(props) {
                 }
               </TouchableOpacity>
               <TouchableOpacity
-                style={{ marginHorizontal: 8, marginRight: 16, alignItems: 'center' }}
+                style={{ marginHorizontal: 8, alignItems: 'center' }}
                 onPress={() => reaction('FLUSHED_FACE')}
               >
                 <Image
@@ -1952,7 +1953,7 @@ function ContainChatItem(props) {
                 }
               </TouchableOpacity>
               <TouchableOpacity
-                style={{ marginHorizontal: 8, marginRight: 16, alignItems: 'center' }}
+                style={{ marginHorizontal: 8, alignItems: 'center' }}
                 onPress={() => reaction('WOW')}
               >
                 <Image
@@ -1971,7 +1972,7 @@ function ContainChatItem(props) {
                 }
               </TouchableOpacity>
               <TouchableOpacity
-                style={{ marginHorizontal: 8, marginRight: 16, alignItems: 'center' }}
+                style={{ marginHorizontal: 8,  alignItems: 'center' }}
                 onPress={() => reaction('SAD')}
               >
                 <Image
@@ -1989,7 +1990,7 @@ function ContainChatItem(props) {
                 }
               </TouchableOpacity>
               <TouchableOpacity
-                style={{ marginHorizontal: 8, marginRight: 16, alignItems: 'center' }}
+                style={{ marginHorizontal: 8,  alignItems: 'center' }}
                 onPress={() => reaction('LOUDLY_CRYING')}
               >
                 <Image
