@@ -445,7 +445,7 @@ const MessageItem = function(props) {
             )}
 
             <View
-              style={{ borderRadius: 10, maxWidth: '75%', borderTopRightRadius: right && props.bottomMe ? 6 : 10 }}
+              style={{ borderRadius: 10, borderTopRightRadius: right && props.bottomMe ? 6 : 10 }}
             >
               {item.attachmentLocal && item.attachmentLocal.length > 0 && (
                 <View
