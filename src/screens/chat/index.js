@@ -267,7 +267,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                           marginTop: 2,
                         }}
                     >
-                      {receiver?.state?.includes('ONLINE') && (
+                      {receiver?.state?.includes('ONLINE') ? (
                           <View style={{
                             flexDirection: 'row',
                             alignItems: 'center'
@@ -288,8 +288,8 @@ export const ChatScreen = observer(function ChatScreen(props) {
                               receiver.type === 'VTMAN' ?
                                   '' : 'Đang hoạt động'}</Text>
                           </View>
-                      )}
-                      {
+                      )
+                      :(
                         receiver.type === 'VTMAN' ? (
                           <Text
                             style={{
@@ -315,7 +315,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                             {'Hoạt động '+timeSince(receiver.last_login)}
                           </Text>:null
                         )
-                      }
+                        )}
 
                     </View>
                 )}
