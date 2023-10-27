@@ -241,7 +241,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                         numberOfLines={1} ellipsizeMode='tail'
                     >
                       {conversation?.type === 'GROUP'
-                          ? 'Đơn ' + conversation?.order_numbers?.length>0 && conversation?.order_numbers[0]
+                          ? 'Đơn ' + (conversation?.order_numbers?.length>0 && conversation?.order_numbers[0])
                           : conversation?.type === 'PAIR'
                               ?  (receiver?.last_name?receiver?.last_name:'')+ ' ' + (receiver?.first_name?receiver?.first_name: '')
                               : ''}

@@ -88,7 +88,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
     const prefix = isMe ? appStore.lang.list_chat.you + ': ' : '';
 
     try {
-      if (item.message?.type === 'CREATED_QUOTE_ORDER') {
+      if (item.message?.type === 'CREATED_QUOTE_ORDER' || item.message?.type === 'CREATED_GROUP_QUOTE_ORDER' || item.message?.type === 'QUOTE_ORDER') {
         return (
           <Text
             numberOfLines={1}

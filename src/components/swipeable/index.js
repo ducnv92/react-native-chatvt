@@ -95,7 +95,7 @@ export default class Swipeable extends PureComponent {
     onLeftActionDeactivate: noop,
     onLeftActionRelease: noop,
     onLeftActionComplete: noop,
-    leftActionActivationDistance: 125,
+    leftActionActivationDistance: 20,
     leftActionReleaseAnimationFn: null,
     leftActionReleaseAnimationConfig: null,
 
@@ -104,7 +104,7 @@ export default class Swipeable extends PureComponent {
     onRightActionDeactivate: noop,
     onRightActionRelease: noop,
     onRightActionComplete: noop,
-    rightActionActivationDistance: 125,
+    rightActionActivationDistance: 20,
     rightActionReleaseAnimationFn: null,
     rightActionReleaseAnimationConfig: null,
 
@@ -115,8 +115,8 @@ export default class Swipeable extends PureComponent {
     onLeftButtonsOpenComplete: noop,
     onLeftButtonsCloseRelease: noop,
     onLeftButtonsCloseComplete: noop,
-    leftButtonWidth: 75,
-    leftButtonsActivationDistance: 75,
+    leftButtonWidth: 20,
+    leftButtonsActivationDistance: 20,
     leftButtonsOpenReleaseAnimationFn: null,
     leftButtonsOpenReleaseAnimationConfig: null,
     leftButtonsCloseReleaseAnimationFn: null,
@@ -129,8 +129,8 @@ export default class Swipeable extends PureComponent {
     onRightButtonsOpenComplete: noop,
     onRightButtonsCloseRelease: noop,
     onRightButtonsCloseComplete: noop,
-    rightButtonWidth: 75,
-    rightButtonsActivationDistance: 75,
+    rightButtonWidth: 20,
+    rightButtonsActivationDistance: 20,
     rightButtonsOpenReleaseAnimationFn: null,
     rightButtonsOpenReleaseAnimationConfig: null,
     rightButtonsCloseReleaseAnimationFn: null,
@@ -152,7 +152,7 @@ export default class Swipeable extends PureComponent {
     // misc
     onRef: noop,
     onPanAnimatedValueRef: noop,
-    swipeStartMinDistance: 2
+    swipeStartMinDistance: 20
   };
 
   state = {

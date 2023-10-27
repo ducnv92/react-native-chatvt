@@ -362,7 +362,7 @@ export const VideoItem = function(props) {
             onLongPress={props.onLongPress}
           >
             <Image
-              style={{ width: '100%', height: '100%', resizeMode: 'cover' }}
+              style={{ width: '100%', height: '100%', resizeMode: 'cover', borderRadius: 10, overflow: 'hidden'}}
               source={thumbnail ? { uri: thumbnail } : {}}
             />
             {!props.url.includes('file://') && (
@@ -450,7 +450,7 @@ const MessageItem = function(props) {
               {item.attachmentLocal && item.attachmentLocal.length > 0 && (
                 <View
                   style={{
-                    width: item.attachmentLocal?.length > 1 ? 294 : 200,
+                    maxWidth: item.attachmentLocal?.length > 1 ? 294 : 200,
                   }}
                 >
                   <ContainChatItem {...props} style={{
@@ -517,7 +517,6 @@ const MessageItem = function(props) {
                             style={{
                               width: Dimensions.get('window').width * 0.5,
                               height: Dimensions.get('window').width * 0.5,
-                              backgroundColor: '#f2f2f2',
                               borderRadius: 10,
                               overflow: 'hidden',
                               marginTop: index>0?4:0
@@ -532,7 +531,7 @@ const MessageItem = function(props) {
               {item.attachments && (
                 <View
                   style={{
-                    width: item.attachments?.length > 1 ? 294 : 200,
+                    maxWidth: item.attachments?.length > 1 ? 294 : 200,
                   }}
                 >
                   <ContainChatItem {...props} style={{
@@ -596,12 +595,12 @@ const MessageItem = function(props) {
                             duration={attach.duration}
                             url={attach.url}
                             style={{
-                              backgroundColor: '#F2F2F2',
-                              borderRadius: 5,
+                              borderRadius: 10,
                               overflow: 'hidden',
                               width: Dimensions.get('window').width * 0.5,
                               height: Dimensions.get('window').width * 0.5,
-                              marginTop: index>0?4:0
+                              marginTop: index>0?4:0,
+                              marginBottom: item.attachments.length>0 && item.attachments.length-index>1 ?4:0
                             }}
                           />
                         );
