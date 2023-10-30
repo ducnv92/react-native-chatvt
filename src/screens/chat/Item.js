@@ -1069,7 +1069,7 @@ const OrderItem = function(props) {
         }).join(' + ');
       }
     } else {
-      productNames = order.ten_hang;
+      productNames = order.ten_hang?order.ten_hang: order.product_name;
     }
 
   } catch (e) {
