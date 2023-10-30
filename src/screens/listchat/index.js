@@ -289,6 +289,12 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
               listChatStore.dataPin = [item, ...listChatStore.dataPin]
               listChatStore.data = _.orderBy(listChatStore.data.filter(i => i._id !== item._id), c=>c?.message?.created_at, "desc")
               listChatStore.dataPin = _.orderBy(listChatStore.dataPin, c=>c?.message?.created_at, "desc")
+
+              try{
+                currentSwipe.current.recenter()
+              }catch (e) {
+                console.log(e)
+              }
             });
           }
         }}
@@ -338,11 +344,18 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   return i
                 })
                 listChatStore.data = [...listChatStore.data]
+                try{
+                  currentSwipe.current.recenter()
+                }catch (e) {
+                  console.log(e)
+                }
                 //   item.settings = item.settings.map(i=>{
                 //     i.is_pin = true;
                 //     return i
                 //   })
-                // listChatStore.data = [...listChatStore.data]
+                // listChatStore.data = [item, ...listChatStore.data]
+                // listChatStore.data = _.orderBy(listChatStore.data.filter(i => i._id !== item._id), c=>c?.message?.created_at, "desc")
+                // listChatStore.dataPin = _.orderBy(listChatStore.dataPin, c=>c?.message?.created_at, "desc")
               }
             );
 
@@ -391,7 +404,14 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           },   {
             text: 'Đồng ý',
             onPress: ()=>{
-              listChatStore.hide({ conversation_id: item._id }, () => intLoad());
+              listChatStore.hide({ conversation_id: item._id }, () => {
+                try{
+                  currentSwipe.current.recenter()
+                }catch (e) {
+                  console.log(e)
+                }
+                intLoad();
+              });
             }
           },
           ])
@@ -429,10 +449,9 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
       return (
         <Swipeable
           onRightButtonsActivate={(event, gestureState, swipeable)=> {
-            currentSwipe.current?.recenter()
+            currentSwipe.current = swipeable
           }}
           onRightButtonsOpenRelease={(event, gestureState, swipeable)=> {
-            currentSwipe.current = swipeable
           }}
           rightButtonWidth={66} rightButtons={rightButtons}>
           <TouchableOpacity
@@ -617,9 +636,6 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
         // >
         <Swipeable
           onRightButtonsActivate={(event, gestureState, swipeable)=> {
-            currentSwipe.current?.recenter()
-          }}
-          onRightButtonsOpenRelease={(event, gestureState, swipeable)=> {
             currentSwipe.current = swipeable
           }}
           rightButtonWidth={66} rightButtons={rightButtons}>
