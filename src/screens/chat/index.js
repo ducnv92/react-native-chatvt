@@ -300,10 +300,10 @@ export const ChatScreen = observer(function ChatScreen(props) {
                             }}
                           >
                             {receiver.type === 'VTMAN' ?
-                              appStore.lang.common.postman: ('Hoạt động '+timeSince(receiver.last_login))}
+                              appStore.lang.common.postman: ('Hoạt động '+timeSince(receiver.last_state_update))}
                           </Text>
                         ) :(
-                          receiver.last_login?
+                          receiver.last_state_update?
                           <Text
                             style={{
                               fontWeight: '500',
@@ -312,7 +312,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                               textAlign: 'center',
                             }}
                           >
-                            {'Hoạt động '+timeSince(receiver.last_login)}
+                            {'Hoạt động '+timeSince(receiver.last_state_update)}
                           </Text>:null
                         )
                         )}
