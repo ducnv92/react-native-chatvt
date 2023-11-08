@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#import "RNCCameraRollManager.h"
+#import "RNCCameraRollManagerChatVT.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
@@ -20,7 +20,7 @@
 #import <React/RCTLog.h>
 #import <React/RCTUtils.h>
 
-#import "RNCAssetsLibraryRequestHandler.h"
+#import "RNCAssetsLibraryRequestHandlerChatVT.h"
 
 @implementation RCTConvert (PHAssetCollectionSubtype)
 
@@ -84,7 +84,7 @@ RCT_ENUM_CONVERTER(PHAssetCollectionSubtype, (@{
 
 @end
 
-@implementation RNCCameraRollManager
+@implementation RNCCameraRollManagerChatVT
 
 RCT_EXPORT_MODULE(RNCCameraRoll)
 

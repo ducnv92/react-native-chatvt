@@ -26,7 +26,7 @@ import { MText as Text } from '../../components'
 export const AttachsScreen = observer(function AttachsScreen(props) {
   const conversation = props.data;
   const receiver = props.receiver;
-  // const insets = useSafeAreaInsets();
+  const insets = useSafeAreaInsets();
   const [images, setImages] = useState([])
   const [imageVisible, setImageVisible] = useState(false);
 
@@ -159,10 +159,10 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
       <View style={{ alignItems: 'center', backgroundColor: 'white', }}>
         <Text style={{ fontWeight: '600', fontSize: 20, marginTop: 72, color: colors.primaryText, paddingHorizontal: 16, textAlign: 'center' }}>{(receiver?.last_name?receiver?.last_name:''+" " + receiver?.first_name?receiver?.first_name: '')}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
-          {/*{*/}
-          {/*  receiver?.state?.includes('ONLINE') &&*/}
-          {/* <View style={{ height: 8, width: 8, borderRadius: 4, marginRight: 8, backgroundColor: '#30F03B' }} />*/}
-          {/*} */}
+          {
+            receiver?.state?.includes('ONLINE') &&
+           <View style={{ height: 8, width: 8, borderRadius: 4, marginRight: 8, backgroundColor: '#30F03B' }} />
+          }
 
           <Text style={{ fontWeight: '500', fontSize: 13, color: colors.neutralText, textAlign: 'center' }}>{
             conversation?.type === 'PAIR' && receiver?.type === 'VTMAN' && appStore.lang.common.postman
@@ -194,15 +194,15 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center', height: 74, backgroundColor: 'white', paddingTop: 24 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', height:  74, backgroundColor: 'white', paddingTop: 24 }}>
         <TouchableOpacity
           onPress={() => {
             attachsStore.currentTab = 0
             attachsStore.page = 0;
             loadData()
           }}
-          style={{ flex: 1, height: 50, justifyContent: 'center', borderBottomWidth: 2, borderColor: attachsStore.currentTab === 0 ? colors.primary : '#DCE6F0' }}>
-          <Text style={{ fontWeight: '600', fontSize: 17, color: attachsStore.currentTab === 0 ? colors.primary : colors.primaryText, textAlign: 'center' }}>Ảnh, video</Text>
+          style={{ flex: 1, height: 50,  justifyContent: 'center', borderBottomWidth: 2, borderColor: attachsStore?.currentTab === 0 ? colors.primary : '#DCE6F0' }}>
+          <Text style={{ fontWeight: '600', fontSize: 17, color: attachsStore?.currentTab === 0 ? colors.primary : colors.primaryText, textAlign: 'center' }}>Ảnh, video</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
@@ -210,13 +210,13 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
             attachsStore.page = 0;
             loadData()
           }}
-          style={{ flex: 1, height: 50, justifyContent: 'center', borderBottomWidth: 2, borderColor: attachsStore.currentTab === 1 ? colors.primary : '#DCE6F0' }}>
-          <Text style={{ borderLeftWidth: 1, borderColor: '#DCE6F0', fontWeight: '600', fontSize: 17, color: attachsStore.currentTab === 1 ? colors.primary : colors.primaryText, textAlign: 'center' }}>Tài liệu</Text>
+          style={{ flex: 1, height: 50, justifyContent: 'center', borderBottomWidth: 2, borderColor: attachsStore?.currentTab === 1 ? colors.primary : '#DCE6F0' }}>
+          <Text style={{ borderLeftWidth: 1,  fontWeight: '600', fontSize: 17, color: attachsStore?.currentTab === 1 ? colors.primary : colors.primaryText, textAlign: 'center' }}>Tài liệu</Text>
         </TouchableOpacity>
       </View>
 
       <FlatList
-        key={(attachsStore.currentTab === 0 ? '0' : '1')}
+        key={(attachsStore?.currentTab === 0 ? '0' : '1')}
         refreshing={attachsStore.isLoading}
         onRefresh={() => {
           attachsStore.page = 0;
@@ -261,7 +261,7 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
         }}
       />
 
-      <View style={{ height: 94, width: 94, marginTop: 20, resizeMode: 'contain', position: 'absolute', alignSelf: 'center' }}>
+      <View style={{ height: 94, width: 94, marginTop: insets.top+20, resizeMode: 'contain', position: 'absolute', alignSelf: 'center' }}>
         {
           receiver?.type === 'VTMAN' ? (
             <Image style={{ height: 94, width: 94, resizeMode: 'contain' }}
@@ -271,10 +271,10 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
               source={require('../../assets/avatar_default_customer.png')} />
           )
         }
-        {
-          receiver.state?.includes('ONLINE') &&
-          <Image style={{ height: 12, width: 12, resizeMode: 'center', position: 'absolute', top: 70, left: 60 }} source={require('../../assets/ic_online.png')} />
-        }
+        {/*{*/}
+        {/*  receiver.state?.includes('ONLINE') &&*/}
+        {/*  <Image style={{ height: 12, width: 12, resizeMode: 'center', position: 'absolute', top: 70, left: 60 }} source={require('../../assets/ic_online.png')} />*/}
+        {/*}*/}
 
       </View>
 

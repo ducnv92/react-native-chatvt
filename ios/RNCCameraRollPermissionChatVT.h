@@ -13,8 +13,8 @@
 #endif
 #import <React/RCTEventEmitter.h>
 #import <Photos/Photos.h>
-#import "RNCPermissionHelper.h"
+#import "RNCPermissionHelperChatVT.h"
 
 
-@interface RNCCameraRollPermission : RCTEventEmitter <RCTBridgeModule, PHPhotoLibraryChangeObserver>
+@interface RNCCameraRollPermissionChatVT : RCTEventEmitter <RCTBridgeModule, PHPhotoLibraryChangeObserver>
 @end

@@ -1,4 +1,4 @@
-#import "RCTConvert+RNDocumentPicker.h"
+#import "RCTConvert+RNDocumentPickerChatVT.h"
 
 @implementation RCTConvert (RNDocumentPicker)
 // TODO how to de-duplicate from https://github.com/facebook/react-native/blob/v0.66.0/React/Views/RCTModalHostViewManager.m?

@@ -6,16 +6,16 @@
 //  Copyright © 2019 Matthew Iannucci. All rights reserved.
 //
 
-#import "ContextMenuView.h"
+#import "ContextMenuViewChatVT.h"
 #import <React/UIView+React.h>
 
-@interface ContextMenuView ()
+@interface ContextMenuViewChatVT ()
 
-- (UIMenuElement*) createMenuElementForAction:(ContextMenuAction *)action atIndexPath:(NSUInteger) idx API_AVAILABLE(ios(13.0));
+- (UIMenuElement*) createMenuElementForAction:(ContextMenuActionChatVT *)action atIndexPath:(NSUInteger) idx API_AVAILABLE(ios(13.0));
 
 @end
 
-@implementation ContextMenuView {
+@implementation ContextMenuViewChatVT {
   BOOL _cancelled;
   UIView *_customView;
 }
@@ -80,7 +80,7 @@
           actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
             NSMutableArray* actions = [[NSMutableArray alloc] init];
 
-            [self.actions enumerateObjectsUsingBlock:^(ContextMenuAction* thisAction, NSUInteger idx, BOOL *stop) {
+            [self.actions enumerateObjectsUsingBlock:^(ContextMenuActionChatVT* thisAction, NSUInteger idx, BOOL *stop) {
               UIMenuElement *menuElement = [self createMenuElementForAction:thisAction atIndexPath:[NSArray arrayWithObject:@(idx)]];
               [actions addObject:menuElement];
             }];
@@ -112,11 +112,11 @@
                                             target:previewTarget];
 }
 
-- (UIMenuElement*) createMenuElementForAction:(ContextMenuAction *)action atIndexPath:(NSArray<NSNumber *> *)indexPath {
+- (UIMenuElement*) createMenuElementForAction:(ContextMenuActionChatVT *)action atIndexPath:(NSArray<NSNumber *> *)indexPath {
     UIMenuElement* menuElement = nil;
     if (action.actions != nil && action.actions.count > 0) {
       NSMutableArray<UIMenuElement*> *children = [[NSMutableArray alloc] init];
-      [action.actions enumerateObjectsUsingBlock:^(ContextMenuAction * _Nonnull childAction, NSUInteger childIdx, BOOL * _Nonnull stop) {
+      [action.actions enumerateObjectsUsingBlock:^(ContextMenuActionChatVT * _Nonnull childAction, NSUInteger childIdx, BOOL * _Nonnull stop) {
         id nextIndexPath = [indexPath arrayByAddingObject:@(childIdx)];
         UIMenuElement *childElement = [self createMenuElementForAction:childAction atIndexPath:nextIndexPath];
         if (childElement != nil) {

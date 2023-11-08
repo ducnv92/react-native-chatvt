@@ -6,8 +6,8 @@
 //  Copyright © 2019 Matthew Iannucci. All rights reserved.
 //
 
-#import "ContextMenuAction.h"
+#import "ContextMenuActionChatVT.h"
 
-@implementation ContextMenuAction
+@implementation ContextMenuActionChatVT
 
 @end

@@ -19,6 +19,6 @@
 @end
 
 
-@interface RNCCameraRollManager : NSObject <RCTBridgeModule>
+@interface RNCCameraRollManagerChatVT : NSObject <RCTBridgeModule>
 
 @end

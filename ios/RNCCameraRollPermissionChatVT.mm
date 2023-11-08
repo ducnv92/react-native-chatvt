@@ -5,12 +5,12 @@
 //  Created by sakhi idris on 16/08/2022.
 //  Copyright © 2022 Facebook. All rights reserved.
 //
-#import "RNCCameraRollPermission.h"
-#import "RNCPermissionHelper.h"
+#import "RNCCameraRollPermissionChatVT.h"
+#import "RNCPermissionHelperChatVT.h"
 #import <React/RCTUtils.h>
 #import <React/RCTConvert.h>
 
-@implementation RNCCameraRollPermission
+@implementation RNCCameraRollPermissionChatVT
 
 {
   bool hasListeners;

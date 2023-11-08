@@ -23,6 +23,8 @@ import { BottomSheetModalProvider } from '../../components/bottomSheet/bottom-sh
 import { toJS } from 'mobx';
 import stickerStore from "../chat/StickerStore";
 import _ from 'lodash';
+import KeyboardSpacer from '../../components/keyboardspace'
+
 
 export const ListChatScreen = observer(function ListChatScreen(props) {
   const [showSearch, setShowSearch] = useState(false);
@@ -844,10 +846,10 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
 
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: colors.primary}}
-      behavior={Platform.OS === 'ios' ? 'padding' : ''}
+    <View
+      style={{ flex: 1}}
     >
+        <View style={{ position: 'absolute', width: '100%', height: 120, backgroundColor: colors.primary}}/>
     <SafeAreaView style={{ flex: 1, }}>
 
         <View style={{ height: scale(64), backgroundColor: colors.primary }}>
@@ -1089,7 +1091,8 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
         )}
       <BottomSheetChatOptions ref={bottomSheetModalRef} />
     </SafeAreaView>
-    </KeyboardAvoidingView>
+        <KeyboardSpacer/>
+    </View>
 
   );
 });

@@ -1,5 +1,5 @@
 #import <React/RCTUtils.h>
-#import "RNCPermissionHelper.h"
+#import "RNCPermissionHelperChatVT.h"
 
 @import Photos;
 @import PhotosUI;

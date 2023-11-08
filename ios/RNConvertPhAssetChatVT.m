@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "RNConvertPhAsset.h"
+#import "RNConvertPhAssetChatVT.h"
 #import <React/RCTConvert.h>
 #import <Photos/Photos.h>
 #import <MobileCoreServices/MobileCoreServices.h>
@@ -68,7 +68,7 @@
 
 @end
 
-@implementation RNConvertPhAsset
+@implementation RNConvertPhAssetChatVT
 @synthesize bridge = _bridge;
 
 RCT_EXPORT_MODULE()

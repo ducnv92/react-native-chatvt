@@ -7,10 +7,10 @@
 
 
 #import <Foundation/Foundation.h>
-#import "RNCPromiseWrapper.h"
+#import "RNCPromiseWrapperChatVT.h"
 
 
-@interface RNCPromiseWrapper ()
+@interface RNCPromiseWrapperChatVT ()
 
 @property (nonatomic, strong) RCTPromiseResolveBlock promiseResolve;
 @property (nonatomic, strong) RCTPromiseRejectBlock promiseReject;
@@ -18,7 +18,7 @@
 
 @end
 
-@implementation RNCPromiseWrapper
+@implementation RNCPromiseWrapperChatVT
 
 -(void)setPromiseWithInProgressCheck: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject fromCallSite:(NSString *) callsite {
   if (self.promiseReject) {

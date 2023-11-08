@@ -44,6 +44,7 @@ import EmojiPicker from 'react-native-emoji-picker-staltz';
 import inputStore from './InputStore';
 import InputStore from './InputStore';
 import EmojiKeyboard from "../../components/emoji";
+import KeyboardSpacer from '../../components/keyboardspace'
 
 export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
@@ -191,9 +192,10 @@ export const ChatScreen = observer(function ChatScreen(props) {
   };
 
   return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: colors.primary }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}>
+          <View style={{ position: 'absolute', width: '100%', height: 120, backgroundColor: colors.primary}}/>
         <BottomSheetModalProvider style={{ flex: 1 }}>
-          <KeyboardAvoidingView
+          <View
               style={{ flex: 1 }}
               behavior={Platform.OS === 'ios' ? 'padding' : ''}
           >
@@ -286,7 +288,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                               numberOfLines={1}
                               style={{ fontSize: 13, color: "white" }}>{
                               receiver.type === 'VTMAN' ?
-                                  '' : 'Đang hoạt động'}</Text>
+                                  'Bưu tá' : 'Đang hoạt động'}</Text>
                           </View>
                       )
                       :(
@@ -432,7 +434,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
               />
             </View>
             <BottomChat {...props} />
-          </KeyboardAvoidingView>
+          </View>
 
           <AttachScreen {...props} />
           {chatStore.images.length > 0 && chatStore.showAttachModal && (
@@ -731,6 +733,7 @@ const BottomChat = observer(function BottomChat(props) {
             </View>
           )
         }
+        <KeyboardSpacer/>
       </>
   )
 })

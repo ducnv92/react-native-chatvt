@@ -11,6 +11,6 @@
 
 @class PHPhotoLibrary;
 
-@interface RNCAssetsLibraryRequestHandler : NSObject <RCTURLRequestHandler>//, RCTTurboModule>
+@interface RNCAssetsLibraryRequestHandlerChatVT : NSObject <RCTURLRequestHandler>//, RCTTurboModule>
 
 @end

@@ -73,11 +73,11 @@ class ImageItem extends Component {
 
 
     const marker =  <View
-      style={[styles.marker, { width: 20, height: 20, backgroundColor: selected?colors.primary: 'transparent'  }]}
+      style={[styles.marker, { width: 20, height: 20, backgroundColor: selected?colors.primary: 'transparent', justifyContent: 'center', alignItems: 'center'  }]}
     >
       {
         selected &&
-        <Text style={{fontWeight: '600', fontSize: 15, color: 'white', marginTop: -4, textAlign: 'center'}}>{indexSelected+1}</Text>
+        <Text style={{position: 'absolute',fontWeight: '600', fontSize: 15, color: 'white', textAlign: 'center'}}>{indexSelected+1}</Text>
       }
     </View>;
 

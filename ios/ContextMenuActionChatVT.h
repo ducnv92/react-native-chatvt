@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ContextMenuAction : NSObject
+@interface ContextMenuActionChatVT : NSObject
 
 @property (nonnull, nonatomic, copy) NSString* title;
 @property (nonnull, nonatomic, copy) NSString* subtitle;
@@ -16,6 +16,6 @@
 @property (nonatomic, assign) BOOL destructive;
 @property (nonatomic, assign) BOOL disabled;
 @property (nonatomic, assign) BOOL inlineChildren;
-@property (nullable, nonatomic, copy) NSArray<ContextMenuAction*>* actions;
+@property (nullable, nonatomic, copy) NSArray<ContextMenuActionChatVT*>* actions;
 
 @end

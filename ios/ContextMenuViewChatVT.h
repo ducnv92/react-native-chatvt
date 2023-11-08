@@ -8,14 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import <React/RCTComponent.h>
-#import "ContextMenuAction.h"
+#import "ContextMenuActionChatVT.h"
 
-@interface ContextMenuView : UIControl<UIContextMenuInteractionDelegate>
+@interface ContextMenuViewChatVT : UIControl<UIContextMenuInteractionDelegate>
 
 @property (nonnull, nonatomic, copy) NSString* title;
 @property (nullable, nonatomic, copy) RCTBubblingEventBlock onPress;
 @property (nullable, nonatomic, copy) RCTBubblingEventBlock onCancel;
-@property (nullable, nonatomic, copy) NSArray<ContextMenuAction*>* actions;
+@property (nullable, nonatomic, copy) NSArray<ContextMenuActionChatVT*>* actions;
 @property (nullable, nonatomic, copy) UIColor* previewBackgroundColor;
 @property (nonatomic, assign) BOOL disabled;
 

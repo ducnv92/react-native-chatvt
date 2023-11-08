@@ -42,7 +42,7 @@
  Copyright (C) 2009 Apple Inc. All Rights Reserved.
  */
 
-#include "ImageHelpers.h"
+#include "ImageHelpersChatVT.h"
 
 const CGBitmapInfo kDefaultCGBitmapInfo	= (kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host);
 const CGBitmapInfo kDefaultCGBitmapInfoNoAlpha	= (kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Host);

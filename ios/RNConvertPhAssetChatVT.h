@@ -5,7 +5,7 @@
 #import <React/RCTBridgeModule.h>
 #endif
 
-@interface RNConvertPhAsset : NSObject <RCTBridgeModule>
+@interface RNConvertPhAssetChatVT : NSObject <RCTBridgeModule>
 
 @end
   
