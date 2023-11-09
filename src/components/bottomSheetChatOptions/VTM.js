@@ -158,7 +158,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
                                 }}
                             >
                                 <Image
-                                    style={{ height: 48, width: 48, resizeMode: 'center' }}
+                                    style={{ height: 48, width: 48, resizeMode: 'contain' }}
                                     source={require('../../assets/ic_sms.png')}
                                 />
                             </View>
@@ -198,7 +198,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
                                 }}
                             >
                                 <Image
-                                    style={{ height: 48, width: 48, resizeMode: 'center' }}
+                                    style={{ height: 48, width: 48, resizeMode: 'contain' }}
                                     source={typeUser==='SENDER'?require('../../assets/avatar_postman.png'):require('../../assets/avatar_customer.png')}
                                 />
                             </View>

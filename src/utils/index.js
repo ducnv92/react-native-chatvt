@@ -118,11 +118,12 @@ const baseHeight_vtp = 667;
 const { height, width } = Dimensions.get('window');
 
 export const scale = size => {
-  if(appStore.appId==='VTMan'){
-    return width / baseWidth_vtp * size
-  }else{
-    return size
-  }
+  // if(appStore.appId==='VTMan'){
+  //   return width / baseWidth_vtp * size
+  // }else{
+  //   return size
+  // }
+  return size
 };
 
 export const formatTimeLastMessage = timeString => {

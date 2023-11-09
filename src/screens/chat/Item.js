@@ -26,7 +26,7 @@ import { createThumbnail } from '../../components/createThumbnail';
 import ImageViewing from '../../components/imageView/ImageViewing';
 import FastImage from 'react-native-fast-image';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, PROVIDER_DEFAULT, Marker } from 'react-native-maps';
 import { toJS } from 'mobx';
 import { createMapLink, createOpenLink } from 'react-native-open-maps';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
@@ -77,7 +77,7 @@ const MapItem = function(props) {
               zoomEnabled={false}
               zoomTapEnabled={false}
               scrollEnabled={false}
-              provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+              provider={(Platform.OS === 'android' || appStore.appId==='VTPost') ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
               style={{
                 height: 178,
                 width: 290,
@@ -1312,21 +1312,23 @@ const OrderItem = function(props) {
       <TouchableOpacity
         onPress={() => {
           try {
-            Navigation.push(appStore.componentId, {
-              component: {
-                id: 'OrderInfomationtScreenID',
-                name: 'OrderInfomationtScreen',
-                passProps: {
-                  orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
-                  isSender: item.order_info?.type === 1 ? 4 : 1,
-                },
-                options: {
-                  bottomTabs: {
-                    visible: false,
+            if (appStore.appId === 'VTPost') {
+              Navigation.push(appStore.componentId, {
+                component: {
+                  id: 'OrderInfomationtScreenID',
+                  name: 'OrderInfomationtScreen',
+                  passProps: {
+                    orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
+                    isSender: item.order_info?.type === 1 ? 4 : 1,
+                  },
+                  options: {
+                    bottomTabs: {
+                      visible: false,
+                    },
                   },
                 },
-              },
-            });
+              });
+            }
           } catch (e) {
             alert(e);
           }

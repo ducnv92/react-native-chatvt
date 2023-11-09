@@ -20,7 +20,7 @@ import { MText as Text } from '../../components'
 import { check, PERMISSIONS, RESULTS, request } from 'react-native-permissions';
 import colors from '../../Styles';
 import appStore from '../AppStore';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, PROVIDER_DEFAULT, Marker } from 'react-native-maps';
 import DocumentPicker, { types } from "../../components/documentPicker";
 import uuid from "react-native-uuid";
 import Geolocation from 'react-native-geolocation-service';
@@ -450,7 +450,7 @@ const LocationMessage = observer(function LocationMessage(props) {
             ref={mapRef}
             zoomTapEnabled={false}
             scrollEnabled={false}
-            provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+            provider={(Platform.OS === 'android' || appStore.appId==='VTPost') ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
             style={{
               height: '100%',
               width: '100%',

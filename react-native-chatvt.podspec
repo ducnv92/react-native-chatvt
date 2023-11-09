@@ -18,5 +18,5 @@ Pod::Spec.new do |s|
   s.frameworks = 'AssetsLibrary'
 
 
-  s.dependency "React-Core"
+  s.dependency "React"
 end

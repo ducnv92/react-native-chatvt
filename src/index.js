@@ -310,7 +310,7 @@ class ChatVT {
         },
         async (conversation) => {
           try{
-            await Navigation.popTo('ListChatScreen')
+            Navigation.popTo('ListChatScreen')
 
           }catch (e) {
 
