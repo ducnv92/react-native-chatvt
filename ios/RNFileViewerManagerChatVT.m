@@ -6,7 +6,7 @@
 #define OPEN_EVENT @"RNFileViewerDidOpen"
 #define DISMISS_EVENT @"RNFileViewerDidDismiss"
 
-@interface File: NSObject<QLPreviewItem>
+@interface FileChatVT: NSObject<QLPreviewItem>
 
 @property(readonly, nullable, nonatomic) NSURL *previewItemURL;
 @property(readonly, nullable, nonatomic) NSString *previewItemTitle;
@@ -18,7 +18,7 @@
 @interface RNFileViewerChatVT ()<QLPreviewControllerDelegate>
 @end
 
-@implementation File
+@implementation FileChatVT
 
 - (id)initWithPath:(NSString *)file title:(NSString *)title {
     if(self = [super init]) {
@@ -30,16 +30,16 @@
 
 @end
 
-@interface CustomQLViewController: QLPreviewController<QLPreviewControllerDataSource>
+@interface CustomQLViewControllerChatVT: QLPreviewController<QLPreviewControllerDataSource>
 
-@property(nonatomic, strong) File *file;
+@property(nonatomic, strong) FileChatVT *file;
 @property(nonatomic, strong) NSNumber *invocation;
 
 @end
 
-@implementation CustomQLViewController
+@implementation CustomQLViewControllerChatVT
 
-- (instancetype)initWithFile:(File *)file identifier:(NSNumber *)invocation {
+- (instancetype)initWithFile:(FileChatVT *)file identifier:(NSNumber *)invocation {
     if(self = [super init]) {
         _file = file;
         _invocation = invocation;
@@ -98,7 +98,7 @@
     return viewController;
 }
 
-- (void)previewControllerDidDismiss:(CustomQLViewController *)controller {
+- (void)previewControllerDidDismiss:(CustomQLViewControllerChatVT *)controller {
     [self sendEventWithName:DISMISS_EVENT body: @{@"id": controller.invocation}];
 }
 
@@ -112,9 +112,9 @@ RCT_EXPORT_METHOD(open:(NSString *)path invocation:(nonnull NSNumber *)invocatio
     options:(NSDictionary *)options)
 {
     NSString *displayName = [RCTConvert NSString:options[@"displayName"]];
-    File *file = [[File alloc] initWithPath:path title:displayName];
+    FileChatVT *file = [[FileChatVT alloc] initWithPath:path title:displayName];
 
-    QLPreviewController *controller = [[CustomQLViewController alloc] initWithFile:file identifier:invocationId];
+    QLPreviewController *controller = [[CustomQLViewControllerChatVT alloc] initWithFile:file identifier:invocationId];
     controller.delegate = self;
 
     typeof(self) __weak weakSelf = self;

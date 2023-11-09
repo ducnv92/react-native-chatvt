@@ -20,7 +20,7 @@
 
 @implementation RNCAssetsLibraryRequestHandlerChatVT
 
-NSString *const PHUploadScheme = @"ph-upload";
+NSString *const PHUploadSchemeChatVT = @"ph-upload";
 
 RCT_EXPORT_MODULE()
 
@@ -34,7 +34,7 @@ RCT_EXPORT_MODULE()
 
   return [request.URL.scheme caseInsensitiveCompare:@"assets-library"] == NSOrderedSame
     || [request.URL.scheme caseInsensitiveCompare:@"ph"] == NSOrderedSame
-    || [request.URL.scheme caseInsensitiveCompare:PHUploadScheme] == NSOrderedSame;
+    || [request.URL.scheme caseInsensitiveCompare:PHUploadSchemeChatVT] == NSOrderedSame;
 }
 
 - (id)sendRequest:(NSURLRequest *)request
@@ -46,9 +46,9 @@ RCT_EXPORT_MODULE()
   };
 
   NSURL *requestURL = request.URL;
-  BOOL isPHUpload = [requestURL.scheme caseInsensitiveCompare:PHUploadScheme] == NSOrderedSame;
+  BOOL isPHUpload = [requestURL.scheme caseInsensitiveCompare:PHUploadSchemeChatVT] == NSOrderedSame;
   if (isPHUpload) {
-    requestURL = [NSURL URLWithString:[@"ph" stringByAppendingString:[requestURL.absoluteString substringFromIndex:PHUploadScheme.length]]];
+    requestURL = [NSURL URLWithString:[@"ph" stringByAppendingString:[requestURL.absoluteString substringFromIndex:PHUploadSchemeChatVT.length]]];
   }
   
   if (!requestURL) {

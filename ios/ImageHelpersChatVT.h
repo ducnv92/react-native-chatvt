@@ -44,13 +44,13 @@
 
 #include <UIKit/UIKit.h>
 
-extern const CGBitmapInfo kDefaultCGBitmapInfo;
-extern const CGBitmapInfo kDefaultCGBitmapInfoNoAlpha;
+extern const CGBitmapInfo kDefaultCGBitmapInfoChatVT;
+extern const CGBitmapInfo kDefaultCGBitmapInfoNoAlphaChatVT;
 
-float			GetScaleForProportionalResize( CGSize theSize, CGSize intoSize, bool onlyScaleDown, bool maximize );
-CGContextRef	CreateCGBitmapContextForWidthAndHeight( unsigned int width, unsigned int height, CGColorSpaceRef optionalColorSpace, CGBitmapInfo optionalInfo );
+float			GetScaleForProportionalResizeChatVT( CGSize theSize, CGSize intoSize, bool onlyScaleDown, bool maximize );
+CGContextRef	CreateCGBitmapContextForWidthAndHeightChatVT( unsigned int width, unsigned int height, CGColorSpaceRef optionalColorSpace, CGBitmapInfo optionalInfo );
 
-CGImageRef		CreateCGImageFromUIImageScaled( UIImage* inImage, float scaleFactor );
+CGImageRef		CreateCGImageFromUIImageScaledChatVT( UIImage* inImage, float scaleFactor );
 
 @interface UIImage (scale)
 -(UIImage*)scaleToSize:(CGSize)toSize;

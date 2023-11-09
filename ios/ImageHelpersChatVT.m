@@ -44,17 +44,17 @@
 
 #include "ImageHelpersChatVT.h"
 
-const CGBitmapInfo kDefaultCGBitmapInfo	= (kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host);
-const CGBitmapInfo kDefaultCGBitmapInfoNoAlpha	= (kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Host);
+const CGBitmapInfo kDefaultCGBitmapInfoChatVT = (kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host);
+const CGBitmapInfo kDefaultCGBitmapInfoNoAlphaChatVT 	= (kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Host);
 
-CGColorSpaceRef	GetDeviceRGBColorSpace() {
+CGColorSpaceRef	GetDeviceRGBColorSpaceChatVT() {
     static CGColorSpaceRef	deviceRGBSpace	= NULL;
     if( deviceRGBSpace == NULL )
         deviceRGBSpace	= CGColorSpaceCreateDeviceRGB();
     return deviceRGBSpace;
 }
 
-float GetScaleForProportionalResize( CGSize theSize, CGSize intoSize, bool onlyScaleDown, bool maximize )
+float GetScaleForProportionalResizeChatVT( CGSize theSize, CGSize intoSize, bool onlyScaleDown, bool maximize )
 {
     float	sx = theSize.width;
     float	sy = theSize.height;
@@ -81,15 +81,15 @@ float GetScaleForProportionalResize( CGSize theSize, CGSize intoSize, bool onlyS
     return scale;
 }
 
-CGContextRef CreateCGBitmapContextForWidthAndHeight( unsigned int width, unsigned int height,
+CGContextRef CreateCGBitmapContextForWidthAndHeightChatVT( unsigned int width, unsigned int height,
                                                     CGColorSpaceRef optionalColorSpace, CGBitmapInfo optionalInfo )
 {
-    CGColorSpaceRef	colorSpace	= (optionalColorSpace == NULL) ? GetDeviceRGBColorSpace() : optionalColorSpace;
-    CGBitmapInfo	alphaInfo	= ( (int32_t)optionalInfo < 0 ) ? kDefaultCGBitmapInfo : optionalInfo;
+    CGColorSpaceRef	colorSpace	= (optionalColorSpace == NULL) ? GetDeviceRGBColorSpaceChatVT() : optionalColorSpace;
+    CGBitmapInfo	alphaInfo	= ( (int32_t)optionalInfo < 0 ) ? kDefaultCGBitmapInfoChatVT : optionalInfo;
     return CGBitmapContextCreate( NULL, width, height, 8, 0, colorSpace, alphaInfo );
 }
 
-CGImageRef CreateCGImageFromUIImageScaled( UIImage* image, float scaleFactor )
+CGImageRef CreateCGImageFromUIImageScaledChatVT( UIImage* image, float scaleFactor )
 {
     CGImageRef			newImage		= NULL;
     CGContextRef		bmContext		= NULL;
@@ -105,11 +105,11 @@ CGImageRef CreateCGImageFromUIImageScaled( UIImage* image, float scaleFactor )
     // These Orientations are rotated 0 or 180 degrees, so they retain the width/height of the image
     if( (orientation == UIImageOrientationUp) || (orientation == UIImageOrientationDown) || (orientation == UIImageOrientationUpMirrored) || (orientation == UIImageOrientationDownMirrored)  )
     {
-        bmContext	= CreateCGBitmapContextForWidthAndHeight( width, height, NULL, kDefaultCGBitmapInfo );
+        bmContext	= CreateCGBitmapContextForWidthAndHeightChatVT( width, height, NULL, kDefaultCGBitmapInfoChatVT );
     }
     else	// The other Orientations are rotated ±90 degrees, so they swap width & height.
     {
-        bmContext	= CreateCGBitmapContextForWidthAndHeight( height, width, NULL, kDefaultCGBitmapInfo );
+        bmContext	= CreateCGBitmapContextForWidthAndHeightChatVT( height, width, NULL, kDefaultCGBitmapInfoChatVT );
     }
 
     //CGContextSetInterpolationQuality( bmContext, kCGInterpolationLow );
@@ -165,8 +165,8 @@ CGImageRef CreateCGImageFromUIImageScaled( UIImage* image, float scaleFactor )
 -(UIImage*) scaleToSize:(CGSize)toSize
 {
     UIImage	*scaledImg	= nil;
-    float	scale		= GetScaleForProportionalResize( self.size, toSize, false, false );
-    CGImageRef cgImage	= CreateCGImageFromUIImageScaled( self, scale );
+    float	scale		= GetScaleForProportionalResizeChatVT( self.size, toSize, false, false );
+    CGImageRef cgImage	= CreateCGImageFromUIImageScaledChatVT( self, scale );
 
     if( cgImage )
     {

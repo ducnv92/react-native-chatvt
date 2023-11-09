@@ -13,7 +13,7 @@ static NSString * _Nonnull const ASYNC_OP_IN_PROGRESS = @"ASYNC_OP_IN_PROGRESS";
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RNCPromiseWrapper : NSObject
+@interface RNCPromiseWrapperChatVT : NSObject
 
 -(void)setPromiseWithInProgressCheck:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject fromCallSite: (NSString*) callsite;
 -(void)resolve: (id) result;
