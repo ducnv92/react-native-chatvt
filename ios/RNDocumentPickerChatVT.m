@@ -5,8 +5,8 @@
 #import <React/RCTConvert.h>
 #import <React/RCTBridge.h>
 #import <React/RCTUtils.h>
-#import "RNCPromiseWrapper.h"
-#import "RCTConvert+RNDocumentPicker.h"
+#import "RNCPromiseWrapperChatVT.h"
+#import "RCTConvert+RNDocumentPickerChatVT.h"
 
 static NSString *const E_DOCUMENT_PICKER_CANCELED = @"DOCUMENT_PICKER_CANCELED";
 static NSString *const E_INVALID_DATA_RETURNED = @"INVALID_DATA_RETURNED";
@@ -28,7 +28,7 @@ static NSString *const FIELD_SIZE = @"size";
 @implementation RNDocumentPickerChatVT {
     UIDocumentPickerMode mode;
     NSString *copyDestination;
-    RNCPromiseWrapper* promiseWrapper;
+    RNCPromiseWrapperChatVT* promiseWrapper;
     NSMutableArray *urlsInOpenMode;
 }
 
@@ -37,7 +37,7 @@ static NSString *const FIELD_SIZE = @"size";
 - (instancetype)init
 {
     if ((self = [super init])) {
-        promiseWrapper = [RNCPromiseWrapper new];
+        promiseWrapper = [RNCPromiseWrapperChatVT new];
         urlsInOpenMode = [NSMutableArray new];
     }
     return self;

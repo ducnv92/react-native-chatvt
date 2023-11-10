@@ -20,7 +20,7 @@
 #import <React/RCTLog.h>
 #import <React/RCTUtils.h>
 
-#import "RNCAssetsLibraryRequestHandler.h"
+#import "RNCAssetsLibraryRequestHandlerChatVT.h"
 
 #if __has_include(<SDWebImageWebPCoder/SDWebImageWebPCoder.h>)
   #import <SDWebImageWebPCoder/SDWebImageWebPCoder.h>
