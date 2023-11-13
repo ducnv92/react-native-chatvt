@@ -13,7 +13,8 @@ import {
   SafeAreaView,
   TouchableOpacity,
   View,
-  TextInput as  TextInputNative
+  TextInput as  TextInputNative,
+  InputAccessoryView
 } from 'react-native';
 import { MTextInput as TextInput } from '../../components'
 import { MText as Text } from '../../components'
@@ -702,33 +703,39 @@ export const Input = observer(function Input() {
   useEffect(() => {
     inputStore.inputRef = () => {
       try {
-        inputRef.current?.focus();
+        // inputRef.current?.focus();
       } catch (e) {
         Log(e);
       }
     };
   }, [])
   return (
-    <TextInput
-      editable={chatStore.canSend}
-      ref={inputRef}
-      placeholder={appStore.lang.chat.input_message}
-      placeholderTextColor={'#B5B4B8'}
-      multiline={true}
-      onChangeText={(text) => {
-        inputStore.input = text;
-      }}
-      value={inputStore.input}
-      style={{
-        fontSize: 15,
-        color: colors.primaryText,
-        flex: 1,
-        minHeight: 56,
-        paddingTop: 18,
-        padding: 12,
-        fontFamily: 'SVN-GilroyMedium',
-        maxHeight: 250
-      }}
-    />
+    <>
+      <TextInput
+        editable={chatStore.canSend}
+        ref={inputRef}
+        placeholder={appStore.lang.chat.input_message}
+        inputAccessoryViewID="hideDoneButton"
+        placeholderTextColor={'#B5B4B8'}
+        multiline={true}
+        onChangeText={(text) => {
+          inputStore.input = text;
+        }}
+        value={inputStore.input}
+        style={{
+          fontSize: 15,
+          color: colors.primaryText,
+          flex: 1,
+          minHeight: 56,
+          paddingTop: 18,
+          padding: 12,
+          fontFamily: 'SVN-GilroyMedium',
+          maxHeight: 250
+        }}
+      />
+      <InputAccessoryView nativeID='hideDoneButton'>
+        <View/>
+      </InputAccessoryView>
+    </>
   )
 })

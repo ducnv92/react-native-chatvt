@@ -540,7 +540,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   - {orderStatus(item.orders?.length>0 && item.orders[0]?.order_status)}{' '}
                 </Text>
                 <Text style={{ textAlign: 'right', color: colors.neutralText, fontSize: 13, fontWeight: setting?.unread_count > 0?'600':'500' }}>
-                  {formatTimeLastMessage(item.message?.created_at)}
+                  {formatTimeLastMessage(item.message?.created_at, true)}
                 </Text>
               </View>
               <View
@@ -736,7 +736,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   )}{' '}
                 </Text>
                 <Text style={{ textAlign: 'right', color: colors.neutralText, fontWeight: setting?.unread_count > 0?'600':'500', fontSize: 13 }}>
-                  {formatTimeLastMessage(item.message?.created_at)}
+                  {formatTimeLastMessage(item.message?.created_at, true)}
                 </Text>
               </View>
               <View
