@@ -10,7 +10,7 @@ import _ from "lodash";
 
 
 class Socket{
-  URL = 'https://receiverchat.viettelpost.vn';
+  URL = 'https://stag-receiverchat.viettelpost.vn';
 
   static instance
   socket
@@ -43,6 +43,7 @@ class Socket{
   }
 
   onConnect = ()=>{
+    console.log('socket connected')
     this.socket.on('USER_MESSAGE', this.onUserMessage);
     this.socket.on('USER_STATE', this.onUserStateMessage);
     this.socket.on('USER_REACT_MESSAGE', this.onUserReactionMessage);
@@ -85,6 +86,10 @@ class Socket{
               c.message  = event.message
               messageIdx = index
               handled = true
+              console.log('handled 1')
+
+            }else if(c.message._id===event?.message?._id){
+              handled  = true
             }
             return c
           })]
@@ -102,19 +107,29 @@ class Socket{
           listChatStore.data  = listChatStore.data.map((c, index)=>{
             if(c._id===event?.message?.conversation_id && c.message._id!==event?.message?._id){
               if(!right && chatStore.conversation_id!==event?.message?.conversation_id){
+                console.log('unread setting', JSON.stringify(c.settings))
+
                 c.settings = c.settings.map(setting=>{
                   setting.unread_count+=1
                   return setting
                 })
+
+
+
               }
               messageIdx = index
               c.message  = event.message
               handled = true
+
+            }else if(c.message._id===event?.message?._id){
+              handled  = true
             }
             return c
           })
+
           this.arraymove(listChatStore.data, messageIdx, 0)
           listChatStore.data = [...listChatStore.data]
+
         })
       }catch (e) {
         console.log(e)
@@ -134,6 +149,7 @@ class Socket{
           })
         }
       }
+
 
       if(!handled){
         runInAction(()=>{
@@ -221,6 +237,8 @@ class Socket{
 
   async init(){
     const user  = await load(USER)
+    console.log('socket', user)
+
     if(user && this.currentToken!==user.token){
       this.socket = io.connect(this.URL, {
         reconnection: true,
@@ -234,7 +252,7 @@ class Socket{
       this.socket.on('connect', this.onConnect);
       this.socket.on('disconnect', this.onDisconnect);
     }else {
-      // alert('Kết nối Socket ko thành công.')
+      //   // alert('Kết nối Socket ko thành công.')
     }
   }
 }
