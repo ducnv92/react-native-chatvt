@@ -43,7 +43,6 @@ class Socket{
   }
 
   onConnect = ()=>{
-    console.log('socket connected')
     this.socket.on('USER_MESSAGE', this.onUserMessage);
     this.socket.on('USER_STATE', this.onUserStateMessage);
     this.socket.on('USER_REACT_MESSAGE', this.onUserReactionMessage);
@@ -222,9 +221,7 @@ class Socket{
 
   async init(){
     const user  = await load(USER)
-    console.log('socket', user)
-
-    // if(user && this.currentToken!==user.token){
+    if(user && this.currentToken!==user.token){
       this.socket = io.connect(this.URL, {
         reconnection: true,
         autoConnect: true,
@@ -236,9 +233,9 @@ class Socket{
       this.currentToken = user.token
       this.socket.on('connect', this.onConnect);
       this.socket.on('disconnect', this.onDisconnect);
-    // }else {
-    //   // alert('Kết nối Socket ko thành công.')
-    // }
+    }else {
+      // alert('Kết nối Socket ko thành công.')
+    }
   }
 }
 

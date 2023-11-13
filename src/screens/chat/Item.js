@@ -1817,7 +1817,6 @@ function ContainChatItem(props) {
                 paddingHorizontal: 16,
                 borderRadius: 34,
                 backgroundColor: 'white',
-                overflow: 'hidden',
                 alignSelf: 'center',
                 shadowColor: '#0000001a',
                 shadowOffset: {

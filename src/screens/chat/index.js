@@ -195,7 +195,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
       <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}>
           <View style={{ position: 'absolute', width: '100%', height: 120, backgroundColor: colors.primary}}/>
         <BottomSheetModalProvider style={{ flex: 1 }}>
-          <View
+          <KeyboardAvoidingView
               style={{ flex: 1 }}
               behavior={Platform.OS === 'ios' ? 'padding' : ''}
           >
@@ -400,6 +400,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                           if(chatStore.keyboardEmoji===true){
                             chatStore.keyboardEmoji = false
                           }
+                          Keyboard.dismiss();
                         }}
                         style={{transform: [{scaleY: -1}]}}>
                         <ChatItem item={item} index={index} data={chatStore.data} conversation={conversation} componentId={props.componentId} />
@@ -434,7 +435,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
               />
             </View>
             <BottomChat {...props} />
-          </View>
+          </KeyboardAvoidingView>
 
           <AttachScreen {...props} />
           {chatStore.images.length > 0 && chatStore.showAttachModal && (
@@ -733,7 +734,7 @@ const BottomChat = observer(function BottomChat(props) {
             </View>
           )
         }
-        <KeyboardSpacer/>
+        {/*<KeyboardSpacer/>*/}
       </>
   )
 })
