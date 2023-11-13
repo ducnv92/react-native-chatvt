@@ -126,7 +126,7 @@ export const scale = size => {
   return size
 };
 
-export const formatTimeLastMessage = timeString => {
+export const formatTimeLastMessage = (timeString, isList) => {
   const time = moment(timeString)
   if(moment().endOf('day').diff(time, 'years')>0){
     return time.format("DD/MM/YYYY")
@@ -134,13 +134,14 @@ export const formatTimeLastMessage = timeString => {
   if(moment().endOf('day').diff(time, 'days')>0){
     return time.format("DD/MM")
   }
-  if(moment().diff(time, 'seconds')<60 ){
-    return moment().diff(time, 'seconds')+' giây trước'
+  if(!isList){
+    if(moment().diff(time, 'seconds')<60 ){
+      return moment().diff(time, 'seconds')+' giây trước'
+    }
+    if(moment().diff(time, 'minutes')<60 ){
+      return moment().diff(time, 'minutes')+' phút trước'
+    }
   }
-  if(moment().diff(time, 'minutes')<60 ){
-    return moment().diff(time, 'minutes')+' phút trước'
-  }
-
   return time.format("HH:mm")
 };
 
