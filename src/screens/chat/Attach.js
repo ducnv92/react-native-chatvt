@@ -79,7 +79,7 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
         inputRef.current.focus()
       }}
     >
-      <KeyboardAvoidingView
+      <View
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : ''}>
         <SafeAreaView style={{ flex: 1, backgroundColor: '#00000059', justifyContent: 'flex-end' }}>
@@ -130,7 +130,7 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
             </View>
           </>
         </SafeAreaView>
-      </KeyboardAvoidingView>
+      </View>
       <Modal visible={isModalVisible} animationType={'fade'}
              transparent={true}
              onModalShow={() => input.current.focus()}

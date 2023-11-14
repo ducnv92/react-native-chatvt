@@ -1,4 +1,4 @@
-import React, {createRef, useEffect, useRef, useState} from 'react';
+import React, { createRef, useEffect, useRef, useState } from 'react';
 import {
   TouchableOpacity,
   View,
@@ -21,22 +21,22 @@ import { MTextInput as TextInput } from '../../components';
 import BottomSheetChatOptions from '../../components/bottomSheetChatOptions';
 import { BottomSheetModalProvider } from '../../components/bottomSheet/bottom-sheet';
 import { toJS } from 'mobx';
-import stickerStore from "../chat/StickerStore";
+import stickerStore from '../chat/StickerStore';
 import _ from 'lodash';
-import KeyboardSpacer from '../../components/keyboardspace'
+import KeyboardSpacer from '../../components/keyboardspace';
 
 
 export const ListChatScreen = observer(function ListChatScreen(props) {
   const [showSearch, setShowSearch] = useState(false);
   const bottomSheetModalRef = useRef();
   const [query, setQuery] = useState(undefined);
-  const currentSwipe = createRef()
+  const currentSwipe = createRef();
 
   useEffect(() => {
     // StatusBar.setBackgroundColor(colors.primary)
     // StatusBar.setBarStyle(StatusBarSty, false)
     listChatStore.search = '';
-    stickerStore.getStickers()
+    stickerStore.getStickers();
     // intLoad();
     // bottomSheetModalRef.current?.present();
     return () => {
@@ -46,7 +46,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      if(query!==undefined){
+      if (query !== undefined) {
         listChatStore.search = query;
         listChatStore.page = 0;
         listChatStore.getData({});
@@ -115,7 +115,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
             style={{
               flex: 1,
               flexDirection: 'row',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <Image
@@ -160,7 +160,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           <View style={{
             flex: 1,
             flexDirection: 'row',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
           >
             <Image
@@ -168,14 +168,14 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
               style={{ width: 16, height: 16, resizeMode: 'contain', marginRight: 6 }}
             />
             <Text numberOfLines={1}
-              style={{
-                flex: 1,
-                fontWeight: setting?.unread_count > 0 ? '600' : '500',
-                color:
-                  setting?.unread_count > 0
-                    ? colors.primaryText
-                    : colors.neutralText,
-              }}>{prefix + appStore.lang.list_chat.message_doc}</Text>
+                  style={{
+                    flex: 1,
+                    fontWeight: setting?.unread_count > 0 ? '600' : '500',
+                    color:
+                      setting?.unread_count > 0
+                        ? colors.primaryText
+                        : colors.neutralText,
+                  }}>{prefix + appStore.lang.list_chat.message_doc}</Text>
           </View>
         );
       }
@@ -184,7 +184,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           <View style={{
             flex: 1,
             flexDirection: 'row',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
           >
             <Text numberOfLines={1}
@@ -243,10 +243,11 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
     let setting = {};
     try {
       let mySetting = item.settings?.find(
-        (i) => i.user_id === appStore.user.type + '_' + appStore.user.user_id
+        (i) => i.user_id === appStore.user.type + '_' + appStore.user.user_id,
       );
       setting = mySetting ? mySetting : {};
-    } catch (e) { }
+    } catch (e) {
+    }
     let receiver = {};
     let isMe = false;
     try {
@@ -254,9 +255,10 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
         appStore.user.type + '_' + appStore.user.user_id ===
         item.message?.sender;
       receiver = item.detail_participants.find(
-        (i) => i.user_id !== appStore.user.user_id
+        (i) => i.user_id !== appStore.user.user_id,
       );
-    } catch (e) { }
+    } catch (e) {
+    }
 
     const rightButtons = [
       <TouchableOpacity
@@ -267,35 +269,35 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
               try {
                 item.settings = item.settings.map(i => {
                   i.is_pin = false;
-                  return i
-                })
+                  return i;
+                });
               } catch (e) {
 
               }
 
-                listChatStore.data  = [item, ...listChatStore.data];
+              listChatStore.data = [item, ...listChatStore.data];
 
-              listChatStore.dataPin = _.orderBy(listChatStore.dataPin.filter(i => i._id !== item._id), c=>c?.message?.created_at, "desc")
-              listChatStore.data = _.orderBy(listChatStore.data, c=>c?.message?.created_at, "desc")
+              listChatStore.dataPin = _.orderBy(listChatStore.dataPin.filter(i => i._id !== item._id), c => c?.message?.created_at, 'desc');
+              listChatStore.data = _.orderBy(listChatStore.data, c => c?.message?.created_at, 'desc');
             });
           } else {
             listChatStore.pin({ conversation_id: item._id }, () => {
               try {
                 item.settings = item.settings.map(i => {
                   i.is_pin = true;
-                  return i
-                })
+                  return i;
+                });
               } catch (e) {
 
               }
-              listChatStore.dataPin = [item, ...listChatStore.dataPin]
-              listChatStore.data = _.orderBy(listChatStore.data.filter(i => i._id !== item._id), c=>c?.message?.created_at, "desc")
-              listChatStore.dataPin = _.orderBy(listChatStore.dataPin, c=>c?.message?.created_at, "desc")
+              listChatStore.dataPin = [item, ...listChatStore.dataPin];
+              listChatStore.data = _.orderBy(listChatStore.data.filter(i => i._id !== item._id), c => c?.message?.created_at, 'desc');
+              listChatStore.dataPin = _.orderBy(listChatStore.dataPin, c => c?.message?.created_at, 'desc');
 
-              try{
-                currentSwipe.current.recenter()
-              }catch (e) {
-                console.log(e)
+              try {
+                currentSwipe.current.recenter();
+              } catch (e) {
+                console.log(e);
               }
             });
           }
@@ -342,14 +344,14 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
               },
               () => {
                 item.settings = item.settings?.map(i => {
-                  i.is_hide_notification = !i.is_hide_notification
-                  return i
-                })
-                listChatStore.data = [...listChatStore.data]
-                try{
-                  currentSwipe.current.recenter()
-                }catch (e) {
-                  console.log(e)
+                  i.is_hide_notification = !i.is_hide_notification;
+                  return i;
+                });
+                listChatStore.data = [...listChatStore.data];
+                try {
+                  currentSwipe.current.recenter();
+                } catch (e) {
+                  console.log(e);
                 }
                 //   item.settings = item.settings.map(i=>{
                 //     i.is_pin = true;
@@ -358,7 +360,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                 // listChatStore.data = [item, ...listChatStore.data]
                 // listChatStore.data = _.orderBy(listChatStore.data.filter(i => i._id !== item._id), c=>c?.message?.created_at, "desc")
                 // listChatStore.dataPin = _.orderBy(listChatStore.dataPin, c=>c?.message?.created_at, "desc")
-              }
+              },
             );
 
           } catch (e) {
@@ -401,22 +403,23 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
         onPress={() => {
           Alert.alert('Xác nhận', 'Bạn chắc chắn xoá hội thoại này?', [
             {
-            text: 'Bỏ qua',
-            onPress: ()=>{}
-          },   {
-            text: 'Đồng ý',
-            onPress: ()=>{
-              listChatStore.hide({ conversation_id: item._id }, () => {
-                try{
-                  currentSwipe.current.recenter()
-                }catch (e) {
-                  console.log(e)
-                }
-                intLoad();
-              });
-            }
-          },
-          ])
+              text: 'Bỏ qua',
+              onPress: () => {
+              },
+            }, {
+              text: 'Đồng ý',
+              onPress: () => {
+                listChatStore.hide({ conversation_id: item._id }, () => {
+                  try {
+                    currentSwipe.current.recenter();
+                  } catch (e) {
+                    console.log(e);
+                  }
+                  intLoad();
+                });
+              },
+            },
+          ]);
         }}
         style={{
           width: 66,
@@ -450,10 +453,10 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
       //Group Chat
       return (
         <Swipeable
-          onRightButtonsActivate={(event, gestureState, swipeable)=> {
-            currentSwipe.current = swipeable
+          onRightButtonsActivate={(event, gestureState, swipeable) => {
+            currentSwipe.current = swipeable;
           }}
-          onRightButtonsOpenRelease={(event, gestureState, swipeable)=> {
+          onRightButtonsOpenRelease={(event, gestureState, swipeable) => {
           }}
           rightButtonWidth={66} rightButtons={rightButtons}>
           <TouchableOpacity
@@ -524,12 +527,12 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     color: colors.primaryText,
                   }}
                 >
-                  Đơn {item.order_numbers?.length>0 && item.order_numbers[0]}{' '}
+                  Đơn {item.order_numbers?.length > 0 && item.order_numbers[0]}{' '}
 
                 </Text>
                 <Text
                   numberOfLines={1}
-                  ellipsizeMode="tail"
+                  ellipsizeMode='tail'
                   style={{
                     flex: 1,
                     fontSize: 13,
@@ -537,9 +540,14 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     color: colors.neutralText,
                   }}
                 >
-                  - {orderStatus(item.orders?.length>0 && item.orders[0]?.order_status)}{' '}
+                  - {orderStatus(item.orders?.length > 0 && item.orders[0]?.order_status)}{' '}
                 </Text>
-                <Text style={{ textAlign: 'right', color: colors.neutralText, fontSize: 13, fontWeight: setting?.unread_count > 0?'600':'500' }}>
+                <Text style={{
+                  textAlign: 'right',
+                  color: colors.neutralText,
+                  fontSize: 13,
+                  fontWeight: setting?.unread_count > 0 ? '600' : '500',
+                }}>
                   {formatTimeLastMessage(item.message?.created_at, true)}
                 </Text>
               </View>
@@ -637,8 +645,8 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
         //   }}
         // >
         <Swipeable
-          onRightButtonsActivate={(event, gestureState, swipeable)=> {
-            currentSwipe.current = swipeable
+          onRightButtonsActivate={(event, gestureState, swipeable) => {
+            currentSwipe.current = swipeable;
           }}
           rightButtonWidth={66} rightButtons={rightButtons}>
           <TouchableOpacity
@@ -647,7 +655,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                 navigationChat({ ...item, ...{ receiver: receiver } });
                 listChatStore.data[index].settings = listChatStore.data[
                   index
-                ].settings.map((i) => {
+                  ].settings.map((i) => {
                   if (
                     i.user_id ===
                     appStore.user.type + '_' + appStore.user.user_id
@@ -714,7 +722,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text
                   numberOfLines={1}
-                  ellipsizeMode="tail"
+                  ellipsizeMode='tail'
                   style={{
                     flex: 1,
                     fontSize: 17,
@@ -722,7 +730,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     color: colors.primaryText,
                   }}
                 >
-                  {(receiver?.last_name ? receiver?.last_name : '')+ ' ' + (receiver?.first_name ? receiver?.first_name : '')  }{' '}
+                  {(receiver?.last_name ? receiver?.last_name : '') + ' ' + (receiver?.first_name ? receiver?.first_name : '')}{' '}
                   {receiver?.type === 'VTMAN' && (
                     <Text
                       style={{
@@ -735,7 +743,12 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     </Text>
                   )}{' '}
                 </Text>
-                <Text style={{ textAlign: 'right', color: colors.neutralText, fontWeight: setting?.unread_count > 0?'600':'500', fontSize: 13 }}>
+                <Text style={{
+                  textAlign: 'right',
+                  color: colors.neutralText,
+                  fontWeight: setting?.unread_count > 0 ? '600' : '500',
+                  fontSize: 13,
+                }}>
                   {formatTimeLastMessage(item.message?.created_at, true)}
                 </Text>
               </View>
@@ -843,14 +856,13 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
   }
 
 
-
-
   return (
-    <View
-      style={{ flex: 1}}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : ''}
+      style={{ flex: 1 }}
     >
-        <View style={{ position: 'absolute', width: '100%', height: 120, backgroundColor: colors.primary}}/>
-    <SafeAreaView style={{ flex: 1, }}>
+      <View style={{ position: 'absolute', width: '100%', height: 120, backgroundColor: colors.primary }} />
+      <SafeAreaView style={{ flex: 1 }}>
 
         <View style={{ height: scale(64), backgroundColor: colors.primary }}>
           {showSearch === true ? (
@@ -895,7 +907,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
               {query !== '' && (
                 <TouchableOpacity
                   onPress={() => {
-                    setQuery('')
+                    setQuery('');
                     listChatStore.search = '';
                     listChatStore.page = 0;
                     listChatStore.getData({});
@@ -914,13 +926,13 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                 </TouchableOpacity>
               )}
               <View style={{
-                width: 1, backgroundColor: '#eeeeee99', height: scale(20
-                )
+                width: 1, backgroundColor: '#eeeeee99', height: scale(20,
+                ),
               }} />
               <TouchableOpacity
                 onPress={() => {
                   setShowSearch(false);
-                  setQuery('')
+                  setQuery('');
                   listChatStore.search = '';
                   // listChatStore.page = 0;
                   // listChatStore.getData({});
@@ -954,7 +966,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
             >
               <TouchableOpacity
                 onPress={() => {
-                  if(appStore.appId==='Admin'){
+                  if (appStore.appId === 'Admin') {
                     Navigation.push(props.componentId, {
                       component: {
                         name: 'Admin.ScanQR',
@@ -969,13 +981,13 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                           },
                         },
                         passProps: {
-                          callback: data=>{
-                            console.log(data)
-                          }
+                          callback: data => {
+                            console.log(data);
+                          },
                         },
                       },
                     });
-                  }else{
+                  } else {
                     if (props.buttonBack !== false) {
                       Navigation.pop(props.componentId);
                     }
@@ -988,13 +1000,13 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   alignItems: 'center',
                 }}
               >
-                {props.buttonBack !== false && appStore.appId!=='Admin' && (
+                {props.buttonBack !== false && appStore.appId !== 'Admin' && (
                   <Image
                     style={{ height: 36, width: 36, resizeMode: 'contain' }}
                     source={require('../../assets/ic_back.png')}
                   />
                 )}
-                {appStore.appId==='Admin' && (
+                {appStore.appId === 'Admin' && (
                   <Image
                     style={{ height: 36, width: 36, resizeMode: 'contain' }}
                     source={require('../../assets/ic_qr.png')}
@@ -1030,14 +1042,16 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           )}
         </View>
         {
-          listChatStore.data.length === 0 &&  listChatStore.dataPin.length === 0 && !listChatStore.isLoading && !listChatStore.isLoadingPin &&
+          listChatStore.data.length === 0 && listChatStore.dataPin.length === 0 && !listChatStore.isLoading && !listChatStore.isLoadingPin &&
           (
-          <TouchableOpacity
-            onPress={() => intLoad()}
-            style={{ alignItems: 'center', height: Dimensions.get('window').height, backgroundColor: 'white'}}>
-            <Image source={require('../../assets/ic_message_empty.png')} style={{ width: 120, height: 120, resizeMode: 'contain', marginTop: 28 }} />
-            <Text style={{ fontWight: '500', fontSize: 15, color: colors.primaryText, marginTop: 16, }}>Quý khách chưa có tin nhắn</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => intLoad()}
+              style={{ alignItems: 'center', height: Dimensions.get('window').height, backgroundColor: 'white' }}>
+              <Image source={require('../../assets/ic_message_empty.png')}
+                     style={{ width: 120, height: 120, resizeMode: 'contain', marginTop: 28 }} />
+              <Text style={{ fontWight: '500', fontSize: 15, color: colors.primaryText, marginTop: 16 }}>Quý khách chưa
+                có tin nhắn</Text>
+            </TouchableOpacity>
           )
         }
         <FlatList
@@ -1049,7 +1063,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           ListHeaderComponent={renderHeader}
           keyExtractor={(item) => item?.message?._id}
           onEndReached={() => () => {
-            listChatStore.getData({})
+            listChatStore.getData({});
           }}
           style={{ flex: 1, backgroundColor: 'white' }}
           data={listChatStore.data}
@@ -1089,10 +1103,9 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
             />
           </View>
         )}
-      <BottomSheetChatOptions ref={bottomSheetModalRef} />
-    </SafeAreaView>
-        <KeyboardSpacer/>
-    </View>
+        <BottomSheetChatOptions ref={bottomSheetModalRef} />
+      </SafeAreaView>
+    </KeyboardAvoidingView>
 
   );
 });

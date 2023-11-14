@@ -108,15 +108,15 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
           }}>
           {attach.url.includes('pdf') && (
             <Image source={require('../../assets/file_pdf.png')}
-              style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
+                   style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
           )}
           {(attach.url.includes('.doc') || attach.url.includes('.docx')) && (
             <Image source={require('../../assets/file_doc.png')}
-              style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
+                   style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
           )}
           {(attach.url.includes('.xls') || attach.url.includes('.xlsx')) && (
             <Image source={require('../../assets/file_xls.png')}
-              style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
+                   style={{ width: 42, height: 42, resizeMode: 'contain', marginRight: 14 }} />
           )}
           <View style={{
             flex: 1,
@@ -153,15 +153,15 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
           }}
           style={{ width: 50, height: 50, justifyContent: 'center', alignItems: 'center' }}>
           <Image style={{ height: 36, width: 36, resizeMode: 'contain', }}
-            source={require('../../assets/ic_close_attach.png')} />
+                 source={require('../../assets/ic_close_attach.png')} />
         </TouchableOpacity>
       </View>
       <View style={{ alignItems: 'center', backgroundColor: 'white', }}>
-        <Text style={{ fontWeight: '600', fontSize: 20, marginTop: 72, color: colors.primaryText, paddingHorizontal: 16, textAlign: 'center' }}>{(receiver?.last_name?receiver?.last_name:''+" " + receiver?.first_name?receiver?.first_name: '')}</Text>
+        <Text style={{ fontWeight: '600', fontSize: 20, marginTop: 72, color: colors.primaryText, paddingHorizontal: 16, textAlign: 'center' }}>{((receiver?.last_name?receiver?.last_name:'')+" " + (receiver?.first_name?receiver?.first_name: ''))}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
           {
             receiver?.state?.includes('ONLINE') &&
-           <View style={{ height: 8, width: 8, borderRadius: 4, marginRight: 8, backgroundColor: '#30F03B' }} />
+            <View style={{ height: 8, width: 8, borderRadius: 4, marginRight: 8, backgroundColor: '#30F03B' }} />
           }
 
           <Text style={{ fontWeight: '500', fontSize: 13, color: colors.neutralText, textAlign: 'center' }}>{
@@ -178,19 +178,19 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
             }
           }}>
             <Image style={{ height: 48, width: 48, resizeMode: 'contain' }}
-              source={require('../../assets/ic_call.png')} />
+                   source={require('../../assets/ic_call.png')} />
           </TouchableOpacity>
           <TouchableOpacity style={{ marginLeft: 16 }} onPress={() => {
             Navigation.pop(props.componentId)
           }}>
             <Image style={{ height: 48, width: 48, resizeMode: 'contain' }}
-              source={require('../../assets/ic_message.png')} />
+                   source={require('../../assets/ic_message.png')} />
           </TouchableOpacity>
           <TouchableOpacity style={{ marginLeft: 16 }} onPress={() => {
             alert('Tính năng đang phát triển')
           }}>
             <Image style={{ height: 48, width: 48, resizeMode: 'contain' }}
-              source={require('../../assets/ic_star.png')} />
+                   source={require('../../assets/ic_star.png')} />
           </TouchableOpacity>
         </View>
       </View>
@@ -250,10 +250,10 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
             <View style={{ alignItems: 'center', marginTop: 50, backgroundColor: 'white', height: '100%' }}>
               {attachsStore.currentTab === 0 ? (
                 <Image style={{ width: 102, height: 102, resizeMode: 'contain' }}
-                  source={require('../../assets/ic_no_picture.png')} />
+                       source={require('../../assets/ic_no_picture.png')} />
               ) : (
                 <Image style={{ width: 102, height: 102, resizeMode: 'contain' }}
-                  source={require('../../assets/ic_no_file.png')} />
+                       source={require('../../assets/ic_no_file.png')} />
               )}
               <Text style={{ fontWeight: '500', fontSize: 15, color: '#828282' }}>{attachsStore.currentTab === 0 ? "Chưa có ảnh, video được gửi trong hội thoại " : "Chưa có tài liệu được gửi trong hội thoại "}</Text>
             </View>
@@ -265,10 +265,10 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
         {
           receiver?.type === 'VTMAN' ? (
             <Image style={{ height: 94, width: 94, resizeMode: 'contain' }}
-              source={require('../../assets/avatar_default.png')} />
+                   source={require('../../assets/avatar_default.png')} />
           ) : (
             <Image style={{ height: 94, width: 94, resizeMode: 'contain' }}
-              source={require('../../assets/avatar_default_customer.png')} />
+                   source={require('../../assets/avatar_default_customer.png')} />
           )
         }
         {/*{*/}
