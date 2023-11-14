@@ -68,6 +68,7 @@ class ChatVT {
             listChatStore.page = 0;
             listChatStore.getData({});
           }
+          StatusBar.setBackgroundColor(colors.primary)
         }
       );
     // screenEventListener.remove();

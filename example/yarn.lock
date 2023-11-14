@@ -4413,10 +4413,10 @@ react-native-maps@^1.0.0:
   dependencies:
     "@types/geojson" "^7946.0.10"
 
-react-native-navigation@^7.37.0-hotfix.1:
-  version "7.37.0-hotfix.1"
-  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-7.37.0-hotfix.1.tgz#379913a7c0e817b67ec44ca5c3f37e300112ddb5"
-  integrity sha512-Ob+67yJI7DkgCUQ8EV3xyDzFV770svHBHlNXyWpvuuESblQbxqDc0HgCDaMc9Pb+LG716YEJh6LIZe7qYSWgYw==
+react-native-navigation@7.37.1:
+  version "7.37.1"
+  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-7.37.1.tgz#7bb1165f8e454f2956f62a10cdfe927a6cc43008"
+  integrity sha512-3LM5tawVwfo8iNwH+caAt2jI+9lGVIeXKv9jmRp7esXz3DEypi8yfKBVjz/IDsCo6VBjAwocw1f2EuIXxRyiuA==
   dependencies:
     hoist-non-react-statics "3.x.x"
     lodash "4.17.x"

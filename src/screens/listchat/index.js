@@ -12,18 +12,14 @@ import colors from '../../Styles';
 import Swipeable from '../../components/swipeable';
 import listChatStore from './ListChatStore';
 import appStore from '../AppStore';
-import moment from 'moment';
 import { Navigation } from 'react-native-navigation';
 import Image from 'react-native-fast-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { formatTimeLastMessage, orderStatus, scale } from '../../utils';
 import { MTextInput as TextInput } from '../../components';
 import BottomSheetChatOptions from '../../components/bottomSheetChatOptions';
-import { BottomSheetModalProvider } from '../../components/bottomSheet/bottom-sheet';
-import { toJS } from 'mobx';
 import stickerStore from '../chat/StickerStore';
 import _ from 'lodash';
-import KeyboardSpacer from '../../components/keyboardspace';
 
 
 export const ListChatScreen = observer(function ListChatScreen(props) {
@@ -856,11 +852,13 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
   }
 
 
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : ''}
-      style={{ flex: 1 }}
+      style={{ flex: 1, backgroundColor: colors.primary }}
     >
+      <StatusBar backgroundColor={colors.primary}/>
       <View style={{ position: 'absolute', width: '100%', height: 120, backgroundColor: colors.primary }} />
       <SafeAreaView style={{ flex: 1 }}>
 

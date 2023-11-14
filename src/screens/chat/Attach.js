@@ -733,9 +733,12 @@ export const Input = observer(function Input() {
           maxHeight: 250
         }}
       />
-      <InputAccessoryView nativeID='hideDoneButton'>
-        <View/>
-      </InputAccessoryView>
+      {
+        Platform.OS ==='ios' &&
+        <InputAccessoryView nativeID='hideDoneButton'>
+          <View/>
+        </InputAccessoryView>
+      }
     </>
   )
 })
