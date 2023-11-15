@@ -856,7 +856,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : ''}
-      style={{ flex: 1, backgroundColor: colors.primary }}
+      style={{ flex: 1, backgroundColor: 'white' }}
     >
       <StatusBar backgroundColor={colors.primary}/>
       <View style={{ position: 'absolute', width: '100%', height: 120, backgroundColor: colors.primary }} />

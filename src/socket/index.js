@@ -10,7 +10,7 @@ import _ from "lodash";
 
 
 class Socket{
-  URL = 'https://stag-receiverchat.viettelpost.vn';
+  URL = appStore.env==='DEV'?'https://stag-receiverchat.viettelpost.vn':'https://receiverchat.viettelpost.vn';
 
   static instance
   socket
