@@ -550,16 +550,17 @@ export const AttachScreen = observer(function AttachScreen(props) {
           const res = PermissionsAndroid.requestMultiple([
             'android.permission.READ_MEDIA_IMAGES',
             'android.permission.READ_MEDIA_VIDEO',
-            'android.permission.READ_EXTERNAL_STORAGE',
+            // 'android.permission.READ_EXTERNAL_STORAGE',
           ]).then(
             (statuses) => {
               console.log(statuses)
               return statuses['android.permission.READ_MEDIA_IMAGES'] ===
                 PermissionsAndroid.RESULTS.GRANTED &&
                 statuses['android.permission.READ_MEDIA_VIDEO'] ===
-                PermissionsAndroid.RESULTS.GRANTED &&
-                statuses['android.permission.READ_EXTERNAL_STORAGE'] ===
                 PermissionsAndroid.RESULTS.GRANTED
+                //   &&
+                // statuses['android.permission.READ_EXTERNAL_STORAGE'] ===
+                // PermissionsAndroid.RESULTS.GRANTED
 
             }
           );
