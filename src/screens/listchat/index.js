@@ -513,7 +513,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
               {/*<Image style={{height: 12, width: 12, resizeMode: 'center', position: 'absolute', top: 36, left: 36 }} source={require('../../assets/ic_online.png')} />*/}
             </View>
             <View style={{ flex: 1 }}>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text
                   numberOfLines={1}
                   style={{

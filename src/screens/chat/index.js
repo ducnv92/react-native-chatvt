@@ -167,7 +167,8 @@ export const ChatScreen = observer(function ChatScreen(props) {
           }
         }
       } catch (e) {
-        alert(e);
+        return
+        // alert(e);
       }
 
       const message = {

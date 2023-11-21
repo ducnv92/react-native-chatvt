@@ -31,6 +31,7 @@ import inputStore from './InputStore';
 import InputStore from './InputStore';
 import ModalStyled from "react-native-modal";
 import { toJS } from 'mobx';
+import AppStore from '../AppStore';
 
 
 const QuickMessageModal = observer(function QuickMessageModal(props) {
@@ -79,7 +80,7 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
         inputRef.current.focus()
       }}
     >
-      <View
+      <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : ''}>
         <SafeAreaView style={{ flex: 1, backgroundColor: '#00000059', justifyContent: 'flex-end' }}>
@@ -130,12 +131,12 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
             </View>
           </>
         </SafeAreaView>
-      </View>
+      </KeyboardAvoidingView>
       <Modal visible={isModalVisible} animationType={'fade'}
              transparent={true}
              onModalShow={() => input.current.focus()}
       >
-        <View style={{ flex: 1, justifyContent: 'center' }}>
+        <KeyboardAvoidingView style={{ flex: 1, justifyContent: 'center' }}>
           <View style={{ padding: 16, backgroundColor: 'white', justifyContent: 'center', borderRadius: 16, }}>
             <TouchableOpacity
               onPress={()=>setModalVisible(false)}
@@ -168,7 +169,7 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
     </Modal>
   )
@@ -547,10 +548,13 @@ export const AttachScreen = observer(function AttachScreen(props) {
       let permission = ''
       if (Platform.OS === 'android') {
         if (Platform.Version >= 33) {
-          const res = PermissionsAndroid.requestMultiple([
+          const res = PermissionsAndroid.requestMultiple(AppStore.appId==='VTPost'?[
             'android.permission.READ_MEDIA_IMAGES',
             'android.permission.READ_MEDIA_VIDEO',
-            // 'android.permission.READ_EXTERNAL_STORAGE',
+          ]:[
+            'android.permission.READ_MEDIA_IMAGES',
+            'android.permission.READ_MEDIA_VIDEO',
+            'android.permission.READ_EXTERNAL_STORAGE',
           ]).then(
             (statuses) => {
               console.log(statuses)
@@ -558,9 +562,9 @@ export const AttachScreen = observer(function AttachScreen(props) {
                 PermissionsAndroid.RESULTS.GRANTED &&
                 statuses['android.permission.READ_MEDIA_VIDEO'] ===
                 PermissionsAndroid.RESULTS.GRANTED
-                //   &&
-                // statuses['android.permission.READ_EXTERNAL_STORAGE'] ===
-                // PermissionsAndroid.RESULTS.GRANTED
+                  &&
+                (AppStore.appId==='VTPost'?true:statuses['android.permission.READ_EXTERNAL_STORAGE'] ===
+                PermissionsAndroid.RESULTS.GRANTED)
 
             }
           );
@@ -704,7 +708,7 @@ export const Input = observer(function Input() {
   useEffect(() => {
     inputStore.inputRef = () => {
       try {
-        // inputRef.current?.focus();
+        inputRef.current?.focus();
       } catch (e) {
         Log(e);
       }

@@ -104,6 +104,24 @@ const MapItem = function(props) {
                 />
               </Marker>
             </MapView>
+            <TouchableOpacity
+              onPress={()=>{
+                try {
+                  Linking.openURL(
+                    createMapLink({
+                      provider: 'google',
+                      // latitude: props.item?.location?.latitude,
+                      // longitude: props.item?.location?.longitude,
+                      query: props.item?.location?.latitude + ',' + props.item?.location?.longitude,
+                    }),
+                  );
+                } catch (e) {
+                  console.log(e);
+                }
+              }}
+              style={{position: "absolute",  height: 178,
+                width: 290,}}>
+            </TouchableOpacity>
           </View>
         </ContainChatItem>
       </View>
@@ -202,15 +220,23 @@ const VoiceItem = function(props) {
   };
 
   const pause = () => {
+    try{
+
+      if(Platform.OS==='android'){
+          _onFinishedPlayingSubscription?.remove();
+          _onFinishedLoadingSubscription?.remove();
+          _onFinishedLoadingURLSubscription?.remove();
+          _onFinishedLoadingFileSubscription?.remove();
+      }
     SoundPlayer.stop();
     SoundPlayer.unmount();
     clearInterval(chatStore.intervalSound);
-    _onFinishedPlayingSubscription?.remove();
-    _onFinishedLoadingSubscription?.remove();
-    _onFinishedLoadingURLSubscription?.remove();
-    _onFinishedLoadingFileSubscription?.remove();
-    setIsPlay(false);
-    console.log('stop');
+      setIsPlay(false);
+      console.log('stop');
+    }catch (e) {
+      console.log(e)
+    }
+
   };
 
 
@@ -267,7 +293,7 @@ const VoiceItem = function(props) {
             </TouchableOpacity>
             {
               isPlay ?
-                <AnimatedSoundBars isPlay={true} id={props.item.attachments.length>0 && props.item.attachments[0]?.url}
+                <AnimatedSoundBars isPlay={true} id={props.item?.attachments?.length>0 && props.item?.attachments[0]?.url}
                                    barColor={right ? 'white' : '#44494D66'} /> :
                 <AnimatedSoundBars isPlay={false} barColor={right ? 'white' : '#44494D66'} />
             }
@@ -1483,7 +1509,7 @@ export class ChatItem extends React.Component {
         dividerDay = (
           <View style={{width: '100%', height: 42, paddingHorizontal: 16, alignItems: 'center', justifyContent: 'center'}}>
             <View style={{width: '100%', height: 1, backgroundColor: '#DCE6F0'}}></View>
-            <Text style={{color: '#828282'  , fontSize: 13, fontWeight: '500', padding: 12, backgroundColor: 'white', position: 'absolute'}}>{moment(this.props.data[this.props.index - 1].created_at).format('DD/MM')}</Text>
+            <Text style={{color: '#828282'  , fontSize: 13, fontWeight: '500', padding: 12, backgroundColor: 'white', position: 'absolute'}}>{moment(this.props.data[this.props.index].created_at).format('DD/MM')}</Text>
           </View>
         )
       }
