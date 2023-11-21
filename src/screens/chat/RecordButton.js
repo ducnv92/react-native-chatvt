@@ -64,11 +64,13 @@ export class RecordButton extends React.Component {
     try {
       requestPermission(
         Platform.OS === 'android'
-          ? [
+          ? (Platform.Version>=30?[
             PERMISSIONS.ANDROID.RECORD_AUDIO,
-            PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-            PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-          ]
+          ]:[
+                PERMISSIONS.ANDROID.RECORD_AUDIO,
+                PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+                PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+    ])
           : [PERMISSIONS.IOS.MICROPHONE],
         async () => {
           this.setState({
@@ -105,7 +107,9 @@ export class RecordButton extends React.Component {
           });
         }
       );
-    } catch (e) { }
+    } catch (e) {
+      console.log(e)
+    }
   };
 
   sendRecorded = async () => {
@@ -165,6 +169,7 @@ export class RecordButton extends React.Component {
         });
       }
     } catch (e) {
+      console.log(e)
     }
   };
 

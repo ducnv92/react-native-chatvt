@@ -85,7 +85,7 @@ export async function requestPermission(permissions, callback) {
     if(grantedAll){
       callback()
     }else{
-      requestPermission(permissions, callback)
+      this.requestPermission(permissions, callback)
     }
     // switch (result) {
     //   case RESULTS.UNAVAILABLE:
