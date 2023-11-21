@@ -36,6 +36,7 @@ class ChatStore {
   intervalSound;
   pauseSound;
   canSend = true;
+  messageCanSend = '';
 
   soundBarsRefs = {
   };
@@ -158,6 +159,7 @@ class ChatStore {
         if (response.status === 200) {
           if (response.data.status === 200) {
               this.canSend = response.data.data
+              this.messageCanSend = response.data.message
           }
         }
       })

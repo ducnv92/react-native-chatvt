@@ -1505,7 +1505,7 @@ export class ChatItem extends React.Component {
 
     let dividerDay =  null
     try {
-      if(this.props.index>0 &&  moment(this.props.data[this.props.index - 1].created_at).startOf('day').diff(moment(this.props.data[this.props.index].created_at).endOf('day'), 'day')>0){
+      if( moment(this.props.data[this.props.index].created_at).endOf('day').diff(moment(this.props.data[this.props.index+1].created_at).startOf('day'), 'days')!==0){
         dividerDay = (
           <View style={{width: '100%', height: 42, paddingHorizontal: 16, alignItems: 'center', justifyContent: 'center'}}>
             <View style={{width: '100%', height: 1, backgroundColor: '#DCE6F0'}}></View>
