@@ -167,7 +167,8 @@ export const ChatScreen = observer(function ChatScreen(props) {
           }
         }
       } catch (e) {
-        alert(e);
+        return
+        // alert(e);
       }
 
       const message = {
@@ -738,8 +739,9 @@ const BottomChat = observer(function BottomChat(props) {
             bottom: 78,
 
           }}>
-            <Text style={{ color: 'white', fontWeight: '500', lineHeight: 18, fontSize: 13, padding: 16 }}>Chat với bưu tá
-              lấy không khả dụng do trạng thái đơn không cho phép.</Text>
+            <Text style={{ color: 'white', fontWeight: '500', lineHeight: 18, fontSize: 13, padding: 16 }}>{
+              chatStore.messageCanSend
+            }</Text>
           </View>
         )
       }
