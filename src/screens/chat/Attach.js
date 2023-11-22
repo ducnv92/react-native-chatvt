@@ -740,8 +740,8 @@ export const Input = observer(function Input() {
       />
       {
         Platform.OS ==='ios' &&
-        <InputAccessoryView nativeID='hideDoneButton'>
-          <View/>
+        <InputAccessoryView style={{height: 0}} nativeID='hideDoneButton'>
+          <View style={{height: 0}}/>
         </InputAccessoryView>
       }
     </>
