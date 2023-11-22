@@ -6,6 +6,7 @@ import ImageResizer from "../../components/resizeImage";
 import uploadProgress from './uploadProgress';
 import InputStore from "./InputStore";
 import AnimatedSoundBars from "../../components/waveView";
+import appStore from '../AppStore';
 var _ = require('lodash');
 
 class ChatStore {
@@ -170,9 +171,10 @@ class ChatStore {
 
   async getOrderInfoVTM(order_number) {
     try {
-      const response = await services.create().getOrderInfoVTM({
-        order_number: order_number,
-      })
+      if(appStore.appId !== 'VTPost'){
+        const response = await services.create().getOrderInfoVTM({
+          order_number: order_number,
+        })
         if (response.status === 200) {
           if (response.data.status === 200 && response.data.data) {
             if(this.quote && response.data.data?.order_number===this.quote.order_number){
@@ -187,6 +189,8 @@ class ChatStore {
             // }
           }
         }
+      }
+
     } catch (error) {
       Log(error);
     }
