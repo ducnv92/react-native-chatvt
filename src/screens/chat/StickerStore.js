@@ -41,7 +41,7 @@ class StickerStore {
             }
           }
         }
-      }).catch(e=>
+      }).catch(e=>{})
     } catch (error) {
      
     }
