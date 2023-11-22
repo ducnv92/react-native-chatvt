@@ -116,7 +116,7 @@ const MapItem = function(props) {
                     }),
                   );
                 } catch (e) {
-                  console.log(e);
+                  
                 }
               }}
               style={{position: "absolute",  height: 178,
@@ -193,30 +193,30 @@ const VoiceItem = function(props) {
     );
     chatStore.intervalSound = setInterval(async () => {
       const info = await SoundPlayer.getInfo(); // Also, you need to await this because it is async
-      console.log('getInfo', info);
+      
 
       setCurrentTime(formatDuration(info.currentTime));
     }, 1000);
     _onFinishedPlayingSubscription = SoundPlayer.addEventListener('FinishedPlaying', (props) => {
-      console.log('finished playing', props);
+      
       pause();
       clearInterval(chatStore.intervalSound);
     });
     _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoading', ({ success }) => {
-      console.log('finished loading', success);
+      
     });
     _onFinishedLoadingFileSubscription = SoundPlayer.addEventListener('FinishedLoadingFile', ({
                                                                                                 success,
                                                                                                 name,
                                                                                                 type,
                                                                                               }) => {
-      console.log('finished loading file', success, name, type);
+      
 
     });
     _onFinishedLoadingURLSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', ({ success, url }) => {
-      console.log('finished loading url', success, url);
+      
     });
-    console.log('play');
+    
   };
 
   const pause = () => {
@@ -232,9 +232,9 @@ const VoiceItem = function(props) {
     SoundPlayer.unmount();
     clearInterval(chatStore.intervalSound);
       setIsPlay(false);
-      console.log('stop');
+      
     }catch (e) {
-      console.log(e)
+      
     }
 
   };
@@ -1099,7 +1099,7 @@ const OrderItem = function(props) {
     }
 
   } catch (e) {
-    console.log(e);
+    
   }
   if (item.type === 'CREATED_GROUP_QUOTE_ORDER') {
     return (
@@ -1125,7 +1125,7 @@ const OrderItem = function(props) {
               });
             }
           } catch (e) {
-            console.log(e);
+            
           }
         }}
       >
@@ -1253,7 +1253,7 @@ const OrderItem = function(props) {
               });
             }
           } catch (e) {
-            console.log(e);
+            
           }
         }}
       >
@@ -1514,7 +1514,7 @@ export class ChatItem extends React.Component {
         )
       }
     }catch (e) {
-      console.log(e)
+      
     }
 
 
@@ -1656,7 +1656,7 @@ function ContainChatItem(props) {
         conversation_id: props.item.conversation_id,
         message_id: props.item._id,
       });
-      console.log(response);
+      
       if (response.data.status === 200) {
         // if (is_enable) {
         //   setReactions([
@@ -1672,7 +1672,7 @@ function ContainChatItem(props) {
         // }
       }
     } catch (e) {
-      console.log(e);
+      
     }
 
   };
@@ -1702,7 +1702,7 @@ function ContainChatItem(props) {
                 }),
               );
             } catch (e) {
-              console.log(e);
+              
             }
           }
         } catch (e) {

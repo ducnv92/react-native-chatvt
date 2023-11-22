@@ -116,7 +116,7 @@ function ImageViewing({
           controls
           isPaused={true}
           onLoad={(status)=>{
-            console.log(status)
+            
             setIsLoading(false)
           }}
         />

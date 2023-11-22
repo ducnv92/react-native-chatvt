@@ -50,7 +50,7 @@ export const orderStatus = (status) => {
 
 export const Log = (data, data2) => {
   if (appStore.env === "DEV") {
-      console.log(data, data2)
+      
   }
 }
 export function groupBy(list, keyGetter) {
@@ -194,18 +194,18 @@ export const DownloadViewFile = (url) =>{
       })
       .catch((error) => {
         Linking.openURL(url)
-        console.log(error)
+        
         // error
       });
 
   }catch (e) {
     Linking.openURL(url)
-    console.log(e)
+    
   }
 
 }
 export const timeSince = (date)=> {
-  console.log(date)
+  
   var seconds = Math.floor((new Date() - new Date(date)) / 1000);
 
   var interval = seconds / 31536000;

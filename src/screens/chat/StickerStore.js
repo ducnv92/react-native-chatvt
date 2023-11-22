@@ -41,9 +41,9 @@ class StickerStore {
             }
           }
         }
-      }).catch(e=>console.log(e))
+      }).catch(e=>
     } catch (error) {
-     console.log(error)
+     
     }
   }
 
@@ -59,12 +59,12 @@ class StickerStore {
        })
 
       if(stickerFound && this.stickerLocal[stickerFound.attachment_id]){
-        console.log(this.stickerLocal[stickerFound.attachment_id])
+        
         return this.stickerLocal[stickerFound.attachment_id]
       }
       return {uri: stickerFound?.attachment?.url?stickerFound?.attachment?.url:''}
     }catch (e) {
-      console.log(e)
+      
       return  {uri: ''}
     }
   }

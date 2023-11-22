@@ -26,7 +26,7 @@ export default function EmojiKeyboard(props) {
 
 
   const renderItem = ({item, index}) => {
-    console.log('sticker item', item.attachment_id)
+    
     return(
       <TouchableOpacity
         onPress={()=>{

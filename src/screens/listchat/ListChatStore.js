@@ -103,7 +103,7 @@ class ListChatStore {
         }
       })
     } catch (error) {
-      console.log(error)
+      
     }
     try {
       services.create().getConversationPin({
@@ -119,7 +119,7 @@ class ListChatStore {
       })
 
     } catch (error) {
-      console.log(error)
+      
     }
   }
 

@@ -293,7 +293,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
               try {
                 currentSwipe.current.recenter();
               } catch (e) {
-                console.log(e);
+                
               }
             });
           }
@@ -347,7 +347,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                 try {
                   currentSwipe.current.recenter();
                 } catch (e) {
-                  console.log(e);
+                  
                 }
                 //   item.settings = item.settings.map(i=>{
                 //     i.is_pin = true;
@@ -409,7 +409,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   try {
                     currentSwipe.current.recenter();
                   } catch (e) {
-                    console.log(e);
+                    
                   }
                   intLoad();
                 });
@@ -980,7 +980,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                         },
                         passProps: {
                           callback: data => {
-                            console.log(data);
+                            
                           },
                         },
                       },

@@ -302,10 +302,10 @@ class ChatVT {
                       },
                     },
                   });
-                  console.log('ChatScreen end');
+                  
 
                 } catch (e) {
-                  console.log(e);
+                  
                 }
 
               }, 200);
@@ -400,7 +400,7 @@ class ChatVT {
 
     appStore.loginVTP({ username, password }, async (data) => {
       this.init(
-        'DEV',
+        'PRODUCT',
         storage,
         'VN',
         'VTPost',

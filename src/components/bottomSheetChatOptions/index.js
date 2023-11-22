@@ -132,14 +132,14 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
       const response = await services.create().getVTMCustomerByOrder({
         order_code,
       });
-      console.log(response);
+      
       if (response.data?.data) {
         return response.data?.data?.cus_id;
       } else {
         return 0;
       }
     } catch (e) {
-      console.log(e);
+      
       return -1;
     }
   };

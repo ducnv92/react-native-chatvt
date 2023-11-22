@@ -52,7 +52,7 @@ const BottomSheetHandleContainerComponent = ({
     );
   }, [animatedIndex, animatedPosition, _providedHandleComponent]);
 
-  // console.log(
+  // 
   //   'BottomSheetHandleContainer',
   //   'render',
   //   shouldRenderHandle,

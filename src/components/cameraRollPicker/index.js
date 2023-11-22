@@ -164,7 +164,7 @@ class CameraRollPicker extends Component {
           return edge
         })
         this.appendImages(data)
-        console.log(data)
+        
 
       }, e => Log(e));
   }
@@ -207,7 +207,7 @@ class CameraRollPicker extends Component {
 
     const { uri } = item.node.image;
     const isSelected = (arrayObjectIndexOf(selected, 'uri', uri) >= 0);
-    console.log('isSelected', isSelected)
+    
 
     return (
       <ImageItem

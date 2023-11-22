@@ -35,7 +35,7 @@ if (isDev) {
     } else {
       message = `${params ?? ''}`;
     }
-    console.log(
+    
       `[Portal::${[component, method].filter(Boolean).join('::')}]`,
       message
     );

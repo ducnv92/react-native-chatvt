@@ -37,7 +37,7 @@ const BottomSheetContainerComponent = ({
   );
 
   //#region render
-  // console.log('BottomSheetContainer', 'render', shouldMeasureHeight);
+  // 
   return (
     <View
       pointerEvents="box-none"

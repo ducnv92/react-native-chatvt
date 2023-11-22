@@ -359,7 +359,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                   try {
                     Linking.openURL(`tel:${receiver?.phone}`);
                   } catch (e) {
-                    console.log(e);
+                    
                   }
                 }}
                 style={{
@@ -557,7 +557,7 @@ const BottomChat = observer(function BottomChat(props) {
 
       chatStore.sendMessage(message);
     } catch (e) {
-      console.log(e);
+      
     }
   };
 

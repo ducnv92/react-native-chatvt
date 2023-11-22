@@ -76,7 +76,7 @@ const QuickMessageModal = observer(function QuickMessageModal(props) {
       transparent={true}
       animationType={'fade'}
       onShow={() => {
-        console.log(inputRef.current)
+        
         inputRef.current.focus()
       }}
     >
@@ -423,7 +423,7 @@ const LocationMessage = observer(function LocationMessage(props) {
 
       chatStore.sendMessage(message)
     } catch (e) {
-      console.log(e)
+      
     }
   }
 
@@ -521,7 +521,7 @@ export const AttachScreen = observer(function AttachScreen(props) {
         type: [types.pdf, types.xls, types.docx, types.xlsx, types.docx, types.doc, types.xls],
       });
 
-      console.log(response)
+      
 
       chatStore.showAttachModal = false
 
@@ -557,7 +557,7 @@ export const AttachScreen = observer(function AttachScreen(props) {
             'android.permission.READ_EXTERNAL_STORAGE',
           ]).then(
             (statuses) => {
-              console.log(statuses)
+              
               return statuses['android.permission.READ_MEDIA_IMAGES'] ===
                 PermissionsAndroid.RESULTS.GRANTED &&
                 statuses['android.permission.READ_MEDIA_VIDEO'] ===

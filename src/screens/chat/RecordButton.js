@@ -108,7 +108,7 @@ export class RecordButton extends React.Component {
         }
       );
     } catch (e) {
-      console.log(e)
+      
     }
   };
 
@@ -169,7 +169,7 @@ export class RecordButton extends React.Component {
         });
       }
     } catch (e) {
-      console.log(e)
+      
     }
   };
 
@@ -252,18 +252,18 @@ export class RecordButton extends React.Component {
                   try {
                     this.onStopRecord();
                   } catch (e) {
-                    console.log(e);
+                    
                   }
                   try {
                     await RNFS.unlink(this.state.fileRecorded)
                       .then(() => {
-                        console.log('FILE DELETED');
+                        
                       })
                       // `unlink` will throw an error, if the item to unlink does not exist
                       .catch((err) => {
                       });
                   } catch (e) {
-                    console.log(e);
+                    
                   }
                   this.setState({
                     fileRecorded: undefined,
@@ -273,7 +273,7 @@ export class RecordButton extends React.Component {
                     recordTime: '00:00',
                   });
                 } catch (e) {
-                  console.log(e);
+                  
                 }
               }}
               style={{

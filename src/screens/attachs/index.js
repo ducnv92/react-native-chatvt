@@ -93,7 +93,7 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
             try {
               Linking.openURL(item.url)
             } catch (e) {
-              console.log(e)
+              
             }
           }}
           style={{
@@ -174,7 +174,7 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
             try {
               Linking.openURL(`tel:${receiver?.phone}`)
             } catch (e) {
-              console.log(e)
+              
             }
           }}>
             <Image style={{ height: 48, width: 48, resizeMode: 'contain' }}

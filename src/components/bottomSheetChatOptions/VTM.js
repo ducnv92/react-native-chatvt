@@ -42,7 +42,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
         () => {
             return {
                 updateData(data, order, orderType, typeUser) {
-                    console.log('order', order)
+                    
                     setData(data);
                     setOrder(order);
                     setTypeUser(typeUser);
@@ -63,7 +63,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
 
 
     const toChatWithCustomer = async (order_code, type) => {
-        console.log('type', type)
+        
         try {
             setShow(false)
         } catch (e) {}

@@ -156,7 +156,7 @@ class ChatStore {
       services.create().checkCanSend({
         conversation_id: this.conversation_id,
       }).then(response=>{
-        console.log('can send', response)
+        
         if (response.status === 200) {
           if (response.data.status === 200) {
               this.canSend = response.data.data
@@ -211,7 +211,7 @@ class ChatStore {
       await this.sendMessage(quoteCopy)
     }
 
-    console.log('sendMessage', params)
+    
     let attachment_ids = []
     if (params.attachmentLocal) {
       const formData = new FormData()
@@ -269,7 +269,7 @@ class ChatStore {
               fileUri = result.uri
             } catch (e) {
               fileUri = absolutePath
-              console.log(e)
+              
             }
           } else {
             fileUri = absolutePath
