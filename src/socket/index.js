@@ -7,10 +7,11 @@ import {runInAction, toJS} from "mobx";
 import appStore from "../screens/AppStore";
 import {AppState} from "react-native";
 import _ from "lodash";
+import { SOCKET_URL } from '../index';
 
 
 class Socket{
-  URL = 'https://stag-receiverchat.viettelpost.vn';
+  // URL = 'https://stag-receiverchat.viettelpost.vn';
   // URL = 'https://receiverchat.viettelpost.vn';
 
   static instance
@@ -241,7 +242,7 @@ class Socket{
     console.log('socket', user)
 
     if(user && this.currentToken!==user.token){
-      this.socket = io.connect(this.URL, {
+      this.socket = io.connect(SOCKET_URL, {
         reconnection: true,
         autoConnect: true,
         transports: ["polling", "websocket", "webtransport"],

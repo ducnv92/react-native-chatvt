@@ -1,4 +1,5 @@
-
+export let API_URL = 'https://stag-apichat.viettelpost.vn\'';
+export let SOCKET_URL = 'https://stag-receiverchat.viettelpost.vn';
 
 import { Navigation } from 'react-native-navigation';
 import appStore from './screens/AppStore';
@@ -19,7 +20,7 @@ import { ViewFileScreen } from './screens/webview';
 import BottomSheetChatOptions from './components/bottomSheetChatOptions';
 import BottomSheetChatOptionsVTM from './components/bottomSheetChatOptions/VTM';
 import listChatStore from './screens/listchat/ListChatStore';
-import Socket from "./socket";
+import Socket from './socket';
 
 function safeAreaProviderHOC(Component) {
   function Wrapper(props) {
@@ -47,16 +48,16 @@ class ChatVT {
 
   registerScreen() {
     Navigation.registerComponent('ListChatScreen', () =>
-      gestureHandlerRootHOC(safeAreaProviderHOC(ListChatScreen))
+      gestureHandlerRootHOC(safeAreaProviderHOC(ListChatScreen)),
     );
     Navigation.registerComponent('ChatScreen', () =>
-      gestureHandlerRootHOC(safeAreaProviderHOC(ChatScreen))
+      gestureHandlerRootHOC(safeAreaProviderHOC(ChatScreen)),
     );
     Navigation.registerComponent('AttachsScreen', () =>
-      gestureHandlerRootHOC(safeAreaProviderHOC(AttachsScreen))
+      gestureHandlerRootHOC(safeAreaProviderHOC(AttachsScreen)),
     );
     Navigation.registerComponent('ViewFileScreen', () =>
-      gestureHandlerRootHOC(safeAreaProviderHOC(ViewFileScreen))
+      gestureHandlerRootHOC(safeAreaProviderHOC(ViewFileScreen)),
     );
     const screenEventListener =
       Navigation.events().registerComponentDidAppearListener(
@@ -68,8 +69,8 @@ class ChatVT {
             listChatStore.page = 0;
             listChatStore.getData({});
           }
-          StatusBar.setBackgroundColor(colors.primary)
-        }
+          StatusBar.setBackgroundColor(colors.primary);
+        },
       );
     // screenEventListener.remove();
   }
@@ -77,9 +78,17 @@ class ChatVT {
   /** */
   init(env, storage, lang, appId, token, tokenSSO, onSuccess, onError) {
     this.registerScreen();
+    appStore.env = env;
+    if (env === 'DEV' || env === 'UAT') {
+      API_URL = 'https://stag-apichat.viettelpost.vn';
+      SOCKET_URL = 'https://stag-receiverchat.viettelpost.vn';
+    } else {
+      API_URL = 'https://apichat.viettelpost.vn';
+      SOCKET_URL = 'https://receiverchat.viettelpost.vn';
+    }
+
     this.AsyncStorage = storage;
     appStore.appId = appId;
-    appStore.env = env;
     appStore.changeLanguage(lang);
 
     appStore.Auth(
@@ -88,27 +97,27 @@ class ChatVT {
         token_sso: tokenSSO,
       },
       (res) => {
-        listChatStore.data = []
-        listChatStore.dataPin = []
+        listChatStore.data = [];
+        listChatStore.dataPin = [];
         // if(this.interval){
         //   clearInterval(this.interval)
         // }
         // this.interval = setInterval(()=>{
         //   appStore.onlineState()
         // }, 30000)
-        if(listChatStore.data?.length===0){
-          listChatStore.page = 0
-          listChatStore.getData({})
+        if (listChatStore.data?.length === 0) {
+          listChatStore.page = 0;
+          listChatStore.getData({});
         }
 
         if (onSuccess) onSuccess(res);
       },
-      onError
+      onError,
     );
   }
 
   toListChat(componentId) {
-    if(componentId){
+    if (componentId) {
       appStore.componentId = componentId;
     }
     Navigation.push(componentId, {
@@ -130,7 +139,7 @@ class ChatVT {
   }
 
   toChat(componentId, orderChat, is_receiver) {
-    if(componentId){
+    if (componentId) {
       appStore.componentId = componentId;
     }
     if (orderChat) {
@@ -139,7 +148,7 @@ class ChatVT {
           vtm_user_ids: orderChat.vtm_user_ids,
           order_number: orderChat.order_number,
           vtp_phone_numbers: orderChat.vtp_phone_numbers,
-          is_receiver: is_receiver
+          is_receiver: is_receiver,
         },
         (conversation) => {
           //Navigation.pop('ChatScreen')
@@ -164,13 +173,13 @@ class ChatVT {
             },
           });
         },
-        (error) => alert(error)
+        (error) => alert(error),
       );
     }
   }
 
   chatWithReceiver(componentId, order, is_receiver) {
-    if(componentId){
+    if (componentId) {
       appStore.componentId = componentId;
     }
     if (order?.ORDER_NUMBER) {
@@ -202,12 +211,13 @@ class ChatVT {
             },
           });
         },
-        (error) => alert(error)
+        (error) => alert(error),
       );
     }
   }
+
   chatWithCS(componentId, order) {
-    if(componentId){
+    if (componentId) {
       appStore.componentId = componentId;
     }
     appStore.createConversationWithCS(
@@ -236,7 +246,7 @@ class ChatVT {
           },
         });
       },
-      (error) => alert(error)
+      (error) => alert(error),
     );
   }
 
@@ -250,7 +260,7 @@ class ChatVT {
     onSuccess,
     onError,
     componentId,
-    conversation_id
+    conversation_id,
   ) {
     if (!appStore.user.token) {
       this.init(
@@ -266,43 +276,43 @@ class ChatVT {
               conversation_id: conversation_id,
             },
             (conversation) => {
-              try{
-                Navigation.popTo('ListChatScreen')
-              }catch (e) {
+              try {
+                Navigation.popTo('ListChatScreen');
+              } catch (e) {
 
               }
-             setTimeout(()=>{
-               try{
-                 Navigation.push(componentId?componentId: 'ListChatScreen', {
-                   component: {
-                     id: 'ChatScreen',
-                     name: 'ChatScreen',
-                     options: {
-                       popGesture: false,
-                       bottomTabs: {
-                         visible: false,
-                       },
-                       topBar: {
-                         visible: false,
-                         height: 0,
-                       },
-                     },
-                     passProps: {
-                       data: conversation,
-                     },
-                   },
-                 });
-                 console.log('ChatScreen end')
+              setTimeout(() => {
+                try {
+                  Navigation.push(componentId ? componentId : 'ListChatScreen', {
+                    component: {
+                      id: 'ChatScreen',
+                      name: 'ChatScreen',
+                      options: {
+                        popGesture: false,
+                        bottomTabs: {
+                          visible: false,
+                        },
+                        topBar: {
+                          visible: false,
+                          height: 0,
+                        },
+                      },
+                      passProps: {
+                        data: conversation,
+                      },
+                    },
+                  });
+                  console.log('ChatScreen end');
 
-               }catch (e) {
-                 console.log(e)
-               }
+                } catch (e) {
+                  console.log(e);
+                }
 
-             }, 200)
-            }
+              }, 200);
+            },
           );
         },
-        onError
+        onError,
       );
     } else {
       appStore.conversationDetail(
@@ -310,34 +320,34 @@ class ChatVT {
           conversation_id: conversation_id,
         },
         async (conversation) => {
-          try{
-            Navigation.popTo('ListChatScreen')
+          try {
+            Navigation.popTo('ListChatScreen');
 
-          }catch (e) {
+          } catch (e) {
 
           }
-          setTimeout(()=>{
-          Navigation.push(componentId?componentId: 'ListChatScreen', {
-            component: {
-              id: 'ChatScreen',
-              name: 'ChatScreen',
-              options: {
-                popGesture: false,
-                bottomTabs: {
-                  visible: false,
+          setTimeout(() => {
+            Navigation.push(componentId ? componentId : 'ListChatScreen', {
+              component: {
+                id: 'ChatScreen',
+                name: 'ChatScreen',
+                options: {
+                  popGesture: false,
+                  bottomTabs: {
+                    visible: false,
+                  },
+                  topBar: {
+                    visible: false,
+                    height: 0,
+                  },
                 },
-                topBar: {
-                  visible: false,
-                  height: 0,
+                passProps: {
+                  data: conversation,
                 },
               },
-              passProps: {
-                data: conversation,
-              },
-            },
-          });
-          }, 200)
-        }
+            });
+          }, 200);
+        },
       );
     }
   }
@@ -348,7 +358,7 @@ class ChatVT {
   }
 
   loginAdmin(componentId, storage, username, password, onSuccess, onError) {
-    if(componentId){
+    if (componentId) {
       appStore.componentId = componentId;
     }
     this.registerScreen();
@@ -382,10 +392,10 @@ class ChatVT {
 
   loginVTP(componentId, storage, username, password, onSuccess, onError) {
     Navigation.registerComponent('ListChatScreen', () =>
-      gestureHandlerRootHOC(ListChatScreen)
+      gestureHandlerRootHOC(ListChatScreen),
     );
     Navigation.registerComponent('ChatScreen', () =>
-      gestureHandlerRootHOC(ChatScreen)
+      gestureHandlerRootHOC(ChatScreen),
     );
 
     appStore.loginVTP({ username, password }, async (data) => {
@@ -396,7 +406,7 @@ class ChatVT {
         'VTPost',
         data.TokenKey,
         data.TokenSSO,
-        onSuccess
+        onSuccess,
       );
     });
   }
@@ -407,7 +417,7 @@ class ChatVT {
       { phone: username, ma_buucuc: password },
       async (data) => {
         this.init('DEV', storage, 'VN', 'VTMan', data.token, '', onSuccess);
-      }
+      },
     );
   }
 
@@ -490,10 +500,11 @@ class ChatVT {
           },
         });
       },
-      (error) => alert(error)
+      (error) => alert(error),
     );
   };
 }
+
 export const chatVT = new ChatVT();
 export const ListChat = ListChatScreen;
 export const BottomSheetChat = BottomSheetChatOptions;

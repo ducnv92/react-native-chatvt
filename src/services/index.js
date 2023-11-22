@@ -6,6 +6,7 @@ import appStore from '../screens/AppStore';
 import {Alert} from "react-native";
 import listChatStore from "../screens/listchat/ListChatStore";
 import chatStore from "../screens/chat/ChatStore";
+import { API_URL } from '../index';
 
 export async function getHeader() {
   const user = await MyAsyncStorage.load(USER);
@@ -31,9 +32,9 @@ export async function getHeaderVTM() {
   }
 }
 
-const create = (baseURL = Endpoint.API_BASE) => {
+const create = (baseURL = API_URL) => {
   if (appStore.appId === 'Admin') {
-    baseURL = Endpoint.API_BASE_ADMIN;
+    baseURL = API_URL+'/admin';
   }
 
   const api = apisauce.create({

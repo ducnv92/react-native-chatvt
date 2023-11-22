@@ -1,7 +1,7 @@
-import appStore from '../screens/AppStore';
+import { API_URL } from '../index';
 
-export const API_BASE_ADMIN = 'https://stag-apichat.viettelpost.vn/admin';
-export const API_BASE =  'https://stag-apichat.viettelpost.vn'
+// export const API_BASE_ADMIN = 'https://stag-apichat.viettelpost.vn/admin';
+// export const API_BASE =  'https://stag-apichat.viettelpost.vn'
 
 // export const API_BASE = 'https://apichat.viettelpost.vn';
 // export const API_BASE_ADMIN = 'https://apichat.viettelpost.vn/admin';
@@ -42,8 +42,8 @@ exports.GET_ORDER_INFO = (order_number) =>
   `/conversation/vtm/bill-info/${order_number}`;
 
 //Space
-exports.UPLOAD_FILE = `${API_BASE}/space/upload`;
-exports.DOWNLOAD_FILE = `${API_BASE}/space/download`;
+exports.UPLOAD_FILE = `${API_URL}/space/upload`;
+exports.DOWNLOAD_FILE = `${API_URL}/space/download`;
 
 //quick-message
 exports.QUICK_MESSAGE_CREATE = `/quick-message/create`;
@@ -54,7 +54,7 @@ exports.CHECK_CAN_SEND = (conversation_id) =>
 exports.QUICK_MESSAGE_LIST = `/quick-message/list`;
 
 //Admin
-exports.ADMIN_LOGIN = `${API_BASE}/admin/login`;
+exports.ADMIN_LOGIN = `${API_URL}/admin/login`;
 
 //VTP
 exports.VTP_Login = `https://apiexsso.viettelpost.vn/api/Login/LoginUserPass`;
