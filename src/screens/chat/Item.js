@@ -19,7 +19,6 @@ import {
   formatDuration,
   formatTimeLastMessage,
   groupBy,
-  orderStatus,
   participantType,
 } from '../../utils';
 import { createThumbnail } from '../../components/createThumbnail';
@@ -45,6 +44,7 @@ import VideoViewing from '../../components/videoView/ImageViewing';
 import AnimatedSoundBars from '../../components/waveView';
 import chatStore from './ChatStore';
 import stickerStore from './StickerStore';
+import listChatStore from '../listchat/ListChatStore';
 var _ = require('lodash');
 
 
@@ -1157,7 +1157,7 @@ const OrderItem = function(props) {
                 }}
                 numberOfLines={1}
               >
-                {orderStatus(order?.ORDER_STATUS)}
+                {listChatStore.getOrderStatusById(order?.ORDER_STATUS)}
               </Text>
             </View>
           </View>
@@ -1296,7 +1296,7 @@ const OrderItem = function(props) {
                   }}
                   numberOfLines={1}
                 >
-                  {orderStatus(order?.ORDER_STATUS)}
+                  {listChatStore.getOrderStatusById(order?.ORDER_STATUS)}
                 </Text>
               </View>
             </View>

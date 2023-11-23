@@ -1,6 +1,6 @@
 import {observable, action, makeAutoObservable, toJS} from 'mobx';
 import services from "../../services";
-import {Log} from "../../utils";
+import { Log, orderStatus } from '../../utils';
 import appStore from '../AppStore';
 import _ from "lodash";
 
@@ -15,6 +15,7 @@ class ListChatStore {
    search = '';
    data = [];
    dataPin = [];
+   orderStatusList = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -194,6 +195,26 @@ class ListChatStore {
     }
 
   }
+  async getOrderStatus(params) {
+    const response = await services.create().getOrderStatus({});
+    Log(response);
+    if (response.status === 200||response.status === 201) {
+      if (response.data.status === 200) {
+        this.orderStatusList = response.data.data
+      }
+    }
+  }
+
+  getOrderStatusById(order_status){
+    if(this.orderStatusList&&this.orderStatusList.length>0){
+      const status = this.orderStatusList.find(status=>(status.status+'') === (order_status+''))
+      if(status){
+        return status.name
+      }
+    }
+    return orderStatus(order_status)
+  }
+
 
 }
 

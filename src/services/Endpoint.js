@@ -52,6 +52,7 @@ exports.QUICK_MESSAGE_UPDATE = (conversation_id) =>
 exports.CHECK_CAN_SEND = (conversation_id) =>
   `/conversation/${conversation_id}/able-send`;
 exports.QUICK_MESSAGE_LIST = `/quick-message/list`;
+exports.ORDER_STATUS = `/order/status/list`;
 
 //Admin
 exports.ADMIN_LOGIN = `${API_URL}/admin/login`;

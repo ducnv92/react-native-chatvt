@@ -15,7 +15,7 @@ import appStore from '../AppStore';
 import { Navigation } from 'react-native-navigation';
 import Image from 'react-native-fast-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { formatTimeLastMessage, orderStatus, scale } from '../../utils';
+import { formatTimeLastMessage, scale } from '../../utils';
 import { MTextInput as TextInput } from '../../components';
 import BottomSheetChatOptions from '../../components/bottomSheetChatOptions';
 import stickerStore from '../chat/StickerStore';
@@ -32,6 +32,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
     // StatusBar.setBackgroundColor(colors.primary)
     // StatusBar.setBarStyle(StatusBarSty, false)
     listChatStore.search = '';
+    listChatStore.getOrderStatus()
     stickerStore.getStickers();
     // intLoad();
     // bottomSheetModalRef.current?.present();
@@ -536,7 +537,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     color: colors.neutralText,
                   }}
                 >
-                  - {orderStatus(item.orders?.length > 0 && item.orders[0]?.order_status)}{' '}
+                  - {listChatStore.getOrderStatusById(item.orders?.length > 0 && item.orders[0]?.order_status)}{' '}
                 </Text>
                 <Text style={{
                   textAlign: 'right',

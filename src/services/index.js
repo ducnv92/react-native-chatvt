@@ -203,7 +203,11 @@ const create = (baseURL = API_URL) => {
   const checkCanSend = async (data) =>
       api.get(Endpoint.CHECK_CAN_SEND(data.conversation_id), null, await getHeader());
 
+  const getOrderStatus = async () =>
+      api.get(Endpoint.ORDER_STATUS, null, await getHeader());
+
   return {
+    getOrderStatus,
     checkCanSend,
     getOrderInfoVTM,
     getVTMCustomerByOrder,

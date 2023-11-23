@@ -400,7 +400,7 @@ class ChatVT {
 
     appStore.loginVTP({ username, password }, async (data) => {
       this.init(
-        'PRODUCT',
+        'DEV',
         storage,
         'VN',
         'VTPost',

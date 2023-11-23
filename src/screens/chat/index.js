@@ -45,6 +45,7 @@ import inputStore from './InputStore';
 import InputStore from './InputStore';
 import EmojiKeyboard from '../../components/emoji';
 import KeyboardSpacer from '../../components/keyboardspace';
+import listChatStore from '../listchat/ListChatStore';
 
 export const ChatScreen = observer(function ChatScreen(props) {
   const conversation = props.data;
@@ -346,7 +347,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
                       }}
                     >
                       {
-                        orderStatus(order?.order_status)
+                        listChatStore.getOrderStatusById(order?.order_status)
                       }
                     </Text>
                   </View>

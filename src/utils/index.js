@@ -43,6 +43,7 @@ export const orderStatus = (status) => {
     case   510: return 'Hủy phân công phát'
     case   515: return 'Bưu cục phát duyệt hoàn'
     case   550: return 'Đơn Vị Yêu Cầu Phát Tiếp'
+    case   551: return "Chuyển hoàn bưu cục gốc"
     default:  return ''
   }
 }
