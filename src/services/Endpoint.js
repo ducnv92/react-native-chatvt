@@ -42,8 +42,8 @@ exports.GET_ORDER_INFO = (order_number) =>
   `/conversation/vtm/bill-info/${order_number}`;
 
 //Space
-exports.UPLOAD_FILE = `${API_URL}/space/upload`;
-exports.DOWNLOAD_FILE = `${API_URL}/space/download`;
+exports.UPLOAD_FILE = `/space/upload`;
+exports.DOWNLOAD_FILE = `/space/download`;
 
 //quick-message
 exports.QUICK_MESSAGE_CREATE = `/quick-message/create`;
@@ -55,7 +55,7 @@ exports.QUICK_MESSAGE_LIST = `/quick-message/list`;
 exports.ORDER_STATUS = `/order/status/list`;
 
 //Admin
-exports.ADMIN_LOGIN = `${API_URL}/admin/login`;
+exports.ADMIN_LOGIN = `/admin/login`;
 
 //VTP
 exports.VTP_Login = `https://apiexsso.viettelpost.vn/api/Login/LoginUserPass`;
