@@ -42,7 +42,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
         () => {
             return {
                 updateData(data, order, orderType, typeUser) {
-                    
+
                     setData(data);
                     setOrder(order);
                     setTypeUser(typeUser);
@@ -63,7 +63,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
 
 
     const toChatWithCustomer = async (order_code, type) => {
-        
+
         try {
             setShow(false)
         } catch (e) {}
@@ -71,7 +71,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
             {
                 order_number: order_code,
                 chat_type: type,
-                is_postman_receiver: props?.postman_receiver
+                is_postman_receiver: !isSender
             },
             (conversation) => {
                 Navigation.push(props.componentId, {
