@@ -4,7 +4,10 @@ import {
   View,
   FlatList,
   Platform,
-  KeyboardAvoidingView, Dimensions, StatusBar, Alert,
+  KeyboardAvoidingView,
+  Dimensions,
+  StatusBar,
+  Alert,
 } from 'react-native';
 import { MText as Text } from '../../components';
 import { observer } from 'mobx-react-lite';
@@ -21,7 +24,6 @@ import BottomSheetChatOptions from '../../components/bottomSheetChatOptions';
 import stickerStore from '../chat/StickerStore';
 import _ from 'lodash';
 
-
 export const ListChatScreen = observer(function ListChatScreen(props) {
   const [showSearch, setShowSearch] = useState(false);
   const bottomSheetModalRef = useRef();
@@ -32,7 +34,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
     // StatusBar.setBackgroundColor(colors.primary)
     // StatusBar.setBarStyle(StatusBarSty, false)
     listChatStore.search = '';
-    listChatStore.getOrderStatus()
+    listChatStore.getOrderStatus();
     stickerStore.getStickers();
     // intLoad();
     // bottomSheetModalRef.current?.present();
@@ -42,15 +44,11 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
   }, []);
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      if (query !== undefined) {
-        listChatStore.search = query;
-        listChatStore.page = 0;
-        listChatStore.getData({});
-      }
-    }, 1000);
-
-    return () => clearTimeout(delayDebounceFn);
+    if (query !== undefined) {
+      listChatStore.search = query;
+      listChatStore.page = 0;
+      listChatStore.getData({});
+    }
   }, [query]);
 
   const intLoad = () => {
@@ -87,7 +85,11 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
     const prefix = isMe ? appStore.lang.list_chat.you + ': ' : '';
 
     try {
-      if (item.message?.type === 'CREATED_QUOTE_ORDER' || item.message?.type === 'CREATED_GROUP_QUOTE_ORDER' || item.message?.type === 'QUOTE_ORDER') {
+      if (
+        item.message?.type === 'CREATED_QUOTE_ORDER' ||
+        item.message?.type === 'CREATED_GROUP_QUOTE_ORDER' ||
+        item.message?.type === 'QUOTE_ORDER'
+      ) {
         return (
           <Text
             numberOfLines={1}
@@ -117,82 +119,118 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           >
             <Image
               source={require('../../assets/ic_attach_message.png')}
-              style={{ width: 16, height: 16, resizeMode: 'contain', marginRight: 6 }}
+              style={{
+                width: 16,
+                height: 16,
+                resizeMode: 'contain',
+                marginRight: 6,
+              }}
             />
-            <Text numberOfLines={1} style={{
-              fontSize: 15,
-              fontWeight: setting?.unread_count > 0 ? '600' : '500',
-              color:
-                setting?.unread_count > 0
-                  ? colors.primaryText
-                  : colors.neutralText,
-            }}>{prefix + appStore.lang.list_chat.message_voice}</Text>
+            <Text
+              numberOfLines={1}
+              style={{
+                fontSize: 15,
+                fontWeight: setting?.unread_count > 0 ? '600' : '500',
+                color:
+                  setting?.unread_count > 0
+                    ? colors.primaryText
+                    : colors.neutralText,
+              }}
+            >
+              {prefix + appStore.lang.list_chat.message_voice}
+            </Text>
           </View>
         );
       }
       if (item.message?.type === 'LOCATION') {
         return (
-          <View style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
             <Image
               source={require('../../assets/ic_attach_message.png')}
-              style={{ width: 16, height: 16, resizeMode: 'contain', marginRight: 6 }}
+              style={{
+                width: 16,
+                height: 16,
+                resizeMode: 'contain',
+                marginRight: 6,
+              }}
             />
-            <Text style={{
-              fontSize: 15,
-              fontWeight: setting?.unread_count > 0 ? '600' : '500',
-              color:
-                setting?.unread_count > 0
-                  ? colors.primaryText
-                  : colors.neutralText,
-            }}>{prefix + appStore.lang.list_chat.message_location}</Text>
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: setting?.unread_count > 0 ? '600' : '500',
+                color:
+                  setting?.unread_count > 0
+                    ? colors.primaryText
+                    : colors.neutralText,
+              }}
+            >
+              {prefix + appStore.lang.list_chat.message_location}
+            </Text>
           </View>
         );
       }
       if (item.message?.type === 'FILE') {
         return (
-          <View style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
           >
             <Image
               source={require('../../assets/ic_attach_message.png')}
-              style={{ width: 16, height: 16, resizeMode: 'contain', marginRight: 6 }}
+              style={{
+                width: 16,
+                height: 16,
+                resizeMode: 'contain',
+                marginRight: 6,
+              }}
             />
-            <Text numberOfLines={1}
-                  style={{
-                    flex: 1,
-                    fontWeight: setting?.unread_count > 0 ? '600' : '500',
-                    color:
-                      setting?.unread_count > 0
-                        ? colors.primaryText
-                        : colors.neutralText,
-                  }}>{prefix + appStore.lang.list_chat.message_doc}</Text>
+            <Text
+              numberOfLines={1}
+              style={{
+                flex: 1,
+                fontWeight: setting?.unread_count > 0 ? '600' : '500',
+                color:
+                  setting?.unread_count > 0
+                    ? colors.primaryText
+                    : colors.neutralText,
+              }}
+            >
+              {prefix + appStore.lang.list_chat.message_doc}
+            </Text>
           </View>
         );
       }
       if (item.message?.type === 'STICKER') {
         return (
-          <View style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
           >
-            <Text numberOfLines={1}
-                  style={{
-                    flex: 1,
-                    fontWeight: setting?.unread_count > 0 ? '600' : '500',
-                    color:
-                      setting?.unread_count > 0
-                        ? colors.primaryText
-                        : colors.neutralText,
-                  }}>{prefix + 'gửi 1 nhãn dán'}</Text>
+            <Text
+              numberOfLines={1}
+              style={{
+                flex: 1,
+                fontWeight: setting?.unread_count > 0 ? '600' : '500',
+                color:
+                  setting?.unread_count > 0
+                    ? colors.primaryText
+                    : colors.neutralText,
+              }}
+            >
+              {prefix + 'gửi 1 nhãn dán'}
+            </Text>
           </View>
         );
       }
@@ -218,8 +256,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           </Text>
         );
       }
-    } catch (e) {
-    }
+    } catch (e) {}
     return (
       <Text
         numberOfLines={1}
@@ -240,11 +277,10 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
     let setting = {};
     try {
       let mySetting = item.settings?.find(
-        (i) => i.user_id === appStore.user.type + '_' + appStore.user.user_id,
+        (i) => i.user_id === appStore.user.type + '_' + appStore.user.user_id
       );
       setting = mySetting ? mySetting : {};
-    } catch (e) {
-    }
+    } catch (e) {}
     let receiver = {};
     let isMe = false;
     try {
@@ -252,50 +288,58 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
         appStore.user.type + '_' + appStore.user.user_id ===
         item.message?.sender;
       receiver = item.detail_participants.find(
-        (i) => i.user_id !== appStore.user.user_id,
+        (i) => i.user_id !== appStore.user.user_id
       );
-    } catch (e) {
-    }
+    } catch (e) {}
 
     const rightButtons = [
       <TouchableOpacity
         onPress={() => {
-
           if (setting.is_pin) {
             listChatStore.unPin({ conversation_id: item._id }, () => {
               try {
-                item.settings = item.settings.map(i => {
+                item.settings = item.settings.map((i) => {
                   i.is_pin = false;
                   return i;
                 });
-              } catch (e) {
-
-              }
+              } catch (e) {}
 
               listChatStore.data = [item, ...listChatStore.data];
 
-              listChatStore.dataPin = _.orderBy(listChatStore.dataPin.filter(i => i._id !== item._id), c => c?.message?.created_at, 'desc');
-              listChatStore.data = _.orderBy(listChatStore.data, c => c?.message?.created_at, 'desc');
+              listChatStore.dataPin = _.orderBy(
+                listChatStore.dataPin.filter((i) => i._id !== item._id),
+                (c) => c?.message?.created_at,
+                'desc'
+              );
+              listChatStore.data = _.orderBy(
+                listChatStore.data,
+                (c) => c?.message?.created_at,
+                'desc'
+              );
             });
           } else {
             listChatStore.pin({ conversation_id: item._id }, () => {
               try {
-                item.settings = item.settings.map(i => {
+                item.settings = item.settings.map((i) => {
                   i.is_pin = true;
                   return i;
                 });
-              } catch (e) {
-
-              }
+              } catch (e) {}
               listChatStore.dataPin = [item, ...listChatStore.dataPin];
-              listChatStore.data = _.orderBy(listChatStore.data.filter(i => i._id !== item._id), c => c?.message?.created_at, 'desc');
-              listChatStore.dataPin = _.orderBy(listChatStore.dataPin, c => c?.message?.created_at, 'desc');
+              listChatStore.data = _.orderBy(
+                listChatStore.data.filter((i) => i._id !== item._id),
+                (c) => c?.message?.created_at,
+                'desc'
+              );
+              listChatStore.dataPin = _.orderBy(
+                listChatStore.dataPin,
+                (c) => c?.message?.created_at,
+                'desc'
+              );
 
               try {
                 currentSwipe.current.recenter();
-              } catch (e) {
-                
-              }
+              } catch (e) {}
             });
           }
         }}
@@ -340,16 +384,14 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                 is_show: !setting.is_hide_notification,
               },
               () => {
-                item.settings = item.settings?.map(i => {
+                item.settings = item.settings?.map((i) => {
                   i.is_hide_notification = !i.is_hide_notification;
                   return i;
                 });
                 listChatStore.data = [...listChatStore.data];
                 try {
                   currentSwipe.current.recenter();
-                } catch (e) {
-                  
-                }
+                } catch (e) {}
                 //   item.settings = item.settings.map(i=>{
                 //     i.is_pin = true;
                 //     return i
@@ -357,12 +399,9 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                 // listChatStore.data = [item, ...listChatStore.data]
                 // listChatStore.data = _.orderBy(listChatStore.data.filter(i => i._id !== item._id), c=>c?.message?.created_at, "desc")
                 // listChatStore.dataPin = _.orderBy(listChatStore.dataPin, c=>c?.message?.created_at, "desc")
-              },
+              }
             );
-
-          } catch (e) {
-
-          }
+          } catch (e) {}
         }}
         style={{
           width: 66,
@@ -401,17 +440,15 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           Alert.alert('Xác nhận', 'Bạn chắc chắn xoá hội thoại này?', [
             {
               text: 'Bỏ qua',
-              onPress: () => {
-              },
-            }, {
+              onPress: () => {},
+            },
+            {
               text: 'Đồng ý',
               onPress: () => {
                 listChatStore.hide({ conversation_id: item._id }, () => {
                   try {
                     currentSwipe.current.recenter();
-                  } catch (e) {
-                    
-                  }
+                  } catch (e) {}
                   intLoad();
                 });
               },
@@ -453,9 +490,10 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           onRightButtonsActivate={(event, gestureState, swipeable) => {
             currentSwipe.current = swipeable;
           }}
-          onRightButtonsOpenRelease={(event, gestureState, swipeable) => {
-          }}
-          rightButtonWidth={66} rightButtons={rightButtons}>
+          onRightButtonsOpenRelease={(event, gestureState, swipeable) => {}}
+          rightButtonWidth={66}
+          rightButtons={rightButtons}
+        >
           <TouchableOpacity
             onPress={() => {
               try {
@@ -470,13 +508,11 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   return i;
                 });
                 listChatStore.data = [...listChatStore.data];
-              } catch (e) {
-
-              }
+              } catch (e) {}
               try {
                 listChatStore.dataPin[index].settings = listChatStore.dataPin[
                   index
-                  ].settings.map((i) => {
+                ].settings.map((i) => {
                   if (
                     i.user_id ===
                     appStore.user.type + '_' + appStore.user.user_id
@@ -486,11 +522,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   return i;
                 });
                 listChatStore.dataPin = [...listChatStore.dataPin];
-              } catch (e) {
-
-              }
-
-
+              } catch (e) {}
             }}
             style={{
               flexDirection: 'row',
@@ -518,18 +550,16 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                 <Text
                   numberOfLines={1}
                   style={{
-
                     fontSize: 17,
                     fontWeight: '600',
                     color: colors.primaryText,
                   }}
                 >
                   Đơn {item.order_numbers?.length > 0 && item.order_numbers[0]}{' '}
-
                 </Text>
                 <Text
                   numberOfLines={1}
-                  ellipsizeMode='tail'
+                  ellipsizeMode="tail"
                   style={{
                     flex: 1,
                     fontSize: 13,
@@ -537,14 +567,19 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     color: colors.neutralText,
                   }}
                 >
-                  - {listChatStore.getOrderStatusById(item.orders?.length > 0 && item.orders[0]?.order_status)}{' '}
+                  -{' '}
+                  {listChatStore.getOrderStatusById(
+                    item.orders?.length > 0 && item.orders[0]?.order_status
+                  )}{' '}
                 </Text>
-                <Text style={{
-                  textAlign: 'right',
-                  color: colors.neutralText,
-                  fontSize: 13,
-                  fontWeight: setting?.unread_count > 0 ? '600' : '500',
-                }}>
+                <Text
+                  style={{
+                    textAlign: 'right',
+                    color: colors.neutralText,
+                    fontSize: 13,
+                    fontWeight: setting?.unread_count > 0 ? '600' : '500',
+                  }}
+                >
                   {formatTimeLastMessage(item.message?.created_at, true)}
                 </Text>
               </View>
@@ -581,8 +616,8 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   )}
                   {item.message?.read_by?.map((item, index) => (
                     <View key={index + ''}>
-                      {
-                        item !== (appStore.user.type + '_' + appStore.user.user_id) &&
+                      {item !==
+                        appStore.user.type + '_' + appStore.user.user_id && (
                         <Image
                           style={{
                             height: 16,
@@ -590,9 +625,13 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                             resizeMode: 'center',
                             marginLeft: 6,
                           }}
-                          source={item.includes('VTM') ? require('../../assets/avatar_default.png') : require('../../assets/avatar_default_customer.png')}
+                          source={
+                            item.includes('VTM')
+                              ? require('../../assets/avatar_default.png')
+                              : require('../../assets/avatar_default_customer.png')
+                          }
                         />
-                      }
+                      )}
                     </View>
                   ))}
                   {setting?.unread_count > 0 && (
@@ -645,14 +684,16 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           onRightButtonsActivate={(event, gestureState, swipeable) => {
             currentSwipe.current = swipeable;
           }}
-          rightButtonWidth={66} rightButtons={rightButtons}>
+          rightButtonWidth={66}
+          rightButtons={rightButtons}
+        >
           <TouchableOpacity
             onPress={() => {
               try {
                 navigationChat({ ...item, ...{ receiver: receiver } });
                 listChatStore.data[index].settings = listChatStore.data[
                   index
-                  ].settings.map((i) => {
+                ].settings.map((i) => {
                   if (
                     i.user_id ===
                     appStore.user.type + '_' + appStore.user.user_id
@@ -662,13 +703,11 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   return i;
                 });
                 listChatStore.data = [...listChatStore.data];
-              } catch (e) {
-
-              }
+              } catch (e) {}
               try {
                 listChatStore.dataPin[index].settings = listChatStore.dataPin[
                   index
-                  ].settings.map((i) => {
+                ].settings.map((i) => {
                   if (
                     i.user_id ===
                     appStore.user.type + '_' + appStore.user.user_id
@@ -678,9 +717,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   return i;
                 });
                 listChatStore.dataPin = [...listChatStore.dataPin];
-              } catch (e) {
-
-              }
+              } catch (e) {}
             }}
             style={{
               flexDirection: 'row',
@@ -699,7 +736,11 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
             >
               <Image
                 style={{ height: 48, width: 48, resizeMode: 'center' }}
-                source={receiver?.type === 'VTMAN' ? require('../../assets/avatar_default.png') : require('../../assets/avatar_default_customer.png')}
+                source={
+                  receiver?.type === 'VTMAN'
+                    ? require('../../assets/avatar_default.png')
+                    : require('../../assets/avatar_default_customer.png')
+                }
               />
               {receiver.state?.includes('ONLINE') && (
                 <Image
@@ -719,7 +760,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text
                   numberOfLines={1}
-                  ellipsizeMode='tail'
+                  ellipsizeMode="tail"
                   style={{
                     flex: 1,
                     fontSize: 17,
@@ -727,7 +768,9 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     color: colors.primaryText,
                   }}
                 >
-                  {(receiver?.last_name ? receiver?.last_name : '') + ' ' + (receiver?.first_name ? receiver?.first_name : '')}{' '}
+                  {(receiver?.last_name ? receiver?.last_name : '') +
+                    ' ' +
+                    (receiver?.first_name ? receiver?.first_name : '')}{' '}
                   {receiver?.type === 'VTMAN' && (
                     <Text
                       style={{
@@ -740,12 +783,14 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                     </Text>
                   )}{' '}
                 </Text>
-                <Text style={{
-                  textAlign: 'right',
-                  color: colors.neutralText,
-                  fontWeight: setting?.unread_count > 0 ? '600' : '500',
-                  fontSize: 13,
-                }}>
+                <Text
+                  style={{
+                    textAlign: 'right',
+                    color: colors.neutralText,
+                    fontWeight: setting?.unread_count > 0 ? '600' : '500',
+                    fontSize: 13,
+                  }}
+                >
                   {formatTimeLastMessage(item.message?.created_at, true)}
                 </Text>
               </View>
@@ -759,18 +804,23 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                 {getLastMessage(item, setting, isMe)}
                 {item.message?.read_by?.map((reader, index) => (
                   <View key={index + ''}>
-                    {
-                      reader !== (appStore.user.type + '_' + appStore.user.user_id) && reader !== item?.sender &&
-                      <Image
-                        style={{
-                          height: 16,
-                          width: 16,
-                          resizeMode: 'center',
-                          marginLeft: 6,
-                        }}
-                        source={reader.includes('VTM') ? require('../../assets/avatar_default.png') : require('../../assets/avatar_default_customer.png')}
-                      />
-                    }
+                    {reader !==
+                      appStore.user.type + '_' + appStore.user.user_id &&
+                      reader !== item?.sender && (
+                        <Image
+                          style={{
+                            height: 16,
+                            width: 16,
+                            resizeMode: 'center',
+                            marginLeft: 6,
+                          }}
+                          source={
+                            reader.includes('VTM')
+                              ? require('../../assets/avatar_default.png')
+                              : require('../../assets/avatar_default_customer.png')
+                          }
+                        />
+                      )}
                   </View>
                 ))}
                 <View style={{ flexDirection: 'row' }}>
@@ -852,17 +902,21 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
     );
   }
 
-
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : ''}
       style={{ flex: 1, backgroundColor: 'white' }}
     >
-      <StatusBar backgroundColor={colors.primary}/>
-      <View style={{ position: 'absolute', width: '100%', height: 120, backgroundColor: colors.primary }} />
+      <StatusBar backgroundColor={colors.primary} />
+      <View
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: 120,
+          backgroundColor: colors.primary,
+        }}
+      />
       <SafeAreaView style={{ flex: 1 }}>
-
         <View style={{ height: scale(64), backgroundColor: colors.primary }}>
           {showSearch === true ? (
             <View
@@ -924,10 +978,13 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   />
                 </TouchableOpacity>
               )}
-              <View style={{
-                width: 1, backgroundColor: '#eeeeee99', height: scale(20,
-                ),
-              }} />
+              <View
+                style={{
+                  width: 1,
+                  backgroundColor: '#eeeeee99',
+                  height: scale(20),
+                }}
+              />
               <TouchableOpacity
                 onPress={() => {
                   setShowSearch(false);
@@ -980,9 +1037,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                           },
                         },
                         passProps: {
-                          callback: data => {
-                            
-                          },
+                          callback: (data) => {},
                         },
                       },
                     });
@@ -1021,7 +1076,9 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   textAlign: 'center',
                 }}
               >
-                {appStore.appId === 'VTPost' ? appStore.lang.list_chat.message : 'Trò chuyện'}
+                {appStore.appId === 'VTPost'
+                  ? appStore.lang.list_chat.message
+                  : 'Trò chuyện'}
               </Text>
               <TouchableOpacity
                 onPress={() => setShowSearch(true)}
@@ -1040,19 +1097,39 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
             </View>
           )}
         </View>
-        {
-          listChatStore.data.length === 0 && listChatStore.dataPin.length === 0 && !listChatStore.isLoading && !listChatStore.isLoadingPin &&
-          (
+        {listChatStore.data.length === 0 &&
+          listChatStore.dataPin.length === 0 &&
+          !listChatStore.isLoading &&
+          !listChatStore.isLoadingPin && (
             <TouchableOpacity
               onPress={() => intLoad()}
-              style={{ alignItems: 'center', height: Dimensions.get('window').height, backgroundColor: 'white' }}>
-              <Image source={require('../../assets/ic_message_empty.png')}
-                     style={{ width: 120, height: 120, resizeMode: 'contain', marginTop: 28 }} />
-              <Text style={{ fontWight: '500', fontSize: 15, color: colors.primaryText, marginTop: 16 }}>Quý khách chưa
-                có tin nhắn</Text>
+              style={{
+                alignItems: 'center',
+                height: Dimensions.get('window').height,
+                backgroundColor: 'white',
+              }}
+            >
+              <Image
+                source={require('../../assets/ic_message_empty.png')}
+                style={{
+                  width: 120,
+                  height: 120,
+                  resizeMode: 'contain',
+                  marginTop: 28,
+                }}
+              />
+              <Text
+                style={{
+                  fontWight: '500',
+                  fontSize: 15,
+                  color: colors.primaryText,
+                  marginTop: 16,
+                }}
+              >
+                Quý khách chưa có tin nhắn
+              </Text>
             </TouchableOpacity>
-          )
-        }
+          )}
         <FlatList
           refreshing={listChatStore.isLoading}
           onRefresh={() => {
@@ -1067,7 +1144,6 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
           style={{ flex: 1, backgroundColor: 'white' }}
           data={listChatStore.data}
           extraData={listChatStore.data}
-
           ItemSeparatorComponent={() => (
             <View style={{ backgroundColor: 'white', height: 1 }}>
               <View
@@ -1105,6 +1181,5 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
         <BottomSheetChatOptions ref={bottomSheetModalRef} />
       </SafeAreaView>
     </KeyboardAvoidingView>
-
   );
 });
