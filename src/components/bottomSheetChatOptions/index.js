@@ -24,7 +24,7 @@ import quickMessageStore from '../../screens/chat/QuickMessageStore';
 import colors from '../../Styles';
 import listChatStore from '../../screens/listchat/ListChatStore';
 import appStore from '../../screens/AppStore';
-import { formatTimeLastMessage } from '../../utils';
+import { formatTimeLastMessage, scale } from '../../utils';
 import { chatVT } from '../../index';
 import { Navigation } from 'react-native-navigation';
 import services from '../../services';
@@ -146,6 +146,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
 
   const toChatWithCustomer = async (order_code, type) => {
     setShow(false)
+    
     appStore.createConversation(
       {
         order_number: order_code,
@@ -262,6 +263,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
       </TouchableOpacity>
     );
   };
+  
 
   return (
     <Modal
@@ -278,7 +280,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
             style={{
               flex:1,
               justifyContent: 'flex-end',
-              backgroundColor: '#00000059',
+              backgroundColor: '#00000059',l
             }}
           >
             <View style={{ borderTopLeftRadius: 24,
@@ -372,7 +374,8 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
       )}
 
       {appStore.appId === 'VTMan' && (
-        <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1,
+        }}>
           <TouchableOpacity
             activeOpacity={1}
             onPress={() =>  setShow(false)}
@@ -382,9 +385,12 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
               backgroundColor: '#00000059',
             }}
           >
-            <View style={{ borderTopLeftRadius: 24,
+            <SafeAreaView style={{ borderTopLeftRadius: 24,
               borderTopRightRadius: 24,
+              backgroundColor:"#fff",
               overflow:'hidden'}}>
+              <View style={{paddingTop:16}}>
+              <View style={{height:3,backgroundColor:'#B5B4B8',width:32,alignSelf:"center",marginBottom:12}}/>
               <TouchableOpacity
                 onPress={toChatGroup}
                 style={{
@@ -536,12 +542,14 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
                   </Text>
                 </View>
               </TouchableOpacity>
-            </View>
+              </View>
+            </SafeAreaView>
           </TouchableOpacity>
-        </SafeAreaView>
+        </View>
       )}
     </Modal>
   );
 });
 
 export default BottomSheetChatOptions;
+
