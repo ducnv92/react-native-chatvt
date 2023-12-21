@@ -2,11 +2,13 @@ import React, { cloneElement, memo, useEffect, useRef, useState } from 'react';
 import appStore from '../AppStore';
 import {
   ActivityIndicator,
-  Dimensions, Image,
+  Dimensions,
+  Image,
   Linking,
   Modal,
   Platform,
-  StyleSheet, TouchableHighlight,
+  StyleSheet,
+  TouchableHighlight,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -25,7 +27,11 @@ import { createThumbnail } from '../../components/createThumbnail';
 import ImageViewing from '../../components/imageView/ImageViewing';
 import FastImage from 'react-native-fast-image';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
-import MapView, { PROVIDER_GOOGLE, PROVIDER_DEFAULT, Marker } from 'react-native-maps';
+import MapView, {
+  PROVIDER_GOOGLE,
+  PROVIDER_DEFAULT,
+  Marker,
+} from 'react-native-maps';
 import { toJS } from 'mobx';
 import { createMapLink, createOpenLink } from 'react-native-open-maps';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
@@ -45,10 +51,11 @@ import AnimatedSoundBars from '../../components/waveView';
 import chatStore from './ChatStore';
 import stickerStore from './StickerStore';
 import listChatStore from '../listchat/ListChatStore';
+import ProgressCircle from 'react-native-progress-circle';
+import ic_close from '../../../src/assets/ic_cancel_upload.png';
 var _ = require('lodash');
 
-
-const MapItem = function(props) {
+const MapItem = function (props) {
   const right = props.right;
   return (
     <View>
@@ -57,7 +64,7 @@ const MapItem = function(props) {
           flexDirection: 'row',
           justifyContent: right ? 'flex-end' : 'flex-start',
           alignItems: 'center',
-          marginVertical: right?2.5:4,
+          marginVertical: right ? 2.5 : 4,
           marginHorizontal: 10,
         }}
       >
@@ -77,7 +84,11 @@ const MapItem = function(props) {
               zoomEnabled={false}
               zoomTapEnabled={false}
               scrollEnabled={false}
-              provider={(Platform.OS === 'android' || appStore.appId==='VTPost') ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
+              provider={
+                Platform.OS === 'android' || appStore.appId === 'VTPost'
+                  ? PROVIDER_GOOGLE
+                  : PROVIDER_DEFAULT
+              }
               style={{
                 height: 178,
                 width: 290,
@@ -100,28 +111,28 @@ const MapItem = function(props) {
                 <Image
                   source={require('../../assets/ic_map_pin.png')}
                   style={{ width: 30, height: 30, resizeMode: 'contain' }}
-                  resizeMode='contain'
+                  resizeMode="contain"
                 />
               </Marker>
             </MapView>
             <TouchableOpacity
-              onPress={()=>{
+              onPress={() => {
                 try {
                   Linking.openURL(
                     createMapLink({
                       provider: 'google',
                       // latitude: props.item?.location?.latitude,
                       // longitude: props.item?.location?.longitude,
-                      query: props.item?.location?.latitude + ',' + props.item?.location?.longitude,
-                    }),
+                      query:
+                        props.item?.location?.latitude +
+                        ',' +
+                        props.item?.location?.longitude,
+                    })
                   );
-                } catch (e) {
-                  
-                }
+                } catch (e) {}
               }}
-              style={{position: "absolute",  height: 178,
-                width: 290,}}>
-            </TouchableOpacity>
+              style={{ position: 'absolute', height: 178, width: 290 }}
+            ></TouchableOpacity>
           </View>
         </ContainChatItem>
       </View>
@@ -149,19 +160,24 @@ const MapItem = function(props) {
       {/*  </View>*/}
 
       {/*}*/}
-
     </View>
   );
 };
-const VoiceItem = function(props) {
+const VoiceItem = function (props) {
   const right = props.right;
   const [isPlay, setIsPlay] = useState(false);
   const [showTime, setShowTime] = useState(false);
   const soundbarRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
-  const [currentTime, setCurrentTime] = useState(formatDuration(props.item.attachmentLocal?.length > 0
-    ? (props.item.attachmentLocal.length>0 &&props.item.attachmentLocal[0].duration)
-    :(props.item.attachments.length>0 && props.item.attachments[0]?.duration)));
+  const [currentTime, setCurrentTime] = useState(
+    formatDuration(
+      props.item.attachmentLocal?.length > 0
+        ? props.item.attachmentLocal.length > 0 &&
+            props.item.attachmentLocal[0].duration
+        : props.item.attachments.length > 0 &&
+            props.item.attachments[0]?.duration
+    )
+  );
   let _onFinishedPlayingSubscription = null;
   let _onFinishedLoadingSubscription = null;
   let _onFinishedLoadingFileSubscription = null;
@@ -188,57 +204,50 @@ const VoiceItem = function(props) {
     setIsPlay(true);
     SoundPlayer.playUrl(
       props.item.attachmentLocal?.length > 0
-        ? (props.item.attachmentLocal.length>0 &&props.item.attachmentLocal[0].uri)
-        : (props.item.attachments.length>0 && props.item.attachments[0]?.url),
+        ? props.item.attachmentLocal.length > 0 &&
+            props.item.attachmentLocal[0].uri
+        : props.item.attachments.length > 0 && props.item.attachments[0]?.url
     );
     chatStore.intervalSound = setInterval(async () => {
       const info = await SoundPlayer.getInfo(); // Also, you need to await this because it is async
-      
 
       setCurrentTime(formatDuration(info.currentTime));
     }, 1000);
-    _onFinishedPlayingSubscription = SoundPlayer.addEventListener('FinishedPlaying', (props) => {
-      
-      pause();
-      clearInterval(chatStore.intervalSound);
-    });
-    _onFinishedLoadingSubscription = SoundPlayer.addEventListener('FinishedLoading', ({ success }) => {
-      
-    });
-    _onFinishedLoadingFileSubscription = SoundPlayer.addEventListener('FinishedLoadingFile', ({
-                                                                                                success,
-                                                                                                name,
-                                                                                                type,
-                                                                                              }) => {
-      
-
-    });
-    _onFinishedLoadingURLSubscription = SoundPlayer.addEventListener('FinishedLoadingURL', ({ success, url }) => {
-      
-    });
-    
+    _onFinishedPlayingSubscription = SoundPlayer.addEventListener(
+      'FinishedPlaying',
+      (props) => {
+        pause();
+        clearInterval(chatStore.intervalSound);
+      }
+    );
+    _onFinishedLoadingSubscription = SoundPlayer.addEventListener(
+      'FinishedLoading',
+      ({ success }) => {}
+    );
+    _onFinishedLoadingFileSubscription = SoundPlayer.addEventListener(
+      'FinishedLoadingFile',
+      ({ success, name, type }) => {}
+    );
+    _onFinishedLoadingURLSubscription = SoundPlayer.addEventListener(
+      'FinishedLoadingURL',
+      ({ success, url }) => {}
+    );
   };
 
   const pause = () => {
-    try{
-
-      if(Platform.OS==='android'){
-          _onFinishedPlayingSubscription?.remove();
-          _onFinishedLoadingSubscription?.remove();
-          _onFinishedLoadingURLSubscription?.remove();
-          _onFinishedLoadingFileSubscription?.remove();
+    try {
+      if (Platform.OS === 'android') {
+        _onFinishedPlayingSubscription?.remove();
+        _onFinishedLoadingSubscription?.remove();
+        _onFinishedLoadingURLSubscription?.remove();
+        _onFinishedLoadingFileSubscription?.remove();
       }
-    SoundPlayer.stop();
-    SoundPlayer.unmount();
-    clearInterval(chatStore.intervalSound);
+      SoundPlayer.stop();
+      SoundPlayer.unmount();
+      clearInterval(chatStore.intervalSound);
       setIsPlay(false);
-      
-    }catch (e) {
-      
-    }
-
+    } catch (e) {}
   };
-
 
   return (
     <View>
@@ -247,7 +256,7 @@ const VoiceItem = function(props) {
           flexDirection: 'row',
           justifyContent: right ? 'flex-end' : 'flex-start',
           alignItems: 'center',
-          marginVertical: right?2.5:4,
+          marginVertical: right ? 2.5 : 4,
           marginHorizontal: 10,
         }}
       >
@@ -286,35 +295,49 @@ const VoiceItem = function(props) {
                 source={
                   isPlay
                     ? require('../../assets/ic_pause.png')
-                    : (right ? require('../../assets/ic_play.png') : require('../../assets/ic_play_left.png'))
+                    : right
+                    ? require('../../assets/ic_play.png')
+                    : require('../../assets/ic_play_left.png')
                 }
                 style={{ height: 32, width: 32, resizeMode: 'contain' }}
               />
             </TouchableOpacity>
-            {
-              isPlay ?
-                <AnimatedSoundBars isPlay={true} id={props.item?.attachments?.length>0 && props.item?.attachments[0]?.url}
-                                   barColor={right ? 'white' : '#44494D66'} /> :
-                <AnimatedSoundBars isPlay={false} barColor={right ? 'white' : '#44494D66'} />
-            }
+            {isPlay ? (
+              <AnimatedSoundBars
+                isPlay={true}
+                id={
+                  props.item?.attachments?.length > 0 &&
+                  props.item?.attachments[0]?.url
+                }
+                barColor={right ? 'white' : '#44494D66'}
+              />
+            ) : (
+              <AnimatedSoundBars
+                isPlay={false}
+                barColor={right ? 'white' : '#44494D66'}
+              />
+            )}
 
             {/*<Image*/}
             {/*  source={require('../../assets/ic_wave_white.png')}*/}
             {/*  style={{ flex: 1, marginHorizontal: 16, height: 16, resizeMode: 'contain', tintColor: right ? 'white' : '#B5B4B8' }}*/}
             {/*  tintColor={right ? 'white' : '#B5B4B8'}*/}
             {/*/>*/}
-            <Text style={{
-              width: 55,
-              textAlign: 'right',
-              fontWeight: '500',
-              fontSize: 15,
-              color: right ? 'white' : colors.neutralText,
-            }}>{currentTime}</Text>
+            <Text
+              style={{
+                width: 55,
+                textAlign: 'right',
+                fontWeight: '500',
+                fontSize: 15,
+                color: right ? 'white' : colors.neutralText,
+              }}
+            >
+              {currentTime}
+            </Text>
           </TouchableOpacity>
         </ContainChatItem>
       </View>
-      {
-        showTime &&
+      {showTime && (
         <View
           style={{
             flexDirection: 'row',
@@ -335,14 +358,12 @@ const VoiceItem = function(props) {
             {formatTimeLastMessage(props.item.created_at)}
           </Text>
         </View>
-
-      }
-
+      )}
     </View>
   );
 };
 
-export const VideoItem = function(props) {
+export const VideoItem = function (props) {
   const [thumbnail, setThumbnail] = useState('');
   const [isPause, setIsPause] = useState(true);
   useEffect(() => {
@@ -354,7 +375,7 @@ export const VideoItem = function(props) {
       try {
         const fileName = props.url.slice(
           props.url.lastIndexOf('/') + 1,
-          props.url.length,
+          props.url.length
         );
 
         const response = await createThumbnail({
@@ -365,8 +386,7 @@ export const VideoItem = function(props) {
         });
 
         setThumbnail(response.path);
-      } catch (e) {
-      }
+      } catch (e) {}
     };
 
     createThumb();
@@ -377,10 +397,9 @@ export const VideoItem = function(props) {
 
   return (
     <View>
-
       <View style={props.style}>
-        {(!thumbnail) ? (
-          <ActivityIndicator size='large' />
+        {!thumbnail ? (
+          <ActivityIndicator size="large" />
         ) : (
           <TouchableOpacity
             style={{ alignItems: 'center', justifyContent: 'center' }}
@@ -388,21 +407,66 @@ export const VideoItem = function(props) {
             onLongPress={props.onLongPress}
           >
             <Image
-              style={{ width: '100%', height: '100%', resizeMode: 'cover', borderRadius: 10, overflow: 'hidden'}}
+              style={{
+                width: '100%',
+                height: '100%',
+                resizeMode: 'cover',
+                borderRadius: 10,
+                overflow: 'hidden',
+              }}
               source={thumbnail ? { uri: thumbnail } : {}}
             />
+            {props.url.includes('file://') && (
+              <View
+                style={{
+                  position: 'absolute',
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: 10,
+                  bottom: 0,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <ProgressCircle
+                  percent={30}
+                  radius={24}
+                  borderWidth={3}
+                  color="red"
+                  shadowColor="#999"
+                  bgColor="rgba(255,255,255,1)"
+                >
+                  <Image
+                    source={ic_close}
+                    style={{
+                      width: 16,
+                      height: 16,
+                    }}
+                  />
+                </ProgressCircle>
+              </View>
+            )}
             {!props.url.includes('file://') && (
               <Image
                 source={require('../../assets/ic_play.png')}
                 style={{ width: 56, height: 56, position: 'absolute' }}
               />
             )}
-            <Text style={{
-              position: 'absolute', fontSize: 14, fontWeight: '500', right: 16, bottom: 16, color: 'white',
-              textShadowColor: 'rgba(0, 0, 0, 0.75)',
-              textShadowOffset: { width: -1, height: 1 },
-              textShadowRadius: 2,
-            }}>{formatDuration(props.duration)}</Text>
+            <Text
+              style={{
+                position: 'absolute',
+                fontSize: 14,
+                fontWeight: '500',
+                right: 16,
+                bottom: 16,
+                color: 'white',
+                textShadowColor: 'rgba(0, 0, 0, 0.75)',
+                textShadowOffset: { width: -1, height: 1 },
+                textShadowRadius: 2,
+              }}
+            >
+              {formatDuration(props.duration)}
+            </Text>
           </TouchableOpacity>
         )}
       </View>
@@ -417,12 +481,13 @@ export const VideoItem = function(props) {
   );
 };
 
-const MessageItem = function(props) {
+const MessageItem = function (props) {
   const item = props.item;
   const right = props.right;
   const [showTime, setShowTime] = useState(false);
   const [images, setImages] = useState([]);
   const [imageVisible, setImageVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleUrlPress = (url, matchIndex) => {
     Linking.openURL(url);
@@ -450,7 +515,7 @@ const MessageItem = function(props) {
   return (
     <>
       {item.has_attachment ? (
-        <View style={{ marginVertical: right?2.5:4, marginHorizontal: 10 }}>
+        <View style={{ marginVertical: right ? 2.5 : 4, marginHorizontal: 10 }}>
           <View
             style={{
               flexDirection: 'row',
@@ -471,7 +536,10 @@ const MessageItem = function(props) {
             )}
 
             <View
-              style={{ borderRadius: 10, borderTopRightRadius: right && props.bottomMe ? 6 : 10 }}
+              style={{
+                borderRadius: 10,
+                borderTopRightRadius: right && props.bottomMe ? 6 : 10,
+              }}
             >
               {item.attachmentLocal && item.attachmentLocal.length > 0 && (
                 <View
@@ -479,12 +547,15 @@ const MessageItem = function(props) {
                     maxWidth: item.attachmentLocal?.length > 1 ? 294 : 200,
                   }}
                 >
-                  <ContainChatItem {...props} style={{
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    borderRadius: 10,
-                    // overflow: 'hidden',
-                  }}>
+                  <ContainChatItem
+                    {...props}
+                    style={{
+                      flexDirection: 'row',
+                      flexWrap: 'wrap',
+                      borderRadius: 10,
+                      // overflow: 'hidden',
+                    }}
+                  >
                     {item.attachmentLocal.map((File, index) => {
                       const attach = File.uri;
                       if (
@@ -495,11 +566,12 @@ const MessageItem = function(props) {
                       ) {
                         return (
                           <TouchableOpacity
-                            style={{
-                              // width: item.attachments.length === 1 ? 200 : 145,
-                              // height: item.attachments.length === 1 ? 200 : 145,
-
-                            }}
+                            style={
+                              {
+                                // width: item.attachments.length === 1 ? 200 : 145,
+                                // height: item.attachments.length === 1 ? 200 : 145,
+                              }
+                            }
                             key={attach.url}
                             onPress={() => {
                               setImages([
@@ -511,19 +583,42 @@ const MessageItem = function(props) {
                             }}
                             onLongPress={props.onLongPress}
                           >
-                            <Image
+                            <FastImage
                               source={{ uri: attach }}
                               style={{
                                 backgroundColor: '#F2F2F2',
                                 borderRadius: 5,
                                 overflow: 'hidden',
-                                width: item.attachmentLocal.length === 1 ? 200 : 145,
-                                height: item.attachmentLocal.length === 1 ? 200 : 145,
-                                marginLeft: item.attachmentLocal.length > 0 ? ((index + 1) % 2 === 0 ? 4 : 0) : 0,
-                                marginTop: item.attachmentLocal.length > 0 ? (index > 1 ? 4 : 0) : 0,
+                                width:
+                                  item.attachmentLocal.length === 1 ? 200 : 145,
+                                height:
+                                  item.attachmentLocal.length === 1 ? 200 : 145,
+                                marginLeft:
+                                  item.attachmentLocal.length > 0
+                                    ? (index + 1) % 2 === 0
+                                      ? 4
+                                      : 0
+                                    : 0,
+                                marginTop:
+                                  item.attachmentLocal.length > 0
+                                    ? index > 1
+                                      ? 4
+                                      : 0
+                                    : 0,
                                 resizeMode: 'cover',
                               }}
-                              LoadingIndicatorComponent={ActivityIndicator}
+                              onLoadEnd={() => setLoading(false)}
+                            />
+                            <ActivityIndicator
+                              color={'#E40A0A'}
+                              style={{
+                                position: 'absolute',
+                                left: 0,
+                                right: 0,
+                                top: 0,
+                                bottom: 0,
+                              }}
+                              animating={loading}
                             />
                           </TouchableOpacity>
                         );
@@ -545,7 +640,7 @@ const MessageItem = function(props) {
                               height: Dimensions.get('window').width * 0.5,
                               borderRadius: 10,
                               overflow: 'hidden',
-                              marginTop: index>0?4:0
+                              marginTop: index > 0 ? 4 : 0,
                             }}
                           ></VideoItem>
                         );
@@ -560,12 +655,15 @@ const MessageItem = function(props) {
                     maxWidth: item.attachments?.length > 1 ? 294 : 200,
                   }}
                 >
-                  <ContainChatItem {...props} style={{
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    borderRadius: 10,
-                    // overflow: 'hidden',
-                  }}>
+                  <ContainChatItem
+                    {...props}
+                    style={{
+                      flexDirection: 'row',
+                      flexWrap: 'wrap',
+                      borderRadius: 10,
+                      // overflow: 'hidden',
+                    }}
+                  >
                     {item.attachments.map((attach, index) => {
                       if (
                         attach.url.toLowerCase().includes('jpg') ||
@@ -575,11 +673,12 @@ const MessageItem = function(props) {
                       ) {
                         return (
                           <TouchableOpacity
-                            style={{
-                              // width: item.attachments.length === 1 ? 200 : 145,
-                              // height: item.attachments.length === 1 ? 200 : 145,
-
-                            }}
+                            style={
+                              {
+                                // width: item.attachments.length === 1 ? 200 : 145,
+                                // height: item.attachments.length === 1 ? 200 : 145,
+                              }
+                            }
                             key={attach.url}
                             onPress={() => {
                               setImages([
@@ -591,20 +690,43 @@ const MessageItem = function(props) {
                             }}
                             onLongPress={props.onLongPress}
                           >
-                            <Image
+                            <FastImage
                               source={{ uri: attach.url }}
                               style={{
                                 borderColor: '#f2f2f2',
                                 backgroundColor: '#F2F2F2',
                                 borderRadius: 5,
                                 overflow: 'hidden',
-                                width: item.attachments.length === 1 ? 200 : 145,
-                                height: item.attachments.length === 1 ? 200 : 145,
-                                marginLeft: item.attachments.length > 0 ? ((index + 1) % 2 === 0 ? 4 : 0) : 0,
-                                marginTop: item.attachments.length > 0 ? (index > 1 ? 4 : 0) : 0,
+                                width:
+                                  item.attachments.length === 1 ? 200 : 145,
+                                height:
+                                  item.attachments.length === 1 ? 200 : 145,
+                                marginLeft:
+                                  item.attachments.length > 0
+                                    ? (index + 1) % 2 === 0
+                                      ? 4
+                                      : 0
+                                    : 0,
+                                marginTop:
+                                  item.attachments.length > 0
+                                    ? index > 1
+                                      ? 4
+                                      : 0
+                                    : 0,
                                 resizeMode: 'cover',
                               }}
-                              LoadingIndicatorComponent={ActivityIndicator}
+                              onLoadEnd={() => setLoading(false)}
+                            />
+                            <ActivityIndicator
+                              color={'#E40A0A'}
+                              style={{
+                                position: 'absolute',
+                                left: 0,
+                                right: 0,
+                                top: 0,
+                                bottom: 0,
+                              }}
+                              animating={loading}
                             />
                           </TouchableOpacity>
                         );
@@ -625,8 +747,12 @@ const MessageItem = function(props) {
                               overflow: 'hidden',
                               width: Dimensions.get('window').width * 0.5,
                               height: Dimensions.get('window').width * 0.5,
-                              marginTop: index>0?4:0,
-                              marginBottom: item.attachments.length>0 && item.attachments.length-index>1 ?4:0
+                              marginTop: index > 0 ? 4 : 0,
+                              marginBottom:
+                                item.attachments.length > 0 &&
+                                item.attachments.length - index > 1
+                                  ? 4
+                                  : 0,
                             }}
                           />
                         );
@@ -637,8 +763,7 @@ const MessageItem = function(props) {
               )}
             </View>
           </View>
-          {
-            showTime &&
+          {showTime && (
             <View
               style={{
                 flexDirection: 'row',
@@ -658,8 +783,7 @@ const MessageItem = function(props) {
                 {formatTimeLastMessage(item.created_at)}
               </Text>
             </View>
-
-          }
+          )}
           {item.status === 'error' && (
             <Text
               style={{
@@ -675,7 +799,7 @@ const MessageItem = function(props) {
           )}
         </View>
       ) : (
-        <View style={{ marginVertical: right?2: 3, marginHorizontal: 10 }}>
+        <View style={{ marginVertical: right ? 2 : 3, marginHorizontal: 10 }}>
           <View
             style={{
               flexDirection: 'row',
@@ -695,9 +819,7 @@ const MessageItem = function(props) {
               />
             )}
 
-
-            <ContainChatItem {...props}   >
-
+            <ContainChatItem {...props}>
               <TouchableOpacity
                 onPress={() => setShowTime(!showTime)}
                 style={{
@@ -707,19 +829,19 @@ const MessageItem = function(props) {
                         ? colors.primary
                         : '#F2F2F2'
                       : right
-                        ? colors.bgVTM
-                        : '#F2F2F2',
+                      ? colors.bgVTM
+                      : '#F2F2F2',
                   padding: 12,
                   maxWidth: Dimensions.get('window').width * 0.75,
                   borderRadius: 10,
                   borderWidth: right ? 0 : 1,
                   borderColor: '#DCE6F0',
-                  borderTopRightRadius: (right && props.bottomMe) ? 6 : 10,
-                  borderBottomRightRadius: (right && props.topMe) ? 6 : 10,
-                  borderTopLeftRadius: (!right && !props.topMe) ? 6 : 10,
-                  borderBottomLeftRadius: (!right && !props.bottomMe) ? 6 : 10,
-                }}>
-
+                  borderTopRightRadius: right && props.bottomMe ? 6 : 10,
+                  borderBottomRightRadius: right && props.topMe ? 6 : 10,
+                  borderTopLeftRadius: !right && !props.topMe ? 6 : 10,
+                  borderBottomLeftRadius: !right && !props.bottomMe ? 6 : 10,
+                }}
+              >
                 <ParsedText
                   accessible={true}
                   // accessibilityActions={[
@@ -767,7 +889,6 @@ const MessageItem = function(props) {
                 </ParsedText>
               </TouchableOpacity>
             </ContainChatItem>
-
           </View>
           {/*<Emoji {...props}/>*/}
 
@@ -798,8 +919,7 @@ const MessageItem = function(props) {
               {appStore.lang.chat.send_error}
             </Text>
           )}
-          {
-            showTime &&
+          {showTime && (
             <View
               style={{
                 flexDirection: 'row',
@@ -819,12 +939,9 @@ const MessageItem = function(props) {
                 {formatTimeLastMessage(item.created_at)}
               </Text>
             </View>
-
-          }
-
+          )}
         </View>
-      )
-      }
+      )}
       <ImageViewing
         images={images}
         swipeToCloseEnabled={true}
@@ -837,13 +954,13 @@ const MessageItem = function(props) {
   );
 };
 
-const DocumentItem = function(props) {
+const DocumentItem = function (props) {
   const item = props.item;
   const right = props.right;
   return (
     <>
       {item.has_attachment && (
-        <View style={{ marginVertical: right?2.5:4, marginHorizontal: 10 }}>
+        <View style={{ marginVertical: right ? 2.5 : 4, marginHorizontal: 10 }}>
           <View
             style={{
               flexDirection: 'row',
@@ -1079,9 +1196,11 @@ const DocumentItem = function(props) {
   );
 };
 
-const OrderItem = function(props) {
+const OrderItem = function (props) {
   const item = props.item;
-  const order = item.order_info?.vtp_order ? item.order_info?.vtp_order : item.order_info?.vtm_bill;
+  const order = item.order_info?.vtp_order
+    ? item.order_info?.vtp_order
+    : item.order_info?.vtm_bill;
 
   let productNames = '';
 
@@ -1095,12 +1214,9 @@ const OrderItem = function(props) {
         }).join(' + ');
       }
     } else {
-      productNames = order.ten_hang?order.ten_hang: order.product_name;
+      productNames = order.ten_hang ? order.ten_hang : order.product_name;
     }
-
-  } catch (e) {
-    
-  }
+  } catch (e) {}
   if (item.type === 'CREATED_GROUP_QUOTE_ORDER') {
     return (
       <TouchableOpacity
@@ -1113,8 +1229,13 @@ const OrderItem = function(props) {
                   id: 'OrderInfomationtScreenID',
                   name: 'OrderInfomationtScreen',
                   passProps: {
-                    orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
-                    isSender: item.order_info?.sender_phone !== appStore.user?.phone ? 4 : 1,
+                    orderId: item.order_info?.order_number
+                      ? item.order_info?.order_number
+                      : order?.ORDER_NUMBER,
+                    isSender:
+                      item.order_info?.sender_phone !== appStore.user?.phone
+                        ? 4
+                        : 1,
                   },
                   options: {
                     bottomTabs: {
@@ -1124,9 +1245,7 @@ const OrderItem = function(props) {
                 },
               });
             }
-          } catch (e) {
-            
-          }
+          } catch (e) {}
         }}
       >
         <View
@@ -1137,7 +1256,6 @@ const OrderItem = function(props) {
           }}
         >
           <View style={{ flexDirection: 'row' }}>
-
             <View
               style={{
                 paddingVertical: 5,
@@ -1161,7 +1279,9 @@ const OrderItem = function(props) {
               </Text>
             </View>
           </View>
-          <View style={{ marginTop: 8, flexDirection: 'row', alignItems: 'center' }}>
+          <View
+            style={{ marginTop: 8, flexDirection: 'row', alignItems: 'center' }}
+          >
             <Text
               style={{
                 fontWeight: '600',
@@ -1179,7 +1299,9 @@ const OrderItem = function(props) {
                 color: '#E03',
               }}
             >
-              {item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER}
+              {item.order_info?.order_number
+                ? item.order_info?.order_number
+                : order?.ORDER_NUMBER}
             </Text>
           </View>
 
@@ -1193,7 +1315,9 @@ const OrderItem = function(props) {
           >
             {productNames}
           </Text>
-          <View style={{ height: 1, backgroundColor: '#EEE', marginVertical: 8 }} />
+          <View
+            style={{ height: 1, backgroundColor: '#EEE', marginVertical: 8 }}
+          />
           <Text
             style={{
               fontWeight: '600',
@@ -1228,8 +1352,6 @@ const OrderItem = function(props) {
   }
 
   if (order?.ORDER_NUMBER) {
-
-
     return (
       <TouchableOpacity
         onPress={() => {
@@ -1241,8 +1363,13 @@ const OrderItem = function(props) {
                   id: 'OrderInfomationtScreenID',
                   name: 'OrderInfomationtScreen',
                   passProps: {
-                    orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
-                    isSender: item.order_info?.sender_phone !== appStore.user?.phone ? 4 : 1,
+                    orderId: item.order_info?.order_number
+                      ? item.order_info?.order_number
+                      : order?.ORDER_NUMBER,
+                    isSender:
+                      item.order_info?.sender_phone !== appStore.user?.phone
+                        ? 4
+                        : 1,
                   },
                   options: {
                     bottomTabs: {
@@ -1252,9 +1379,7 @@ const OrderItem = function(props) {
                 },
               });
             }
-          } catch (e) {
-            
-          }
+          } catch (e) {}
         }}
       >
         <View
@@ -1265,7 +1390,9 @@ const OrderItem = function(props) {
           }}
         >
           <View style={{ flexDirection: 'row' }}>
-            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+            <View
+              style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
+            >
               <Text
                 style={{
                   fontWeight: '600',
@@ -1273,7 +1400,9 @@ const OrderItem = function(props) {
                   color: colors.primaryText,
                 }}
               >
-                {item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER}
+                {item.order_info?.order_number
+                  ? item.order_info?.order_number
+                  : order?.ORDER_NUMBER}
               </Text>
               <View
                 style={{
@@ -1344,7 +1473,9 @@ const OrderItem = function(props) {
                   id: 'OrderInfomationtScreenID',
                   name: 'OrderInfomationtScreen',
                   passProps: {
-                    orderId: item.order_info?.order_number ? item.order_info?.order_number : order?.ORDER_NUMBER,
+                    orderId: item.order_info?.order_number
+                      ? item.order_info?.order_number
+                      : order?.ORDER_NUMBER,
                     isSender: item.order_info?.type === 1 ? 4 : 1,
                   },
                   options: {
@@ -1368,7 +1499,9 @@ const OrderItem = function(props) {
           }}
         >
           <View style={{ flexDirection: 'row' }}>
-            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+            <View
+              style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
+            >
               <Text
                 style={{
                   fontWeight: '600',
@@ -1376,7 +1509,11 @@ const OrderItem = function(props) {
                   color: colors.primaryText,
                 }}
               >
-                {item.order_info?.order_number ? item.order_info?.order_number : (order?.ma_phieugui ? order?.ma_phieugui : order?.ORDER_NUMBER)}
+                {item.order_info?.order_number
+                  ? item.order_info?.order_number
+                  : order?.ma_phieugui
+                  ? order?.ma_phieugui
+                  : order?.ORDER_NUMBER}
               </Text>
               <View
                 style={{
@@ -1412,7 +1549,17 @@ const OrderItem = function(props) {
               marginTop: 10,
             }}
           >
-            {order?.ten_khnhan ? order?.ten_khnhan : (order.order_sendname ? order.order_sendname : order?.receiver_fullname)} - {order?.tel_khnhan ? order?.tel_khnhan : (order.order_sendtel ? order.order_sendtel : order?.receiver_phone)}
+            {order?.ten_khnhan
+              ? order?.ten_khnhan
+              : order.order_sendname
+              ? order.order_sendname
+              : order?.receiver_fullname}{' '}
+            -{' '}
+            {order?.tel_khnhan
+              ? order?.tel_khnhan
+              : order.order_sendtel
+              ? order.order_sendtel
+              : order?.receiver_phone}
           </Text>
           <Text
             style={{
@@ -1436,12 +1583,10 @@ const OrderItem = function(props) {
         {/*}*/}
       </TouchableOpacity>
     );
-
   }
 };
 
-
-const StickerItem = function(props) {
+const StickerItem = function (props) {
   const right = props.right;
   return (
     <View
@@ -1453,8 +1598,12 @@ const StickerItem = function(props) {
         marginHorizontal: 16,
       }}
     >
-      <FastImage source={stickerStore.getStickerImage(props.item.sticker_ids?.length>0 && props.item.sticker_ids[0])}
-                 style={{ width: 86, height: 86, resizeMode: 'contain' }} />
+      <FastImage
+        source={stickerStore.getStickerImage(
+          props.item.sticker_ids?.length > 0 && props.item.sticker_ids[0]
+        )}
+        style={{ width: 86, height: 86, resizeMode: 'contain' }}
+      />
     </View>
   );
 };
@@ -1473,13 +1622,19 @@ export class ChatItem extends React.Component {
 
   getFullName(user_id) {
     const find = this.props.conversation?.detail_participants?.find(
-      (p) => p.full_user_id === user_id,
+      (p) => p.full_user_id === user_id
     );
     const findP = this.props.conversation?.participants?.find(
-      (p) => p.id === user_id,
+      (p) => p.id === user_id
     );
     if (find) {
-      return find.last_name + ' ' + find.first_name + ' - ' + participantType(findP.participant_type);
+      return (
+        find.last_name +
+        ' ' +
+        find.first_name +
+        ' - ' +
+        participantType(findP.participant_type)
+      );
     }
     if (user_id.includes('ADMIN')) {
       return 'Admin';
@@ -1494,33 +1649,71 @@ export class ChatItem extends React.Component {
     let topMe = false;
     let bottomMe = false;
     try {
-      topMe = this.props.data[this.props.index - 1].sender === this.item.sender && this.props.data[this.props.index - 1].type !== 'QUOTE_ORDER';
-    } catch (e) {
-    }
+      topMe =
+        this.props.data[this.props.index - 1].sender === this.item.sender &&
+        this.props.data[this.props.index - 1].type !== 'QUOTE_ORDER';
+    } catch (e) {}
 
     try {
-      bottomMe = this.props.data[this.props.index + 1].sender === this.item.sender && this.props.data[this.props.index + 1].type !== 'QUOTE_ORDER';
-    } catch (e) {
-    }
+      bottomMe =
+        this.props.data[this.props.index + 1].sender === this.item.sender &&
+        this.props.data[this.props.index + 1].type !== 'QUOTE_ORDER';
+    } catch (e) {}
 
-    let dividerDay =  null
+    let dividerDay = null;
     try {
-      if( moment(this.props.data[this.props.index].created_at).endOf('day').diff(moment(this.props.data[this.props.index+1].created_at).startOf('day'), 'days')!==0){
+      if (
+        moment(this.props.data[this.props.index].created_at)
+          .endOf('day')
+          .diff(
+            moment(this.props.data[this.props.index + 1].created_at).startOf(
+              'day'
+            ),
+            'days'
+          ) !== 0
+      ) {
         dividerDay = (
-          <View style={{width: '100%', height: 42, paddingHorizontal: 16, alignItems: 'center', justifyContent: 'center'}}>
-            <View style={{width: '100%', height: 1, backgroundColor: '#DCE6F0'}}></View>
-            <Text style={{color: '#828282'  , fontSize: 13, fontWeight: '500', padding: 12, backgroundColor: 'white', position: 'absolute'}}>{moment(this.props.data[this.props.index].created_at).format('DD/MM')}</Text>
+          <View
+            style={{
+              width: '100%',
+              height: 42,
+              paddingHorizontal: 16,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <View
+              style={{ width: '100%', height: 1, backgroundColor: '#DCE6F0' }}
+            ></View>
+            <Text
+              style={{
+                color: '#828282',
+                fontSize: 13,
+                fontWeight: '500',
+                padding: 12,
+                backgroundColor: 'white',
+                position: 'absolute',
+              }}
+            >
+              {moment(this.props.data[this.props.index].created_at).format(
+                'DD/MM'
+              )}
+            </Text>
           </View>
-        )
+        );
       }
-    }catch (e) {
-      
-    }
-
+    } catch (e) {}
 
     let messageView;
     if (this.item.type === 'MESSAGE') {
-      messageView = <MessageItem item={this.props.item} topMe={topMe} bottomMe={bottomMe} right={right} />;
+      messageView = (
+        <MessageItem
+          item={this.props.item}
+          topMe={topMe}
+          bottomMe={bottomMe}
+          right={right}
+        />
+      );
     }
     if (
       this.item.type === 'CREATED_QUOTE_ORDER' ||
@@ -1530,9 +1723,7 @@ export class ChatItem extends React.Component {
       messageView = <OrderItem item={this.props.item} right={right} />;
       return messageView;
     }
-    if (
-      this.item.type === 'STICKER'
-    ) {
+    if (this.item.type === 'STICKER') {
       messageView = <StickerItem item={this.props.item} right={right} />;
     }
     if (this.item.type === 'LOCATION') {
@@ -1546,9 +1737,19 @@ export class ChatItem extends React.Component {
     }
     if (!right && this.props.conversation.type === 'GROUP') {
       return (
-        <View style={{ flexDirection: 'row', paddingVertical: 4, alignItems: 'flex-start' }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            paddingVertical: 4,
+            alignItems: 'flex-start',
+          }}
+        >
           <Image
-            source={this.item.sender.includes('VTM') ? require('../../assets/avatar_default.png') : require('../../assets/avatar_default_customer.png')}
+            source={
+              this.item.sender.includes('VTM')
+                ? require('../../assets/avatar_default.png')
+                : require('../../assets/avatar_default_customer.png')
+            }
             style={{
               width: 32,
               height: 32,
@@ -1576,9 +1777,6 @@ export class ChatItem extends React.Component {
       );
     }
 
-
-
-
     if (right || this.item.type === 'GROUP') {
       return (
         <View style={{ flexDirection: 'column', paddingVertical: 2 }}>
@@ -1594,8 +1792,8 @@ export class ChatItem extends React.Component {
             >
               {this.item.read_by?.map((item) => (
                 <>
-                  {
-                    item !== (appStore.user.type + '_' + appStore.user.user_id) &&
+                  {item !==
+                    appStore.user.type + '_' + appStore.user.user_id && (
                     <Image
                       style={{
                         height: 16,
@@ -1603,9 +1801,13 @@ export class ChatItem extends React.Component {
                         resizeMode: 'center',
                         marginLeft: 10,
                       }}
-                      source={item.includes('VTM') ? require('../../assets/avatar_default.png') : require('../../assets/avatar_default_customer.png')}
+                      source={
+                        item.includes('VTM')
+                          ? require('../../assets/avatar_default.png')
+                          : require('../../assets/avatar_default_customer.png')
+                      }
                     />
-                  }
+                  )}
                 </>
               ))}
             </View>
@@ -1613,9 +1815,12 @@ export class ChatItem extends React.Component {
         </View>
       );
     } else {
-      return <View style={{}}>
-        {dividerDay}
-        {messageView}</View>;
+      return (
+        <View style={{}}>
+          {dividerDay}
+          {messageView}
+        </View>
+      );
     }
   }
 }
@@ -1623,13 +1828,18 @@ export class ChatItem extends React.Component {
 function ContainChatItem(props) {
   const containerRef = useRef();
   const [showPopover, setShowPopover] = useState(false);
-  const [reactObject, setReactObject] = useState(props.item?.reactions ? groupBy(props.item?.reactions, (react) => react.type) : new Map());
+  const [reactObject, setReactObject] = useState(
+    props.item?.reactions
+      ? groupBy(props.item?.reactions, (react) => react.type)
+      : new Map()
+  );
   const [position, setPosition] = useState({ width: 0, height: 0, x: 0, y: 0 });
-
 
   useEffect(() => {
     setReactObject(
-      props.item?.reactions ? groupBy(props.item?.reactions, (react) => react.type) : new Map(),
+      props.item?.reactions
+        ? groupBy(props.item?.reactions, (react) => react.type)
+        : new Map()
     );
   }, [props.item?.reactions]);
 
@@ -1656,7 +1866,7 @@ function ContainChatItem(props) {
         conversation_id: props.item.conversation_id,
         message_id: props.item._id,
       });
-      
+
       if (response.data.status === 200) {
         // if (is_enable) {
         //   setReactions([
@@ -1671,10 +1881,7 @@ function ContainChatItem(props) {
         //   );
         // }
       }
-    } catch (e) {
-      
-    }
-
+    } catch (e) {}
   };
 
   function getUrlExtension(url) {
@@ -1689,7 +1896,10 @@ function ContainChatItem(props) {
       onPress={() => {
         try {
           if (props.item.type === 'FILE') {
-            DownloadViewFile(props.item.attachments?.length>0 && props.item.attachments[0].url);
+            DownloadViewFile(
+              props.item.attachments?.length > 0 &&
+                props.item.attachments[0].url
+            );
           }
           if (props.item.type === 'LOCATION') {
             try {
@@ -1698,47 +1908,56 @@ function ContainChatItem(props) {
                   provider: 'google',
                   // latitude: props.item?.location?.latitude,
                   // longitude: props.item?.location?.longitude,
-                  query: props.item?.location?.latitude + ',' + props.item?.location?.longitude,
-                }),
+                  query:
+                    props.item?.location?.latitude +
+                    ',' +
+                    props.item?.location?.longitude,
+                })
               );
-            } catch (e) {
-              
-            }
+            } catch (e) {}
           }
-        } catch (e) {
-        }
+        } catch (e) {}
       }}
       onLongPress={onLongPress}
     >
-      <View
-
-        style={[{
-
-        }]}
-      >
-        <View style={[props.style, { overflow: 'hidden',  flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: props.right ? 'flex-end' : 'flex-start', }]}>
-          {
-            props.children !== null &&
-            React.Children.map(props.children, child => React.cloneElement(child != null ? child : <></>, { onLongPress }))
-          }
+      <View style={[{}]}>
+        <View
+          style={[
+            props.style,
+            {
+              overflow: 'hidden',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: props.right ? 'flex-end' : 'flex-start',
+            },
+          ]}
+        >
+          {props.children !== null &&
+            React.Children.map(props.children, (child) =>
+              React.cloneElement(child != null ? child : <></>, { onLongPress })
+            )}
         </View>
         {props.item?.reactions?.length > 0 && (
           <View
-            style={[{
-              flexDirection: 'row',
-              borderColor: 'white',
-              position: 'absolute',
-
-            },
-              (props.right ? {
-                left: props.item?.reactions.length>0?(-props.item?.reactions.length*32):0,
-                top: 10,
-              } : {
-                right: -8-(props.item?.reactions.length*32),
-                top: 10,
-              })]}
+            style={[
+              {
+                flexDirection: 'row',
+                borderColor: 'white',
+                position: 'absolute',
+              },
+              props.right
+                ? {
+                    left:
+                      props.item?.reactions.length > 0
+                        ? -props.item?.reactions.length * 32
+                        : 0,
+                    top: 10,
+                  }
+                : {
+                    right: -8 - props.item?.reactions.length * 32,
+                    top: 10,
+                  },
+            ]}
           >
             {reactObject.get('LIKE') && (
               <Image
@@ -1817,7 +2036,9 @@ function ContainChatItem(props) {
                 source={require('../../assets/emoji_7.png')}
                 style={{
                   marginRight: 8,
-                  width: 24, height: 24, resizeMode: 'contain',
+                  width: 24,
+                  height: 24,
+                  resizeMode: 'contain',
                 }}
                 resizeMode={'contain'}
               />
@@ -1828,12 +2049,15 @@ function ContainChatItem(props) {
           visible={showPopover}
           transparent={true}
           onRequestClose={() => setShowPopover(false)}
-
         >
           <TouchableOpacity
             activeOpacity={0}
             onPress={() => setShowPopover(false)}
-            style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height, }}>
+            style={{
+              width: Dimensions.get('window').width,
+              height: Dimensions.get('window').height,
+            }}
+          >
             <View
               style={{
                 position: 'absolute',
@@ -1856,7 +2080,7 @@ function ContainChatItem(props) {
               }}
             >
               <TouchableOpacity
-                style={{alignItems: 'center', marginHorizontal: 8}}
+                style={{ alignItems: 'center', marginHorizontal: 8 }}
                 onPress={() => reaction('LIKE')}
               >
                 <Image
@@ -1869,11 +2093,22 @@ function ContainChatItem(props) {
                   }}
                   resizeMode={'contain'}
                 />
-                {
-                  (_.findIndex(props.item?.reactions, {type: 'LIKE', user_id: appStore.user.type + '_' + appStore.user.user_id})!==-1)&&
-                  <View style={{position: 'absolute', bottom: -9, width: 6, height: 6, marginTop: 3, borderRadius: 3, backgroundColor: colors.primary}}/>
-                }
-
+                {_.findIndex(props.item?.reactions, {
+                  type: 'LIKE',
+                  user_id: appStore.user.type + '_' + appStore.user.user_id,
+                }) !== -1 && (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      bottom: -9,
+                      width: 6,
+                      height: 6,
+                      marginTop: 3,
+                      borderRadius: 3,
+                      backgroundColor: colors.primary,
+                    }}
+                  />
+                )}
               </TouchableOpacity>
               <TouchableOpacity
                 style={{ marginHorizontal: 8, alignItems: 'center' }}
@@ -1885,14 +2120,25 @@ function ContainChatItem(props) {
                     width: 30,
                     height: 30,
                     resizeMode: 'contain',
-
                   }}
                   resizeMode={'contain'}
                 />
-                {
-                  (_.findIndex(props.item?.reactions, {type: 'LOVE', user_id: appStore.user.type + '_' + appStore.user.user_id})!==-1)&&
-                  <View style={{position: 'absolute', bottom: -9, width: 6, height: 6, marginTop: 3, borderRadius: 3, backgroundColor: colors.primary}}/>
-                }
+                {_.findIndex(props.item?.reactions, {
+                  type: 'LOVE',
+                  user_id: appStore.user.type + '_' + appStore.user.user_id,
+                }) !== -1 && (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      bottom: -9,
+                      width: 6,
+                      height: 6,
+                      marginTop: 3,
+                      borderRadius: 3,
+                      backgroundColor: colors.primary,
+                    }}
+                  />
+                )}
               </TouchableOpacity>
               <TouchableOpacity
                 style={{ marginHorizontal: 8, alignItems: 'center' }}
@@ -1904,14 +2150,25 @@ function ContainChatItem(props) {
                     width: 30,
                     height: 30,
                     resizeMode: 'contain',
-
                   }}
                   resizeMode={'contain'}
                 />
-                {
-                  (_.findIndex(props.item?.reactions, {type: 'FLUSHED_FACE', user_id: appStore.user.type + '_' + appStore.user.user_id})!==-1)&&
-                  <View style={{position: 'absolute', bottom: -9, width: 6, height: 6, marginTop: 3, borderRadius: 3, backgroundColor: colors.primary}}/>
-                }
+                {_.findIndex(props.item?.reactions, {
+                  type: 'FLUSHED_FACE',
+                  user_id: appStore.user.type + '_' + appStore.user.user_id,
+                }) !== -1 && (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      bottom: -9,
+                      width: 6,
+                      height: 6,
+                      marginTop: 3,
+                      borderRadius: 3,
+                      backgroundColor: colors.primary,
+                    }}
+                  />
+                )}
               </TouchableOpacity>
               <TouchableOpacity
                 style={{ marginHorizontal: 8, alignItems: 'center' }}
@@ -1923,17 +2180,28 @@ function ContainChatItem(props) {
                     width: 30,
                     height: 30,
                     resizeMode: 'contain',
-
                   }}
                   resizeMode={'contain'}
                 />
-                {
-                  (_.findIndex(props.item?.reactions, {type: 'WOW', user_id: appStore.user.type + '_' + appStore.user.user_id})!==-1)&&
-                  <View style={{position: 'absolute', bottom: -9, width: 6, height: 6, marginTop: 3, borderRadius: 3, backgroundColor: colors.primary}}/>
-                }
+                {_.findIndex(props.item?.reactions, {
+                  type: 'WOW',
+                  user_id: appStore.user.type + '_' + appStore.user.user_id,
+                }) !== -1 && (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      bottom: -9,
+                      width: 6,
+                      height: 6,
+                      marginTop: 3,
+                      borderRadius: 3,
+                      backgroundColor: colors.primary,
+                    }}
+                  />
+                )}
               </TouchableOpacity>
               <TouchableOpacity
-                style={{ marginHorizontal: 8,  alignItems: 'center' }}
+                style={{ marginHorizontal: 8, alignItems: 'center' }}
                 onPress={() => reaction('SAD')}
               >
                 <Image
@@ -1945,13 +2213,25 @@ function ContainChatItem(props) {
                   }}
                   resizeMode={'contain'}
                 />
-                {
-                  (_.findIndex(props.item?.reactions, {type: 'SAD', user_id: appStore.user.type + '_' + appStore.user.user_id})!==-1)&&
-                  <View style={{position: 'absolute', bottom: -9, width: 6, height: 6, marginTop: 3, borderRadius: 3, backgroundColor: colors.primary}}/>
-                }
+                {_.findIndex(props.item?.reactions, {
+                  type: 'SAD',
+                  user_id: appStore.user.type + '_' + appStore.user.user_id,
+                }) !== -1 && (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      bottom: -9,
+                      width: 6,
+                      height: 6,
+                      marginTop: 3,
+                      borderRadius: 3,
+                      backgroundColor: colors.primary,
+                    }}
+                  />
+                )}
               </TouchableOpacity>
               <TouchableOpacity
-                style={{ marginHorizontal: 8,  alignItems: 'center' }}
+                style={{ marginHorizontal: 8, alignItems: 'center' }}
                 onPress={() => reaction('LOUDLY_CRYING')}
               >
                 <Image
@@ -1960,14 +2240,25 @@ function ContainChatItem(props) {
                     width: 30,
                     height: 30,
                     resizeMode: 'contain',
-
                   }}
                   resizeMode={'contain'}
                 />
-                {
-                  (_.findIndex(props.item?.reactions, {type: 'LOUDLY_CRYING', user_id: appStore.user.type + '_' + appStore.user.user_id})!==-1)&&
-                  <View style={{position: 'absolute', bottom: -9, width: 6, height: 6, marginTop: 3, borderRadius: 3, backgroundColor: colors.primary}}/>
-                }
+                {_.findIndex(props.item?.reactions, {
+                  type: 'LOUDLY_CRYING',
+                  user_id: appStore.user.type + '_' + appStore.user.user_id,
+                }) !== -1 && (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      bottom: -9,
+                      width: 6,
+                      height: 6,
+                      marginTop: 3,
+                      borderRadius: 3,
+                      backgroundColor: colors.primary,
+                    }}
+                  />
+                )}
               </TouchableOpacity>
               <TouchableOpacity
                 style={{ marginHorizontal: 8, alignItems: 'center' }}
@@ -1982,16 +2273,27 @@ function ContainChatItem(props) {
                   }}
                   resizeMode={'contain'}
                 />
-                {
-                  (_.findIndex(props.item?.reactions, {type: 'ANGRY', user_id: appStore.user.type + '_' + appStore.user.user_id})!==-1)&&
-                  <View style={{position: 'absolute', bottom: -9, width: 6, height: 6, marginTop: 3, borderRadius: 3, backgroundColor: colors.primary}}/>
-                }
+                {_.findIndex(props.item?.reactions, {
+                  type: 'ANGRY',
+                  user_id: appStore.user.type + '_' + appStore.user.user_id,
+                }) !== -1 && (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      bottom: -9,
+                      width: 6,
+                      height: 6,
+                      marginTop: 3,
+                      borderRadius: 3,
+                      backgroundColor: colors.primary,
+                    }}
+                  />
+                )}
               </TouchableOpacity>
             </View>
           </TouchableOpacity>
         </Modal>
       </View>
-
     </TouchableHighlight>
   );
 }

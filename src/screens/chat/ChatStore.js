@@ -1,11 +1,11 @@
-import {observable, action, makeAutoObservable, toJS} from 'mobx';
-import services, { getHeader } from "../../services";
-import { Log } from "../../utils";
-import uuid from "react-native-uuid";
-import ImageResizer from "../../components/resizeImage";
+import { observable, action, makeAutoObservable, toJS } from 'mobx';
+import services, { getHeader } from '../../services';
+import { Log } from '../../utils';
+import uuid from 'react-native-uuid';
+import ImageResizer from '../../components/resizeImage';
 import uploadProgress from './uploadProgress';
-import InputStore from "./InputStore";
-import AnimatedSoundBars from "../../components/waveView";
+import InputStore from './InputStore';
+import AnimatedSoundBars from '../../components/waveView';
 import appStore from '../AppStore';
 var _ = require('lodash');
 
@@ -39,16 +39,15 @@ class ChatStore {
   canSend = true;
   messageCanSend = '';
 
-  soundBarsRefs = {
-  };
-
+  soundBarsRefs = {};
+  progress = '0';
 
   constructor() {
     makeAutoObservable(this);
   }
 
   onChangeTextChat(emoji) {
-    this.input += emoji
+    this.input += emoji;
   }
 
   resetData() {
@@ -67,12 +66,14 @@ class ChatStore {
     this.canSend = true;
   }
 
-
   async getData(params, onSuccess, onError) {
-    this.conversation_id = params.conversation_id
+    this.conversation_id = params.conversation_id;
     try {
-      if (this.page !== 0 && (this.isLoading || this.isLoadingMore || !this.canLoadMore)) {
-        return
+      if (
+        this.page !== 0 &&
+        (this.isLoading || this.isLoadingMore || !this.canLoadMore)
+      ) {
+        return;
       }
       this.page += 1;
       if (this.page === 1) {
@@ -84,14 +85,14 @@ class ChatStore {
       const response = await services.create().conversationMessages({
         ...params,
         ...{
-          page: this.page
-        }
+          page: this.page,
+        },
       });
 
       this.isLoading = false;
       this.isLoadingMore = false;
 
-      Log(response)
+      Log(response);
 
       if (response.status === 200) {
         if (response.data.status === 200) {
@@ -99,12 +100,12 @@ class ChatStore {
             if (this.page === 1) {
               this.data = response.data.data;
               if (this.quote !== undefined) {
-                this.data = [chatStore.quote, ...this.data]
+                this.data = [chatStore.quote, ...this.data];
               }
             } else {
               this.data = [...this.data, ...response.data.data];
             }
-            this.canLoadMore = response.data.data.length > 0
+            this.canLoadMore = response.data.data.length > 0;
             this.isError = false;
             if (onSuccess) {
               onSuccess(this.data);
@@ -134,18 +135,25 @@ class ChatStore {
 
   async getDataBackground() {
     try {
-      services.create().conversationMessages({
-        conversation_id: this.conversation_id,
-        page: 1
-      }).then(response=>{
-        if (response.status === 200) {
-          if (response.data.status === 200) {
-            if (response.data.data) {
-              this.data = _.unionBy(response.data.data, toJS(this.data), "_id");
+      services
+        .create()
+        .conversationMessages({
+          conversation_id: this.conversation_id,
+          page: 1,
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            if (response.data.status === 200) {
+              if (response.data.data) {
+                this.data = _.unionBy(
+                  response.data.data,
+                  toJS(this.data),
+                  '_id'
+                );
+              }
             }
           }
-        }
-      })
+        });
     } catch (error) {
       Log(error);
     }
@@ -153,17 +161,19 @@ class ChatStore {
 
   async checkCanSend() {
     try {
-      services.create().checkCanSend({
-        conversation_id: this.conversation_id,
-      }).then(response=>{
-        
-        if (response.status === 200) {
-          if (response.data.status === 200) {
-              this.canSend = response.data.data
-              this.messageCanSend = response.data.message
+      services
+        .create()
+        .checkCanSend({
+          conversation_id: this.conversation_id,
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            if (response.data.status === 200) {
+              this.canSend = response.data.data;
+              this.messageCanSend = response.data.message;
+            }
           }
-        }
-      })
+        });
     } catch (error) {
       Log(error);
     }
@@ -171,18 +181,24 @@ class ChatStore {
 
   async getOrderInfoVTM(order_number) {
     try {
-      if(appStore.appId !== 'VTPost'){
+      if (appStore.appId !== 'VTPost') {
         const response = await services.create().getOrderInfoVTM({
           order_number: order_number,
-        })
+        });
         if (response.status === 200) {
           if (response.data.status === 200 && response.data.data) {
-            if(this.quote && response.data.data?.order_number===this.quote.order_number){
-              this.quote.order_info.vtp_order = {...this.quote.order_info.vtp_order, ...{
+            if (
+              this.quote &&
+              response.data.data?.order_number === this.quote.order_number
+            ) {
+              this.quote.order_info.vtp_order = {
+                ...this.quote.order_info.vtp_order,
+                ...{
                   product_name: response.data.data?.product_name,
                   status_name: response.data.data?.status_name,
-                }}
-              this.quote = {...this.quote}
+                },
+              };
+              this.quote = { ...this.quote };
             }
             // if (response.data.data) {
             //   this.data = _.unionBy(response.data.data, toJS(this.data), "_id");
@@ -190,167 +206,167 @@ class ChatStore {
           }
         }
       }
-
     } catch (error) {
       Log(error);
     }
   }
 
   delay = (delayInms) => {
-    return new Promise(resolve => setTimeout(resolve, delayInms));
-  }
+    return new Promise((resolve) => setTimeout(resolve, delayInms));
+  };
 
   async sendMessage(params) {
-    try{
+    try {
       InputStore.inputRef?.current?.focus();
-    }catch (e) {}
+    } catch (e) {}
 
-    const quoteCopy = { ...this.quote }
+    const quoteCopy = { ...this.quote };
     if (this.quote) {
       this.quote = undefined;
-      await this.sendMessage(quoteCopy)
+      await this.sendMessage(quoteCopy);
     }
 
-    
-    let attachment_ids = []
+    let attachment_ids = [];
     if (params.attachmentLocal) {
-      const formData = new FormData()
+      const formData = new FormData();
       for (let i = 0; i < params.attachmentLocal.length; i++) {
-
-        let extension = params.attachmentLocal[i].extension
-
+        let extension = params.attachmentLocal[i].extension;
 
         if (params.attachmentLocal[i].name == null) {
-          extension = params.attachmentLocal[i].uri.split(".").pop().toLowerCase();
+          extension = params.attachmentLocal[i].uri
+            .split('.')
+            .pop()
+            .toLowerCase();
         } else {
-          extension = params.attachmentLocal[i].name.split(".").pop().toLowerCase();
+          extension = params.attachmentLocal[i].name
+            .split('.')
+            .pop()
+            .toLowerCase();
         }
 
         extension = extension?.toLowerCase();
-        let fileUri = ''
+        let fileUri = '';
         if (extension === 'mov' || extension === 'mp4') {
-          fileUri = params.attachmentLocal[i].uri
+          fileUri = params.attachmentLocal[i].uri;
 
-          formData.append("files", {
+          formData.append('files', {
             name: uuid.v4() + '.' + extension,
             uri: fileUri,
             type: 'video/' + extension,
-          })
-
-        } else if (extension === 'doc' || extension === 'pdf' || extension === 'xls') {
+          });
+        } else if (
+          extension === 'doc' ||
+          extension === 'pdf' ||
+          extension === 'xls'
+        ) {
           try {
-            fileUri = params.attachmentLocal[i].uri
+            fileUri = params.attachmentLocal[i].uri;
 
-            formData.append("files", {
+            formData.append('files', {
               name: uuid.v4() + '.' + extension,
               uri: fileUri,
               type: params.attachmentLocal[i].type,
-            })
-          } catch (e) {
-
-          }
-
-        }
-        else if (extension === 'jpg' || extension === 'png' || extension === 'jpeg' || extension === 'heic') {
-
-          let absolutePath = params.attachmentLocal[i].uri
+            });
+          } catch (e) {}
+        } else if (
+          extension === 'jpg' ||
+          extension === 'png' ||
+          extension === 'jpeg' ||
+          extension === 'heic'
+        ) {
+          let absolutePath = params.attachmentLocal[i].uri;
           // if (Platform.OS === 'android'){
 
-          if (params.attachmentLocal[i].width >= 900 || params.attachmentLocal[i].height >= 900) {
+          if (
+            params.attachmentLocal[i].width >= 900 ||
+            params.attachmentLocal[i].height >= 900
+          ) {
             try {
               const result = await ImageResizer.createResizedImage(
-                  absolutePath,
-                  900,
-                  900,
-                  'JPEG',
-                  80,
-                  0
-              )
-              fileUri = result.uri
+                absolutePath,
+                900,
+                900,
+                'JPEG',
+                80,
+                0
+              );
+              fileUri = result.uri;
             } catch (e) {
-              fileUri = absolutePath
-              
+              fileUri = absolutePath;
             }
           } else {
-            fileUri = absolutePath
+            fileUri = absolutePath;
           }
 
-
           try {
-            formData.append("files", {
+            formData.append('files', {
               name: uuid.v4() + '.' + extension,
               uri: fileUri,
               type: 'image/' + extension,
-            })
-          } catch (e) {
-
-          }
-
-        }
-        else {
-
+            });
+          } catch (e) {}
+        } else {
           try {
-            formData.append("files", {
+            formData.append('files', {
               name: params.attachmentLocal[i].name,
               uri: params.attachmentLocal[i].uri,
               type: 'image/' + extension,
-            })
-
-
-          } catch (e) {
-
-          }
+            });
+          } catch (e) {}
         }
       }
 
-      const response = await services.create().uploadFile(formData, progress => {
-        uploadProgress.progress[params.id] = Math.round((progress.loaded / progress.total) * 100)
-      });
+      const response = await services
+        .create()
+        .uploadFile(formData, (progress) => {
+          this.progress = Math.round((100 * progress.loaded) / progress.total);
+        });
       try {
         if (response.data.data) {
-          attachment_ids = response.data.data.map(a => a._id)
+          attachment_ids = response.data.data.map((a) => a._id);
         }
       } catch (e) {
         if (response.status === 201) {
-          return
-
+          return;
         }
-        this.data = this.data.map(item => {
+        this.data = this.data.map((item) => {
           if (item.id === params.id && item.id) {
-            item.status = 'error'
+            item.status = 'error';
           }
-          return item
-        })
-        return
+          return item;
+        });
+        return;
       }
-
     }
-    const response = await services.create().sendMessage({ ...params, ...{ attachment_ids: attachment_ids } });
-    Log(response)
+    const response = await services
+      .create()
+      .sendMessage({ ...params, ...{ attachment_ids: attachment_ids } });
+    Log(response);
 
     if (response.status === 201 && response.data.status === 200) {
-      this.data = [...this.data.map((item) => {
-        if (item.id === params.id && item.id) {
-          item.status = 'sent'
-          item.attachmentLocal = []
-          item.attachments = response.data.data?.message?.attachments ? response.data.data?.message?.attachments : []
-          // item.id = undefined
-          item._id = response.data.data?.message?._id
-        }
-        return item
-      })]
+      this.data = [
+        ...this.data.map((item) => {
+          if (item.id === params.id && item.id) {
+            item.status = 'sent';
+            item.attachmentLocal = [];
+            item.attachments = response.data.data?.message?.attachments
+              ? response.data.data?.message?.attachments
+              : [];
+            // item.id = undefined
+            item._id = response.data.data?.message?._id;
+          }
+          return item;
+        }),
+      ];
     } else {
-      this.data = this.data.map(item => {
+      this.data = this.data.map((item) => {
         if (item.id === params.id && item.id) {
-          item.status = 'error'
+          item.status = 'error';
         }
-        return item
-      })
+        return item;
+      });
     }
-
   }
-
-
 }
 
 const chatStore = new ChatStore();

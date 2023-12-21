@@ -1,6 +1,6 @@
 {
     "name": "react-native-chatvt",
-    "version": "1.1.25",
+    "version": "1.1.26",
     "description": "test",
     "main": "lib/commonjs/index",
     "module": "lib/module/index",
@@ -146,6 +146,7 @@
         "react-native-parsed-text": "^0.0.22",
         "react-native-popover-view": "^5.1.7",
         "react-native-popup-menu": "^0.16.1",
+        "react-native-progress-circle": "^2.1.0",
         "react-native-progress-wheel": "^1.0.5",
         "react-native-redash": "^14.2.4",
         "react-native-swipeable": "^0.6.0",

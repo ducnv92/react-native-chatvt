@@ -9192,6 +9192,11 @@ react-native-popup-menu@^0.16.1:
   resolved "https://registry.yarnpkg.com/react-native-popup-menu/-/react-native-popup-menu-0.16.1.tgz#b1bb56be5c0838bbc2f532af7b1f554b7ceef566"
   integrity sha512-xRS7mRh0exwu7Iw8PPVHdM11d13A/KzYjy0/fZx3zVtxISxPkNaDGayau6oa7HqO3Nj0oS9ulFCYjcQfG6vahA==
 
+react-native-progress-circle@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-progress-circle/-/react-native-progress-circle-2.1.0.tgz#62bdf31c76962d10c5c14446b61ff7d05cf0d0ec"
+  integrity sha512-VP0s92bgbTMQy4hQzPU4LlGyFj3z5u7i1HYFG8/yzXXfGkX1cxKS4xOlE+OTaObWC99w7Bodi3h8R7En2nQPYw==
+
 react-native-progress-wheel@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/react-native-progress-wheel/-/react-native-progress-wheel-1.0.5.tgz#156874db927f7013dc9cd635662866df1489eac9"
