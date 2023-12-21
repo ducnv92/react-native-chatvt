@@ -19,10 +19,14 @@ import {
   Image,
   ActivityIndicator,
   TouchableNativeFeedback,
-  TouchableNativeFeedbackComponent, TouchableWithoutFeedback,
+  TouchableNativeFeedbackComponent,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import colors from '../../Styles';
-import { BottomSheetModalProvider, TouchableHighlight } from '../../components/bottomSheet/bottom-sheet';
+import {
+  BottomSheetModalProvider,
+  TouchableHighlight,
+} from '../../components/bottomSheet/bottom-sheet';
 import { MText as Text } from '../../components';
 import chatStore from './ChatStore';
 import { Log, orderStatus, timeSince } from '../../utils';
@@ -62,34 +66,33 @@ export const ChatScreen = observer(function ChatScreen(props) {
 
     chatStore.quote = props.order
       ? {
-        _id: uuid.v4(),
-        conversation_id: conversation._id,
-        text: 'QUOTE_ORDER',
-        type: 'QUOTE_ORDER',
-        order_number: props.order.ORDER_NUMBER ? props.order.ORDER_NUMBER : props.order.ma_phieugui,
-        has_attachment: false,
-        order_info: {
-          vtp_order: { ...props.order },
-        },
-      }
+          _id: uuid.v4(),
+          conversation_id: conversation._id,
+          text: 'QUOTE_ORDER',
+          type: 'QUOTE_ORDER',
+          order_number: props.order.ORDER_NUMBER
+            ? props.order.ORDER_NUMBER
+            : props.order.ma_phieugui,
+          has_attachment: false,
+          order_info: {
+            vtp_order: { ...props.order },
+          },
+        }
       : undefined;
 
     try {
       if (chatStore.quote) {
         await chatStore.getOrderInfoVTM(chatStore.quote.order_number);
       }
-    } catch (e) {
-    }
-
+    } catch (e) {}
 
     let receiver = {};
     try {
       receiver = conversation.detail_participants.find(
-        (i) => i.user_id !== appStore.user.user_id,
+        (i) => i.user_id !== appStore.user.user_id
       );
       setReceiver(receiver ? receiver : {});
-    } catch (e) {
-    }
+    } catch (e) {}
     chatStore.page = 0;
     chatStore.getData({
       conversation_id: conversation?._id,
@@ -114,35 +117,30 @@ export const ChatScreen = observer(function ChatScreen(props) {
       InputStore.input = '';
       try {
         showSubscription.remove();
-
-      } catch (e) {
-
-      }
+      } catch (e) {}
     };
   }, []);
 
   const navigateAttachs = () => {
-    if (conversation.type === 'PAIR') {
-      Navigation.push(props.componentId, {
-        component: {
-          name: 'AttachsScreen',
-          options: {
-            popGesture: false,
-            bottomTabs: {
-              visible: false,
-            },
-            topBar: {
-              visible: false,
-              height: 0,
-            },
+    Navigation.push(props.componentId, {
+      component: {
+        name: 'AttachsScreen',
+        options: {
+          popGesture: false,
+          bottomTabs: {
+            visible: false,
           },
-          passProps: {
-            data: conversation,
-            receiver,
+          topBar: {
+            visible: false,
+            height: 0,
           },
         },
-      });
-    }
+        passProps: {
+          data: conversation,
+          receiver,
+        },
+      },
+    });
   };
 
   const handleLoadMore = () => {
@@ -150,7 +148,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
       conversation_id: conversation._id,
     });
   };
-
 
   const sendImages = async () => {
     try {
@@ -162,13 +159,13 @@ export const ChatScreen = observer(function ChatScreen(props) {
             const result = chatStore.images[i].uri.match(regex);
             const photoDetail = await CameraRoll.getPhotoByInternalID(
               result[1],
-              {},
+              {}
             );
             chatStore.images[i].uri = photoDetail.node.image.filepath;
           }
         }
       } catch (e) {
-        return
+        return;
         // alert(e);
       }
 
@@ -188,8 +185,7 @@ export const ChatScreen = observer(function ChatScreen(props) {
       chatStore.data = [message, ...chatStore.data];
 
       chatStore.sendMessage(message);
-    } catch (e) {
-    }
+    } catch (e) {}
   };
 
   return (
@@ -197,14 +193,19 @@ export const ChatScreen = observer(function ChatScreen(props) {
       behavior={Platform.OS === 'ios' ? 'padding' : ''}
       style={{ flex: 1, backgroundColor: 'white' }}
     >
-      <StatusBar backgroundColor={colors.primary}/>
-      <View style={{ position: 'absolute', width: '100%', height: 120, backgroundColor: colors.primary }} />
+      <StatusBar backgroundColor={colors.primary} />
+      <View
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: 120,
+          backgroundColor: colors.primary,
+        }}
+      />
 
       <SafeAreaView style={{ flex: 1 }}>
         <BottomSheetModalProvider style={{ flex: 1 }}>
-          <View
-            style={{ flex: 1 }}
-          >
+          <View style={{ flex: 1 }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -216,10 +217,10 @@ export const ChatScreen = observer(function ChatScreen(props) {
               <TouchableOpacity
                 onPress={() => {
                   try {
-                    Navigation.pop(props.componentId ? props.componentId : 'ChatScreen');
-                  } catch (e) {
-
-                  }
+                    Navigation.pop(
+                      props.componentId ? props.componentId : 'ChatScreen'
+                    );
+                  } catch (e) {}
                 }}
                 style={{
                   width: 50,
@@ -233,8 +234,16 @@ export const ChatScreen = observer(function ChatScreen(props) {
                   source={require('../../assets/ic_back.png')}
                 />
               </TouchableOpacity>
-              <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: 16 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16 }}>
+              <View
+                style={{ flex: 1, alignItems: 'center', paddingHorizontal: 16 }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingHorizontal: 16,
+                  }}
+                >
                   <TouchableOpacity
                     onPress={navigateAttachs}
                     style={{ flexDirection: 'row', alignItems: 'center' }}
@@ -246,25 +255,28 @@ export const ChatScreen = observer(function ChatScreen(props) {
                         color: 'white',
                         textAlign: 'center',
                       }}
-                      numberOfLines={1} ellipsizeMode='tail'
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
                     >
                       {conversation?.type === 'GROUP'
-                        ? 'Đơn ' + (conversation?.order_numbers?.length > 0 && conversation?.order_numbers[0])
+                        ? 'Đơn ' +
+                          (conversation?.order_numbers?.length > 0 &&
+                            conversation?.order_numbers[0])
                         : conversation?.type === 'PAIR'
-                          ? ((receiver?.last_name ? receiver?.last_name : '') + ' ' + (receiver?.first_name ? receiver?.first_name : ''))
-                          : ''}
+                        ? (receiver?.last_name ? receiver?.last_name : '') +
+                          ' ' +
+                          (receiver?.first_name ? receiver?.first_name : '')
+                        : ''}
                     </Text>
-                    {conversation?.type === 'PAIR' && (
-                      <Image
-                        style={{
-                          height: 14,
-                          width: 14,
-                          marginLeft: 4,
-                          resizeMode: 'contain',
-                        }}
-                        source={require('../../assets/ic_arrow_down.png')}
-                      />
-                    )}
+                    <Image
+                      style={{
+                        height: 14,
+                        width: 14,
+                        marginLeft: 4,
+                        resizeMode: 'contain',
+                      }}
+                      source={require('../../assets/ic_arrow_down.png')}
+                    />
                   </TouchableOpacity>
                 </View>
                 {conversation?.type === 'PAIR' && (
@@ -276,55 +288,57 @@ export const ChatScreen = observer(function ChatScreen(props) {
                     }}
                   >
                     {receiver?.state?.includes('ONLINE') ? (
-                        <View style={{
+                      <View
+                        style={{
                           flexDirection: 'row',
                           alignItems: 'center',
-                        }}>
-                          <View
-                            style={{
-                              height: 8,
-                              width: 8,
-                              marginRight: 8,
-                              borderRadius: 4,
-                              backgroundColor: '#30F03B',
-                            }}
-                          />
-                          <Text
-                            ellipsizeMode='tail'
-                            numberOfLines={1}
-                            style={{ fontSize: 13, color: 'white' }}>{
-                            receiver.type === 'VTMAN' ?
-                              'Bưu tá' : 'Đang hoạt động'}</Text>
-                        </View>
-                      )
-                      : (
-                        receiver.type === 'VTMAN' ? (
-                          <Text
-                            style={{
-                              fontWeight: '500',
-                              fontSize: 13,
-                              color: 'white',
-                              textAlign: 'center',
-                            }}
-                          >
-                            {receiver.type === 'VTMAN' ?
-                              appStore.lang.common.postman : ('Hoạt động ' + timeSince(receiver.last_state_update))}
-                          </Text>
-                        ) : (
-                          receiver.last_state_update ?
-                            <Text
-                              style={{
-                                fontWeight: '500',
-                                fontSize: 13,
-                                color: 'white',
-                                textAlign: 'center',
-                              }}
-                            >
-                              {'Hoạt động ' + timeSince(receiver.last_state_update)}
-                            </Text> : null
-                        )
-                      )}
-
+                        }}
+                      >
+                        <View
+                          style={{
+                            height: 8,
+                            width: 8,
+                            marginRight: 8,
+                            borderRadius: 4,
+                            backgroundColor: '#30F03B',
+                          }}
+                        />
+                        <Text
+                          ellipsizeMode="tail"
+                          numberOfLines={1}
+                          style={{ fontSize: 13, color: 'white' }}
+                        >
+                          {receiver.type === 'VTMAN'
+                            ? 'Bưu tá'
+                            : 'Đang hoạt động'}
+                        </Text>
+                      </View>
+                    ) : receiver.type === 'VTMAN' ? (
+                      <Text
+                        style={{
+                          fontWeight: '500',
+                          fontSize: 13,
+                          color: 'white',
+                          textAlign: 'center',
+                        }}
+                      >
+                        {receiver.type === 'VTMAN'
+                          ? appStore.lang.common.postman
+                          : 'Hoạt động ' +
+                            timeSince(receiver.last_state_update)}
+                      </Text>
+                    ) : receiver.last_state_update ? (
+                      <Text
+                        style={{
+                          fontWeight: '500',
+                          fontSize: 13,
+                          color: 'white',
+                          textAlign: 'center',
+                        }}
+                      >
+                        {'Hoạt động ' + timeSince(receiver.last_state_update)}
+                      </Text>
+                    ) : null}
                   </View>
                 )}
                 {conversation?.type === 'GROUP' && (
@@ -335,9 +349,8 @@ export const ChatScreen = observer(function ChatScreen(props) {
                       marginTop: 2,
                     }}
                   >
-
                     <Text
-                      ellipsizeMode='tail'
+                      ellipsizeMode="tail"
                       numberOfLines={1}
                       style={{
                         fontWeight: '500',
@@ -346,22 +359,17 @@ export const ChatScreen = observer(function ChatScreen(props) {
                         textAlign: 'center',
                       }}
                     >
-                      {
-                        listChatStore.getOrderStatusById(order?.order_status)
-                      }
+                      {listChatStore.getOrderStatusById(order?.order_status)}
                     </Text>
                   </View>
                 )}
-
               </View>
 
               <TouchableOpacity
                 onPress={() => {
                   try {
                     Linking.openURL(`tel:${receiver?.phone}`);
-                  } catch (e) {
-                    
-                  }
+                  } catch (e) {}
                 }}
                 style={{
                   width: 50,
@@ -382,7 +390,6 @@ export const ChatScreen = observer(function ChatScreen(props) {
               </TouchableOpacity>
             </View>
             <View style={{ flex: 1, backgroundColor: 'white' }}>
-
               <FlatList
                 keyboardShouldPersistTaps={'always'}
                 estimatedItemSize={100}
@@ -395,7 +402,11 @@ export const ChatScreen = observer(function ChatScreen(props) {
                   layout.size = 200;
                 }}
                 // forceNonDeterministicRendering={true}
-                style={{ flex: 1, backgroundColor: 'white', transform: [{ scaleY: -1 }] }}
+                style={{
+                  flex: 1,
+                  backgroundColor: 'white',
+                  transform: [{ scaleY: -1 }],
+                }}
                 data={chatStore.data}
                 // extraData={chatStore.data}
                 // inverted
@@ -408,9 +419,15 @@ export const ChatScreen = observer(function ChatScreen(props) {
                       }
                       Keyboard.dismiss();
                     }}
-                    style={{ transform: [{ scaleY: -1 }] }}>
-                    <ChatItem item={item} index={index} data={chatStore.data} conversation={conversation}
-                              componentId={props.componentId} />
+                    style={{ transform: [{ scaleY: -1 }] }}
+                  >
+                    <ChatItem
+                      item={item}
+                      index={index}
+                      data={chatStore.data}
+                      conversation={conversation}
+                      componentId={props.componentId}
+                    />
                   </TouchableOpacity>
                 )}
                 getItemType={(item, index) => {
@@ -423,11 +440,13 @@ export const ChatScreen = observer(function ChatScreen(props) {
                 }}
                 // maxToRenderPerBatch={20}
                 onEndReachedThreshold={0.7}
-                ListFooterComponent={() => <View style={{ alignItems: 'center', padding: 4 }}>
-                  {
-                    chatStore.isLoadingMore && <ActivityIndicator color={colors.primary} />
-                  }
-                </View>}
+                ListFooterComponent={() => (
+                  <View style={{ alignItems: 'center', padding: 4 }}>
+                    {chatStore.isLoadingMore && (
+                      <ActivityIndicator color={colors.primary} />
+                    )}
+                  </View>
+                )}
                 removeClippedSubviews={true}
                 keyExtractor={(item) =>
                   item._id !== undefined ? item._id : item.id
@@ -501,13 +520,10 @@ export const ChatScreen = observer(function ChatScreen(props) {
   );
 });
 
-
 const BottomChat = observer(function BottomChat(props) {
-
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
-
     return () => {
       InputStore.input = '';
     };
@@ -533,7 +549,6 @@ const BottomChat = observer(function BottomChat(props) {
     chatStore.sendMessage(message);
   };
 
-
   const handlePresentModalPress = () => {
     Keyboard.dismiss();
     chatStore.showAttachModal = true;
@@ -557,9 +572,7 @@ const BottomChat = observer(function BottomChat(props) {
       chatStore.data = [message, ...chatStore.data];
 
       chatStore.sendMessage(message);
-    } catch (e) {
-      
-    }
+    } catch (e) {}
   };
 
   return (
@@ -632,9 +645,11 @@ const BottomChat = observer(function BottomChat(props) {
         >
           <Image
             source={
-              chatStore.keyboardEmoji ? require('../../assets/ic_emoji_disabled.png') : (!chatStore.canSend
+              chatStore.keyboardEmoji
                 ? require('../../assets/ic_emoji_disabled.png')
-                : require('../../assets/ic_emoj.png'))
+                : !chatStore.canSend
+                ? require('../../assets/ic_emoji_disabled.png')
+                : require('../../assets/ic_emoj.png')
             }
             style={{
               height: 24,
@@ -693,7 +708,6 @@ const BottomChat = observer(function BottomChat(props) {
             />
           </RecordButton>
         )}
-
       </TouchableOpacity>
       {chatStore.keyboardEmoji && (
         <EmojiKeyboard
@@ -726,9 +740,9 @@ const BottomChat = observer(function BottomChat(props) {
         //   ]}
         // />
       )}
-      {
-        showAlert && (
-          <View style={{
+      {showAlert && (
+        <View
+          style={{
             position: 'absolute',
             width: Dimensions.get('window').width - 28,
             backgroundColor: '#44494D',
@@ -738,14 +752,21 @@ const BottomChat = observer(function BottomChat(props) {
             justifyContent: 'center',
             alignItems: 'center',
             bottom: 78,
-
-          }}>
-            <Text style={{ color: 'white', fontWeight: '500', lineHeight: 18, fontSize: 13, padding: 16 }}>{
-              chatStore.messageCanSend
-            }</Text>
-          </View>
-        )
-      }
+          }}
+        >
+          <Text
+            style={{
+              color: 'white',
+              fontWeight: '500',
+              lineHeight: 18,
+              fontSize: 13,
+              padding: 16,
+            }}
+          >
+            {chatStore.messageCanSend}
+          </Text>
+        </View>
+      )}
       {/*<KeyboardSpacer/>*/}
     </>
   );
