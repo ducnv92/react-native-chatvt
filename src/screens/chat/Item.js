@@ -429,12 +429,12 @@ export const VideoItem = function (props) {
                 }}
               >
                 <ProgressCircle
-                  percent={30}
+                  percent={chatStore.progress}
                   radius={24}
                   borderWidth={3}
                   color="red"
                   shadowColor="#999"
-                  bgColor="rgba(255,255,255,1)"
+                  bgColor="transparent"
                 >
                   <Image
                     source={ic_close}
