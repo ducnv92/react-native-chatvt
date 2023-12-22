@@ -471,7 +471,7 @@ class ChatVT {
     });
   }
 
-  toChatWithCustomer = async (componentId, order_code, type) => {
+  toChatWithCustomer = async (componentId, order_code, type,order) => {
     appStore.createConversation(
       {
         order_number: order_code,
