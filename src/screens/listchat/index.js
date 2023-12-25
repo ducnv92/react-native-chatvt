@@ -302,6 +302,12 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
                   i.is_pin = false;
                   return i;
                 });
+                if (showSearch) {
+                  currentSwipe.current.recenter();
+                  listChatStore.search = query;
+                  listChatStore.page = 0;
+                  listChatStore.getData({});
+                }
               } catch (e) {}
 
               listChatStore.data = [item, ...listChatStore.data];
