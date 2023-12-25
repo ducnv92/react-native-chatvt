@@ -1184,7 +1184,7 @@ export const ListChatScreen = observer(function ListChatScreen(props) {
             />
           </View>
         )}
-        <BottomSheetChatOptions ref={bottomSheetModalRef} />
+        {/* <BottomSheetChatOptions ref={bottomSheetModalRef} /> */}
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
