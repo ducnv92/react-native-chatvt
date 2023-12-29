@@ -17,7 +17,7 @@ import moment from 'moment';
 import { Navigation } from 'react-native-navigation';
 import Image from 'react-native-fast-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { formatTimeLastMessage, scale } from '../../utils';
+import { DownloadViewFile, formatTimeLastMessage, scale } from '../../utils';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import attachsStore from './AttachsStore';
 import uuid from 'react-native-uuid';
@@ -105,7 +105,7 @@ export const AttachsScreen = observer(function AttachsScreen(props) {
         <TouchableOpacity
           onPress={() => {
             try {
-              Linking.openURL(item.url);
+              DownloadViewFile(item.url)
             } catch (e) {}
           }}
           style={{

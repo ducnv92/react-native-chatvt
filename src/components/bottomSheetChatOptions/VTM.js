@@ -41,7 +41,7 @@ const BottomSheetChatOptionsVTM = React.forwardRef((props, ref) => {
       ref, // forwarded ref
       () => {
           return {
-              updateData(data, order, typeUser) {
+              updateData(data, order,orderType, typeUser) {
                   setData(data);
                   setOrder(order);
                   setTypeUser(typeUser);
