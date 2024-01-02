@@ -280,7 +280,7 @@ const BottomSheetChatOptions = React.forwardRef((props, ref) => {
             style={{
               flex:1,
               justifyContent: 'flex-end',
-              backgroundColor: '#00000059',l
+              backgroundColor: '#00000059',
             }}
           >
             <View style={{ borderTopLeftRadius: 24,
